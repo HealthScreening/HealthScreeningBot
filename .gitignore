@@ -102,3 +102,12 @@ dist
 
 # TernJS port file
 .tern-port
+
+
+# Project data
+config.json
+data.db*
+*.service
+*.png
+*.jpg
+.idea/
