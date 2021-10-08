@@ -10,7 +10,7 @@ The bot utilizes the "Guest" mode in order to not require any usernames or passw
 
 # For the programmers
 
-The bot utilizes [Puppeteer](https://pptr.dev/), which is a **javascript library allowing the running program to control
+The bot utilizes [Puppeteer](https://pptr.dev/), which is a **JavaScript library allowing the running program to control
 a headless instance of Chromium**, an open-source version of Google Chrome. Chromium has the same rendering capabilities
 as Google Chrome, as Google Chrome is built upon Chromium. In essence, any website which works with Google Chrome will
 work with Chromium.
