@@ -1,12 +1,21 @@
 site_name: Health Screening Bot
+repo_url: https://github.com/PythonCoderAS/HealthScreeningBot
+edit_uri: edit/master/docs/docs/
+site_url: https://pythoncoderas.github.io/HealthScreeningBot/
+site_description: The health screening bot automates the health screening process for you.
+site_author: PythonCoderAS
 theme:
   name: material
+  icon:
+    logo: material/robot
+    repo: fontawesome/brands/github
   features:
     - navigation.instant
     - navigation.tabs
     - toc.integrate
     - search.suggest
     - search.share
+    - navigation.indexes
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
