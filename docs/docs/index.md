@@ -1,17 +1,11 @@
-# Welcome to MkDocs
+# Health Screening Bot
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+So you know the [health screening](https://healthscreening.schools.nyc/) that you have to complete every day in order to
+get into a NYC high school? It's pointless, annoying, and generally a waste of time, but it doesn't have to be this way.
 
-## Commands
+Introducing Health Screening Bot. It's a discord bot that **does the annoying part of the health screening for you**.
+Now, every morning at around 6:00 AM New York City time, you just wake up, and in your DMs, is a completed health
+screening.
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+[Join the Auto Health Screening server today](https://discord.gg/JtkjkdJaEC)
+or [Invite the bot to your own server](https://discord.com/oauth2/authorize?client_id=890001571004448800&scope=applications.commands%20bot)
