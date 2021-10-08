@@ -47,7 +47,7 @@ Here is where it diverges:
 ## If you are not vaccinated
 
 15. Answer "No"
-16. For the foruth question, wait until it is visible.
+16. For the fourth question, wait until it is visible.
 17. Answer "No"
 18. Submit the form
 19. Return the screenshot
