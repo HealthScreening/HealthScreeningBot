@@ -17,7 +17,7 @@ work with Chromium.
 
 In order to make sure that the bot does not click buttons until they are available, the bot waits for the buttons to be
 visible before clicking on them,
-via [page.waitForSelector(<selector>, {visible: true})](https://pptr.dev/#?product=Puppeteer&version=v10.2.0&show=api-pagewaitforselectorselector-options).
+via [page.waitForSelector(selector, {visible: true})](https://pptr.dev/#?product=Puppeteer&version=v10.2.0&show=api-pagewaitforselectorselector-options).
 
 The steps for getting a screenshot of the finished product is actually quite simple:
 
