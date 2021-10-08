@@ -12,7 +12,8 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: 3.x
-      - run: cd docs
       - run: pip install pipenv
-      - run: pipenv install 
+      - run: pipenv install
+        working-directory: ./docs 
       - run: pipenv run mkdocs gh-deploy --force
+        working-directory: ./docs
