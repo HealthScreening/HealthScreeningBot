@@ -1,4 +1,4 @@
-# Bot Commands
+# Commands
 
 * [`/delete_auto`](commands/delete-auto.md)
 * [`/generate_auto`](commands/generate-auto.md)
