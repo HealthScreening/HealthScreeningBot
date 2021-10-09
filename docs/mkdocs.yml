@@ -36,7 +36,6 @@ plugins:
   search: {}
   git-revision-date-localized:
     type: datetime
-    enable_creation_date: true
 extra:
   social:
     - icon: fontawesome/brands/discord
