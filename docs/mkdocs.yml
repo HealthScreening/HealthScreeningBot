@@ -34,8 +34,6 @@ theme:
         name: Switch to light mode
 plugins:
   search: {}
-  git-revision-date-localized:
-    type: datetime
 extra:
   social:
     - icon: fontawesome/brands/discord
