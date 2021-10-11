@@ -1,3 +1,4 @@
+***NOTE: THIS WEBSITE IS NO LONGER MAINTAINED AND IS MOST LIKELY OUT OF DATA. STAY UP-TO-DATE AT https://healthscreening.pokestarfan.ga/.***
 # Health Screening Bot
 
 So you know the [health screening](https://healthscreening.schools.nyc/) that you have to complete every day in order to

@@ -1,3 +1,4 @@
+***NOTE: THIS WEBSITE IS NO LONGER MAINTAINED AND IS MOST LIKELY OUT OF DATA. STAY UP-TO-DATE AT https://healthscreening.pokestarfan.ga/.***
 # Setup Auto Screenings
 
 Once you have determined [where to run your commands](command-execution-space.md), setting up the bot is very simple.
