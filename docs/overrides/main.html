@@ -1,8 +1,0 @@
-{% extends "base.html" %}
-
-{% block disqus %}
-{% if config.extra.disqus %}
-<h2 id="__comments">{{ lang.t("meta.comments") }}</h2>
-{% include "partials/disqus.html" %}
-{% endif %}
-{% endblock %}
