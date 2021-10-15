@@ -1,4 +1,3 @@
-***NOTE: THIS WEBSITE IS NO LONGER MAINTAINED AND IS MOST LIKELY OUT OF DATA. STAY UP-TO-DATE AT https://healthscreening.pokestarfan.ga/.***
 # Running Commands
 
 The health screening bot allows commands to be run anywhere, **including in bot DMs**. **_Bot owners cannot access any

@@ -1,4 +1,3 @@
-***NOTE: THIS WEBSITE IS NO LONGER MAINTAINED AND IS MOST LIKELY OUT OF DATA. STAY UP-TO-DATE AT https://healthscreening.pokestarfan.ga/.***
 # How the Bot Works
 
 The bot will visit the health screening website, complete the form, and take a screenshot of the final product.

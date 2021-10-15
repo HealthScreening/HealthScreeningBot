@@ -1,4 +1,3 @@
-***NOTE: THIS WEBSITE IS NO LONGER MAINTAINED AND IS MOST LIKELY OUT OF DATA. STAY UP-TO-DATE AT https://healthscreening.pokestarfan.ga/.***
 # Commands
 
 * [`/delete_auto`](commands/delete-auto.md)
