@@ -1,7 +1,3 @@
----
-disqus: healthscreeningbot
----
-
 # Commands
 
 * [`/delete_auto`](delete-auto.md)
