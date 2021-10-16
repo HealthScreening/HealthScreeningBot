@@ -13,7 +13,6 @@ theme:
   features:
     - navigation.instant
     - navigation.tabs
-    - toc.integrate
     - search.suggest
     - search.share
     - navigation.indexes
@@ -42,5 +41,4 @@ extra:
       link: https://github.com/PythonCoderAS/HealthScreeningBot
   disqus: "healthscreeningbot"
 markdown_extensions:
-  - meta
   - admonition
