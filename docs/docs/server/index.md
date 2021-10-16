@@ -6,4 +6,5 @@ the bot until Discord unquarantines the bot.
 # Go to...
 
 * [Server Rules](rules.md)
+* [Server Roles](roles)
 * [Server Milestones](milestones.md)
