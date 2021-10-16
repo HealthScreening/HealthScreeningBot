@@ -2,7 +2,8 @@
 
 The server contains roles for the school that you attend, and they can be assigned yourself.
 
-!!! note You can only have one school role at a time.
+!!! note 
+    You can only have one school role at a time.
 
 # Getting the List of School Roles
 
@@ -12,7 +13,12 @@ You can get the list of school roles by using `?ranks` in #trial-zone.
 
 You can apply a school role by using `?rank <name>` in #trial-zone, where `<name>` is the name of the role.
 
-!!! warning Spaces and capitalization do matter.
+!!! warning 
+    Spaces and capitalization do matter.
+
+# Adding a School Role
+
+If a school role does not exist, please make a suggestion for it in the [suggestions section](../suggestions.md).
 
 # School Role List
 
