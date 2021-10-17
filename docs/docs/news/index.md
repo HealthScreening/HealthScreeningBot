@@ -6,7 +6,6 @@ View the archive [here](archives.md).
 
 # Featured News Article
 
-> Therefore, starting October 15, I am going to migrate all of the data from the wiki back into this site. At the end of
-> the migration, the server will be shut down and any URLs pointing to the wiki will cease to work.
+> I am happy to announce that today I have released a **queue system** for the health screening bot! The queue works like this: only 4 screenings can run at a time, and any additional screenings will require one of those 4 slots to be freed up. If your screening gets sent to the queue, you will be notified. Auto screenings will now be done 4 at a time in order to improve speed.
 
-– [Migration From MediaWiki Back to GitHub Pages](2021/10/15/migration.md) (10/15/2021)
+– [New Queue System](2021/10/15/queue-system.md) (10/17/2021)

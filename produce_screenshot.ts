@@ -1,13 +1,13 @@
 import * as puppeteer from 'puppeteer';
-import { Browser } from 'puppeteer';
-import { Semaphore } from 'async-mutex';
-import { CommandInteraction, User } from 'discord.js';
+import {Browser} from 'puppeteer';
+import {Semaphore} from 'async-mutex';
+import {CommandInteraction, User} from 'discord.js';
 
-export let browser: Browser | null  = null;
+export let browser: Browser | null = null;
 let currentlyWaiting = 0;
 const semaphore = new Semaphore(4)
 
-export enum GenerateScreenshotSendableTypeType{
+export enum GenerateScreenshotSendableTypeType {
     interaction,
     user
 }
@@ -29,7 +29,7 @@ export interface GenerateScreenshotParams {
 
 export async function generateScreenshot(options: GenerateScreenshotParams) {
     let didWaitInQueue = false;
-    if (semaphore.isLocked()){
+    if (semaphore.isLocked()) {
         currentlyWaiting++;
         const message = `The bot is very busy, so you have been placed into a queue. You are #${currentlyWaiting} in queue.`
         switch (options.sendable.type) {
@@ -42,12 +42,12 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
         }
         didWaitInQueue = true;
     } else {
-        if (options.sendable.type === GenerateScreenshotSendableTypeType.interaction){
+        if (options.sendable.type === GenerateScreenshotSendableTypeType.interaction) {
             await options.sendable.interaction.deferReply();
         }
     }
     await semaphore.runExclusive(async () => {
-        if (browser === null){
+        if (browser === null) {
             browser = await puppeteer.launch({headless: true, executablePath: 'chromium-browser'})
         }
 
@@ -104,7 +104,7 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
                     "content": message,
                     files: [screenshot]
                 }
-                if (didWaitInQueue){
+                if (didWaitInQueue) {
                     await options.sendable.interaction.followUp(data)
                 } else {
                     await options.sendable.interaction.editReply(data)
