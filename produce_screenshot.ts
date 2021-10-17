@@ -53,7 +53,7 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
 
         const page = await browser.newPage();
         // await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36');
-        await page.emulate(puppeteer.devices[options.deviceName])
+        await page.emulate(puppeteer.devices[options.deviceName || "iPhone 11"])
         await page.goto('https://healthscreening.schools.nyc/?type=G');
         await page.waitForSelector('#btnDailyScreeningSubmit > button', {visible: true})
 
