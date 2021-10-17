@@ -1,7 +1,7 @@
 import {SlashCommandBuilder} from "@discordjs/builders";
 import {CommandInteraction, MessageAttachment} from "discord.js";
 
-import {generateScreenshot as produceScreenshot} from "../produce_screenshot"
+import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "../produce_screenshot"
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -31,14 +31,6 @@ module.exports = {
             return await interaction.reply("Invalid email! Please enter a valid email.")
         }
         const isVaxxed = interaction.options.getBoolean("vaccinated")
-        await interaction.deferReply()
-        const buffer = await produceScreenshot(firstName, lastName, email, isVaxxed)
-        const attachment = new MessageAttachment(buffer, "screenshot.png")
-        const message = `<@${interaction.user.id}>, here's your health screening:`
-        // console.debug(`Sending message: ${message}`)
-        await interaction.editReply({
-            "content": message,
-            files: [attachment]
-        });
+        await produceScreenshot({firstName : firstName, lastName : lastName, email : email, isVaxxed : isVaxxed, sendable: {type: GenerateScreenshotSendableTypeType.interaction, interaction}})
     },
 };

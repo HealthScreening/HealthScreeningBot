@@ -1,5 +1,13 @@
 {
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "es5",
+      "scripthost",
+      "es2018.asynciterable"
+    ]
+  }
 }

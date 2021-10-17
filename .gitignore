@@ -111,3 +111,4 @@ data.db*
 *.png
 *.jpg
 .idea/
+*.js

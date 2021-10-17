@@ -1,9 +1,9 @@
 import {SlashCommandBuilder} from "@discordjs/builders";
-import {CommandInteraction, MessageAttachment} from "discord.js";
+import {CommandInteraction} from "discord.js";
 
 import {Config} from "../orm"
 
-import {generateScreenshot as produceScreenshot} from "../produce_screenshot"
+import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "../produce_screenshot"
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -14,15 +14,7 @@ module.exports = {
         if (item === null) {
             return await interaction.reply({content: "You do not have any auto information stored! Use `/set_auto` to set some information.", ephemeral: true})
         }
-        await interaction.deferReply()
         // @ts-ignore
-        const screenshot = await produceScreenshot(item.firstName, item.lastName, item.email, item.vaccinated);
-        const attachment = new MessageAttachment(screenshot, "screenshot.png")
-        const message = `<@${interaction.user.id}>, here's your health screening:`
-        // console.debug(`Sending message: ${message}`)
-        await interaction.editReply({
-            "content": message,
-            files: [attachment]
-        });
+        await produceScreenshot({firstName : item.firstName, lastName : item.lastName, email : item.email, isVaxxed : item.vaccinated, sendable: {type: GenerateScreenshotSendableTypeType.interaction, interaction}});
     },
 };

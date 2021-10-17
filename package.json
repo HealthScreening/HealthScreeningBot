@@ -3,6 +3,7 @@
     "@discordjs/builders": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",
     "@typeit/discord": "^5.0.13",
+    "async-mutex": "^0.3.2",
     "discord-api-types": "^0.22.0",
     "discord.js": "^13.1.0",
     "luxon": "^2.0.2",
