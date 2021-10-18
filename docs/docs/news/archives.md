@@ -6,6 +6,10 @@ This page contains a list of all news articles, reverse sorted by time. This mea
 
 # 2021
 ## 10
+### 17
+* [Cooldowns](2021/10/17/cooldown.md)
+* [New Queue System](2021/10/17/queue-system.md)
+* [Trial Zone Nuke](2021/10/17/nuke-trial-zone.md)
 ### 15
 * [800 People Registered](2021/10/15/800-people-registered.md)
 * [Bot Down](2021/10/15/bot-down-early-morning.md)

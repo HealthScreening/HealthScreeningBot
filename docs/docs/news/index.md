@@ -10,6 +10,10 @@ View the archive [here](archives.md).
 
 – [New Queue System](2021/10/17/queue-system.md) (10/17/2021)
 
-> Every school night and Sunday, the channel #trial-zone **will be cleaned** in order to better protect user privacy. This will likely occur somewhere around 10 PM. 
+> Every school night and Sunday, the channel #trial-zone **will be cleaned** in order to better protect user privacy. This will likely occur somewhere around 10 PM.
 
 – [Trial Zone Nuke](2021/10/17/nuke-trial-zone.md) (10/17/2021)
+
+> I have implemented cooldowns to the [`/generate_once`](../commands/generate-once.md) and [`/generate_auto`](../commands/generate-auto.md) commands in order to curb potential abuse of the bot.
+
+– [Cooldowns](2021/10/17/cooldown.md) (10/17/2021)
