@@ -32,13 +32,17 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
     if (semaphore.isLocked()) {
         currentlyWaiting++;
         const message = `The bot is very busy, so you have been placed into a queue. You are #${currentlyWaiting} in queue.`
-        switch (options.sendable.type) {
-            case GenerateScreenshotSendableTypeType.interaction:
-                await options.sendable.interaction.reply(message);
-                break;
-            case GenerateScreenshotSendableTypeType.user:
-                await options.sendable.user.send(message);
-                break;
+        try {
+            switch (options.sendable.type) {
+                case GenerateScreenshotSendableTypeType.interaction:
+                    await options.sendable.interaction.reply(message);
+                    break;
+                case GenerateScreenshotSendableTypeType.user:
+                    await options.sendable.user.send(message);
+                    break;
+            }
+        } catch (e) {
+            console.error(e)
         }
         didWaitInQueue = true;
     } else {
