@@ -3,6 +3,8 @@ import {CommandInteraction, MessageAttachment} from "discord.js";
 
 import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "../produce_screenshot"
 
+const usedRecently: Set<string> = new Set();
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('generate_once')
@@ -31,6 +33,6 @@ module.exports = {
             return await interaction.reply("Invalid email! Please enter a valid email.")
         }
         const isVaxxed = interaction.options.getBoolean("vaccinated")
-        await produceScreenshot({firstName : firstName, lastName : lastName, email : email, isVaxxed : isVaxxed, sendable: {type: GenerateScreenshotSendableTypeType.interaction, interaction}})
+        await produceScreenshot({firstName : firstName, lastName : lastName, email : email, isVaxxed : isVaxxed, sendable: {type: GenerateScreenshotSendableTypeType.interaction, interaction}, cooldownSet: {set: usedRecently, item: interaction.user.id}})
     },
 };

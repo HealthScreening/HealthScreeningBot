@@ -18,6 +18,11 @@ export interface GenerateScreenshotSendableType {
     user?: User
 }
 
+export interface GenerateScreenshotCooldownSet<T> {
+    set: Set<T>
+    item: T
+}
+
 export interface GenerateScreenshotParams {
     sendable: GenerateScreenshotSendableType,
     firstName: string;
@@ -25,10 +30,26 @@ export interface GenerateScreenshotParams {
     email: string;
     isVaxxed?: boolean;
     deviceName?: string;
+    cooldownSet?: GenerateScreenshotCooldownSet<string>
 }
 
 export async function generateScreenshot(options: GenerateScreenshotParams) {
     let didWaitInQueue = false;
+    if (options.cooldownSet) {
+        if (options.cooldownSet.set.has(options.cooldownSet.item)) {
+            const message = "You are on cooldown! Try again in a minute."
+            switch (options.sendable.type) {
+                case GenerateScreenshotSendableTypeType.interaction:
+                    await options.sendable.interaction.reply(message);
+                    break;
+                case GenerateScreenshotSendableTypeType.user:
+                    await options.sendable.user.send(message);
+                    break;
+            }
+        } else {
+            options.cooldownSet.set.add(options.cooldownSet.item);
+        }
+    }
     if (semaphore.isLocked()) {
         currentlyWaiting++;
         const message = `The bot is very busy, so you have been placed into a queue. You are #${currentlyWaiting} in queue.`
@@ -51,6 +72,12 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
         }
     }
     await semaphore.runExclusive(async () => {
+        if (options.cooldownSet) {
+            setTimeout(() => {
+                options.cooldownSet.set.delete(options.cooldownSet.item)
+            }, 60 * 1000);
+        }
+
         if (browser === null) {
             browser = await puppeteer.launch({headless: true, executablePath: 'chromium-browser'})
         }
