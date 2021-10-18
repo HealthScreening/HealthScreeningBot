@@ -21,8 +21,8 @@ It has to be specified. It can be any string.
 
 This is the email of the person whose name will be on the screening. It
 has to be specified. It can be any string. In addition, it also has to
-be a full email in the form of aaa@bbb.ccc, where \<a> is the part
-before the @ symbol, and the \<b> and \<c> parts are part of the website
+be a full email in the form of aaa@bbb.ccc, where `<a>` is the part
+before the @ symbol, and the `<b>` and `<c>` parts are part of the website
 that the email is under.
 
 # Vaccinated
