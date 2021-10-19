@@ -6,6 +6,8 @@ This page contains a list of all news articles, reverse sorted by time. This mea
 
 # 2021
 ## 10
+### 18
+* [Bugfixes For Today](2021/10/18/bugfixes.md)
 ### 17
 * [Cooldowns](2021/10/17/cooldown.md)
 * [New Queue System](2021/10/17/queue-system.md)

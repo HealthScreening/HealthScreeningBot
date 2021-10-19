@@ -4,8 +4,8 @@ import {Semaphore} from 'async-mutex';
 import {CommandInteraction, User} from 'discord.js';
 
 export let browser: Browser | null = null;
-let currentlyWaiting = 0;
-const semaphore = new Semaphore(4)
+export let currentlyWaiting = 0;
+export const semaphore = new Semaphore(4)
 
 export enum GenerateScreenshotSendableTypeType {
     interaction,
@@ -77,7 +77,9 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
                 options.cooldownSet.set.delete(options.cooldownSet.item)
             }, 60 * 1000);
         }
-
+        if (didWaitInQueue){
+            currentlyWaiting = currentlyWaiting > 0 ? currentlyWaiting - 1:  0
+        }
         if (browser === null) {
             browser = await puppeteer.launch({headless: true, executablePath: 'chromium-browser'})
         }

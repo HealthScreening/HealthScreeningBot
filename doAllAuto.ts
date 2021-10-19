@@ -1,7 +1,11 @@
 import {Client, User} from "discord.js"
 import {Config} from "./orm"
 
-import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "./produce_screenshot"
+import {
+    generateScreenshot as produceScreenshot,
+    GenerateScreenshotSendableTypeType,
+    semaphore
+} from "./produce_screenshot"
 
 async function actOnItem(client, item, manual){
     try {
@@ -21,12 +25,20 @@ async function actOnItem(client, item, manual){
     }
 }
 
+export function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
 export async function doAllAuto(client: Client, manual: boolean = false) {
     const items = await Config.findAll()
     let toDo = []
     for (const item of items) {
         toDo.push(item)
-        if (toDo.length === 4){
+        if (toDo.length === 3){
+            while (semaphore.isLocked()){
+                await sleep(1000);
+            }
             await Promise.all(toDo.map((value => actOnItem(client, value, manual))))
             toDo = []
         }
