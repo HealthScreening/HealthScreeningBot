@@ -35,7 +35,7 @@ export async function doAllAuto(client: Client, manual: boolean = false) {
     let toDo = []
     for (const item of items) {
         toDo.push(item)
-        if (toDo.length === 3){
+        if (toDo.length === 1){
             while (semaphore.isLocked()){
                 await sleep(1000);
             }
