@@ -1,3 +1,6 @@
+!!! warning
+    The site has moved to http://pokestarfan.ga/. This site will no longer be updated.
+
 # Vaccinated:False Broken
 
 Using the argument `vaccinated: false` is broken.

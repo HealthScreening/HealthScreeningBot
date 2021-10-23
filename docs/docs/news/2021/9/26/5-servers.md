@@ -1,3 +1,6 @@
+!!! warning
+    The site has moved to http://pokestarfan.ga/. This site will no longer be updated.
+
 # 5 Servers Using Bot
 
 Today we have hit 5 servers using the "Auto Health Screening" bot.

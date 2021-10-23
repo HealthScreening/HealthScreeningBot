@@ -1,3 +1,6 @@
+!!! warning
+    The site has moved to http://pokestarfan.ga/. This site will no longer be updated.
+
 # Health Screening Bot
 
 So you know the [health screening](https://healthscreening.schools.nyc/) that you have to complete every day in order to

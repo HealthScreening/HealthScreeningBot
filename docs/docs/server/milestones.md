@@ -1,3 +1,6 @@
+!!! warning
+    The site has moved to http://pokestarfan.ga/. This site will no longer be updated.
+
 # Server Milestones
 
 This page contains all the milestones achieved in the server. It is a web representation of #milestones.

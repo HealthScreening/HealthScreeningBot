@@ -1,3 +1,6 @@
+!!! warning
+    The site has moved to http://pokestarfan.ga/. This site will no longer be updated.
+
 # School Roles
 
 The server contains roles for the school that you attend, and they can be assigned yourself.

@@ -1,3 +1,6 @@
+!!! warning
+    The site has moved to http://pokestarfan.ga/. This site will no longer be updated.
+
 # /set_auto
 
 The `/set_auto` command is the command that stores your information

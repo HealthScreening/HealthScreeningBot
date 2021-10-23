@@ -1,3 +1,6 @@
+!!! warning
+    The site has moved to http://pokestarfan.ga/. This site will no longer be updated.
+
 # New Queue System
 
 I am happy to announce that today I have released a **queue system** for the health screening bot! This is designed to

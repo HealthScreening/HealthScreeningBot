@@ -1,3 +1,6 @@
+!!! warning
+    The site has moved to http://pokestarfan.ga/. This site will no longer be updated.
+
 # Running Commands
 
 The health screening bot allows commands to be run anywhere, **including in bot DMs**. **_Bot owners cannot access any

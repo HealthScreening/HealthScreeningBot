@@ -1,3 +1,6 @@
+!!! warning
+    The site has moved to http://pokestarfan.ga/. This site will no longer be updated.
+
 # Cooldowns
 
 I have implemented cooldowns to the [`/generate_once`](../../../../commands/generate-once.md)

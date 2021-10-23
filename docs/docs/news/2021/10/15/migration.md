@@ -1,3 +1,6 @@
+!!! warning
+    The site has moved to http://pokestarfan.ga/. This site will no longer be updated.
+
 # Migration From MediaWiki Back to GitHub Pages
 
 A week ago, I decided to migrate from GitHub pages to MediaWiki, citing the fact that it would be easier to edit the

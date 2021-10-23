@@ -1,3 +1,6 @@
+!!! warning
+    The site has moved to http://pokestarfan.ga/. This site will no longer be updated.
+
 # Setup Auto Screenings
 
 Once you have determined [where to run your commands](command-execution-space.md), setting up the bot is very simple.

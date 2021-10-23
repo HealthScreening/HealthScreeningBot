@@ -1,3 +1,6 @@
+!!! warning
+    The site has moved to http://pokestarfan.ga/. This site will no longer be updated.
+
 # News
 
 This section of the site contains "news" pages that detail new happenings with the bot.

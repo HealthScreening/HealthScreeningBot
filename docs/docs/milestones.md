@@ -1,3 +1,6 @@
+!!! warning
+    The site has moved to http://pokestarfan.ga/. This site will no longer be updated.
+
 # Bot Milestones
 
 This page contains milestones of the bot. All data was collected via the `/stats` command that coems with the bot.

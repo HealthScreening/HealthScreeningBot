@@ -1,3 +1,6 @@
+!!! warning
+    The site has moved to http://pokestarfan.ga/. This site will no longer be updated.
+
 # How the Bot Works
 
 The bot will visit the health screening website, complete the form, and take a screenshot of the final product.

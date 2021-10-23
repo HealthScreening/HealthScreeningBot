@@ -1,3 +1,6 @@
+!!! warning
+    The site has moved to http://pokestarfan.ga/. This site will no longer be updated.
+
 # Auto Health Screening Server
 
 This section of the site contains all data related to the Auto Health Screening server. This remains the only way to use

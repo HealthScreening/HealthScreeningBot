@@ -1,3 +1,6 @@
+!!! warning
+    The site has moved to http://pokestarfan.ga/. This site will no longer be updated.
+
 # Discord Quarantined the Bot
 
 Due to the massive influx of user signups, the Auto Health Screening bot has been blacklisted as spam. I have opened an

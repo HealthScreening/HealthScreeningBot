@@ -1,3 +1,6 @@
+!!! warning
+    The site has moved to http://pokestarfan.ga/. This site will no longer be updated.
+
 # School Admin Role
 
 A @School Admin is someone who will coordinate the health screenings for their schools. A primary responsibility is
