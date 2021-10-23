@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: 3.x
+          python-version: 3.9
       - run: pip install pipenv
       - run: pipenv install
         working-directory: ./docs 
