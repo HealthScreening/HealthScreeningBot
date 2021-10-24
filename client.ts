@@ -141,6 +141,7 @@ client.once('ready', () => {
 const GENERATE_AUTO_CHOICES = ["hsb/generateauto", "hsb/generate-auto", "hsb/generate_auto"]
 
 client.on('messageCreate', async (message: Message) => {
+    try {
     if (message.content && message.content.startsWith("hsb/")) {
         if (GENERATE_AUTO_CHOICES.includes(message.content.replace(/\s+/g, ""))) {
             const item = await Config.findOne({where: {userId: message.author.id}})
@@ -165,6 +166,9 @@ client.on('messageCreate', async (message: Message) => {
                 cooldownSet: {set: usedRecently, item: message.author.id}
             });
         }
+    }
+    } catch (e) {
+        console.error(e)
     }
 })
 
