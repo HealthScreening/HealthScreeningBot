@@ -15,6 +15,7 @@ myIntents.add(Intents.FLAGS.DIRECT_MESSAGES)
 
 const client = new Client({
     intents: myIntents,
+    partials: ['CHANNEL'],
 });
 
 const usedRecently: Set<string> = new Set();
@@ -144,7 +145,7 @@ const GENERATE_AUTO_CHOICES = ["hsb/generateauto", "hsb/generate-auto", "hsb/gen
 client.on('messageCreate', async (message: Message) => {
     try {
         if (message.content && message.content.startsWith("hsb/")) {
-            if (GENERATE_AUTO_CHOICES.includes(message.content.replace(/\s+/g, ""))) {
+            if (GENERATE_AUTO_CHOICES.includes(message.content.toLowerCase().replace(/\s+/g, ""))) {
                 const item = await Config.findOne({where: {userId: message.author.id}})
                 if (item === null) {
                     await message.channel.send({
