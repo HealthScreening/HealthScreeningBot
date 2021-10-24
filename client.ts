@@ -151,6 +151,7 @@ client.on('message', async (message: Message) => {
                 })
                 return
             }
+            await message.channel.sendTyping()
             await produceScreenshot({
                 // @ts-ignore
                 firstName: item.firstName,
