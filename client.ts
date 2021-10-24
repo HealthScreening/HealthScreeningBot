@@ -11,6 +11,8 @@ const fs = require('fs');
 const myIntents = new Intents();
 myIntents.add(Intents.FLAGS.GUILDS)
 myIntents.add(Intents.FLAGS.GUILD_MEMBERS)
+myIntents.add(Intents.FLAGS.GUILD_MESSAGES)
+myIntents.add(Intents.FLAGS.DIRECT_MESSAGES)
 
 const client = new Client({
     intents: myIntents,
