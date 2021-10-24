@@ -51,6 +51,7 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
                     await options.sendable.message.reply({content: message, failIfNotExists: true})
                     break;
             }
+            return
         } else {
             options.cooldownSet.set.add(options.cooldownSet.item);
         }
