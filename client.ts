@@ -140,7 +140,7 @@ client.once('ready', () => {
 
 const GENERATE_AUTO_CHOICES = ["hsb/generateauto", "hsb/generate-auto", "hsb/generate_auto"]
 
-client.on('message', async (message: Message) => {
+client.on('messageCreate', async (message: Message) => {
     if (message.content && message.content.substring(0, 2) === "hsb/") {
         if (GENERATE_AUTO_CHOICES.includes(message.content.replace(/\s+/g, ""))) {
             const item = await Config.findOne({where: {userId: message.author.id}})
