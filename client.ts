@@ -1,7 +1,9 @@
-import {Client, Collection, DiscordAPIError, GuildMember, Intents} from "discord.js";
+import {Client, Collection, DiscordAPIError, GuildMember, Intents, Message} from "discord.js";
 import {DateTime} from "luxon";
+import { usedRecently } from "./commands/generateAuto";
 import {doAllAuto} from "./doAllAuto"
 import {Config, init} from "./orm"
+import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "./produce_screenshot";
 
 const {discord} = require("./config.json");
 const fs = require('fs');
@@ -108,13 +110,13 @@ async function assignAutoSchoolRole() {
                     // @ts-ignore
                     member = await guild.members.fetch(item.userId)
                 } catch (e) {
-                    if (e instanceof DiscordAPIError){
+                    if (e instanceof DiscordAPIError) {
                         continue
                     }
                     console.error(e)
                 }
                 try {
-                await member.roles.add(roleId, "Autorole on email in storage")
+                    await member.roles.add(roleId, "Autorole on email in storage")
                 } catch (e) {
                     console.error(e)
                 }
@@ -133,6 +135,35 @@ client.once('ready', () => {
         console.error(e)
     }
 });
+
+const GENERATE_AUTO_CHOICES = ["hsb/generateauto", "hsb/generate-auto", "hsb/generate_auto"]
+
+client.on('message', async (message: Message) => {
+    if (message.content && message.content.substring(0, 2) === "hsb/") {
+        if (GENERATE_AUTO_CHOICES.includes(message.content.replace(/\s+/g, ""))) {
+            const item = await Config.findOne({where: {userId: message.author.id}})
+            if (item === null) {
+                await message.channel.send({
+                    content: message.author.toString() + ", you do not have any auto information stored! Use `/set_auto` to set some information.",
+                    reply: {messageReference: message, failIfNotExists: false}
+                })
+                return
+            }
+            await produceScreenshot({
+                // @ts-ignore
+                firstName: item.firstName,
+                // @ts-ignore
+                lastName: item.lastName,
+                // @ts-ignore
+                email: item.email,
+                // @ts-ignore
+                isVaxxed: item.vaccinated,
+                sendable: {type: GenerateScreenshotSendableTypeType.message, message},
+                cooldownSet: {set: usedRecently, item: message.author.id}
+            });
+        }
+    }
+})
 
 // Login to Discord with your client's token
 init().then(function () {

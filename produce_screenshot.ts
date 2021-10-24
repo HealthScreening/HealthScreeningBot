@@ -1,7 +1,7 @@
 import * as puppeteer from 'puppeteer';
 import {Browser} from 'puppeteer';
 import {Semaphore} from 'async-mutex';
-import {CommandInteraction, User} from 'discord.js';
+import {CommandInteraction, Message, User} from 'discord.js';
 
 export let browser: Browser | null = null;
 export let currentlyWaiting = 0;
@@ -9,13 +9,15 @@ export const semaphore = new Semaphore(4)
 
 export enum GenerateScreenshotSendableTypeType {
     interaction,
-    user
+    user,
+    message
 }
 
 export interface GenerateScreenshotSendableType {
     type: GenerateScreenshotSendableTypeType
     interaction?: CommandInteraction
     user?: User
+    message?: Message
 }
 
 export interface GenerateScreenshotCooldownSet<T> {
@@ -45,6 +47,9 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
                 case GenerateScreenshotSendableTypeType.user:
                     await options.sendable.user.send(message);
                     break;
+                case GenerateScreenshotSendableTypeType.message:
+                    await options.sendable.message.reply({content: message, failIfNotExists: true})
+                    break;
             }
         } else {
             options.cooldownSet.set.add(options.cooldownSet.item);
@@ -60,6 +65,9 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
                     break;
                 case GenerateScreenshotSendableTypeType.user:
                     await options.sendable.user.send(message);
+                    break;
+                case GenerateScreenshotSendableTypeType.message:
+                    await options.sendable.message.reply({content: message, failIfNotExists: true})
                     break;
             }
         } catch (e) {
@@ -150,6 +158,15 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
                     files: [screenshot]
                 }
                 await options.sendable.user.send(data)
+                break;
+            case GenerateScreenshotSendableTypeType.message:
+                message = `<@${options.sendable.message.author.id}>, here's your health screening:`
+                data = {
+                    "content": message,
+                    files: [screenshot],
+                    failIfNotExists: false
+                }
+                await options.sendable.message.reply(data)
                 break;
         }
     })
