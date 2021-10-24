@@ -5,7 +5,7 @@ import {Config} from "../orm"
 
 import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "../produce_screenshot"
 
-export const usedRecently: Set<string> = new Set();
+const usedRecently: Set<string> = new Set();
 
 module.exports = {
     data: new SlashCommandBuilder()

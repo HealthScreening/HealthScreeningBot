@@ -1,6 +1,5 @@
 import {Client, Collection, DiscordAPIError, GuildMember, Intents, Message} from "discord.js";
 import {DateTime} from "luxon";
-import {usedRecently} from "./commands/generateAuto";
 import {doAllAuto} from "./doAllAuto"
 import {Config, init} from "./orm"
 import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "./produce_screenshot";
@@ -17,6 +16,8 @@ myIntents.add(Intents.FLAGS.DIRECT_MESSAGES)
 const client = new Client({
     intents: myIntents,
 });
+
+const usedRecently: Set<string> = new Set();
 
 client["commands"] = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
