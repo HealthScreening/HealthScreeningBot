@@ -26,9 +26,34 @@ export const Config = sequelize.define('Config', {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: true
+    },
+    timeHours: {
+        type: DataTypes.SMALLINT,
+        allowNull: false,
+        defaultValue: 5
+    },
+    timeMinutes: {
+        type: DataTypes.SMALLINT,
+        allowNull: false,
+        defaultValue: 40
     }
 });
 
-export async function init(){
+export const AdditionalConfig = sequelize.define('AdditionalConfig', {
+        // Model attributes are defined here
+        userId: {
+            type: DataTypes.STRING,
+            primaryKey: true,
+            allowNull: false
+        },
+        device: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: "iPhone 11"
+        },
+    }
+)
+
+export async function init() {
     await sequelize.sync({alter: true})
 }

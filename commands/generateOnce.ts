@@ -2,6 +2,7 @@ import {SlashCommandBuilder} from "@discordjs/builders";
 import {CommandInteraction} from "discord.js";
 
 import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "../produce_screenshot"
+import {AdditionalConfig} from "../orm";
 
 const usedRecently: Set<string> = new Set();
 
@@ -33,13 +34,21 @@ module.exports = {
             return await interaction.reply("Invalid email! Please enter a valid email.")
         }
         const isVaxxed = interaction.options.getBoolean("vaccinated")
+        const additionalItem = await AdditionalConfig.findOne({where: {userId: interaction.user.id}});
+        let deviceName = undefined;
+        // @ts-ignore
+        if (additionalItem && additionalItem.device){
+            // @ts-ignore
+            deviceName = additionalItem.device;
+        }
         await produceScreenshot({
             firstName: firstName,
             lastName: lastName,
             email: email,
             isVaxxed: isVaxxed,
             sendable: {type: GenerateScreenshotSendableTypeType.interaction, interaction},
-            cooldownSet: {set: usedRecently, item: interaction.user.id}
+            cooldownSet: {set: usedRecently, item: interaction.user.id},
+            deviceName: deviceName
         })
     },
 };

@@ -26,7 +26,7 @@ export interface GenerateScreenshotCooldownSet<T> {
 }
 
 export interface GenerateScreenshotParams {
-    sendable: GenerateScreenshotSendableType,
+    sendable?: GenerateScreenshotSendableType,
     firstName: string;
     lastName: string;
     email: string;

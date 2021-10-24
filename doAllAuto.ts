@@ -6,28 +6,28 @@ import {
     GenerateScreenshotSendableTypeType,
     semaphore
 } from "./produce_screenshot"
+import {getScreenshotData, GetScreenshotDataReturnType} from "./getScreenshotData";
 
 async function actOnItem(client, item, manual) {
     try {
         // @ts-ignore
-        const user: User = await client.users.fetch(item.userId);
+        const user: User = await client.users.fetch(item);
         if (manual) {
             await user.send("**The auto health screening has been *manually triggered* by the bot owner, most likely for testing.**")
         }
-        try {
-            return await produceScreenshot({
-                // @ts-ignore
-                firstName: item.firstName,
-                // @ts-ignore
-                lastName: item.lastName,
-                // @ts-ignore
-                email: item.email,
-                // @ts-ignore
-                isVaxxed: item.vaccinated,
-                sendable: {type: GenerateScreenshotSendableTypeType.user, user: user}
-            });
-        } catch (e) {
-            await user.send("The bot had an error while trying to process your health screening. You most likely specified invalid data. Please generate a new health screening using `/generate_once`.")
+        let data = await getScreenshotData(item.id);
+        switch (data.type) {
+            case GetScreenshotDataReturnType.success:
+                const trueData = data.data;
+                Object.assign(trueData, {
+                    sendable: {type: GenerateScreenshotSendableTypeType.user, user: user}
+                })
+                try {
+                    return await produceScreenshot(trueData);
+                } catch (e) {
+                    await user.send("The bot had an error while trying to process your health screening. You most likely specified invalid data. Please generate a new health screening using `/generate_once`.")
+                }
+                return;
         }
     } catch (e) {
         console.error(e)
@@ -43,7 +43,8 @@ export async function doAllAuto(client: Client, manual: boolean = false) {
     const items = await Config.findAll()
     let toDo = []
     for (const item of items) {
-        toDo.push(item)
+        // @ts-ignore
+        toDo.push(item.userId)
         if (toDo.length === 1) {
             while (semaphore.isLocked()) {
                 await sleep(1000);

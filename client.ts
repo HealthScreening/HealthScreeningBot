@@ -3,6 +3,7 @@ import {DateTime} from "luxon";
 import {doAllAuto} from "./doAllAuto"
 import {Config, init} from "./orm"
 import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "./produce_screenshot";
+import {getScreenshotData, GetScreenshotDataReturnType} from "./getScreenshotData";
 
 const {discord} = require("./config.json");
 const fs = require('fs');
@@ -146,27 +147,24 @@ client.on('messageCreate', async (message: Message) => {
     try {
         if (message.content && message.content.startsWith("hsb/")) {
             if (GENERATE_AUTO_CHOICES.includes(message.content.toLowerCase().replace(/\s+/g, ""))) {
-                const item = await Config.findOne({where: {userId: message.author.id}})
-                if (item === null) {
-                    await message.channel.send({
-                        content: message.author.toString() + ", you do not have any auto information stored! Use `/set_auto` to set some information.",
-                        reply: {messageReference: message, failIfNotExists: false}
-                    })
-                    return
+                let data = await getScreenshotData(message.author.id);
+                switch (data.type) {
+                    case GetScreenshotDataReturnType.success:
+                        const trueData = data.data;
+                        Object.assign(trueData, {
+                            sendable: {type: GenerateScreenshotSendableTypeType.message, message},
+                            cooldownSet: {set: usedRecently, item: message.author.id}
+                        })
+                        await message.channel.sendTyping()
+                        await produceScreenshot(trueData);
+                        return;
+                    case GetScreenshotDataReturnType.missingConfig:
+                        await message.channel.send({
+                            content: message.author.toString() + ", you do not have any auto information stored! Use `/set_auto` to set some information.",
+                            reply: {messageReference: message, failIfNotExists: false}
+                        })
+                        return;
                 }
-                await message.channel.sendTyping()
-                await produceScreenshot({
-                    // @ts-ignore
-                    firstName: item.firstName,
-                    // @ts-ignore
-                    lastName: item.lastName,
-                    // @ts-ignore
-                    email: item.email,
-                    // @ts-ignore
-                    isVaxxed: item.vaccinated,
-                    sendable: {type: GenerateScreenshotSendableTypeType.message, message},
-                    cooldownSet: {set: usedRecently, item: message.author.id}
-                });
             }
         }
     } catch (e) {
