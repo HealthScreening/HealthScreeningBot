@@ -1,4 +1,4 @@
-import * as puppeteer from 'puppeteer';
+const puppeteer = require('puppeteer');
 import {Browser} from 'puppeteer';
 import {Semaphore} from 'async-mutex';
 import {CommandInteraction, Message, User} from 'discord.js';
@@ -32,7 +32,8 @@ export interface GenerateScreenshotParams {
     email: string;
     isVaxxed?: boolean;
     deviceName?: string;
-    cooldownSet?: GenerateScreenshotCooldownSet<string>
+    cooldownSet?: GenerateScreenshotCooldownSet<string>;
+    isAuto?: boolean;
 }
 
 export async function generateScreenshot(options: GenerateScreenshotParams) {
@@ -45,7 +46,7 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
                     await options.sendable.interaction.reply(message);
                     break;
                 case GenerateScreenshotSendableTypeType.user:
-                    await options.sendable.user.send(message);
+                    // await options.sendable.user.send(message);
                     break;
                 case GenerateScreenshotSendableTypeType.message:
                     await options.sendable.message.reply({content: message, failIfNotExists: true})
@@ -65,7 +66,7 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
                     await options.sendable.interaction.reply(message);
                     break;
                 case GenerateScreenshotSendableTypeType.user:
-                    await options.sendable.user.send(message);
+                    // await options.sendable.user.send(message);
                     break;
                 case GenerateScreenshotSendableTypeType.message:
                     await options.sendable.message.reply({content: message, failIfNotExists: true})
@@ -135,6 +136,10 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
 
         await page.waitForSelector("#guest_badges .card-body svg", {visible: true})
 
+        await page.evaluate(() => {
+            window.scrollBy(0, -10000);
+        })
+
         // @ts-ignore
         const screenshot: Buffer = await page.screenshot();
         await page.close()
@@ -158,7 +163,7 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
                     "content": message,
                     files: [screenshot]
                 }
-                await options.sendable.user.send(data)
+                // await options.sendable.user.send(data)
                 break;
             case GenerateScreenshotSendableTypeType.message:
                 message = `<@${options.sendable.message.author.id}>, here's your health screening:`
