@@ -1,6 +1,8 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, MessageAttachment } from "discord.js";
 import { Config } from "../orm"
+import {getScreenshotData} from "../getScreenshotData";
+import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "../produce_screenshot";
 
 function createOrDelete(values, condition) {
     return Config
@@ -45,6 +47,14 @@ module.exports = {
         await createOrDelete({
             firstName, lastName, email, isVaxxed, userId: String(interaction.user.id)
         }, {userId: String(interaction.user.id)})
-        await interaction.reply("Updated!")
+        await interaction.reply("Updated! Check your DMs for the confirmation screening.")
+        await interaction.user.send("In order to make sure you entered the correct information, a sample screening will be generated for you. If you find any errors, use `/set_auto` again.")
+        let data = await getScreenshotData(interaction.user.id);
+        await (await interaction.user.createDM()).sendTyping()
+        const trueData = data.data;
+        Object.assign(trueData, {
+            sendable: {type: GenerateScreenshotSendableTypeType.user, user: interaction.user},
+        })
+        await produceScreenshot(trueData);
     },
 };
