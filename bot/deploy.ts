@@ -1,5 +1,5 @@
 /**
- * Documentation can be found at https://pokestarfan.ga/docs/developer-documentation/api-reference/bot/deploy-ts/.
+ * Documentation can be found at https://pokestarfan.ga/docs/developer-documentation/api-reference/deploy-ts/.
  */
 import {REST} from '@discordjs/rest';
 import {Routes} from 'discord-api-types/v9';
