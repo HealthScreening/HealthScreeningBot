@@ -62,6 +62,9 @@ jobs:
     #    and modify them (or add more) to build your code if your project
     #    uses a compiled language
 
+    - name: Install dependencies
+      run: npm ci
+
     - run: tsc -p tsconfig.json
 
     - name: Perform CodeQL Analysis
