@@ -5,7 +5,7 @@
     "async-mutex": "^0.3.2",
     "discord-api-types": "^0.24.0",
     "discord.js": "^13.3.1",
-    "luxon": "^2.0.2",
+    "luxon": "^2.1.1",
     "puppeteer": "^11.0.0",
     "sequelize": "^6.6.5",
     "sqlite3": "^5.0.2"
