@@ -5,7 +5,7 @@ import {Config, init} from "./orm"
 import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "./produce_screenshot";
 import {getScreenshotData, GetScreenshotDataReturnType} from "./getScreenshotData";
 
-const {discord} = require("./config.json");
+const {discord} = require("../config.json");
 const fs = require('fs');
 
 const myIntents = new Intents();

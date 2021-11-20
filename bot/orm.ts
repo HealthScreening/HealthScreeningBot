@@ -1,6 +1,6 @@
 import {DataTypes, Sequelize} from "sequelize"
 
-const config = require("./config.json")
+const config = require("../config.json")
 const sequelize: Sequelize = new Sequelize(config.database)
 
 export const Config = sequelize.define('Config', {
