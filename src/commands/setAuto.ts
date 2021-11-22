@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageAttachment } from "discord.js";
+import { CommandInteraction} from "discord.js";
 import { Config } from "../orm"
 import {getScreenshotData} from "../getScreenshotData";
 import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "../produce_screenshot";

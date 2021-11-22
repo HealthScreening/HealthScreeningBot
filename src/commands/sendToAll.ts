@@ -23,8 +23,8 @@ module.exports = {
             const timeToSleep = interaction.options.getInteger("time")
             await interaction.reply("Sending to all...")
             const validUserIDs = new Set()
-            for (const [guildId, guild] of interaction.client.guilds.cache) {
-                for (const [userId, user] of await guild.members.fetch()){
+            for (const [, guild] of interaction.client.guilds.cache) {
+                for (const [userId] of await guild.members.fetch()){
                     validUserIDs.add(userId);
                 }
             }

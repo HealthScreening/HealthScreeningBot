@@ -7,7 +7,7 @@
     "name": "PythonCoderAS",
     "email": "pokestarfan@pokestarfan.ga"
   },
-  "repository": "https://github.com/PythonCoderAS/HealthScreeningBot/HealthScreeningBot",
+  "repository": "https://github.com/PythonCoderAS/HealthScreeningBot",
   "scripts": {
     "dev": "vuepress dev src",
     "build": "vuepress build src"
