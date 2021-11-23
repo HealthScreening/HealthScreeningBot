@@ -4,6 +4,7 @@ import {doAllAuto} from "./doAllAuto"
 import {Config, init} from "./orm"
 import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "./produce_screenshot";
 import {getScreenshotData, GetScreenshotDataReturnType} from "./getScreenshotData";
+import * as path from "path";
 
 const {discord} = require("../config.json");
 const fs = require('fs');
@@ -22,10 +23,12 @@ const client = new Client({
 const usedRecently: Set<string> = new Set();
 
 client["commands"] = new Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+const commandPath = path.resolve(__dirname, 'commands')
+const commandFiles = fs.readdirSync(commandPath).filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
+    const command = require(path.resolve(commandPath, file));
     // Set a new item in the Collection
     // With the key as the command name and the value as the exported module
     client["commands"].set(command.data.name, command);
