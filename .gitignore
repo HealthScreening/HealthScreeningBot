@@ -112,3 +112,4 @@ data.db*
 *.jpg
 .idea/
 *.js
+.temp

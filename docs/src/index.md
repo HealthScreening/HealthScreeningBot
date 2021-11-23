@@ -1,8 +1,14 @@
 ---
 home: true
 tagline: Automate the Health Screening
-actionText: Join Server →
-actionLink: https://discord.gg/qyeDTzqJgy
+actions:
+  - text: Join Server
+    link: https://discord.gg/qyeDTzqJgy
+    type: primary
+  - text: Invite Bot
+    link: https://discord.com/oauth2/authorize?client_id=890001571004448800&scope=applications.commands%20bot
+    type: secondary
+
 features:
 - title: Simple Setup
   details: All it needs is your first name, last name, email, and vaccination status.
