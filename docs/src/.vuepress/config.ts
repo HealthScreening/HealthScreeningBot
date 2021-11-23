@@ -14,16 +14,24 @@ export default defineUserConfig<DefaultThemeOptions>({
         lastUpdated: true,
         navbar: [
             {
-                text: 'Guide',
-                link: '/guide/',
+                text: 'Quickstart',
+                link: '/quickstart/',
             },
             {
-                text: 'Config',
-                link: '/config/'
+              text: "Commands",
+              link: "/commands/"
             },
             {
-                text: 'VuePress',
-                link: 'https://v1.vuepress.vuejs.org'
+                text: "Features",
+                link: "/features/"
+            },
+            {
+                text: 'Server',
+                link: '/server/'
+            },
+            {
+                text: 'Developer Documentation',
+                link: '/dev'
             }
         ],
         sidebar: {
