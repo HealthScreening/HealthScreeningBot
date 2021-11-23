@@ -46,7 +46,7 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
                     await options.sendable.interaction.reply(message);
                     break;
                 case GenerateScreenshotSendableTypeType.user:
-                    // await options.sendable.user.send(message);
+                    await options.sendable.user.send(message);
                     break;
                 case GenerateScreenshotSendableTypeType.message:
                     await options.sendable.message.reply({content: message, failIfNotExists: true})
@@ -66,7 +66,7 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
                     await options.sendable.interaction.reply(message);
                     break;
                 case GenerateScreenshotSendableTypeType.user:
-                    // await options.sendable.user.send(message);
+                    await options.sendable.user.send(message);
                     break;
                 case GenerateScreenshotSendableTypeType.message:
                     await options.sendable.message.reply({content: message, failIfNotExists: true})
@@ -163,7 +163,7 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
                     "content": message,
                     files: [screenshot]
                 }
-                // await options.sendable.user.send(data)
+                await options.sendable.user.send(data)
                 break;
             case GenerateScreenshotSendableTypeType.message:
                 message = `<@${options.sendable.message.author.id}>, here's your health screening:`

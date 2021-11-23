@@ -64,7 +64,7 @@ export function sleep(ms) {
 
 export async function doAllAuto(client: Client, manual: boolean = false) {
     const items = await Config.findAll()
-    const batchSize = 1;
+    const batchSize = 2;
     const batches = Math.ceil(items.length / batchSize)
     let batchTimeConsumedMillis = 0;
     let batchesConsumed = 0;
