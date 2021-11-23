@@ -68,12 +68,22 @@ export async function doAllAuto(client: Client, manual: boolean = false) {
     const batches = Math.ceil(items.length / batchSize)
     let batchTimeConsumedMillis = 0;
     let batchesConsumed = 0;
+    const validUserIDs = new Set()
+    for (const [, guild] of client.guilds.cache) {
+        for (const [userId] of await guild.members.fetch()){
+            validUserIDs.add(userId);
+        }
+    }
     // @ts-ignore
     const channel: TextChannel = await ((await client.guilds.fetch("889983763994521610")).channels.fetch("902375187150934037"));
     let toDo = [], start, finish, globalStart = DateTime.local({locale: "en_US", zone: "America/New_York"}).toMillis();
     await channel.send(`Starting automatic health screening\n\nBatches: **${batches}**\nScreenings: **${items.length}**`);
     try {
     for (const item of items) {
+        // @ts-ignore
+        if (!validUserIDs.has(item.userId)){
+            continue;
+        }
         // @ts-ignore
         toDo.push(item.userId)
         if (toDo.length === batchSize) {
