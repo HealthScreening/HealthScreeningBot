@@ -64,10 +64,6 @@ export function sleep(ms) {
 
 export async function doAllAuto(client: Client, manual: boolean = false) {
     const items = await Config.findAll()
-    const batchSize = 2;
-    const batches = Math.ceil(items.length / batchSize)
-    let batchTimeConsumedMillis = 0;
-    let batchesConsumed = 0;
     const validUserIDs = new Set()
     for (const [, guild] of client.guilds.cache) {
         for (const [userId] of await guild.members.fetch()){
@@ -75,11 +71,17 @@ export async function doAllAuto(client: Client, manual: boolean = false) {
         }
     }
     // @ts-ignore
+    const validItems = items.filter(item => validUserIDs.has(item.userId))
+    const batchSize = 4;
+    const batches = Math.ceil(validItems.length / batchSize)
+    let batchTimeConsumedMillis = 0;
+    let batchesConsumed = 0;
+    // @ts-ignore
     const channel: TextChannel = await ((await client.guilds.fetch("889983763994521610")).channels.fetch("902375187150934037"));
     let toDo = [], start, finish, globalStart = DateTime.local({locale: "en_US", zone: "America/New_York"}).toMillis();
-    await channel.send(`Starting automatic health screening\n\nBatches: **${batches}**\nScreenings: **${items.length}**`);
+    await channel.send(`Starting automatic health screening\n\nBatches: **${batches}**\nScreenings: **${validItems.length}**`);
     try {
-    for (const item of items) {
+    for (const item of validItems) {
         // @ts-ignore
         if (!validUserIDs.has(item.userId)){
             continue;
@@ -109,7 +111,7 @@ export async function doAllAuto(client: Client, manual: boolean = false) {
                     zone: "America/New_York"
                 }).toSeconds() + remainingTimeLeft) // This is basically the timestamp `remainingTimeLeft` seconds into the future.
                 const completedPercent = +(((batchesConsumed / batches) * 100).toFixed(2))
-                await channel.send(`Batch ${batchesConsumed}/${batches} ${noun} [${batchesConsumed * batchSize}/${items.length} screenings] [${completedPercent}%] (took ${elapsedSeconds} seconds) [ETA: <t:${remainingTimeAsTimestamp}:T> (<t:${remainingTimeAsTimestamp}:R>)]`)
+                await channel.send(`Batch ${batchesConsumed}/${batches} ${noun} [${batchesConsumed * batchSize}/${validItems.length} screenings] [${completedPercent}%] (took ${elapsedSeconds} seconds) [ETA: <t:${remainingTimeAsTimestamp}:T> (<t:${remainingTimeAsTimestamp}:R>)]`)
             }
             toDo = []
         }
