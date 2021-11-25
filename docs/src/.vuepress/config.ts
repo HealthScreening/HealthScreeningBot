@@ -49,12 +49,16 @@ export default defineUserConfig<DefaultThemeOptions>({
             },
         ],
         sidebar: {
-            '/guide/': [
+            '/quickstart/': [
                 {
-                    text: 'Guide',
+                    text: 'Quickstart',
+                    link: "/quickstart/",
                     children: [
-                        '',
-                        'using-vue',
+                        'join-server',
+                        'invite-bot',
+                        'running-commands',
+                        'auto-screening',
+                        'configure-bot.md',
                     ]
                 }
             ],
