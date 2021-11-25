@@ -30,6 +30,6 @@ jobs:
         working-directory: docs
         run: npm ci
 
-      - name: Compile via TypeScript
+      - name: Build docs
         working-directory: docs
         run: npm run build
