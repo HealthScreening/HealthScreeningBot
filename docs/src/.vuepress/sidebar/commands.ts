@@ -27,6 +27,14 @@ const ownerCommands: SidebarItem = {
     ]
 }
 
+const messageCommands: SidebarItem = {
+    text: "Message Commands",
+    link: "message-commands",
+    children: [
+        "hsb-generate-auto"
+    ]
+}
+
 const commandsSidebar: SidebarConfigArray = [
     {
         text: "Commands",
@@ -34,6 +42,7 @@ const commandsSidebar: SidebarConfigArray = [
         children: [
             autoCommands,
             otherCommands,
+            messageCommands,
             ownerCommands
         ]
     }
