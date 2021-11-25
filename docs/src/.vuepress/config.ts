@@ -7,7 +7,8 @@ export default defineUserConfig<DefaultThemeOptions>({
     title: 'Health Screening Bot',
     description: description,
     themeConfig: {
-        editLinks: false,
+        editLink: false,
+        contributors: false,
         docsDir: 'docs',
         docsBranch: 'master',
         docsRepo: 'https://github.com/PythonCoderAS/HealthScreeningBot',
@@ -20,6 +21,10 @@ export default defineUserConfig<DefaultThemeOptions>({
             {
                 "text": "Bot",
                 children: [
+                    {
+                        text: "About",
+                        link: "/about/",
+                    },
                     {
                         text: "Commands",
                         link: "/commands/"
