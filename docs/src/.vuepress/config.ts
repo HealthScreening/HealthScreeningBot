@@ -7,10 +7,10 @@ export default defineUserConfig<DefaultThemeOptions>({
     title: 'Health Screening Bot',
     description: description,
     themeConfig: {
-        repo: 'https://github.com/PythonCoderAS/HealthScreeningBot',
         editLinks: false,
         docsDir: 'docs',
         docsBranch: 'master',
+        docsRepo: 'https://github.com/PythonCoderAS/HealthScreeningBot',
         lastUpdated: true,
         navbar: [
             {
@@ -18,21 +18,30 @@ export default defineUserConfig<DefaultThemeOptions>({
                 link: '/quickstart/',
             },
             {
-              text: "Commands",
-              link: "/commands/"
-            },
-            {
-                text: "Features",
-                link: "/features/"
+                "text": "Bot",
+                children: [
+                    {
+                        text: "Commands",
+                        link: "/commands/"
+                    },
+                    {
+                        text: "Features",
+                        link: "/features/"
+                    },
+                    {
+                        text: 'Developer Documentation',
+                        link: '/dev'
+                    },
+                    {
+                        text: 'GitHub',
+                        link: 'https://github.com/PythonCoderAS/HealthScreeningBot'
+                    }
+                ]
             },
             {
                 text: 'Server',
                 link: '/server/'
             },
-            {
-                text: 'Developer Documentation',
-                link: '/dev'
-            }
         ],
         sidebar: {
             '/guide/': [
