@@ -10,4 +10,4 @@ intermediate-level knowledge of Typescript.
 
 The bot’s dependencies are managed by the [npm package manager](https://www.npmjs.com/).
 
-The bot’s source code is hosted on the GitHub repository https://github.com/PythonCoderAS/HealthScreeningBot.
+The bot’s source code is hosted on the GitHub repository [https://github.com/PythonCoderAS/HealthScreeningBot](https://github.com/PythonCoderAS/HealthScreeningBot).
