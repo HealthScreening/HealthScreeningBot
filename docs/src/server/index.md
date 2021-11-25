@@ -1,0 +1,1 @@
+This section of the site contains information about the bot's server.
