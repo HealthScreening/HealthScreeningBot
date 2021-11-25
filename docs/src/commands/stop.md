@@ -1,6 +1,6 @@
 # /stop
 
-::: warning
+::: danger
 This is a dangerous command that will immediately stop the bot. If any screenings were in progress, they will be stopped.
 :::
 
