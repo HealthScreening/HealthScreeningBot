@@ -66,11 +66,6 @@ You are not allowed to discriminate against anyone on account of their
 
 Doing so almost guarantees an instant mute.
 
-## No Using the Bot to Fake Screenings
-
-Do not use the bot to generate fake health screenings. If you are sick and the bot sends you a completed health
-screening, disregard it. Do not lie about your vaccination status. Anyone lying to the bot will be banned from it.
-
 ## Use Commands in Correct Places
 
 Use commands inside of the trial zone only, unless you want support with the bot. In the case that your screening is not

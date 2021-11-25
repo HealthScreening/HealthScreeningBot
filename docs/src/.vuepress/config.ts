@@ -30,6 +30,10 @@ export default defineUserConfig<DefaultThemeOptions>({
                         link: "/about/",
                     },
                     {
+                      text: "Rules",
+                      link: "/bot-rules",
+                    },
+                    {
                         text: "Commands",
                         link: "/commands/"
                     },
