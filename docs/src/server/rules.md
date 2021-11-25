@@ -51,6 +51,7 @@ required to take it down.
 
 * Do not spam pings at a person, especially if they ask you to stop.
 * Do not spam commands with the sole purpose of clogging up a channel.
+* Do not spam suggestions, especially if they are being denied.
 * Do not spam the reaction roles.
 
 ### No Discrimination
