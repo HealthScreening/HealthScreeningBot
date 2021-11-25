@@ -1,7 +1,8 @@
 import {SidebarItem} from "@vuepress/theme-default/lib/shared/nav";
 
 const apiItems: string[] = [
-
+    "get-commands",
+    "register-commands"
 ]
 
 const moduleItems: string[] = [
@@ -18,7 +19,7 @@ const apiSidebar: SidebarItem = {
     text: "API Reference",
     link: "/dev/api",
     children: [
-        ...apiItems.map(item => "/dev/api" + item),
+        ...apiItems.map(item => "/dev/api/" + item),
         modules
     ]
 }

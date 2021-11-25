@@ -6,5 +6,5 @@ Note: This module is not meant to be imported, but rather run as a command-line 
 
 ## Functions
 
-* [`getCommands()`](../getCommands): Gets the commands to be registered with Discord.
-* [`registerCommands(commands)`](../registerCommands): Registers the commands with Discord.
+* [`getCommands()`](../get-commands): Gets the commands to be registered with Discord.
+* [`registerCommands(commands)`](../register-commands): Registers the commands with Discord.
