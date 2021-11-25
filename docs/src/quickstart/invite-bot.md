@@ -2,7 +2,7 @@
 
 To invite the bot, click on this link:
 
-https://discord.com/oauth2/authorize?client_id=890001571004448800&scope=applications.commands%20bot
+https://discord.com/oauth2/authorize?client_id=890001571004448800&scope=applications.commands+bot
 
 Once the page loads,
 

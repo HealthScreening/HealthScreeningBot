@@ -6,7 +6,7 @@ actions:
     link: https://discord.gg/qyeDTzqJgy
     type: primary
   - text: Invite Bot
-    link: https://discord.com/oauth2/authorize?client_id=890001571004448800&scope=applications.commands%20bot
+    link: https://discord.com/oauth2/authorize?client_id=890001571004448800&scope=applications.commands+bot
     type: secondary
 
 features:
