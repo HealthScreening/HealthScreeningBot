@@ -1,8 +1,5 @@
-/**
- * Documentation can be found at https://pokestarfan.ga/docs/developer-documentation/api-reference/utils/multimessages/.
- */
-
 import { Embed } from "@discordjs/builders";
+import { APIMessage } from "discord-api-types";
 import { CommandInteraction, Message, User } from "discord.js";
 
 export enum ItemType {
@@ -51,7 +48,9 @@ const defaultOptions = {
 };
 
 
-export function sendMessage(options: MessageOptions): unknown {
+export function sendMessage(options: NonInteractionMessageOptions): Promise<Message>;
+export function sendMessage(options: InteractionMessageOptions): Promise<Message | void | APIMessage>;
+export function sendMessage(options) {
     const trueOptions: MessageOptions = { ...defaultOptions, ...options };
     switch (trueOptions.itemType) {
         case ItemType.user:
