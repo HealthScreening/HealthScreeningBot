@@ -19,7 +19,7 @@ export default defineUserConfig<DefaultThemeOptions>({
                 link: '/quickstart/',
             },
             {
-                "text": "Bot",
+                text: "Bot",
                 children: [
                     {
                         text: "About",
@@ -58,10 +58,42 @@ export default defineUserConfig<DefaultThemeOptions>({
                         'invite-bot',
                         'running-commands',
                         'auto-screening',
-                        'configure-bot.md',
+                        'configure-bot',
                     ]
                 }
             ],
+            '/commands': [
+                {
+                    text: "Commands",
+                    link: "/commands/",
+                    children: [
+                        {
+                            text: "Auto Commands",
+                            children: [
+                                "delete-auto",
+                                "generate-auto",
+                                "set-auto"
+                            ]
+                        },
+                        {
+                            text: "Other Commands",
+                            children: [
+                                "generate-once",
+                                "set-device",
+                                 "stats"
+                            ]
+                        },
+                        {
+                            text: "Owner Only Commands",
+                            children: [
+                                "send-to-all",
+                                "stop",
+                                "trigger-auto"
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
     },
     plugins: [
