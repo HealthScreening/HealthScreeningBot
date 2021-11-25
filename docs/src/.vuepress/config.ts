@@ -5,6 +5,7 @@ const {description} = require('../../package')
 
 import quickstartSidebar from "./sidebar/quickstart";
 import commandsSidebar from "./sidebar/commands";
+import serverSidebar from "./sidebar/server";
 
 export default defineUserConfig<DefaultThemeOptions>({
     title: 'Health Screening Bot',
@@ -53,7 +54,8 @@ export default defineUserConfig<DefaultThemeOptions>({
         ],
         sidebar: {
             '/quickstart/': quickstartSidebar,
-            '/commands': commandsSidebar
+            '/commands/': commandsSidebar,
+            '/server/': serverSidebar
         }
     },
     plugins: [
