@@ -9,7 +9,7 @@ write boilerplate code.
 
 ## Functions
 
-* [`sendMessage()`](../../send-message): Send a message to one of multiple possible targets.
+* [`sendMessage(options)`](../../send-message): Send a message to one of multiple possible targets.
 
 ## Interfaces
 
@@ -25,6 +25,6 @@ write boilerplate code.
 
 * [`InteractionItem`](../../interaction-item): A type indicating that the item enclosed is an Interaction.
 * [`MessageItem`](../../message-item): A type indicating that the item enclosed is a Message.
-* [`MessageOptions`](../../message-options): A type indicating the valid values for the options parameter
+* [`SendMessageOptions`](../../send-message-options): A type indicating the valid values for the options parameter
   of [`sendMessage()`](../../send-message).
 * [`UserItem`](../../user-item): A type indicating that the item enclosed is a User.

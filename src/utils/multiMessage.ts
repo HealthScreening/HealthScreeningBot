@@ -49,7 +49,8 @@ const defaultOptions = {
 
 
 export function sendMessage(options: NonInteractionMessageOptions): Promise<Message>;
-export function sendMessage(options: InteractionMessageOptions): Promise<Message | void | APIMessage>;
+export function sendMessage(options: InteractionMessageOptions & {followup: true}): Promise<Message | APIMessage>;
+export function sendMessage(options: InteractionMessageOptions): Promise<void>;
 export function sendMessage(options) {
     const trueOptions: MessageOptions = { ...defaultOptions, ...options };
     switch (trueOptions.itemType) {
