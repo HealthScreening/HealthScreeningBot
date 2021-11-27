@@ -2,8 +2,8 @@
 
 The `/set_device` command is the command that stores the name of the device containing the dimensions you want. For
 example, if you set a device name of `iPhone 8`, it will only generate screenings that are as tall as the iPhone 8 is.
-The device is used in all screenings, including [`/generate_auto`](generate-auto.md)
-and [`/generate_once`](generate-once.md).
+The device is used in all screenings, including [`/generate_auto`](generate-auto)
+and [`/generate_once`](generate-once).
 
 The device name is case-sensitive and space-sensitive.
 

@@ -5,4 +5,4 @@ The server contains some bots that help to enhance the server experience. As of 
 * Dank Memer
 * Mudae
 
-To request any additional bots to add, please utilize the [Suggestions](suggestions.md) section of the server.
+To request any additional bots to add, please utilize the [Suggestions](suggestions) section of the server.

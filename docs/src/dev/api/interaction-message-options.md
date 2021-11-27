@@ -2,20 +2,20 @@
 
 An interface representing the options for an interaction item type.
 
-Parent Class: [`BaseMessageOptions`](base-message-options.md)
+Parent Class: [`BaseMessageOptions`](base-message-options)
 
 ## Fields
 
 ### Inherited
 
-* [`BaseMessageOptions.content`](base-message-options.md#content)
-* [`BaseMessageOptions.embeds`](base-message-options.md#embeds)
+* [`BaseMessageOptions.content`](base-message-options#content)
+* [`BaseMessageOptions.embeds`](base-message-options#embeds)
 
 ### itemType
 
-The type of item. Always will be [`ItemType.interaction`](item-type.md#interaction).
+The type of item. Always will be [`ItemType.interaction`](item-type#interaction).
 
-* Type: [`InteractionItem`](interaction-item.md)
+* Type: [`InteractionItem`](interaction-item)
 * Required: Yes
 
 ### item

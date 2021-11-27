@@ -1,11 +1,11 @@
 # SendMessageOptions
 
-A type alias representing the valid options to [`sendMessage(options)`](send-message.md).
+A type alias representing the valid options to [`sendMessage(options)`](send-message).
 
 ## Components
 
 Consists of a union of the following:
 
-* [`InteractionMessageOptions`](interaction-message-options.md)
-* [`MessageMessageOptions`](message-message-options.md)
-* [`UserMessageOptions`](user-message-options.md)
+* [`InteractionMessageOptions`](interaction-message-options)
+* [`MessageMessageOptions`](message-message-options)
+* [`UserMessageOptions`](user-message-options)

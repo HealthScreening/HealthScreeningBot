@@ -17,7 +17,7 @@ opposition** for the suggestion.
 ## Suggestion Log
 
 Approved or denied suggestions are sent to a log channel. If you felt that a suggestion was denied unfairly, you can
-make another suggestion. However, do not make too many suggestions, as this can be considered [spam](rules.md#no-spam).
+make another suggestion. However, do not make too many suggestions, as this can be considered [spam](rules#no-spam).
 
 ## Suggestion Channels
 

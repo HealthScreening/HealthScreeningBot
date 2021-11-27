@@ -2,14 +2,14 @@
 
 An interface representing the options for any item type that is not an interaction.
 
-Parent Class: [`BaseMessageOptions`](base-message-options.md)
+Parent Class: [`BaseMessageOptions`](base-message-options)
 
 ## Fields
 
 ### Inherited
 
-* [`BaseMessageOptions.content`](base-message-options.md#content)
-* [`BaseMessageOptions.embeds`](base-message-options.md#embeds)
+* [`BaseMessageOptions.content`](base-message-options#content)
+* [`BaseMessageOptions.embeds`](base-message-options#embeds)
 
 ### replyMessage
 
