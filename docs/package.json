@@ -10,22 +10,12 @@
   "repository": "https://github.com/PythonCoderAS/HealthScreeningBot",
   "scripts": {
     "dev": "vuepress dev src",
-    "build:vuepress": "vuepress build src",
-    "build:jsdoc2md": "tsc ./run-jsdoc.ts && node ./run-jsdoc.js",
-    "build": "npm run build:jsdoc2md && npm run build:vuepress"
+    "build": "vuepress build src"
   },
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.16.0",
-    "@babel/core": "^7.16.0",
-    "@babel/plugin-proposal-class-properties": "^7.16.0",
-    "@babel/preset-env": "^7.16.4",
-    "@babel/preset-typescript": "^7.16.0",
     "@vuepress/plugin-nprogress": "^2.0.0-beta.27",
     "@vuepress/plugin-search": "^2.0.0-beta.27",
-    "jsdoc-babel": "^0.5.0",
-    "jsdoc-to-markdown": "^7.1.0",
-    "typescript": "^4.5.2",
     "vuepress": "^2.0.0-beta.27"
   }
 }
