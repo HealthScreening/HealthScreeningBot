@@ -1,41 +1,15 @@
 import * as Buffer from "buffer";
 
-const puppeteer = require('puppeteer');
-import {Browser} from 'puppeteer';
-import {Semaphore} from 'async-mutex';
-import {CommandInteraction, Message, User} from 'discord.js';
+import { Browser, devices } from 'puppeteer';
 
 export let browser: Browser | null = null;
-export let currentlyWaiting = 0;
-export const semaphore = new Semaphore(4)
-
-export enum GenerateScreenshotSendableTypeType {
-    interaction,
-    user,
-    message
-}
-
-export interface GenerateScreenshotSendableType {
-    type: GenerateScreenshotSendableTypeType
-    interaction?: CommandInteraction
-    user?: User
-    message?: Message
-}
-
-export interface GenerateScreenshotCooldownSet<T> {
-    set: Set<T>
-    item: T
-}
 
 export interface GenerateScreenshotParams {
-    sendable?: GenerateScreenshotSendableType,
     firstName: string;
     lastName: string;
     email: string;
     isVaxxed?: boolean;
     deviceName?: string;
-    cooldownSet?: GenerateScreenshotCooldownSet<string>;
-    isAuto?: boolean;
 }
 
 export async function generateScreenshot(options: GenerateScreenshotParams): Promise<Buffer> {
@@ -47,7 +21,7 @@ export async function generateScreenshot(options: GenerateScreenshotParams): Pro
         const page = await browser.newPage();
         try {
 
-            await page.emulate(puppeteer.devices[options.deviceName || "iPhone 11"])
+            await page.emulate(devices[options.deviceName || "iPhone 11"])
             await page.goto('https://healthscreening.schools.nyc/?type=G');
             await page.waitForSelector('#btnDailyScreeningSubmit > button', {visible: true})
 
