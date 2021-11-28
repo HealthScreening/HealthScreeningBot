@@ -1,6 +1,5 @@
 import {SidebarConfigArray} from "@vuepress/theme-default/lib/shared/nav";
 import selfHostSidebar from "./self-host";
-import apiSidebar from "./api";
 
 const devSidebar: SidebarConfigArray = [
     {
@@ -9,7 +8,6 @@ const devSidebar: SidebarConfigArray = [
         children: [
             selfHostSidebar,
             "/dev/contribute",
-            apiSidebar
         ]
     }
 ]
