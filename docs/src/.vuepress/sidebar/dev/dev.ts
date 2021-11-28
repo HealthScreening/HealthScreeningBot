@@ -8,7 +8,6 @@ const devSidebar: SidebarConfigArray = [
         children: [
             selfHostSidebar,
             "/dev/contribute",
-            "api"
         ]
     }
 ]
