@@ -1,6 +1,6 @@
-import { Embed } from "@discordjs/builders";
-import { APIMessage } from "discord-api-types";
-import { CommandInteraction, Message, User } from "discord.js";
+import {Embed} from "@discordjs/builders";
+import {APIMessage} from "discord-api-types";
+import {CommandInteraction, Message, User} from "discord.js";
 
 export enum ItemType {
     interaction,
@@ -49,10 +49,29 @@ const defaultOptions = {
 
 
 export function sendMessage(options: NonInteractionMessageOptions): Promise<Message>;
-export function sendMessage(options: InteractionMessageOptions & {followup: true}): Promise<Message | APIMessage>;
+export function sendMessage(options: InteractionMessageOptions & { followup: true }): Promise<Message | APIMessage>;
 export function sendMessage(options: InteractionMessageOptions): Promise<void>;
-export function sendMessage(options) {
-    const trueOptions: MessageOptions = { ...defaultOptions, ...options };
+/**
+ * Sends a message to a user, channel, or interaction.
+ *
+ * @param {MessageOptions} options The options for the message.
+ * <ul>
+ *   <li>If the {@link MessageOptions.itemType} is {@link InteractionItem}, the message will be replied to the
+ *   interaction. In that case, `options` will be of type {@link InteractionMessageOptions}. In addition,
+ *     <ul>
+ *       <li>If the {@link InteractionMessageOptions.followup} is `true`, the return type will be the message sent.</li>
+ *       <li>If the {@link InteractionMessageOptions.followup} is `false`, the return type will be `void`.</li>
+ *     </ul>
+ *   </li>
+ *   <li>If the {@link MessageOptions.itemType} is {@link UserItem}, the message will be sent to the user's DM channel.
+ *   In that case, `options` will be of type {@link UserMessageOptions}.</li>
+ *   <li>If the {@link MessageOptions.itemType} is {@link MessageItem}, the message will be sent to the channel the message
+ *   was sent in. In that case, `options` will be of type {@link MessageMessageOptions}.</li>
+ * </ul>
+ *
+ */
+export function sendMessage(options: MessageOptions) {
+    const trueOptions: MessageOptions = {...defaultOptions, ...options};
     switch (trueOptions.itemType) {
         case ItemType.user:
             return trueOptions.item.send({
