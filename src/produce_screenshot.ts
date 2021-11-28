@@ -34,8 +34,7 @@ export async function generateScreenshot(options: GenerateScreenshotParams): Pro
             await page.type("#guest_email", options.email)
 
             await page.evaluate(() => {
-                // @ts-ignore
-                document.querySelector("#Location").value = "X445";
+                document.querySelector<HTMLInputElement>("#Location").value = "X445";
             })
 
             await page.click('#btnDailyScreeningSubmit > button')
