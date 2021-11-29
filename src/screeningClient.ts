@@ -6,7 +6,7 @@ import {TextChannel, User} from "discord.js";
 import {DateTime} from "luxon";
 
 export interface AutoBatchOptions {
-    batchNumber: number,
+    batchTime: [number, number],
     itemNumber: number,
     logChannel: TextChannel
 }
@@ -78,7 +78,7 @@ export class ScreeningClient {
         }
         const finish = DateTime.local({locale: "en_US", zone: "America/New_York"}).toMillis() - start
         await sendMessage(messageParams);
-        params?.auto.logChannel.send(`Finished screening **${params.auto.batchNumber}.${params.auto.itemNumber}** in ${(finish / 1000).toFixed(2)} seconds`);
+        params?.auto.logChannel.send(`Finished screening **${params.auto.batchTime[0]}:${params.auto.batchTime[1]}::${params.auto.itemNumber}** in ${(finish / 1000).toFixed(2)} seconds`);
         if (params.cooldownId){
             this.clearCooldown(params.cooldownId);
         }
@@ -201,7 +201,7 @@ export class ScreeningClient {
         await this.dealWithQueue(processParams);
     }
 
-    public async queueDailyAuto(user: User, auto: AutoBatchOptions & { manual: boolean }) {
+    public async queueDailyAuto(user: User, auto: AutoBatchOptions & { manual?: boolean }) {
         const userInfo = (await ScreeningClient.getUserInfo({
             userId: user.id,
         }))!;
@@ -224,6 +224,6 @@ export class ScreeningClient {
             },
             auto
         }
-        this.dealWithQueue(processParams);
+        this.queue.enqueue(processParams, 0)
     }
 }
