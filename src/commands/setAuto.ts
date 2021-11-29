@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction} from "discord.js";
 import { Config } from "../orm"
 import {getScreenshotData} from "../getScreenshotData";
-import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "../produce_screenshot";
+import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "../utils/produce_screenshot";
 
 function createOrDelete(values, condition) {
     return Config

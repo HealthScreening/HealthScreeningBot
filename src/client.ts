@@ -2,7 +2,7 @@ import {Client, Collection, DiscordAPIError, GuildMember, Intents, Message} from
 import {DateTime} from "luxon";
 import {doAllAuto} from "./doAllAuto"
 import {Config, init} from "./orm"
-import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "./produce_screenshot";
+import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "./utils/produce_screenshot";
 import {getScreenshotData, GetScreenshotDataReturnType} from "./getScreenshotData";
 import * as path from "path";
 

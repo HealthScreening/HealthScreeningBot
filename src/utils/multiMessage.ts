@@ -1,6 +1,6 @@
 import { Embed } from "@discordjs/builders";
 import { APIMessage } from "discord-api-types";
-import { CommandInteraction, Message, User } from "discord.js";
+import { CommandInteraction, HTTPAttachmentData, Message, User } from "discord.js";
 
 export enum ItemType {
     interaction,
@@ -15,26 +15,23 @@ export type MessageItem = ItemType.message;
 interface BaseMessageOptions {
     content?: string
     embeds?: Embed[]
-}
-
-interface NonInteractionMessageOptions extends BaseMessageOptions {
+    files?: HTTPAttachmentData[]
     replyMessage?: Message
     failIfNotExists?: boolean;
+    ephemeral?: boolean
 }
-
 export interface InteractionMessageOptions extends BaseMessageOptions {
     itemType: InteractionItem
     item: CommandInteraction
-    followup?: boolean
-    ephemeral?: boolean
+
 }
 
-export interface UserMessageOptions extends NonInteractionMessageOptions {
+export interface UserMessageOptions extends BaseMessageOptions {
     itemType: UserItem
     item: User
 }
 
-export interface MessageMessageOptions extends NonInteractionMessageOptions {
+export interface MessageMessageOptions extends BaseMessageOptions {
     itemType: MessageItem
     item: Message
 }
@@ -42,16 +39,12 @@ export interface MessageMessageOptions extends NonInteractionMessageOptions {
 export type MessageOptions = InteractionMessageOptions | UserMessageOptions | MessageMessageOptions;
 
 const defaultOptions = {
-    followup: false,
     ephemeral: false,
-    failIfNotExists: false
+    failIfNotExists: false,
+    files: []
 };
 
-
-export function sendMessage(options: NonInteractionMessageOptions): Promise<Message>;
-export function sendMessage(options: InteractionMessageOptions & {followup: true}): Promise<Message | APIMessage>;
-export function sendMessage(options: InteractionMessageOptions): Promise<void>;
-export function sendMessage(options) {
+export function sendMessage(options: MessageOptions): Promise<Message|APIMessage> {
     const trueOptions: MessageOptions = { ...defaultOptions, ...options };
     switch (trueOptions.itemType) {
         case ItemType.user:
@@ -61,7 +54,8 @@ export function sendMessage(options) {
                 reply: {
                     messageReference: trueOptions.replyMessage,
                     failIfNotExists: trueOptions.failIfNotExists
-                }
+                },
+                files: trueOptions.files
             });
         case ItemType.message:
             return trueOptions.item.channel.send({
@@ -70,21 +64,15 @@ export function sendMessage(options) {
                 reply: {
                     messageReference: trueOptions.replyMessage,
                     failIfNotExists: trueOptions.failIfNotExists
-                }
+                },
+                files: trueOptions.files
             });
         case ItemType.interaction:
-            if (trueOptions.followup) {
-                return trueOptions.item.reply({
-                    content: trueOptions.content,
-                    embeds: trueOptions.embeds,
-                    ephemeral: trueOptions.ephemeral
-                });
-            } else {
-                return trueOptions.item.followUp({
-                    content: trueOptions.content,
-                    embeds: trueOptions.embeds,
-                    ephemeral: trueOptions.ephemeral
-                });
-            }
+            return trueOptions.item.followUp({
+                content: trueOptions.content,
+                embeds: trueOptions.embeds,
+                ephemeral: trueOptions.ephemeral,
+                files: trueOptions.files
+            });
     }
 }

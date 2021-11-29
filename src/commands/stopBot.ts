@@ -2,7 +2,7 @@ import {SlashCommandBuilder} from "@discordjs/builders";
 import {CommandInteraction} from "discord.js";
 import {exit} from "process";
 
-import {browser} from "../produce_screenshot"
+import {browser} from "../utils/produce_screenshot"
 
 module.exports = {
     data: new SlashCommandBuilder()
