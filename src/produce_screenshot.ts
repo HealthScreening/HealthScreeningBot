@@ -158,7 +158,7 @@ export async function generateScreenshot(options: GenerateScreenshotParams) {
                 }
                 break;
             case GenerateScreenshotSendableTypeType.user:
-                message = `user.send("If you enjoyed the bot, please share this server with your friends!: https://discord.gg/yJbvcD4QBP")\n----\n<@${options.sendable.user.id}>, here's your health screening:`
+                message = `If you enjoyed the bot, please share this server with your friends!: https://discord.gg/yJbvcD4QBP\n----\n<@${options.sendable.user.id}>, here's your health screening:`
                 data = {
                     "content": message,
                     files: [screenshot]
