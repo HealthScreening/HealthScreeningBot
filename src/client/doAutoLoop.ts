@@ -1,6 +1,6 @@
 import HealthScreeningBotClient from "./extraClient";
 import {Config, sequelize} from "../orm";
-import { TextChannel } from "discord.js";
+import {TextChannel} from "discord.js";
 
 export default async function doAutoLoop(client: HealthScreeningBotClient, logChannel: TextChannel) {
     const validUserIDs = new Set()
@@ -10,10 +10,16 @@ export default async function doAutoLoop(client: HealthScreeningBotClient, logCh
         }
     }
     const batchTimes: Map<[number, number], number> = new Map();
-    for (const config of (await sequelize.query(`SELECT * FROM Configs WHERE (strftime('%s', date('now')) + "timeHours" * 3600 + "timeMinutes" * 60) - strftime('%s', date('now')) <= 300;`, {
-        mapToModel: true,
-        model: Config
-    }))) {
+    for (const config of (await sequelize.query(
+        `SELECT * 
+        FROM Configs 
+        WHERE 
+            (strftime('%s', date('now')) + "timeHours" * 3600 + "timeMinutes" * 60) - strftime('%s', date('now')) <= 300 
+            AND (strftime('%s', date('now')) + "timeHours" * 3600 + "timeMinutes" * 60) - strftime('%s', date('now')) >=0;`,
+        {
+            mapToModel: true,
+            model: Config
+        }))) {
         if (!validUserIDs.has(config.userId)) {
             continue;
         }
