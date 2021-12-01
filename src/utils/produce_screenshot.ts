@@ -1,6 +1,6 @@
 import * as Buffer from "buffer";
 
-import {Browser, devices} from 'puppeteer';
+import {Browser, devices, launch} from 'puppeteer';
 
 export let browser: Browser | null = null;
 
@@ -14,7 +14,6 @@ export interface GenerateScreenshotParams {
 
 export async function generateScreenshot(options: GenerateScreenshotParams): Promise<Buffer> {
     // We assume the browser has been started already.
-    // TODO: Start browser at startup.
 
     let screenshot: Buffer | null = null;
 
@@ -72,5 +71,11 @@ export async function generateScreenshot(options: GenerateScreenshotParams): Pro
         throw new Error("Screenshot was null.")
     } else {
         return screenshot;
+    }
+}
+
+export async function startupBrowser(){
+    if (browser === null) {
+        browser = await launch({headless: true, executablePath: 'chromium-browser'})
     }
 }

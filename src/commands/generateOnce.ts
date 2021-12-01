@@ -1,10 +1,7 @@
 import {SlashCommandBuilder} from "@discordjs/builders";
-import {CommandInteraction} from "discord.js";
-
-import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "../utils/produce_screenshot"
-import {AdditionalConfig} from "../orm";
-
-const usedRecently: Set<string> = new Set();
+import {ItemType} from "../utils/multiMessage";
+import {discordjsOverrides} from "../discordjs-overrides";
+import HSBCommandInteraction = discordjsOverrides.HSBCommandInteraction;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -26,7 +23,7 @@ module.exports = {
             option.setName("vaccinated")
                 .setDescription("Whether or not you are vaccinated.")
                 .setRequired(true)),
-    async execute(interaction: CommandInteraction) {
+    async execute(interaction: HSBCommandInteraction) {
         const firstName = interaction.options.getString("first_name")
         const lastName = interaction.options.getString("last_name")
         const email = interaction.options.getString("email")
@@ -34,21 +31,17 @@ module.exports = {
             return await interaction.reply("Invalid email! Please enter a valid email.")
         }
         const isVaxxed = interaction.options.getBoolean("vaccinated")
-        const additionalItem = await AdditionalConfig.findOne({where: {userId: interaction.user.id}});
-        let deviceName = undefined;
-        // @ts-ignore
-        if (additionalItem && additionalItem.device){
-            // @ts-ignore
-            deviceName = additionalItem.device;
-        }
-        await produceScreenshot({
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            isVaxxed: isVaxxed,
-            sendable: {type: GenerateScreenshotSendableTypeType.interaction, interaction},
-            cooldownSet: {set: usedRecently, item: interaction.user.id},
-            deviceName: deviceName
-        })
+        await interaction.client.screeningClient.queueOnceCommand(interaction.user.id, {
+            generateScreenshotParams: {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                isVaxxed: isVaxxed
+            },
+            multiMessageParams: {
+                itemType: ItemType.interaction,
+                item: interaction
+            }
+        });
     },
 };

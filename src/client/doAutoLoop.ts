@@ -30,4 +30,5 @@ export default async function doAutoLoop(client: HealthScreeningBotClient, logCh
             logChannel
         });
     }
+    setTimeout(() => doAutoLoop(client, logChannel), 5 * 60 * 1000);
 }

@@ -58,6 +58,10 @@ export class ScreeningClient {
     );
     private readonly cooldowns: Set<string> = new Set();
 
+    public constructor() {
+
+    }
+
     /**
      * Actually processes a screening request.
      *
@@ -65,22 +69,45 @@ export class ScreeningClient {
      * @private
      */
     private async process(params: ProcessParams) {
-        const start = DateTime.local({locale: "en_US", zone: "America/New_York"}).toMillis()
-        const screenshot = await generateScreenshot(params.generateScreenshotParams);
-        const messageParams: MessageOptions = {
-            content: "Here is the screenshot that you requested:",
-            files: [{
-                attachment: screenshot,
-                name: "screening.jpg",
-                file: screenshot
-            }],
-            ...params.multiMessageParams,
-        }
-        const finish = DateTime.local({locale: "en_US", zone: "America/New_York"}).toMillis() - start
-        await sendMessage(messageParams);
-        params?.auto.logChannel.send(`Finished screening **${params.auto.batchTime[0]}:${params.auto.batchTime[1]}::${params.auto.itemNumber}** in ${(finish / 1000).toFixed(2)} seconds`);
-        if (params.cooldownId){
-            this.clearCooldown(params.cooldownId);
+        try {
+            const start = DateTime.local({locale: "en_US", zone: "America/New_York"}).toMillis()
+            let success = true;
+            try {
+                const screenshot = await generateScreenshot(params.generateScreenshotParams);
+                const messageParams: MessageOptions = {
+                    content: "Here is the screenshot that you requested:",
+                    files: [{
+                        attachment: screenshot,
+                        name: "screening.jpg",
+                        file: screenshot
+                    }],
+                    ...params.multiMessageParams,
+                }
+                const finish = DateTime.local({locale: "en_US", zone: "America/New_York"}).toMillis() - start
+                try {
+                    await sendMessage(messageParams);
+                } catch (e: any) {
+                    // Most likely user who disabled DMs, so we will not log the full error.
+                    console.error(`Failed to send message to user ${messageParams.item.id} with error ${e.message || e}`);
+                    success = false
+                }
+                params?.auto.logChannel.send(`Finished screening **${params.auto.batchTime[0]}:${params.auto.batchTime[1]}::${params.auto.itemNumber}** in ${(finish / 1000).toFixed(2)} seconds`);
+            } catch (e) {
+                success = false;
+                console.error(e);
+            }
+            if (!success) {
+                params.auto?.logChannel.send(`Failed screening **${params.auto.batchTime[0]}:${params.auto.batchTime[1]}::${params.auto.itemNumber}**`);
+            }
+            if (params.cooldownId) {
+                this.clearCooldown(params.cooldownId);
+            }
+        } catch (e) {
+            if (params.auto){
+                console.error(e);
+            } else {
+                throw e;
+            }
         }
     }
 

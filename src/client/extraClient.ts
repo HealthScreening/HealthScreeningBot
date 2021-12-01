@@ -1,10 +1,11 @@
-import {Client, ClientOptions, Collection, CommandInteraction, Message} from "discord.js";
+import {Client, ClientOptions, Collection, CommandInteraction, Message, TextChannel} from "discord.js";
 import path from "path";
 import fs from "fs";
 import {ScreeningClient} from "../screeningClient";
 import {ItemType} from "../utils/multiMessage";
 import assignAutoSchoolRole from "./autoAssignSchoolRole";
 import {SlashCommandBuilder} from "@discordjs/builders";
+import doAutoLoop from "./doAutoLoop";
 
 const GENERATE_AUTO_CHOICES = ["hsb/generateauto", "hsb/generate-auto", "hsb/generate_auto"]
 
@@ -21,6 +22,7 @@ export default class HealthScreeningBotClient extends Client {
     constructor(options: ClientOptions) {
         super(options);
         this.loadCommands();
+        this.loadEventListeners();
     }
 
     private loadCommands() {
@@ -41,6 +43,7 @@ export default class HealthScreeningBotClient extends Client {
                 this.on(memberName.substring(2), this[memberName].bind(this));
             }
         }
+        this.once("ready", this.doOnReady.bind(this));
     }
 
     private async onmessage(message: Message) {
@@ -99,7 +102,9 @@ export default class HealthScreeningBotClient extends Client {
     }
 
     private async doOnReady() {
-        this.loadEventListeners();
         assignAutoSchoolRole(this)
+        // @ts-ignore
+        const logChannel: TextChannel = await ((await this.guilds.fetch("889983763994521610")).channels.fetch("902375187150934037"));
+        doAutoLoop(this, logChannel);
     }
 }

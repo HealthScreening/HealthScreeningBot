@@ -1,8 +1,9 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction} from "discord.js";
-import { Config } from "../orm"
-import {getScreenshotData} from "../getScreenshotData";
-import {generateScreenshot as produceScreenshot, GenerateScreenshotSendableTypeType} from "../utils/produce_screenshot";
+import {SlashCommandBuilder} from "@discordjs/builders";
+import {Config} from "../orm"
+import {discordjsOverrides} from "../discordjs-overrides";
+import {ItemType} from "../utils/multiMessage";
+import HSBCommandInteraction = discordjsOverrides.HSBCommandInteraction;
+import { User } from "discord.js";
 
 function createOrDelete(values, condition) {
     return Config
@@ -36,7 +37,7 @@ module.exports = {
             option.setName("vaccinated")
                 .setDescription("Whether or not you are vaccinated.")
                 .setRequired(true)),
-    async execute(interaction: CommandInteraction) {
+    async execute(interaction: HSBCommandInteraction) {
         const firstName = interaction.options.getString("first_name")
         const lastName = interaction.options.getString("last_name")
         const email = interaction.options.getString("email")
@@ -49,12 +50,11 @@ module.exports = {
         }, {userId: String(interaction.user.id)})
         await interaction.reply("Updated! Check your DMs for the confirmation screening.")
         await interaction.user.send("In order to make sure you entered the correct information, a sample screening will be generated for you. If you find any errors, use `/set_auto` again.")
-        let data = await getScreenshotData(interaction.user.id);
-        await (await interaction.user.createDM()).sendTyping()
-        const trueData = data.data;
-        Object.assign(trueData, {
-            sendable: {type: GenerateScreenshotSendableTypeType.user, user: interaction.user},
+        const user: User = interaction.user
+        await (await user.createDM()).sendTyping()
+        await interaction.client.screeningClient.queueAutoCommand(interaction.user.id, {
+            itemType: ItemType.user,
+            item: user
         })
-        await produceScreenshot(trueData);
     },
 };

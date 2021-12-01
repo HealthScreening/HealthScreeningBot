@@ -1,7 +1,10 @@
 import {SlashCommandBuilder} from "@discordjs/builders";
 import {CommandInteraction, User} from "discord.js";
 import {Config} from "../orm"
-import {sleep} from "../doAllAuto";
+
+function sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 
 module.exports = {
