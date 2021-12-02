@@ -46,7 +46,7 @@ export default class HealthScreeningBotClient extends Client {
         this.once("ready", this.doOnReady.bind(this));
     }
 
-    private async onmessage(message: Message) {
+    private async onmessageCreate(message: Message) {
         try {
             if (message.content && message.content.substring(0, 4).toLowerCase() === "hsb/") {
                 if (GENERATE_AUTO_CHOICES.includes(message.content.toLowerCase().replace(/\s+/g, ""))) {

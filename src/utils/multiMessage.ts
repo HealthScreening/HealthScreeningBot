@@ -68,11 +68,21 @@ export function sendMessage(options: MessageOptions): Promise<Message|APIMessage
                 files: trueOptions.files
             });
         case ItemType.interaction:
-            return trueOptions.item.followUp({
-                content: trueOptions.content,
-                embeds: trueOptions.embeds,
-                ephemeral: trueOptions.ephemeral,
-                files: trueOptions.files
-            });
+            if (trueOptions.item.deferred || trueOptions.item.replied) {
+                return trueOptions.item.followUp({
+                    content: trueOptions.content,
+                    embeds: trueOptions.embeds,
+                    ephemeral: trueOptions.ephemeral,
+                    files: trueOptions.files
+                });
+            } else {
+                return trueOptions.item.reply({
+                    content: trueOptions.content,
+                    embeds: trueOptions.embeds,
+                    ephemeral: trueOptions.ephemeral,
+                    files: trueOptions.files,
+                    fetchReply: true
+                });
+            }
     }
 }
