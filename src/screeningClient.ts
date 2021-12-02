@@ -91,7 +91,9 @@ export class ScreeningClient {
                     console.error(`Failed to send message to user ${messageParams.item.id} with error ${e.message || e}`);
                     success = false
                 }
-                params?.auto.logChannel.send(`Finished screening **${params.auto.batchTime[0]}:${params.auto.batchTime[1]}::${params.auto.itemNumber}** in ${(finish / 1000).toFixed(2)} seconds`);
+                if (success) {
+                    params.auto?.logChannel.send(`Finished screening **${params.auto.batchTime[0]}:${params.auto.batchTime[1]}::${params.auto.itemNumber}** in ${(finish / 1000).toFixed(2)} seconds`);
+                }
             } catch (e) {
                 success = false;
                 console.error(e);
@@ -103,7 +105,7 @@ export class ScreeningClient {
                 this.clearCooldown(params.cooldownId);
             }
         } catch (e) {
-            if (params.auto){
+            if (params.auto) {
                 console.error(e);
             } else {
                 throw e;
@@ -179,7 +181,7 @@ export class ScreeningClient {
             }
             sendMessage(messageOptions);
         } else {
-            if (params.multiMessageParams.itemType === ItemType.interaction){
+            if (params.multiMessageParams.itemType === ItemType.interaction) {
                 await params.multiMessageParams.item.deferReply();
             }
         }
