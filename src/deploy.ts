@@ -8,6 +8,12 @@ import { readdirSync } from 'fs';
 
 const {discord} = require("../config.json");
 
+/**
+ * Gets an array of command definition objects from the command source files located at src/commands.
+ * This is the JSON form of the discord.js SlashCommandBuilder class.
+ *
+ * @return {Object[]} An array of command definition objects.
+ */
 function getCommands(): Object[] {
     const commands = [];
     const commandFiles = readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -22,7 +28,13 @@ function getCommands(): Object[] {
 
 const rest = new REST({version: '9'}).setToken(discord.token);
 
-function registerCommands(commands: Object[]) {
+/**
+ * Registers the given commands globally with Discord.
+ * On success, logs a success message otherwise logs the error message.
+ * @param {Object[]} commands An array of the commands to register, as returned by {@link getCommands}.
+ * @return {void} Nothing.
+ */
+function registerCommands(commands: Object[]): void {
     rest.put(
         Routes.applicationCommands(discord.clientId),
         {body: commands},
