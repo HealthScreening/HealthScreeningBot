@@ -1,6 +1,6 @@
-import {Embed} from "@discordjs/builders";
-import {APIMessage} from "discord-api-types";
-import {CommandInteraction, Message, User} from "discord.js";
+import { Embed } from "@discordjs/builders";
+import { APIMessage } from "discord-api-types";
+import { CommandInteraction, HTTPAttachmentData, Message, User } from "discord.js";
 
 
 /**
@@ -28,16 +28,7 @@ interface BaseMessageOptions {
      * The embeds to send.
      */
     embeds?: Embed[]
-}
-
-/**
- * Options that are shared by all non-interaction target types.
- * @extends {BaseMessageOptions}
- */
-interface NonInteractionMessageOptions extends BaseMessageOptions {
-    /**
-     * A message to reply to.
-     */
+    files?: HTTPAttachmentData[]
     replyMessage?: Message
     /**
      * Whether or not to send the message if the message being replied to is deleted.
@@ -45,6 +36,11 @@ interface NonInteractionMessageOptions extends BaseMessageOptions {
      * If {@link NonInteractionMessageOptions.replyMessage} is not provided, this will be ignored.
      */
     failIfNotExists?: boolean;
+    /**
+     * Whether to send the message as an ephemeral message. An ephemeral message is a message that can only be seen by
+     * the user who created the interaction, but also vanishes if the client is restarted.
+     */
+    ephemeral?: boolean
 }
 
 /**
@@ -54,33 +50,23 @@ interface NonInteractionMessageOptions extends BaseMessageOptions {
 export interface InteractionMessageOptions extends BaseMessageOptions {
     itemType: ItemType.interaction
     item: CommandInteraction
-    /**
-     * Whether to send the message as a followup message or a reply message.
-     *
-     * All interactions must be replied to, but can only be replied to once.
-     */
-    followup?: boolean
-    /**
-     * Whether to send the message as an ephemeral message. An ephemeral message is a message that can only be seen by
-     * the user who created the interaction, but also vanishes if the client is restarted.
-     */
-    ephemeral?: boolean
+
 }
 
 /**
  * Options that are used by user target types.
- * @extends {NonInteractionMessageOptions}
+ * @extends {BaseMessageOptions}
  */
-export interface UserMessageOptions extends NonInteractionMessageOptions {
+export interface UserMessageOptions extends BaseMessageOptions {
     itemType: ItemType.user
     item: User
 }
 
 /**
  * Options that are used by message target types.
- * @extends {NonInteractionMessageOptions}
+ * @extends {BaseMessageOptions}
  */
-export interface MessageMessageOptions extends NonInteractionMessageOptions {
+export interface MessageMessageOptions extends BaseMessageOptions {
     itemType: ItemType.message
     item: Message
 }
@@ -94,36 +80,13 @@ export type MessageOptions = InteractionMessageOptions | UserMessageOptions | Me
  * The default options for fields in {@link MessageOptions} that are optional boolean fields.
  */
 const defaultOptions = {
-    followup: false,
     ephemeral: false,
-    failIfNotExists: false
+    failIfNotExists: false,
+    files: []
 };
 
-
-export function sendMessage(options: NonInteractionMessageOptions): Promise<Message>;
-export function sendMessage(options: InteractionMessageOptions & { followup: true }): Promise<Message | APIMessage>;
-export function sendMessage(options: InteractionMessageOptions): Promise<void>;
-/**
- * Sends a message to a user, channel, or interaction.
- *
- * @param {MessageOptions} options The options for the message.
- * <ul>
- *   <li>If the {@link MessageOptions.itemType} is {@link ItemType.interaction}, the message will be replied to the
- *   interaction. In that case, `options` will be of type {@link InteractionMessageOptions}. In addition,
- *     <ul>
- *       <li>If the {@link InteractionMessageOptions.followup} is `true`, the return type will be the message sent.</li>
- *       <li>If the {@link InteractionMessageOptions.followup} is `false`, the return type will be `void`.</li>
- *     </ul>
- *   </li>
- *   <li>If the {@link MessageOptions.itemType} is {@link ItemType.user}, the message will be sent to the user's DM channel.
- *   In that case, `options` will be of type {@link UserMessageOptions}.</li>
- *   <li>If the {@link MessageOptions.itemType} is {@link ItemType.message}, the message will be sent to the channel the message
- *   was sent in. In that case, `options` will be of type {@link MessageMessageOptions}.</li>
- * </ul>
- *
- */
-export function sendMessage(options: MessageOptions) {
-    const trueOptions: MessageOptions = {...defaultOptions, ...options};
+export function sendMessage(options: MessageOptions): Promise<Message|APIMessage> {
+    const trueOptions: MessageOptions = { ...defaultOptions, ...options };
     switch (trueOptions.itemType) {
         case ItemType.user:
             return trueOptions.item.send({
@@ -132,7 +95,8 @@ export function sendMessage(options: MessageOptions) {
                 reply: {
                     messageReference: trueOptions.replyMessage,
                     failIfNotExists: trueOptions.failIfNotExists
-                }
+                },
+                files: trueOptions.files
             });
         case ItemType.message:
             return trueOptions.item.channel.send({
@@ -141,20 +105,24 @@ export function sendMessage(options: MessageOptions) {
                 reply: {
                     messageReference: trueOptions.replyMessage,
                     failIfNotExists: trueOptions.failIfNotExists
-                }
+                },
+                files: trueOptions.files
             });
         case ItemType.interaction:
-            if (trueOptions.followup) {
-                return trueOptions.item.reply({
-                    content: trueOptions.content,
-                    embeds: trueOptions.embeds,
-                    ephemeral: trueOptions.ephemeral
-                });
-            } else {
+            if (trueOptions.item.deferred || trueOptions.item.replied) {
                 return trueOptions.item.followUp({
                     content: trueOptions.content,
                     embeds: trueOptions.embeds,
-                    ephemeral: trueOptions.ephemeral
+                    ephemeral: trueOptions.ephemeral,
+                    files: trueOptions.files
+                });
+            } else {
+                return trueOptions.item.reply({
+                    content: trueOptions.content,
+                    embeds: trueOptions.embeds,
+                    ephemeral: trueOptions.ephemeral,
+                    files: trueOptions.files,
+                    fetchReply: true
                 });
             }
     }
