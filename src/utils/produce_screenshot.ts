@@ -1,7 +1,7 @@
 import * as Buffer from "buffer";
 
 import {Browser, devices} from 'puppeteer';
-import * as puppeteer from 'puppeteer';
+const puppeteer = require('puppeteer'); // Really hates it if I don't do this
 
 export let browser: Browser | null = null;
 
