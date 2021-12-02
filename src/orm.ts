@@ -4,7 +4,6 @@ const config = require("../config.json")
 export const sequelize: Sequelize = new Sequelize(config.database)
 
 interface ConfigAttributes {
-    id: number
     userId: string
     firstName: string
     lastName: string
@@ -15,11 +14,10 @@ interface ConfigAttributes {
     device: string
 }
 
-interface ConfigCreationAttributes extends Optional<ConfigAttributes, "id" | "vaccinated" | "timeHours" | "timeMinutes" | "device"> {
+interface ConfigCreationAttributes extends Optional<ConfigAttributes, "vaccinated" | "timeHours" | "timeMinutes" | "device"> {
 }
 
 export class Config extends Model<ConfigAttributes, ConfigCreationAttributes> implements ConfigAttributes {
-    public id!: number
     public userId!: string
     public firstName!: string
     public lastName!: string
@@ -36,10 +34,6 @@ export class Config extends Model<ConfigAttributes, ConfigCreationAttributes> im
 
 Config.init({
     // Model attributes are defined here
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true
-    },
     userId: {
         type: DataTypes.STRING,
         primaryKey: true,

@@ -178,6 +178,10 @@ export class ScreeningClient {
                 ...params.multiMessageParams,
             }
             sendMessage(messageOptions);
+        } else {
+            if (params.multiMessageParams.itemType === ItemType.interaction){
+                await params.multiMessageParams.item.deferReply();
+            }
         }
         await this.queue.enqueue(params, 1);
     }
