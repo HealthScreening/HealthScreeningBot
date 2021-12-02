@@ -1,6 +1,6 @@
 import * as Buffer from "buffer";
 
-import {Browser, devices, launch} from 'puppeteer';
+import {Browser, devices} from 'puppeteer';
 import * as puppeteer from 'puppeteer';
 
 export let browser: Browser | null = null;
@@ -77,6 +77,6 @@ export async function generateScreenshot(options: GenerateScreenshotParams): Pro
 
 export async function startupBrowser(){
     if (browser === null) {
-        browser = await launch.bind(puppeteer)({headless: true, executablePath: 'chromium-browser'})
+        browser = await puppeteer.launch({headless: true, executablePath: 'chromium-browser'})
     }
 }
