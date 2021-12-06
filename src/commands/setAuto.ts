@@ -1,8 +1,7 @@
 import {SlashCommandBuilder} from "@discordjs/builders";
 import {Config} from "../orm"
-import {discordjsOverrides} from "../discordjs-overrides";
+import {HSBCommandInteraction} from "../discordjs-overrides";
 import {ItemType} from "../utils/multiMessage";
-import HSBCommandInteraction = discordjsOverrides.HSBCommandInteraction;
 import { User } from "discord.js";
 
 function createOrDelete(values, condition) {

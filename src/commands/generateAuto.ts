@@ -1,7 +1,6 @@
 import {SlashCommandBuilder} from "@discordjs/builders";
-import {discordjsOverrides} from "../discordjs-overrides";
+import {HSBCommandInteraction} from "../discordjs-overrides";
 import {ItemType} from "../utils/multiMessage";
-import HSBCommandInteraction = discordjsOverrides.HSBCommandInteraction;
 
 module.exports = {
     data: new SlashCommandBuilder()
