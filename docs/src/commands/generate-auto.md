@@ -7,7 +7,7 @@ information using [`/set_auto`](set-auto).**
 
 ### Text Based Commands
 
-* [`hsb/generate_auto`](hsb-generate-auto)
+- [`hsb/generate_auto`](hsb-generate-auto)
 
 ## Arguments
 

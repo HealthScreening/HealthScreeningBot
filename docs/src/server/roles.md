@@ -18,4 +18,3 @@ The server contains roles for receiving certain types of notifications, and they
 
 In order to assign the role, go to #roles, find the embed titled "Notification Roles", and click the emoji that
 represents the role you want.
-
