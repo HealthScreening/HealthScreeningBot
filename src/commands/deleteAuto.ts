@@ -16,8 +16,7 @@ module.exports = {
           "You do not have any auto information stored! Use `/set_auto` to set some information.",
         ephemeral: true,
       });
-    }
-    else {
+    } else {
       await item.destroy({ force: true });
       await interaction.reply("Auto information deleted!");
     }

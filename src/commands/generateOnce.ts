@@ -10,25 +10,25 @@ module.exports = {
       option
         .setName("first_name")
         .setDescription("The first name to specify")
-        .setRequired(true),
+        .setRequired(true)
     )
     .addStringOption((option) =>
       option
         .setName("last_name")
         .setDescription("The last name to specify")
-        .setRequired(true),
+        .setRequired(true)
     )
     .addStringOption((option) =>
       option
         .setName("email")
         .setDescription("The email to specify")
-        .setRequired(true),
+        .setRequired(true)
     )
     .addBooleanOption((option) =>
       option
         .setName("vaccinated")
         .setDescription("Whether or not you are vaccinated.")
-        .setRequired(true),
+        .setRequired(true)
     ),
   async execute(interaction: HSBCommandInteraction) {
     const firstName = interaction.options.getString("first_name");
@@ -38,7 +38,7 @@ module.exports = {
       !email.match(/^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/)
     ) {
       return await interaction.reply(
-        "Invalid email! Please enter a valid email.",
+        "Invalid email! Please enter a valid email."
       );
     }
     const isVaxxed = interaction.options.getBoolean("vaccinated");
@@ -55,7 +55,7 @@ module.exports = {
           itemType: ItemType.interaction,
           item: interaction,
         },
-      },
+      }
     );
   },
 };

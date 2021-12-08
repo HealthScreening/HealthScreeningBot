@@ -92,47 +92,46 @@ const defaultOptions = {
 };
 
 export function sendMessage(
-  options: MessageOptions,
+  options: MessageOptions
 ): Promise<Message | APIMessage> {
   const trueOptions: MessageOptions = { ...defaultOptions, ...options };
   switch (trueOptions.itemType) {
-  case ItemType.user:
-    return trueOptions.item.send({
-      content: trueOptions.content,
-      embeds: trueOptions.embeds,
-      reply: {
-        messageReference: trueOptions.replyMessage,
-        failIfNotExists: trueOptions.failIfNotExists,
-      },
-      files: trueOptions.files,
-    });
-  case ItemType.message:
-    return trueOptions.item.channel.send({
-      content: trueOptions.content,
-      embeds: trueOptions.embeds,
-      reply: {
-        messageReference: trueOptions.replyMessage,
-        failIfNotExists: trueOptions.failIfNotExists,
-      },
-      files: trueOptions.files,
-    });
-  case ItemType.interaction:
-    if (trueOptions.item.deferred || trueOptions.item.replied) {
-      return trueOptions.item.followUp({
+    case ItemType.user:
+      return trueOptions.item.send({
         content: trueOptions.content,
         embeds: trueOptions.embeds,
-        ephemeral: trueOptions.ephemeral,
+        reply: {
+          messageReference: trueOptions.replyMessage,
+          failIfNotExists: trueOptions.failIfNotExists,
+        },
         files: trueOptions.files,
       });
-    }
-    else {
-      return trueOptions.item.reply({
+    case ItemType.message:
+      return trueOptions.item.channel.send({
         content: trueOptions.content,
         embeds: trueOptions.embeds,
-        ephemeral: trueOptions.ephemeral,
+        reply: {
+          messageReference: trueOptions.replyMessage,
+          failIfNotExists: trueOptions.failIfNotExists,
+        },
         files: trueOptions.files,
-        fetchReply: true,
       });
-    }
+    case ItemType.interaction:
+      if (trueOptions.item.deferred || trueOptions.item.replied) {
+        return trueOptions.item.followUp({
+          content: trueOptions.content,
+          embeds: trueOptions.embeds,
+          ephemeral: trueOptions.ephemeral,
+          files: trueOptions.files,
+        });
+      } else {
+        return trueOptions.item.reply({
+          content: trueOptions.content,
+          embeds: trueOptions.embeds,
+          ephemeral: trueOptions.ephemeral,
+          files: trueOptions.files,
+          fetchReply: true,
+        });
+      }
   }
 }

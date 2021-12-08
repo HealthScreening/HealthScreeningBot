@@ -19,8 +19,7 @@ export default async function assignAutoSchoolRole(client) {
         try {
           // @ts-ignore
           member = await guild.members.fetch(item.userId);
-        }
-        catch (e) {
+        } catch (e) {
           if (e instanceof DiscordAPIError) {
             continue;
           }
@@ -28,8 +27,7 @@ export default async function assignAutoSchoolRole(client) {
         }
         try {
           await member.roles.add(roleId, "Autorole on email in storage");
-        }
-        catch (e) {
+        } catch (e) {
           console.error(e);
         }
       }

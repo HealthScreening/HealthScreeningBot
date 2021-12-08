@@ -3,7 +3,7 @@ import { CommandInteraction } from "discord.js";
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("trigger_auto")
-    .setDescription("Run the \"auto\" screenings now."),
+    .setDescription('Run the "auto" screenings now.'),
   async execute(interaction: CommandInteraction) {
     return await interaction.reply({
       content:

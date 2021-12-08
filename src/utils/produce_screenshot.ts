@@ -14,7 +14,7 @@ export interface GenerateScreenshotParams {
 }
 
 export async function generateScreenshot(
-  options: GenerateScreenshotParams,
+  options: GenerateScreenshotParams
 ): Promise<Buffer> {
   // We assume the browser has been started already.
 
@@ -28,7 +28,7 @@ export async function generateScreenshot(
       visible: true,
     });
 
-    await page.click("label[for=\"guest_isStudent\"]");
+    await page.click('label[for="guest_isStudent"]');
     await page.focus("#guest_first_name");
     await page.type("#guest_first_name", options.firstName);
     await page.focus("#guest_last_name");
@@ -49,8 +49,7 @@ export async function generateScreenshot(
     if (options.isVaxxed) {
       await page.waitForSelector("#q3yes", { visible: true });
       await page.click("#q3yes");
-    }
-    else {
+    } else {
       await page.waitForSelector("#q3yes1", { visible: true });
       await page.click("#q3yes1");
       await page.waitForSelector("#q4no", { visible: true });
@@ -58,11 +57,11 @@ export async function generateScreenshot(
     }
     await page.waitForSelector(
       "div.question-submit > div.text-center > button.btn-primary",
-      { visible: true },
+      { visible: true }
     );
 
     await page.click(
-      "div.question-submit > div.text-center > button.btn-primary",
+      "div.question-submit > div.text-center > button.btn-primary"
     );
     await page.waitForSelector("#guest_badges_content > div");
 
@@ -75,14 +74,12 @@ export async function generateScreenshot(
     });
     // @ts-ignore
     screenshot = await page.screenshot();
-  }
-  finally {
+  } finally {
     await page.close();
   }
   if (screenshot === null) {
     throw new Error("Screenshot was null.");
-  }
-  else {
+  } else {
     return screenshot;
   }
 }

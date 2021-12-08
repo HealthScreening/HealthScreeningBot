@@ -21,7 +21,8 @@ type ConfigCreationAttributes = Optional<
 
 export class Config
   extends Model<ConfigAttributes, ConfigCreationAttributes>
-  implements ConfigAttributes {
+  implements ConfigAttributes
+{
   public userId!: string;
   public firstName!: string;
   public lastName!: string;
@@ -77,7 +78,7 @@ Config.init(
       defaultValue: "iPhone 11",
     },
   },
-  { sequelize },
+  { sequelize }
 );
 
 export async function init() {

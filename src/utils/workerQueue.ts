@@ -65,8 +65,7 @@ export class WorkerQueue<T, RT> {
   public determineNextPosition(priority: number): number {
     if (this._running < this.limit) {
       return 0;
-    }
-    else {
+    } else {
       // To get the next position, it will be processed after all the items with the same priority or higher
       // priority than the specified number.
       return (

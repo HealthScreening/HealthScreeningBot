@@ -14,15 +14,15 @@ module.exports = {
       option
         .setName("message")
         .setDescription("The message to send")
-        .setRequired(true),
+        .setRequired(true)
     )
     .addIntegerOption((option) =>
       option
         .setName("time")
         .setDescription(
-          "The amount of time to wait between messages (in seconds)",
+          "The amount of time to wait between messages (in seconds)"
         )
-        .setRequired(true),
+        .setRequired(true)
     ),
   async execute(interaction: CommandInteraction) {
     if (interaction.user.id != "199605025914224641") {
@@ -30,8 +30,7 @@ module.exports = {
         content: "You are not the bot owner!",
         ephemeral: true,
       });
-    }
-    else {
+    } else {
       const timeToSleep = interaction.options.getInteger("time");
       await interaction.reply("Sending to all...");
       const validUserIDs = new Set();
@@ -59,8 +58,7 @@ module.exports = {
             content: message,
           });
           await sleep(timeToSleep * 1000);
-        }
-        catch (e) {
+        } catch (e) {
           console.error(e);
         }
       }

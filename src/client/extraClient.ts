@@ -52,7 +52,7 @@ export default class HealthScreeningBotClient extends Client {
 
   private loadEventListeners() {
     for (const memberName of Object.getOwnPropertyNames(
-      Object.getPrototypeOf(this),
+      Object.getPrototypeOf(this)
     )) {
       if (memberName.startsWith("on")) {
         this.on(memberName.substring(2), this[memberName].bind(this));
@@ -69,7 +69,7 @@ export default class HealthScreeningBotClient extends Client {
       ) {
         if (
           GENERATE_AUTO_CHOICES.includes(
-            message.content.toLowerCase().replace(/\s+/g, ""),
+            message.content.toLowerCase().replace(/\s+/g, "")
           )
         ) {
           await this.screeningClient.queueAutoCommand(message.author.id, {
@@ -79,16 +79,14 @@ export default class HealthScreeningBotClient extends Client {
           });
         }
       }
-    }
-    catch (e) {
+    } catch (e) {
       console.error(e);
       try {
         await message.reply({
           content: "There was an error while executing this command!",
           failIfNotExists: false,
         });
-      }
-      catch (e) {
+      } catch (e) {
         console.error(e);
       }
     }
@@ -102,7 +100,7 @@ export default class HealthScreeningBotClient extends Client {
         "%s%s ran %s",
         interaction.user.username,
         interaction.user.discriminator,
-        interaction.commandName,
+        interaction.commandName
       );
 
       const command = this.commands.get(interaction.commandName);
@@ -111,24 +109,21 @@ export default class HealthScreeningBotClient extends Client {
 
       try {
         await command.execute(interaction);
-      }
-      catch (error) {
+      } catch (error) {
         console.error(error);
         if (interaction.deferred || interaction.replied) {
           await interaction.followUp({
             content: "There was an error while executing this command!",
             ephemeral: true,
           });
-        }
-        else {
+        } else {
           await interaction.reply({
             content: "There was an error while executing this command!",
             ephemeral: true,
           });
         }
       }
-    }
-    catch (e) {
+    } catch (e) {
       console.error(e);
     }
   }

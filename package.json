@@ -17,6 +17,7 @@
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.29.3",
     "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
     "prettier": "2.5.1",
     "sequelize-cli": "^6.2.0",
     "tslib": "^2.3.1",

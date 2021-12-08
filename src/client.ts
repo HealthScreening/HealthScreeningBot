@@ -19,6 +19,6 @@ const client: HealthScreeningBotClient = new HealthScreeningBotClient({
 // Login to Discord with your client's token
 init()
   .then(startupBrowser)
-  .then(function() {
+  .then(function () {
     client.login(discord.token);
   });

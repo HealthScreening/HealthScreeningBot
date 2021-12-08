@@ -76,7 +76,7 @@ export class ScreeningClient {
       let success = true;
       try {
         const screenshot = await generateScreenshot(
-          params.generateScreenshotParams,
+          params.generateScreenshotParams
         );
         const messageParams: MessageOptions = {
           content: "Here is the screenshot that you requested:",
@@ -96,13 +96,12 @@ export class ScreeningClient {
           }).toMillis() - start;
         try {
           await sendMessage(messageParams);
-        }
-        catch (e: any) {
+        } catch (e: any) {
           // Most likely user who disabled DMs, so we will not log the full error.
           console.error(
             `Failed to send message to user ${
               messageParams.item.id
-            } with error ${e.message || e}`,
+            } with error ${e.message || e}`
           );
           success = false;
         }
@@ -111,29 +110,26 @@ export class ScreeningClient {
             `Finished screening **${params.auto.batchTime[0]}:${
               params.auto.batchTime[1]
             }::${params.auto.itemNumber}** in ${(finish / 1000).toFixed(
-              2,
-            )} seconds`,
+              2
+            )} seconds`
           );
         }
-      }
-      catch (e) {
+      } catch (e) {
         success = false;
         console.error(e);
       }
       if (!success) {
         params.auto?.logChannel.send(
-          `Failed screening **${params.auto.batchTime[0]}:${params.auto.batchTime[1]}::${params.auto.itemNumber}**`,
+          `Failed screening **${params.auto.batchTime[0]}:${params.auto.batchTime[1]}::${params.auto.itemNumber}**`
         );
       }
       if (params.cooldownId) {
         this.clearCooldown(params.cooldownId);
       }
-    }
-    catch (e) {
+    } catch (e) {
       if (params.auto) {
         console.error(e);
-      }
-      else {
+      } else {
         throw e;
       }
     }
@@ -156,15 +152,13 @@ export class ScreeningClient {
         };
         await sendMessage(messageParams);
         return null;
-      }
-      else {
+      } else {
         return {
           userId: options.userId,
           device: "iPhone 11",
         };
       }
-    }
-    else {
+    } else {
       return {
         userId: options.userId,
         auto: {
@@ -184,7 +178,7 @@ export class ScreeningClient {
 
   private processCooldowns(
     userId: string,
-    sendMessageOptions: MessageOptions,
+    sendMessageOptions: MessageOptions
   ): boolean {
     if (this.cooldowns.has(userId)) {
       const messageOptions = {
@@ -195,8 +189,7 @@ export class ScreeningClient {
       };
       sendMessage(messageOptions);
       return false;
-    }
-    else {
+    } else {
       this.cooldowns.add(userId);
       return true;
     }
@@ -218,8 +211,7 @@ export class ScreeningClient {
         ...params.multiMessageParams,
       };
       sendMessage(messageOptions);
-    }
-    else if (params.multiMessageParams.itemType === ItemType.interaction) {
+    } else if (params.multiMessageParams.itemType === ItemType.interaction) {
       await params.multiMessageParams.item.deferReply();
     }
     await this.queue.enqueue(params, 1);
@@ -227,7 +219,7 @@ export class ScreeningClient {
 
   public async queueAutoCommand(
     userId: string,
-    multiMessageParams: MessageOptions,
+    multiMessageParams: MessageOptions
   ): Promise<void> {
     if (!this.processCooldowns(userId, multiMessageParams)) {
       return;
@@ -276,7 +268,7 @@ export class ScreeningClient {
 
   public async queueDailyAuto(
     user: User,
-    auto: AutoBatchOptions & { manual?: boolean },
+    auto: AutoBatchOptions & { manual?: boolean }
   ) {
     const userInfo = (await ScreeningClient.getUserInfo({
       userId: user.id,

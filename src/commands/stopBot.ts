@@ -14,8 +14,7 @@ module.exports = {
         content: "You are not the bot owner!",
         ephemeral: true,
       });
-    }
-    else {
+    } else {
       await interaction.reply("Stopping...");
       if (browser) {
         await browser.close();

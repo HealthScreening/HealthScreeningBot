@@ -4,7 +4,7 @@ import { TextChannel } from "discord.js";
 
 export default async function doAutoLoop(
   client: HealthScreeningBotClient,
-  logChannel: TextChannel,
+  logChannel: TextChannel
 ) {
   const validUserIDs = new Set();
   for (const [, guild] of client.guilds.cache) {
@@ -22,7 +22,7 @@ export default async function doAutoLoop(
     {
       mapToModel: true,
       model: Config,
-    },
+    }
   )) {
     if (!validUserIDs.has(config.userId)) {
       continue;
@@ -31,7 +31,7 @@ export default async function doAutoLoop(
       [config.timeHours, config.timeMinutes],
       batchTimes.get([config.timeHours, config.timeMinutes])
         ? batchTimes.get([config.timeHours, config.timeMinutes]) + 1
-        : 1,
+        : 1
     );
     await client.screeningClient.queueDailyAuto(
       await client.users.fetch(config.userId),
@@ -39,7 +39,7 @@ export default async function doAutoLoop(
         batchTime: [config.timeHours, config.timeMinutes],
         itemNumber: batchTimes.get([config.timeHours, config.timeMinutes]),
         logChannel,
-      },
+      }
     );
   }
   setTimeout(() => doAutoLoop(client, logChannel), 5 * 60 * 1000);

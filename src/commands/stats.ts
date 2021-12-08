@@ -20,13 +20,13 @@ module.exports = {
       .setTitle("Bot Stats")
       .setAuthor(
         "Auto Health Screening",
-        "https://cdn.discordapp.com/icons/889983763994521610/43fc775c6dbce5cf84b76f54e8bf5729.webp",
+        "https://cdn.discordapp.com/icons/889983763994521610/43fc775c6dbce5cf84b76f54e8bf5729.webp"
       )
       .addField("Servers", String(guildSize), true)
       .addField("Total Members in All Servers", String(members), true)
       .addField(
         "People Registered for Auto Screenings",
-        String(registeredPeople),
+        String(registeredPeople)
       )
       .setTimestamp(DateTime.local().toUTC().toMillis());
     interaction.reply({ embeds: [embed] });

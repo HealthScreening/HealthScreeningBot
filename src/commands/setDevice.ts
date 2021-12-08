@@ -7,15 +7,15 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("set_device")
     .setDescription(
-      "Set data for the device dimensions to use during health screenings",
+      "Set data for the device dimensions to use during health screenings"
     )
     .addStringOption((option) =>
       option
         .setName("device_name")
         .setDescription(
-          "The name of the device. Get the device name from the website.",
+          "The name of the device. Get the device name from the website."
         )
-        .setRequired(true),
+        .setRequired(true)
     ),
   async execute(interaction: CommandInteraction) {
     return await interaction.reply({
