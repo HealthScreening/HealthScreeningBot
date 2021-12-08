@@ -1,0 +1,5 @@
+# Ignore javascript files compiled as part of typescript:
+*.js
+
+# Ignore node modules
+node_modules
