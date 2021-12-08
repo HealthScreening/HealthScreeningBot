@@ -5,12 +5,12 @@ information using [`/set_auto`](set-auto).**
 
 ## Aliases
 
-- `hsb/generate-auto`
-- `hsb/generateauto`
+-   `hsb/generate-auto`
+-   `hsb/generateauto`
 
 ## Aliased By
 
-- [`/generate_auto`](generate-auto)
+-   [`/generate_auto`](generate-auto)
 
 ## Arguments
 

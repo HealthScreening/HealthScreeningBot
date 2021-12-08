@@ -15,16 +15,16 @@ const { discord } = require("../config.json");
  * @return {Object[]} An array of command definition objects.
  */
 function getCommands(): Object[] {
-  const commands = [];
-  const commandFiles = readdirSync("./commands").filter((file) =>
-    file.endsWith(".js")
-  );
+    const commands = [];
+    const commandFiles = readdirSync("./commands").filter((file) =>
+        file.endsWith(".js")
+    );
 
-  for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-    commands.push(command.data.toJSON());
-  }
-  return commands;
+    for (const file of commandFiles) {
+        const command = require(`./commands/${file}`);
+        commands.push(command.data.toJSON());
+    }
+    return commands;
 }
 
 const rest = new REST({ version: "9" }).setToken(discord.token);
@@ -36,10 +36,11 @@ const rest = new REST({ version: "9" }).setToken(discord.token);
  * @return {void} Nothing.
  */
 function registerCommands(commands: Object[]): void {
-  rest
-    .put(Routes.applicationCommands(discord.clientId), { body: commands })
-    .then(() => console.log("Successfully registered application commands."))
-    .catch(console.error);
+    rest.put(Routes.applicationCommands(discord.clientId), { body: commands })
+        .then(() =>
+            console.log("Successfully registered application commands.")
+        )
+        .catch(console.error);
 }
 
 registerCommands(getCommands());

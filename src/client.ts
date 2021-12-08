@@ -12,13 +12,13 @@ myIntents.add(Intents.FLAGS.GUILD_MESSAGES);
 myIntents.add(Intents.FLAGS.DIRECT_MESSAGES);
 
 const client: HealthScreeningBotClient = new HealthScreeningBotClient({
-  intents: myIntents,
-  partials: ["CHANNEL"],
+    intents: myIntents,
+    partials: ["CHANNEL"],
 });
 
 // Login to Discord with your client's token
 init()
-  .then(startupBrowser)
-  .then(function () {
-    client.login(discord.token);
-  });
+    .then(startupBrowser)
+    .then(function () {
+        client.login(discord.token);
+    });
