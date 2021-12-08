@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional, Sequelize } from "sequelize";
 
-const config = require("../config.json");
-export const sequelize: Sequelize = new Sequelize(config.database);
+import { database } from "../config";
+export const sequelize: Sequelize = new Sequelize(database);
 
 interface ConfigAttributes {
   userId: string;

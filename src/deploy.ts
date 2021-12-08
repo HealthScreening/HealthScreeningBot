@@ -15,7 +15,7 @@ interface Command {
 
 }
 
-const { discord } = require("../config.json");
+import { discord } from "../config";
 
 /**
  * Gets an array of command definition objects from the command source files located at src/commands.

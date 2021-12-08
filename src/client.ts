@@ -2,8 +2,7 @@ import { Intents } from "discord.js";
 import { init } from "./orm";
 import HealthScreeningBotClient from "./client/extraClient";
 import { startupBrowser } from "./utils/produce_screenshot";
-
-const { discord } = require("../config.json");
+import { discord } from "../config";
 
 const myIntents = new Intents();
 myIntents.add(Intents.FLAGS.GUILDS);

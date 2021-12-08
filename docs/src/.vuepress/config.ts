@@ -1,7 +1,7 @@
 import type { DefaultThemeOptions } from "vuepress";
 import { defineUserConfig } from "vuepress";
 
-const { description } = require("../../package");
+import { description } from "../../package.json";
 
 import quickstartSidebar from "./sidebar/quickstart";
 import commandsSidebar from "./sidebar/commands";
