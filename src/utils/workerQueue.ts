@@ -32,7 +32,10 @@ export class WorkerQueue<T, RT> {
     public readonly worker: (item: T) => Promise<RT>;
     public readonly limit: number;
 
-    public constructor(options: { worker: (item: T) => Promise<RT>, limit?: number }) {
+    public constructor(options: {
+        worker: (item: T) => Promise<RT>;
+        limit?: number;
+    }) {
         this.worker = options.worker;
         this.limit = options.limit || 1;
     }
@@ -40,7 +43,7 @@ export class WorkerQueue<T, RT> {
     public enqueue(item: T, priority: number): Promise<RT> {
         return new Promise((resolve) => {
             this._arr[priority] = this._arr[priority] || [];
-            this._arr[priority].push({item, resolver: resolve});
+            this._arr[priority].push({ item, resolver: resolve });
             this._loop();
         });
     }
@@ -49,7 +52,10 @@ export class WorkerQueue<T, RT> {
         let highestPriority = -1;
         for (const priority in this._arr) {
             if (this._arr.hasOwnProperty(priority)) {
-                highestPriority = Math.max(highestPriority, parseInt(priority, 10));
+                highestPriority = Math.max(
+                    highestPriority,
+                    parseInt(priority, 10)
+                );
             }
         }
         return highestPriority;
@@ -65,11 +71,14 @@ export class WorkerQueue<T, RT> {
         } else {
             // To get the next position, it will be processed after all the items with the same priority or higher
             // priority than the specified number.
-            return Object
-                .entries(this._arr)
-                .filter((value => Number.parseInt(value[0], 10) >= priority)) // Filter out all the items with lower priority
-                .map(value => value[1].length)// Map the key-value pair to the value array's length
-                .reduce((a, b) => a + b, 0) + 1; // Sum up all the lengths and add 1 to get the next position
+            return (
+                Object.entries(this._arr)
+                    .filter(
+                        (value) => Number.parseInt(value[0], 10) >= priority
+                    ) // Filter out all the items with lower priority
+                    .map((value) => value[1].length) // Map the key-value pair to the value array's length
+                    .reduce((a, b) => a + b, 0) + 1
+            ); // Sum up all the lengths and add 1 to get the next position
         }
     }
 
@@ -92,5 +101,4 @@ export class WorkerQueue<T, RT> {
             });
         }
     }
-
 }

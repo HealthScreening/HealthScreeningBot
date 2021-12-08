@@ -1,13 +1,24 @@
-import {Client, ClientOptions, Collection, CommandInteraction, Message, TextChannel} from "discord.js";
+import {
+    Client,
+    ClientOptions,
+    Collection,
+    CommandInteraction,
+    Message,
+    TextChannel,
+} from "discord.js";
 import path from "path";
 import fs from "fs";
-import {ScreeningClient} from "../screeningClient";
-import {ItemType} from "../utils/multiMessage";
+import { ScreeningClient } from "../screeningClient";
+import { ItemType } from "../utils/multiMessage";
 import assignAutoSchoolRole from "./autoAssignSchoolRole";
-import {SlashCommandBuilder} from "@discordjs/builders";
+import { SlashCommandBuilder } from "@discordjs/builders";
 import doAutoLoop from "./doAutoLoop";
 
-const GENERATE_AUTO_CHOICES = ["hsb/generateauto", "hsb/generate-auto", "hsb/generate_auto"]
+const GENERATE_AUTO_CHOICES = [
+    "hsb/generateauto",
+    "hsb/generate-auto",
+    "hsb/generate_auto",
+];
 
 interface Command {
     data: SlashCommandBuilder;
@@ -26,8 +37,10 @@ export default class HealthScreeningBotClient extends Client {
     }
 
     private loadCommands() {
-        const commandPath = path.resolve(__dirname, '..', 'commands')
-        const commandFiles = fs.readdirSync(commandPath).filter(file => file.endsWith('.js'));
+        const commandPath = path.resolve(__dirname, "..", "commands");
+        const commandFiles = fs
+            .readdirSync(commandPath)
+            .filter((file) => file.endsWith(".js"));
 
         for (const file of commandFiles) {
             const command: Command = require(path.resolve(commandPath, file));
@@ -38,7 +51,9 @@ export default class HealthScreeningBotClient extends Client {
     }
 
     private loadEventListeners() {
-        for (const memberName of Object.getOwnPropertyNames(Object.getPrototypeOf(this))) {
+        for (const memberName of Object.getOwnPropertyNames(
+            Object.getPrototypeOf(this)
+        )) {
             if (memberName.startsWith("on")) {
                 this.on(memberName.substring(2), this[memberName].bind(this));
             }
@@ -48,24 +63,34 @@ export default class HealthScreeningBotClient extends Client {
 
     private async onmessageCreate(message: Message) {
         try {
-            if (message.content && message.content.substring(0, 4).toLowerCase() === "hsb/") {
-                if (GENERATE_AUTO_CHOICES.includes(message.content.toLowerCase().replace(/\s+/g, ""))) {
-                    await this.screeningClient.queueAutoCommand(message.author.id, {
-                        itemType: ItemType.message,
-                        item: message,
-                        replyMessage: message
-                    })
+            if (
+                message.content &&
+                message.content.substring(0, 4).toLowerCase() === "hsb/"
+            ) {
+                if (
+                    GENERATE_AUTO_CHOICES.includes(
+                        message.content.toLowerCase().replace(/\s+/g, "")
+                    )
+                ) {
+                    await this.screeningClient.queueAutoCommand(
+                        message.author.id,
+                        {
+                            itemType: ItemType.message,
+                            item: message,
+                            replyMessage: message,
+                        }
+                    );
                 }
             }
         } catch (e) {
-            console.error(e)
+            console.error(e);
             try {
                 await message.reply({
                     content: "There was an error while executing this command!",
-                    failIfNotExists: false
-                })
+                    failIfNotExists: false,
+                });
             } catch (e) {
-                console.error(e)
+                console.error(e);
             }
         }
     }
@@ -74,7 +99,12 @@ export default class HealthScreeningBotClient extends Client {
         try {
             if (!interaction.isCommand()) return;
 
-            console.debug("%s%s ran %s", interaction.user.username, interaction.user.discriminator, interaction.commandName);
+            console.debug(
+                "%s%s ran %s",
+                interaction.user.username,
+                interaction.user.discriminator,
+                interaction.commandName
+            );
 
             const command = this.commands.get(interaction.commandName);
 
@@ -86,13 +116,15 @@ export default class HealthScreeningBotClient extends Client {
                 console.error(error);
                 if (interaction.deferred || interaction.replied) {
                     await interaction.followUp({
-                        content: 'There was an error while executing this command!',
-                        ephemeral: true
+                        content:
+                            "There was an error while executing this command!",
+                        ephemeral: true,
                     });
                 } else {
                     await interaction.reply({
-                        content: 'There was an error while executing this command!',
-                        ephemeral: true
+                        content:
+                            "There was an error while executing this command!",
+                        ephemeral: true,
                     });
                 }
             }
@@ -102,9 +134,11 @@ export default class HealthScreeningBotClient extends Client {
     }
 
     private async doOnReady() {
-        assignAutoSchoolRole(this)
+        assignAutoSchoolRole(this);
         // @ts-ignore
-        const logChannel: TextChannel = await ((await this.guilds.fetch("889983763994521610")).channels.fetch("902375187150934037"));
+        const logChannel: TextChannel = await (
+            await this.guilds.fetch("889983763994521610")
+        ).channels.fetch("902375187150934037");
         doAutoLoop(this, logChannel);
     }
 }

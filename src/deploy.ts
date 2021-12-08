@@ -1,12 +1,12 @@
 /**
  * Documentation can be found at https://pokestarfan.ga/docs/developer-documentation/api-reference/deploy-ts/.
  */
-import {REST} from '@discordjs/rest';
-import {Routes} from 'discord-api-types/v9';
+import { REST } from "@discordjs/rest";
+import { Routes } from "discord-api-types/v9";
 
-import { readdirSync } from 'fs';
+import { readdirSync } from "fs";
 
-const {discord} = require("../config.json");
+const { discord } = require("../config.json");
 
 /**
  * Gets an array of command definition objects from the command source files located at src/commands.
@@ -16,7 +16,9 @@ const {discord} = require("../config.json");
  */
 function getCommands(): Object[] {
     const commands = [];
-    const commandFiles = readdirSync('./commands').filter(file => file.endsWith('.js'));
+    const commandFiles = readdirSync("./commands").filter((file) =>
+        file.endsWith(".js")
+    );
 
     for (const file of commandFiles) {
         const command = require(`./commands/${file}`);
@@ -25,8 +27,7 @@ function getCommands(): Object[] {
     return commands;
 }
 
-
-const rest = new REST({version: '9'}).setToken(discord.token);
+const rest = new REST({ version: "9" }).setToken(discord.token);
 
 /**
  * Registers the given commands globally with Discord.
@@ -35,10 +36,11 @@ const rest = new REST({version: '9'}).setToken(discord.token);
  * @return {void} Nothing.
  */
 function registerCommands(commands: Object[]): void {
-    rest.put(
-        Routes.applicationCommands(discord.clientId),
-        {body: commands},
-    ).then(() => console.log('Successfully registered application commands.')).catch(console.error)
+    rest.put(Routes.applicationCommands(discord.clientId), { body: commands })
+        .then(() =>
+            console.log("Successfully registered application commands.")
+        )
+        .catch(console.error);
 }
 
 registerCommands(getCommands());

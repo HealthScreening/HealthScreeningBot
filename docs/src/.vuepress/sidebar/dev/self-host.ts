@@ -1,10 +1,10 @@
-import {SidebarItem} from "@vuepress/theme-default/lib/shared/nav";
+import { SidebarItem } from "@vuepress/theme-default/lib/shared/nav";
 
 const configuration: SidebarItem = {
     text: "Configuration",
     link: "/dev/self-host/configuration",
-    children: []
-}
+    children: [],
+};
 
 const selfHostSidebar: SidebarItem = {
     text: "Self Host the Bot",
@@ -12,8 +12,8 @@ const selfHostSidebar: SidebarItem = {
     children: [
         "/dev/self-host/requirements",
         "/dev/self-host/installation",
-        configuration
-    ]
-}
+        configuration,
+    ],
+};
 
 export default selfHostSidebar;
