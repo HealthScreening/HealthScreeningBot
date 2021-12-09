@@ -25,6 +25,7 @@ interface ItemType<T, RT> {
  * @property {number} concurrency The number of concurrent operations that can be ran.
  *
  * @todo Actually utilize a queue for the values instead of an array, as those are guaranteed to be O(1) on enqueue and dequeue operations.
+ * @todo Use a Map instead of an Object.
  */
 export class WorkerQueue<T, RT> {
   private _arr: { [item: number]: ItemType<T, RT>[] } = {};
@@ -51,7 +52,7 @@ export class WorkerQueue<T, RT> {
   private getHighestPriority(): number {
     let highestPriority = -1;
     for (const priority in this._arr) {
-      if (this._arr.hasOwnProperty(priority)) {
+      if (Object.prototype.hasOwnProperty.call(this._arr, priority)) {
         highestPriority = Math.max(highestPriority, parseInt(priority, 10));
       }
     }

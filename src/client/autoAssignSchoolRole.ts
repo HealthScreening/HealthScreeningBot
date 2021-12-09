@@ -1,7 +1,10 @@
 import { DiscordAPIError, GuildMember } from "discord.js";
 import { Config } from "../orm";
+import HealthScreeningBotClient from "./extraClient";
 
-export default async function assignAutoSchoolRole(client) {
+export default async function assignAutoSchoolRole(
+  client: HealthScreeningBotClient
+): Promise<void> {
   const data = {
     "bxscience.edu": "893918744437456916",
     "bths.edu": "893918912188661850",
@@ -14,10 +17,8 @@ export default async function assignAutoSchoolRole(client) {
     for (const suffix_data of Object.entries(data)) {
       suffix = suffix_data[0];
       roleId = suffix_data[1];
-      // @ts-ignore
       if (item.email.endsWith(suffix)) {
         try {
-          // @ts-ignore
           member = await guild.members.fetch(item.userId);
         } catch (e) {
           if (e instanceof DiscordAPIError) {

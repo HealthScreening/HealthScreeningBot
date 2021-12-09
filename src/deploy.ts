@@ -6,16 +6,8 @@ import { Routes } from "discord-api-types/v9";
 
 import { readdirSync } from "fs";
 
-/**
- * An interface represetning a command.
- *
- * @todo Add fields.
- */
-interface Command {
-
-}
-
 import { discord } from "../config";
+import { Command } from "./client/extraClient";
 
 /**
  * Gets an array of command definition objects from the command source files located at src/commands.
@@ -30,7 +22,10 @@ function getCommands(): Command[] {
   );
 
   for (const file of commandFiles) {
+    /* eslint-disable @typescript-eslint/no-var-requires -- Disabled because
+      we dynamically require, which is impossible with typescript's import system. */
     const command = require(`./commands/${file}`);
+    /* eslint-enable @typescript-eslint/no-var-requires */
     commands.push(command.data.toJSON());
   }
   return commands;

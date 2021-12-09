@@ -20,10 +20,10 @@ const GENERATE_AUTO_CHOICES = [
   "hsb/generate_auto",
 ];
 
-interface Command {
+export interface Command {
   data: SlashCommandBuilder;
 
-  execute(interaction: CommandInteraction): Promise<any>;
+  execute(interaction: CommandInteraction): Promise<void>;
 }
 
 export default class HealthScreeningBotClient extends Client {
@@ -43,9 +43,10 @@ export default class HealthScreeningBotClient extends Client {
       .filter((file) => file.endsWith(".js"));
 
     for (const file of commandFiles) {
+      /* eslint-disable @typescript-eslint/no-var-requires -- Disabled because
+      we dynamically require, which is impossible with typescript's import system. */
       const command: Command = require(path.resolve(commandPath, file));
-      // Set a new item in the Collection
-      // With the key as the command name and the value as the exported module
+      /* eslint-enable @typescript-eslint/no-var-requires */
       this.commands.set(command.data.name, command);
     }
   }
@@ -86,8 +87,8 @@ export default class HealthScreeningBotClient extends Client {
           content: "There was an error while executing this command!",
           failIfNotExists: false,
         });
-      } catch (e) {
-        console.error(e);
+      } catch (e2) {
+        console.error(e2);
       }
     }
   }
@@ -129,11 +130,12 @@ export default class HealthScreeningBotClient extends Client {
   }
 
   private async doOnReady() {
-    assignAutoSchoolRole(this);
-    // @ts-ignore
-    const logChannel: TextChannel = await (
+    const logChannel: TextChannel = (await (
       await this.guilds.fetch("889983763994521610")
-    ).channels.fetch("902375187150934037");
-    doAutoLoop(this, logChannel);
+    ).channels.fetch("902375187150934037")) as TextChannel;
+    await Promise.all([
+      assignAutoSchoolRole(this),
+      doAutoLoop(this, logChannel),
+    ]);
   }
 }

@@ -40,20 +40,17 @@ module.exports = {
         }
       }
       const items = await Config.findAll();
-      let message =
-          "The bot owner has sent a message to everyone registered under the auto health screening bot:\n----\n" +
-          interaction.options.getString("message") +
-          "\n----\nIf you have any questions, contact <@199605025914224641> (PokestarFan#8524).",
-        user: User;
+      const message =
+        "The bot owner has sent a message to everyone registered under the auto health screening bot:\n----\n" +
+        interaction.options.getString("message") +
+        "\n----\nIf you have any questions, contact <@199605025914224641> (PokestarFan#8524).";
+      let user: User;
       for (const item of items) {
         try {
-          // @ts-ignore
           if (!validUserIDs.has(item.userId)) {
             continue;
           }
-          // @ts-ignore
           user = await interaction.client.users.fetch(item.userId);
-          // @ts-ignore
           await user.send({
             content: message,
           });

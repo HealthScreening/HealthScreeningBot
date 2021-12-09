@@ -13,6 +13,7 @@ import {
  *
  * @enum {number}
  */
+// eslint-disable-next-line no-shadow
 export enum ItemType {
   interaction,
   user,

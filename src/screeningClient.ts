@@ -59,8 +59,6 @@ export class ScreeningClient {
   });
   private readonly cooldowns: Set<string> = new Set();
 
-  public constructor() {}
-
   /**
    * Actually processes a screening request.
    *
@@ -96,7 +94,7 @@ export class ScreeningClient {
           }).toMillis() - start;
         try {
           await sendMessage(messageParams);
-        } catch (e: any) {
+        } catch (e) {
           // Most likely user who disabled DMs, so we will not log the full error.
           console.error(
             `Failed to send message to user ${
@@ -246,13 +244,13 @@ export class ScreeningClient {
     await this.dealWithQueue(processParams);
   }
 
-  public async queueOnceCommand(userId: string, params: ProcessParams) {
+  public async queueOnceCommand(userId: string, params: ProcessParams): Promise<void> {
     if (!this.processCooldowns(userId, params.multiMessageParams)) {
       return;
     }
-    const userInfo = (await ScreeningClient.getUserInfo({
+    const userInfo = await ScreeningClient.getUserInfo({
       userId: userId,
-    }))!;
+    });
     const processParams: ProcessParams = {
       generateScreenshotParams: {
         ...params.generateScreenshotParams,
@@ -269,10 +267,10 @@ export class ScreeningClient {
   public async queueDailyAuto(
     user: User,
     auto: AutoBatchOptions & { manual?: boolean }
-  ) {
+  ): Promise<void> {
     const userInfo = (await ScreeningClient.getUserInfo({
       userId: user.id,
-    }))!;
+    }));
     let content =
       "If you enjoyed the bot, please share this server with your friends!: https://discord.gg/yJbvcD4QBP\n----\nHere is the screenshot that has been auto-generated for you:";
     if (auto.manual) {

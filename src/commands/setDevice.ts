@@ -1,8 +1,6 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
 
-const puppeteer = require("puppeteer");
-
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("set_device")

@@ -5,7 +5,7 @@ import { TextChannel } from "discord.js";
 export default async function doAutoLoop(
   client: HealthScreeningBotClient,
   logChannel: TextChannel
-) {
+): Promise<void> {
   const validUserIDs = new Set();
   for (const [, guild] of client.guilds.cache) {
     for (const [userId] of await guild.members.fetch()) {

@@ -1,7 +1,9 @@
 import * as Buffer from "buffer";
 
 import { Browser, devices } from "puppeteer";
-const puppeteer = require("puppeteer"); // Really hates it if I don't do this
+/* eslint-disable @typescript-eslint/no-var-requires -- Really hates it if I don't do this */
+const puppeteer = require("puppeteer");
+/* eslint-enable @typescript-eslint/no-var-requires */
 
 export let browser: Browser | null = null;
 
@@ -72,8 +74,8 @@ export async function generateScreenshot(
     await page.evaluate(() => {
       window.scrollBy(0, -10000);
     });
-    // @ts-ignore
-    screenshot = await page.screenshot();
+
+    screenshot = await page.screenshot() as Buffer;
   } finally {
     await page.close();
   }
@@ -84,7 +86,7 @@ export async function generateScreenshot(
   }
 }
 
-export async function startupBrowser() {
+export async function startupBrowser(): Promise<void> {
   if (browser === null) {
     browser = await puppeteer.launch({
       headless: true,

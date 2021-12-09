@@ -81,6 +81,6 @@ Config.init(
   { sequelize }
 );
 
-export async function init() {
+export async function init(): Promise<void> {
   await sequelize.sync({ alter: true });
 }

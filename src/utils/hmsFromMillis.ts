@@ -1,4 +1,4 @@
-export default function hmsFromMillis(milliseconds) {
+export default function hmsFromMillis(milliseconds: number): string {
   // Get hours from milliseconds
   const hours = milliseconds / (1000 * 60 * 60);
   const absoluteHours = Math.floor(hours);
