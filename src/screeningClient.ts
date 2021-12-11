@@ -18,7 +18,7 @@ import { WorkerQueue } from "./utils/workerQueue";
 import {
   generateScreenshot,
   GenerateScreenshotParams,
-} from "./utils/produce_screenshot";
+} from "./utils/produceScreenshot";
 import { ItemType, MessageOptions, sendMessage } from "./utils/multiMessage";
 import { Config } from "./orm";
 import { TextChannel, User } from "discord.js";
