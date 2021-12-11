@@ -1,8 +1,12 @@
 import { Options } from "sequelize/types";
 
 export const database: Options = {
-  storage: "./data.db",
-  dialect: "sqlite",
+  dialect: "postgres",
+  username: "healthscreeningbot",
+  password: "healthscreeningbot",
+  database: "healthscreeningbot",
+  host: "localhost",
+  port: 5432
 };
 
 export const discord = {
