@@ -8,7 +8,7 @@
     "luxon": "^2.2.0",
     "puppeteer": "^11.0.0",
     "sequelize": "^6.6.5",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "npm:@vscode/sqlite3@^5.0.7"
   },
   "devDependencies": {
     "@types/luxon": "^2.0.7",
