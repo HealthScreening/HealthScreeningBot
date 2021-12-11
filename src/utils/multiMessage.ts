@@ -17,10 +17,10 @@
 import { Embed } from "@discordjs/builders";
 import { APIMessage } from "discord-api-types";
 import {
-    CommandInteraction,
-    HTTPAttachmentData,
-    Message,
-    User,
+  CommandInteraction,
+  HTTPAttachmentData,
+  Message,
+  User,
 } from "discord.js";
 
 /**
@@ -29,10 +29,11 @@ import {
  *
  * @enum {number}
  */
+// eslint-disable-next-line no-shadow
 export enum ItemType {
-    interaction,
-    user,
-    message,
+  interaction,
+  user,
+  message,
 }
 
 /**
@@ -40,27 +41,27 @@ export enum ItemType {
  * At least one of {@link BaseMessageOptions.content} or {@link BaseMessageOptions.embeds} must be provided.
  */
 interface BaseMessageOptions {
-    /**
-     * The text to send.
-     */
-    content?: string;
-    /**
-     * The embeds to send.
-     */
-    embeds?: Embed[];
-    files?: HTTPAttachmentData[];
-    replyMessage?: Message;
-    /**
-     * Whether or not to send the message if the message being replied to is deleted.
-     *
-     * If {@link NonInteractionMessageOptions.replyMessage} is not provided, this will be ignored.
-     */
-    failIfNotExists?: boolean;
-    /**
-     * Whether to send the message as an ephemeral message. An ephemeral message is a message that can only be seen by
-     * the user who created the interaction, but also vanishes if the client is restarted.
-     */
-    ephemeral?: boolean;
+  /**
+   * The text to send.
+   */
+  content?: string;
+  /**
+   * The embeds to send.
+   */
+  embeds?: Embed[];
+  files?: HTTPAttachmentData[];
+  replyMessage?: Message;
+  /**
+   * Whether or not to send the message if the message being replied to is deleted.
+   *
+   * If {@link NonInteractionMessageOptions.replyMessage} is not provided, this will be ignored.
+   */
+  failIfNotExists?: boolean;
+  /**
+   * Whether to send the message as an ephemeral message. An ephemeral message is a message that can only be seen by
+   * the user who created the interaction, but also vanishes if the client is restarted.
+   */
+  ephemeral?: boolean;
 }
 
 /**
@@ -68,8 +69,8 @@ interface BaseMessageOptions {
  * @extends {BaseMessageOptions}
  */
 export interface InteractionMessageOptions extends BaseMessageOptions {
-    itemType: ItemType.interaction;
-    item: CommandInteraction;
+  itemType: ItemType.interaction;
+  item: CommandInteraction;
 }
 
 /**
@@ -77,8 +78,8 @@ export interface InteractionMessageOptions extends BaseMessageOptions {
  * @extends {BaseMessageOptions}
  */
 export interface UserMessageOptions extends BaseMessageOptions {
-    itemType: ItemType.user;
-    item: User;
+  itemType: ItemType.user;
+  item: User;
 }
 
 /**
@@ -86,68 +87,68 @@ export interface UserMessageOptions extends BaseMessageOptions {
  * @extends {BaseMessageOptions}
  */
 export interface MessageMessageOptions extends BaseMessageOptions {
-    itemType: ItemType.message;
-    item: Message;
+  itemType: ItemType.message;
+  item: Message;
 }
 
 /**
  * A union type consisting of all possible message options.
  */
 export type MessageOptions =
-    | InteractionMessageOptions
-    | UserMessageOptions
-    | MessageMessageOptions;
+  | InteractionMessageOptions
+  | UserMessageOptions
+  | MessageMessageOptions;
 
 /**
  * The default options for fields in {@link MessageOptions} that are optional boolean fields.
  */
 const defaultOptions = {
-    ephemeral: false,
-    failIfNotExists: false,
-    files: [],
+  ephemeral: false,
+  failIfNotExists: false,
+  files: [],
 };
 
 export function sendMessage(
-    options: MessageOptions
+  options: MessageOptions
 ): Promise<Message | APIMessage> {
-    const trueOptions: MessageOptions = { ...defaultOptions, ...options };
-    switch (trueOptions.itemType) {
-        case ItemType.user:
-            return trueOptions.item.send({
-                content: trueOptions.content,
-                embeds: trueOptions.embeds,
-                reply: {
-                    messageReference: trueOptions.replyMessage,
-                    failIfNotExists: trueOptions.failIfNotExists,
-                },
-                files: trueOptions.files,
-            });
-        case ItemType.message:
-            return trueOptions.item.channel.send({
-                content: trueOptions.content,
-                embeds: trueOptions.embeds,
-                reply: {
-                    messageReference: trueOptions.replyMessage,
-                    failIfNotExists: trueOptions.failIfNotExists,
-                },
-                files: trueOptions.files,
-            });
-        case ItemType.interaction:
-            if (trueOptions.item.deferred || trueOptions.item.replied) {
-                return trueOptions.item.followUp({
-                    content: trueOptions.content,
-                    embeds: trueOptions.embeds,
-                    ephemeral: trueOptions.ephemeral,
-                    files: trueOptions.files,
-                });
-            } else {
-                return trueOptions.item.reply({
-                    content: trueOptions.content,
-                    embeds: trueOptions.embeds,
-                    ephemeral: trueOptions.ephemeral,
-                    files: trueOptions.files,
-                    fetchReply: true,
-                });
-            }
-    }
+  const trueOptions: MessageOptions = { ...defaultOptions, ...options };
+  switch (trueOptions.itemType) {
+    case ItemType.user:
+      return trueOptions.item.send({
+        content: trueOptions.content,
+        embeds: trueOptions.embeds,
+        reply: {
+          messageReference: trueOptions.replyMessage,
+          failIfNotExists: trueOptions.failIfNotExists,
+        },
+        files: trueOptions.files,
+      });
+    case ItemType.message:
+      return trueOptions.item.channel.send({
+        content: trueOptions.content,
+        embeds: trueOptions.embeds,
+        reply: {
+          messageReference: trueOptions.replyMessage,
+          failIfNotExists: trueOptions.failIfNotExists,
+        },
+        files: trueOptions.files,
+      });
+    case ItemType.interaction:
+      if (trueOptions.item.deferred || trueOptions.item.replied) {
+        return trueOptions.item.followUp({
+          content: trueOptions.content,
+          embeds: trueOptions.embeds,
+          ephemeral: trueOptions.ephemeral,
+          files: trueOptions.files,
+        });
+      } else {
+        return trueOptions.item.reply({
+          content: trueOptions.content,
+          embeds: trueOptions.embeds,
+          ephemeral: trueOptions.ephemeral,
+          files: trueOptions.files,
+          fetchReply: true,
+        });
+      }
+  }
 }

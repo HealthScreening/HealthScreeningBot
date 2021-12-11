@@ -24,12 +24,12 @@ ancestry), they can use the alternate form of the n word without the hard r.
 
 Vulgar media can be defined as anything that is created with the explicit intent to be sexual. This includes:
 
--   pictures and fictional representations (drawings, computer generated models) of people in revealing underwear
--   pictures and fictional representations (drawings, computer generated models) of completely naked people
--   pictures and fictional representations (drawings, computer generated models) of explicit sexual acts
--   explicit text (erotica or any other text describing explicit sexual acts, even if there are no direct mentions of
-    genitalia)
--   direct links to any of the above
+- pictures and fictional representations (drawings, computer generated models) of people in revealing underwear
+- pictures and fictional representations (drawings, computer generated models) of completely naked people
+- pictures and fictional representations (drawings, computer generated models) of explicit sexual acts
+- explicit text (erotica or any other text describing explicit sexual acts, even if there are no direct mentions of
+  genitalia)
+- direct links to any of the above
 
 In addition, anything that is illegal, such as child pornography, incest, and/or beastiality, will result in a permanent
 ban, even of fictional characters, and may result in reporting of the content to authorities.
@@ -49,21 +49,21 @@ required to take it down.
 
 ### No Spam
 
--   Do not spam pings at a person, especially if they ask you to stop.
--   Do not spam commands with the sole purpose of clogging up a channel.
--   Do not spam suggestions, especially if they are being denied.
--   Do not spam the reaction roles.
+- Do not spam pings at a person, especially if they ask you to stop.
+- Do not spam commands with the sole purpose of clogging up a channel.
+- Do not spam suggestions, especially if they are being denied.
+- Do not spam the reaction roles.
 
 ### No Discrimination
 
 You are not allowed to discriminate against anyone on account of their
 
--   race
--   color
--   religion
--   sexual orientation
--   gender identity
--   national origin
+- race
+- color
+- religion
+- sexual orientation
+- gender identity
+- national origin
 
 Doing so almost guarantees an instant mute.
 

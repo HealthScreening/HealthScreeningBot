@@ -12,9 +12,9 @@ Sends a message to all users that are registered for auto screenings.
 
 The message to send to all users.
 
--   Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
--   Required: Yes
--   Example: "Hello, world!"
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+- Required: Yes
+- Example: "Hello, world!"
 
 ### time
 
@@ -24,6 +24,6 @@ The amount of seconds to wait in between messages.
 If you want there to be no delay, set the time to 0.
 :::
 
--   Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
--   Required: Yes
--   Example: 5
+- Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
+- Required: Yes
+- Example: 5
