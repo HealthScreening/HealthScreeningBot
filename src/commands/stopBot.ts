@@ -18,7 +18,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
 import { exit } from "process";
 
-import { browser } from "../utils/produceScreenshot";
+import { browser } from "../utils/produceScreenshot/browser";
 
 module.exports = {
   data: new SlashCommandBuilder()

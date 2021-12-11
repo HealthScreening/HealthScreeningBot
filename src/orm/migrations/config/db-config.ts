@@ -14,19 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { Options } from "sequelize/types";
+import { database } from "../../../config";
 
-export const database: Options = {
-  dialect: "postgres",
-  username: "healthscreeningbot",
-  password: "healthscreeningbot",
-  database: "healthscreeningbot",
-  host: "localhost",
-  port: 5432
-};
-
-export const discord = {
-  token: "<bot token>",
-  clientId: "890001571004448800",
-  guildId: "889983763994521610",
-};
+export const development = database, testing = database, production = database

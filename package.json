@@ -1,5 +1,5 @@
 {
-  "name": "HealthScreeningBot",
+  "name": "healthscreeningbot",
   "version": "2.0.0",
   "author": {
     "email": "sarkaraoyan@gmail.com",
@@ -60,7 +60,7 @@
     "eslint": "^8.4.1",
     "eslint-config-prettier": "^8.3.0",
     "prettier": "2.5.1",
-    "sequelize-cli": "^6.2.0",
+    "sequelize-cli": "^6.3.0",
     "tslib": "^2.3.1",
     "typescript": "^4.5.3"
   },
