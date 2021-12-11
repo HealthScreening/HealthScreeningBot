@@ -25,6 +25,9 @@
   },
   "scripts": {
     "start": "node src/client.js",
-    "deploy": "node src/deploy.js"
+    "deploy": "node src/deploy.js",
+    "prettier": "prettier --write .",
+    "prettier:check": "prettier --check .",
+    "lint": "eslint src"
   }
 }
