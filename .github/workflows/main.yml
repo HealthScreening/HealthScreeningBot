@@ -27,5 +27,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Install dependencies
         run: npm ci
+      - name: Copy config file over to allow tests to run
+        run: cp config.example.ts config.ts
       - name: Compile via TypeScript
         run: tsc -p tsconfig.json
