@@ -17,7 +17,7 @@
 import { Intents } from "discord.js";
 import { init } from "./orm";
 import HealthScreeningBotClient from "./client/extraClient";
-import { startupBrowser } from "./utils/produceScreenshot";
+import { startupBrowser } from "./utils/produceScreenshot/browser";
 import { discord } from "../config";
 
 const myIntents = new Intents();

@@ -100,10 +100,11 @@ export class WorkerQueue<T, RT> {
 
   private _loop(): void {
     if (this._running < this.limit && !this.isEmpty()) {
-      const highestPriorityArray = this._arr[this.getHighestPriority()];
+      const highestPriority = this.getHighestPriority();
+      const highestPriorityArray = this._arr[highestPriority];
       const item: ItemType<T, RT> = highestPriorityArray.shift();
       if (highestPriorityArray.length === 0) {
-        delete this._arr[this.getHighestPriority()];
+        delete this._arr[highestPriority];
       }
       this._running++;
       this.worker(item.item).then((result: RT) => {
