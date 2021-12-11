@@ -71,10 +71,13 @@ export class WorkerQueue<T, RT> {
       // priority than the specified number.
       return (
         Object.entries(this._arr)
-          .filter((value) => Number.parseInt(value[0], 10) >= priority) // Filter out all the items with lower priority
-          .map((value) => value[1].length) // Map the key-value pair to the value array's length
+          // Filter out all the items with lower priority
+          .filter((value) => Number.parseInt(value[0], 10) >= priority)
+          // Map the key-value pair to the value array's length
+          .map((value) => value[1].length)
+          // Sum up all the lengths and add 1 to get the next position
           .reduce((a, b) => a + b, 0) + 1
-      ); // Sum up all the lengths and add 1 to get the next position
+      );
     }
   }
 
