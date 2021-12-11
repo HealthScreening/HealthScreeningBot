@@ -85,10 +85,10 @@ export class ScreeningClient {
     }
     const processParams: ProcessParams = {
       generateScreenshotParams: {
-        firstName: userInfo.auto.firstName,
-        lastName: userInfo.auto.lastName,
-        email: userInfo.auto.email,
-        isVaxxed: userInfo.auto.vaccinated,
+        firstName: userInfo.auto!.firstName,
+        lastName: userInfo.auto!.lastName,
+        email: userInfo.auto!.email,
+        isVaxxed: userInfo.auto!.vaccinated,
       },
       multiMessageParams: {
         ...multiMessageParams,
@@ -111,7 +111,7 @@ export class ScreeningClient {
     const processParams: ProcessParams = {
       generateScreenshotParams: {
         ...params.generateScreenshotParams,
-        deviceName: userInfo.device,
+        deviceName: userInfo!.device,
       },
       multiMessageParams: {
         ...params.multiMessageParams,
@@ -125,9 +125,9 @@ export class ScreeningClient {
     user: User,
     auto: AutoBatchOptions & { manual?: boolean }
   ): Promise<void> {
-    const userInfo = await getUserInfo({
+    const userInfo = (await getUserInfo({
       userId: user.id,
-    });
+    }))!;
     let content =
       "If you enjoyed the bot, please share this server with your friends!: https://discord.gg/yJbvcD4QBP\n----\nHere is the screenshot that has been auto-generated for you:";
     if (auto.manual) {
@@ -137,11 +137,11 @@ export class ScreeningClient {
     }
     const processParams: ProcessParams = {
       generateScreenshotParams: {
-        firstName: userInfo.auto.firstName,
-        lastName: userInfo.auto.lastName,
-        email: userInfo.auto.email,
-        isVaxxed: userInfo.auto.vaccinated,
-        deviceName: userInfo.device,
+        firstName: userInfo.auto!.firstName,
+        lastName: userInfo.auto!.lastName,
+        email: userInfo.auto!.email,
+        isVaxxed: userInfo.auto!.vaccinated,
+        deviceName: userInfo!.device,
       },
       multiMessageParams: {
         itemType: ItemType.user,

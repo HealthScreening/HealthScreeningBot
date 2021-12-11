@@ -118,7 +118,7 @@ export function sendMessage(
         content: trueOptions.content,
         embeds: trueOptions.embeds,
         reply: {
-          messageReference: trueOptions.replyMessage,
+          messageReference: trueOptions.replyMessage as Message<boolean>,
           failIfNotExists: trueOptions.failIfNotExists,
         },
         files: trueOptions.files,
@@ -128,7 +128,7 @@ export function sendMessage(
         content: trueOptions.content,
         embeds: trueOptions.embeds,
         reply: {
-          messageReference: trueOptions.replyMessage,
+          messageReference: trueOptions.replyMessage as Message<boolean>,
           failIfNotExists: trueOptions.failIfNotExists,
         },
         files: trueOptions.files,

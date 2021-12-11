@@ -60,7 +60,7 @@ export async function generateScreenshot(
     "name": options.firstName + " " + options.lastName,
     "date": DateTime.now().setZone("America/New_York").toFormat("DDDD t"),
   }
-  const page = await browser.newPage();
+  const page = await browser!.newPage();
   try {
     await page.emulate(devices[options.deviceName || "iPhone 11"]);
     await page.goto(`file://${__dirname}/../screening-success-html/page.html?` + new URLSearchParams(objectToWrapper(pageParamObj)).toString());
