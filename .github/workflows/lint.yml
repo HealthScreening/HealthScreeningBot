@@ -33,6 +33,6 @@ jobs:
       - name: Copy config file over to allow typescript to run
         run: cp config.example.ts config.ts
       - name: Check via prettier
-        run: ./node_modules/.bin/prettier --check .
+        run: npm run prettier:check
       - name: Check via ESLint
-        run: ./node_modules/.bin/eslint src
+        run: npm run eslint
