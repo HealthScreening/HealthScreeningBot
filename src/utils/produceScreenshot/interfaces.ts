@@ -15,29 +15,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export interface screeningTypeType {
-  G: string
-  S: string
-  E: string
-}
+export type screeningTypeType = "G" | "S" | "E"
 
-export const screeningTypes: screeningTypeType = {
+export type screeningValueType = "guest" | "student" | "employee"
+
+export const screeningTypes: Record<screeningTypeType, screeningValueType>  = {
   "G": "guest",
   "S": "student",
   "E": "employee"
 }
 
-export interface GenerateScreenshotParams {
+export interface SendRequestParams {
   firstName: string;
   lastName: string;
   email: string;
   isVaxxed: boolean;
-  deviceName?: string;
-  type?: keyof screeningTypeType;
+  type: screeningTypeType;
 }
 
 export interface SubmitParams {
-  Type: keyof screeningTypeType;
+  Type: screeningTypeType;
   IsOther: boolean;
   IsStudent: 0 | 1;
   FirstName: string;
@@ -50,4 +47,15 @@ export interface SubmitParams {
   Answer2: 0 | 1;
   Answer3?: 0 | 1;
   Answer4?: 0 | 1;
+}
+
+export interface GetScreenshotParams {
+  name: string
+  date: string
+  type: screeningValueType
+  device?: string
+}
+
+export interface GenerateScreenshotParams extends SendRequestParams {
+  device: string
 }

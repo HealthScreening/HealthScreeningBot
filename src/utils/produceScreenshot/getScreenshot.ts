@@ -14,24 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { GetScreenshotParams } from "./interfaces";
 import * as Buffer from "buffer";
-import { DateTime } from "luxon";
-import { GenerateScreenshotParams, screeningTypes } from "./interfaces";
-import sendRequest from "./sendRequest";
-import getScreenshot from "./getScreenshot";
+import { browser } from "./browser";
+import { devices } from "puppeteer";
 
-export async function generateScreenshot(
-  options: GenerateScreenshotParams
-): Promise<Buffer> {
-  // We assume the browser has been started already.
-  const successful = await sendRequest(options);
-  if (!successful) {
-    throw new Error("Failed to send the request.");
+export default async function getScreenshot(options: GetScreenshotParams): Promise<Buffer> {
+  const page = await browser!.newPage();
+  try {
+    await page.emulate(devices[options.device || "iPhone 11"]);
+    await page.goto(`file://${__dirname}/../screening-success-html/page.html?` + new URLSearchParams(objectToWrapper(options)).toString());
+    await page.evaluate(() => {
+      window.scrollBy(0, -10000);
+    });
+    return (await page.screenshot()) as Buffer;
+  } finally {
+    await page.close();
   }
-  const pageParamObj = {
-    "type": screeningTypes[options.type || "G"],
-    "name": options.firstName + " " + options.lastName,
-    "date": DateTime.now().setZone("America/New_York").toFormat("DDDD t")
-  };
-  return await getScreenshot(pageParamObj);
 }
