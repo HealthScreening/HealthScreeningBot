@@ -18,62 +18,63 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from ".";
 
-export interface AutoUserAttributes{
+export interface AutoDaysAttributes {
   userId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  vaccinated: boolean;
-  hour: number;
-  minute: number;
+  onSunday: boolean;
+  onMonday: boolean;
+  onTuesday: boolean;
+  onWednesday: boolean;
+  onThursday: boolean;
+  onFriday: boolean;
+  onSaturday: boolean;
 }
 
-class AutoUser extends Model<AutoUserAttributes, AutoUserAttributes> implements AutoUserAttributes {
+class AutoDays extends Model<AutoDaysAttributes, AutoDaysAttributes> implements AutoDaysAttributes {
   userId!: string;
-  firstName!: string;
-  lastName!: string;
-  email!: string;
-  vaccinated!: boolean;
-  hour!: number;
-  minute!: number;
-  createdAt!: Date;
+  onSunday!: boolean;
+  onMonday!: boolean;
+  onTuesday!: boolean;
+  onWednesday!: boolean;
+  onThursday!: boolean;
+  onFriday!: boolean;
+  onSaturday!: boolean;
 }
 
-AutoUser.init({
+AutoDays.init({
   userId: {
     type: DataTypes.STRING,
-    primaryKey: true,
+    primaryKey: true
   },
-  firstName: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  lastName: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  vaccinated: {
+  onSunday: {
     type: DataTypes.BOOLEAN,
-    allowNull: false,
+    defaultValue: false
+  },
+  onMonday: {
+    type: DataTypes.BOOLEAN,
     defaultValue: true
   },
-  hour: {
-    type: DataTypes.SMALLINT,
-    allowNull: false,
-    defaultValue: 5
+  onTuesday: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true
   },
-  minute: {
-    type: DataTypes.SMALLINT,
-    allowNull: false,
-    defaultValue: 40
+  onWednesday: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true
+  },
+  onThursday: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true
+  },
+  onFriday: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true
+  },
+  onSaturday: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   }
 }, {
   sequelize,
-  modelName: 'AutoUser',
-  timestamps: true,
-  updatedAt: false
+  modelName: "AutoDays",
+  timestamps: false
 });

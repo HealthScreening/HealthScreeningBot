@@ -17,7 +17,7 @@
 import { Model, Sequelize, DataTypes as DT } from "sequelize";
 
 module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
-  class AutoUser extends Model {
+  class AutoDays extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -27,43 +27,43 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
       // define association here
     }
   }
-  AutoUser.init({
+  AutoDays.init({
     userId: {
       type: DataTypes.STRING,
       primaryKey: true
     },
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    vaccinated: {
+    onSunday: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
+      defaultValue: false
+    },
+    onMonday: {
+      type: DataTypes.BOOLEAN,
       defaultValue: true
     },
-    hour: {
-      type: DataTypes.SMALLINT,
-      allowNull: false,
-      defaultValue: 5
+    onTuesday: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
     },
-    minute: {
-      type: DataTypes.SMALLINT,
-      allowNull: false,
-      defaultValue: 40
+    onWednesday: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    },
+    onThursday: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    },
+    onFriday: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    },
+    onSaturday: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
   }, {
     sequelize,
-    modelName: 'AutoUser',
-    timestamps: true,
-    updatedAt: false
+    modelName: 'AutoDays',
+    timestamps: false,
   });
-  return AutoUser;
+  return AutoDays;
 };
