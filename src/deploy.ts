@@ -21,9 +21,12 @@ import {
 } from "discord-api-types/v9";
 
 import { readdirSync } from "fs";
+import { resolve } from "path";
 
 import { discord } from "../config";
 import { Command } from "./client/extraClient";
+
+const commandPathBase = resolve(__dirname, "commands");
 
 /**
  * Gets an array of command definition objects from the command source files located at src/commands.
@@ -33,14 +36,14 @@ import { Command } from "./client/extraClient";
  */
 function getCommands(): RESTPostAPIApplicationCommandsJSONBody[] {
   const commands: RESTPostAPIApplicationCommandsJSONBody[] = [];
-  const commandFiles = readdirSync("./commands").filter((file) =>
+  const commandFiles = readdirSync(commandPathBase).filter((file) =>
     file.endsWith(".js")
   );
 
   for (const file of commandFiles) {
     /* eslint-disable @typescript-eslint/no-var-requires -- Disabled because
       we dynamically require, which is impossible with typescript's import system. */
-    const command: Command = require(`./commands/${file}`);
+    const command: Command = require(resolve(commandPathBase, file));
     /* eslint-enable @typescript-eslint/no-var-requires */
     commands.push(command.data.toJSON());
   }
