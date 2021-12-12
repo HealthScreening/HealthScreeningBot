@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { DiscordAPIError, GuildMember } from "discord.js";
+import { GuildMember } from "discord.js";
 import HealthScreeningBotClient from "./extraClient";
 import { AutoUser } from "../orm/autoUser";
+import logError from "../utils/logError";
 
 export default async function assignAutoSchoolRole(
   client: HealthScreeningBotClient
@@ -37,15 +38,28 @@ export default async function assignAutoSchoolRole(
         try {
           member = await guild.members.fetch(item.userId);
         } catch (e) {
-          if (!(e instanceof DiscordAPIError)) {
-            console.error(e);
+          const metadata = {
+            "task": "fetchUser",
+            "userId": item.userId,
+            "email": item.email,
+            "roleId": roleId,
+            "suffix": suffix,
           }
+          await logError(e, 'assignSchoolRole', metadata);
           continue;
         }
         try {
           await member.roles.add(roleId, "Autorole on email in storage");
         } catch (e) {
-          console.error(e);
+          const metadata = {
+            "task": "assignRole",
+            "userId": item.userId,
+            "email": item.email,
+            "roleId": roleId,
+            "suffix": suffix,
+            "userRoles": member.roles.cache.map((r) => r.id),
+          }
+          await logError(e, 'assignSchoolRole', metadata);
         }
       }
     }

@@ -18,6 +18,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, User } from "discord.js";
 import { AutoUser } from "../orm/autoUser";
 import getValidUserIDs from "../utils/getValidUserIDs";
+import logError from "../utils/logError";
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -97,7 +98,7 @@ module.exports = {
             });
             await sleep(timeToSleep * 1000);
           } catch (e) {
-            console.error(e);
+            logError(e)
           }
         }
       }

@@ -24,6 +24,7 @@ export interface ErrorLogAttributes {
   errorStack: string | null;
   githubIssueNumber: number | null;
   metadata: object | null;
+  type: string;
 }
 
 export type ErrorLogCreationAttributes = Optional<ErrorLogAttributes, "id" | "errorDescription" | "errorStack" | "githubIssueNumber" | "metadata" >
@@ -38,6 +39,7 @@ export class ErrorLog
   errorStack!: string | null;
   githubIssueNumber!: number | null;
   metadata!: object | null;
+  type!: string;
   createdAt!: Date;
 }
 
@@ -68,6 +70,10 @@ ErrorLog.init(
       type: DataTypes.JSONB,
       allowNull: true,
     },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
     sequelize,
@@ -80,6 +86,9 @@ ErrorLog.init(
       },
       {
         fields: ["createdAt"]
+      },
+      {
+        fields: ["type"]
       }
     ]
   }

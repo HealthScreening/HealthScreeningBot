@@ -16,7 +16,7 @@
  */
 import { ErrorLog } from "../orm/errorLog";
 
-export default async function logError(error: Error, metadata?: object): Promise<ErrorLog>{
+export default async function logError(error: Error, type: string, metadata?: object): Promise<ErrorLog>{
   const trueMetadata: object | null = metadata || null;
   const errorName: string = error.name;
   const errorMessage: string | null = error.message.length > 0 ? error.message : null;
@@ -25,6 +25,7 @@ export default async function logError(error: Error, metadata?: object): Promise
     errorName,
     errorDescription: errorMessage,
     errorStack,
-    metadata: trueMetadata
+    metadata: trueMetadata,
+    type,
   });
 }
