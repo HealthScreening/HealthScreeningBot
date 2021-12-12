@@ -22,7 +22,6 @@ import processScreening from "./processScreening";
 import getAutoData from "./getUserInfo/getAutoData";
 import getDeviceData from "./getUserInfo/getDeviceData";
 
-
 /**
  * The class that forms a bridge between the Discord component and the screening component of the bot.
  *
@@ -72,8 +71,8 @@ export class ScreeningClient {
       cooldown: {
         container: this.cooldowns,
         id: userId,
-      }
-    }
+      },
+    };
     await this.queue.enqueue(trueParams, 1);
   }
 
@@ -84,9 +83,9 @@ export class ScreeningClient {
     const autoInfo = await getAutoData({
       userId: userId,
       errorOnInvalid: multiMessageParams,
-    })
-    const deviceInfo = await getDeviceData({userId: userId})
-    if (autoInfo === null){
+    });
+    const deviceInfo = await getDeviceData({ userId: userId });
+    if (autoInfo === null) {
       return;
     }
     if (!this.processCooldowns(userId, multiMessageParams)) {
@@ -99,7 +98,7 @@ export class ScreeningClient {
         email: autoInfo.email,
         isVaxxed: autoInfo.vaccinated,
         device: deviceInfo.device,
-        type: autoInfo.type
+        type: autoInfo.type,
       },
       multiMessageParams: {
         ...multiMessageParams,
@@ -116,11 +115,11 @@ export class ScreeningClient {
     if (!this.processCooldowns(userId, params.multiMessageParams)) {
       return;
     }
-    const deviceInfo = await getDeviceData({userId: userId})
+    const deviceInfo = await getDeviceData({ userId: userId });
     const processParams: ProcessParams = {
       generateScreenshotParams: {
         ...params.generateScreenshotParams,
-        device: deviceInfo.device
+        device: deviceInfo.device,
       },
       multiMessageParams: {
         ...params.multiMessageParams,
@@ -137,7 +136,7 @@ export class ScreeningClient {
     const autoInfo: AutoInfo = (await getAutoData({
       userId: user.id,
     }))!;
-    const deviceInfo = await getDeviceData({userId: user.id})
+    const deviceInfo = await getDeviceData({ userId: user.id });
     let content =
       "If you enjoyed the bot, please share this server with your friends!: https://discord.gg/yJbvcD4QBP\n----\nHere is the screenshot that has been auto-generated for you:";
     if (auto.manual) {
@@ -152,7 +151,7 @@ export class ScreeningClient {
         email: autoInfo.email,
         isVaxxed: autoInfo.vaccinated,
         device: deviceInfo.device,
-        type: autoInfo.type
+        type: autoInfo.type,
       },
       multiMessageParams: {
         itemType: ItemType.user,

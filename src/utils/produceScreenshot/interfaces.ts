@@ -15,15 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export type screeningTypeType = "G" | "S" | "E"
+export type screeningTypeType = "G" | "S" | "E";
 
-export type screeningValueType = "guest" | "student" | "employee"
+export type screeningValueType = "guest" | "student" | "employee";
 
-export const screeningTypes: Record<screeningTypeType, screeningValueType>  = {
-  "G": "guest",
-  "S": "student",
-  "E": "employee"
-}
+export const screeningTypes: Record<screeningTypeType, screeningValueType> = {
+  G: "guest",
+  S: "student",
+  E: "employee",
+};
 
 export interface SendRequestParams {
   firstName: string;
@@ -50,12 +50,12 @@ export interface SubmitParams {
 }
 
 export interface GetScreenshotParams {
-  name: string
-  date: string
-  type: screeningValueType
-  device?: string
+  name: string;
+  date: string;
+  type: screeningValueType;
+  device?: string;
 }
 
 export interface GenerateScreenshotParams extends SendRequestParams {
-  device: string
+  device: string;
 }

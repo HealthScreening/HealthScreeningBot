@@ -16,7 +16,11 @@
  */
 import { ProcessParams } from "../interfaces";
 
-export default async function logSuccess(params: ProcessParams, success: boolean, timeElapsed?: number) {
+export default async function logSuccess(
+  params: ProcessParams,
+  success: boolean,
+  timeElapsed?: number
+) {
   if (success) {
     params.auto?.logChannel.send(
       `Finished screening **${params.auto.batchTime[0]}:${
@@ -25,8 +29,7 @@ export default async function logSuccess(params: ProcessParams, success: boolean
         2
       )} seconds`
     );
-  }
-  else {
+  } else {
     params.auto?.logChannel.send(
       `Failed screening **${params.auto.batchTime[0]}:${params.auto.batchTime[1]}::${params.auto.itemNumber}**`
     );

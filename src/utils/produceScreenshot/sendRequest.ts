@@ -34,20 +34,23 @@ export default async function sendRequest(
     Floor: null,
     Answer1: 0,
     Answer2: 0,
-  }
+  };
   if (options.isVaxxed) {
     obj.Answer3 = 0;
     obj.Answer4 = 0;
-  }
-  else {
+  } else {
     obj.Answer3 = 1;
   }
-  const response = await axios.post("https://healthscreening.schools.nyc/home/submit", new URLSearchParams(objectToWrapper(obj)).toString(), {
-    "headers": {
-      "accept": "*/*",
-      "accept-language": "en-US,en;q=0.9,bn;q=0.8",
-      "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-    },
-  });
+  const response = await axios.post(
+    "https://healthscreening.schools.nyc/home/submit",
+    new URLSearchParams(objectToWrapper(obj)).toString(),
+    {
+      headers: {
+        accept: "*/*",
+        "accept-language": "en-US,en;q=0.9,bn;q=0.8",
+        "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+      },
+    }
+  );
   return response.status / 100 < 4;
 }

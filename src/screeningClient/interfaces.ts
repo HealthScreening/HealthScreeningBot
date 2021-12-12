@@ -14,7 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { GenerateScreenshotParams, screeningTypeType } from "../utils/produceScreenshot/interfaces";
+import {
+  GenerateScreenshotParams,
+  screeningTypeType,
+} from "../utils/produceScreenshot/interfaces";
 import { MessageOptions } from "../utils/multiMessage";
 import { TextChannel } from "discord.js";
 
@@ -22,12 +25,12 @@ export interface AutoBatchOptions {
   batchTime: [number, number];
   itemNumber: number;
   logChannel: TextChannel;
-  dmScreenshot: boolean
+  dmScreenshot: boolean;
 }
 
 export interface Cooldown {
-  container: Set<string>
-  id: string
+  container: Set<string>;
+  id: string;
 }
 
 /**
@@ -55,8 +58,7 @@ export interface AutoInfo {
     hour: number;
     minute: number;
   };
-  type: screeningTypeType
-
+  type: screeningTypeType;
 }
 
 export interface AutoDayInfo {
@@ -82,7 +84,7 @@ export interface UserInfo {
   auto: {
     info?: AutoInfo;
     dayInfo: AutoDayInfo;
-  },
+  };
   deviceInfo: DeviceInfo;
 }
 

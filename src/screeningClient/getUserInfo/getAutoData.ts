@@ -18,13 +18,15 @@ import { AutoUser } from "../../orm/autoUser";
 import { AutoInfo, UserInfoParams } from "../interfaces";
 import errorOnInvalid from "./errorOnInvalid";
 
-export default async function getAutoData(options: UserInfoParams): Promise<AutoInfo | null> {
+export default async function getAutoData(
+  options: UserInfoParams
+): Promise<AutoInfo | null> {
   const autoUserItem = await AutoUser.findOne({
-    where: { userId: options.userId }
+    where: { userId: options.userId },
   });
   if (autoUserItem === null) {
     if (options.errorOnInvalid) {
-      await errorOnInvalid(options.errorOnInvalid)
+      await errorOnInvalid(options.errorOnInvalid);
     }
     return null;
   } else {
@@ -36,9 +38,9 @@ export default async function getAutoData(options: UserInfoParams): Promise<Auto
       vaccinated: autoUserItem.vaccinated,
       time: {
         hour: autoUserItem.hour,
-        minute: autoUserItem.minute
+        minute: autoUserItem.minute,
       },
       type: autoUserItem.type,
-    }
+    };
   }
 }

@@ -17,7 +17,9 @@
 
 import { Client } from "discord.js";
 
-export default async function getValidUserIDs(client: Client): Promise<Set<string>> {
+export default async function getValidUserIDs(
+  client: Client
+): Promise<Set<string>> {
   const validUserIDs: Set<string> = new Set();
   for (const [, guild] of client.guilds.cache) {
     for (const [userId] of await guild.members.fetch()) {

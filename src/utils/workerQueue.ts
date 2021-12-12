@@ -103,7 +103,7 @@ export class WorkerQueue<T, RT> {
       const highestPriority = this.getHighestPriority();
       const highestPriorityArray = this._arr[highestPriority];
       const item: ItemType<T, RT> | undefined = highestPriorityArray.shift();
-      if (item === undefined){
+      if (item === undefined) {
         return;
       }
       if (highestPriorityArray.length === 0) {

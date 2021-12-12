@@ -19,11 +19,16 @@ import * as Buffer from "buffer";
 import { browser } from "./browser";
 import { devices } from "puppeteer";
 
-export default async function getScreenshot(options: GetScreenshotParams): Promise<Buffer> {
+export default async function getScreenshot(
+  options: GetScreenshotParams
+): Promise<Buffer> {
   const page = await browser!.newPage();
   try {
     await page.emulate(devices[options.device || "iPhone 11"]);
-    await page.goto(`file://${__dirname}/../screening-success-html/page.html?` + new URLSearchParams(objectToWrapper(options)).toString());
+    await page.goto(
+      `file://${__dirname}/../screening-success-html/page.html?` +
+        new URLSearchParams(objectToWrapper(options)).toString()
+    );
     await page.evaluate(() => {
       window.scrollBy(0, -10000);
     });

@@ -29,10 +29,10 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
         {
           attachment: screenshot,
           name: "screening.jpg",
-          file: screenshot
-        }
+          file: screenshot,
+        },
       ],
-      ...params.multiMessageParams
+      ...params.multiMessageParams,
     };
     await sendMessage(messageParams);
     return true;

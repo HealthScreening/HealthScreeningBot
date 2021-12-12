@@ -17,9 +17,11 @@
 import { AutoDayInfo, UserInfoParams } from "../interfaces";
 import { AutoDays } from "../../orm/autoDays";
 
-export default async function getAutoDayData(options: UserInfoParams): Promise<AutoDayInfo> {
+export default async function getAutoDayData(
+  options: UserInfoParams
+): Promise<AutoDayInfo> {
   const autoDaysItem = await AutoDays.findOne({
-    where: { userId: options.userId }
+    where: { userId: options.userId },
   });
   if (autoDaysItem === null) {
     return {
@@ -30,8 +32,8 @@ export default async function getAutoDayData(options: UserInfoParams): Promise<A
       onWednesday: true,
       onThursday: true,
       onFriday: true,
-      onSaturday: false
-    }
+      onSaturday: false,
+    };
   } else {
     return {
       userId: autoDaysItem.userId,
@@ -42,6 +44,6 @@ export default async function getAutoDayData(options: UserInfoParams): Promise<A
       onThursday: autoDaysItem.onThursday,
       onFriday: autoDaysItem.onFriday,
       onSaturday: autoDaysItem.onSaturday,
-    }
+    };
   }
 }

@@ -29,9 +29,9 @@ export async function generateScreenshot(
     throw new Error("Failed to send the request.");
   }
   const pageParamObj = {
-    "type": screeningTypes[options.type || "G"],
-    "name": options.firstName + " " + options.lastName,
-    "date": DateTime.now().setZone("America/New_York").toFormat("DDDD t")
+    type: screeningTypes[options.type || "G"],
+    name: options.firstName + " " + options.lastName,
+    date: DateTime.now().setZone("America/New_York").toFormat("DDDD t"),
   };
   return await getScreenshot(pageParamObj);
 }

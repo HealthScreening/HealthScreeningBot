@@ -17,12 +17,14 @@
 import { DeviceInfo, UserInfoParams } from "../interfaces";
 import { Devices } from "../../orm/devices";
 
-export default async function getDeviceData(options: UserInfoParams): Promise<DeviceInfo> {
+export default async function getDeviceData(
+  options: UserInfoParams
+): Promise<DeviceInfo> {
   const autoDaysItem = await Devices.findOne({
-    where: { userId: options.userId }
+    where: { userId: options.userId },
   });
   return {
     userId: options.userId,
     device: autoDaysItem?.device || "iPhone 11",
-  }
+  };
 }

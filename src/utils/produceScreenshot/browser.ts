@@ -25,7 +25,7 @@ export let browser: Browser | null = null;
 export async function startupBrowser(): Promise<void> {
   if (browser === null) {
     browser = await puppeteer.launch({
-      headless: true
+      headless: true,
     });
   }
 }

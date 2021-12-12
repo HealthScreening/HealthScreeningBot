@@ -23,8 +23,7 @@ export default async function errorOnInvalid(
     content:
       "You do not have any auto information stored! Use `/set_auto` to set some information.",
     ephemeral: true,
-    ...params
+    ...params,
   };
   await sendMessage(messageParams);
-
 }
