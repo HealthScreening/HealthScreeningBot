@@ -42,4 +42,4 @@ jobs:
       - name: Copy config file over to allow tests to run
         run: cp .github/workflows/ci.config.ts config.ts
       - name: Compile via TypeScript
-        run: tsc -p tsconfig.json
+        run: npm run typescript

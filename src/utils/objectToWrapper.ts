@@ -15,8 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit any Skipped because no better way to do this
 export function objectToWrapper(input: {
+  // Skipped because no better way to do this
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [k: string]: any;
 }): Record<string, string> {
   const obj: { [k: string]: string } = {};

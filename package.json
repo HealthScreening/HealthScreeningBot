@@ -71,7 +71,10 @@
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check .",
     "lint": "eslint src",
-    "db:makemigrations": "./node_modules/sequelize-lazy-migrations/bin/makemigration.js"
+    "db:makemigrations": "./node_modules/sequelize-lazy-migrations/bin/makemigration.js",
+    "typescript": "tsc -p tsconfig.json",
+    "pre-push-check": "npm run lint && npm run prettier:check && npm run typescript",
+    "pre-push": "npm run lint && npm run prettier && npm run typescript"
   },
   "type": "commonjs"
 }
