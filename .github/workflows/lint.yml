@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Copy config file over to allow typescript to run
-        run: cp config.example.ts config.ts
+        run: cp .github/workflows/config.ts config.ts
       - name: Check via prettier
         run: npm run prettier:check
       - name: Check via ESLint
