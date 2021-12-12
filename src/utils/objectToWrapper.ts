@@ -15,11 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export function objectToWrapper<T>(input: { [k: string]: T }): Record<string, string> {
+// eslint-disable-next-line @typescript-eslint/no-explicit any Skipped because no better way to do this
+export function objectToWrapper(input: {
+  [k: string]: any;
+}): Record<string, string> {
   const obj: { [k: string]: string } = {};
   for (const key in input) {
     if (Object.prototype.hasOwnProperty.call(input, key)) {
-      obj[key] = (input[key] === null || input[key] === undefined) ? String(input[key]) : "" ;
+      obj[key] =
+        input[key] === null || input[key] === undefined
+          ? String(input[key])
+          : "";
     }
   }
   return obj;
