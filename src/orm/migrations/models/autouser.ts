@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { Model, Sequelize, DataTypes as DT } from "sequelize";
+import { screeningTypes } from "../../../utils/produceScreenshot/interfaces";
 
 module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
   class AutoUser extends Model {
@@ -58,6 +59,12 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
       type: DataTypes.SMALLINT,
       allowNull: false,
       defaultValue: 40
+    },
+    type: {
+      type: DataTypes.ENUM,
+      values: Object.keys(screeningTypes),
+      allowNull: false,
+      defaultValue: 'G'
     }
   }, {
     sequelize,

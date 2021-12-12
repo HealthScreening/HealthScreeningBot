@@ -37,7 +37,8 @@ export default async function getAutoData(options: UserInfoParams): Promise<Auto
       time: {
         hour: autoUserItem.hour,
         minute: autoUserItem.minute
-      }
+      },
+      type: autoUserItem.type,
     }
   }
 }

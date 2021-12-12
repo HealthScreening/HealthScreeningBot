@@ -17,6 +17,7 @@
 
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from ".";
+import { screeningTypes, screeningTypeType } from "../utils/produceScreenshot/interfaces";
 
 export interface AutoUserAttributes{
   userId: string;
@@ -26,6 +27,7 @@ export interface AutoUserAttributes{
   vaccinated: boolean;
   hour: number;
   minute: number;
+  type: screeningTypeType
 }
 
 export class AutoUser extends Model<AutoUserAttributes, AutoUserAttributes> implements AutoUserAttributes {
@@ -37,6 +39,7 @@ export class AutoUser extends Model<AutoUserAttributes, AutoUserAttributes> impl
   hour!: number;
   minute!: number;
   createdAt!: Date;
+  type!: screeningTypeType;
 }
 
 AutoUser.init({
@@ -70,6 +73,12 @@ AutoUser.init({
     type: DataTypes.SMALLINT,
     allowNull: false,
     defaultValue: 40
+  },
+  type: {
+    type: DataTypes.ENUM,
+    values: Object.keys(screeningTypes),
+    allowNull: false,
+    defaultValue: 'G'
   }
 }, {
   sequelize,

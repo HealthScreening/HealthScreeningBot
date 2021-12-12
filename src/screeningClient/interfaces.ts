@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { GenerateScreenshotParams } from "../utils/produceScreenshot/interfaces";
+import { GenerateScreenshotParams, screeningTypeType } from "../utils/produceScreenshot/interfaces";
 import { MessageOptions } from "../utils/multiMessage";
 import { TextChannel } from "discord.js";
 
@@ -54,6 +54,7 @@ export interface AutoInfo {
     hour: number;
     minute: number;
   };
+  type: screeningTypeType
 
 }
 

@@ -16,10 +16,11 @@
  */
 import { WorkerQueue } from "../utils/workerQueue";
 import { ItemType, MessageOptions, sendMessage } from "../utils/multiMessage";
-import { AutoBatchOptions, ProcessParams } from "./interfaces";
+import { AutoBatchOptions, AutoInfo, ProcessParams } from "./interfaces";
 import { User } from "discord.js";
 import processScreening from "./processScreening";
-import getUserInfo from "./getUserInfo";
+import getAutoData from "./getUserInfo/getAutoData";
+import getDeviceData from "./getUserInfo/getDeviceData";
 
 
 /**
@@ -30,7 +31,7 @@ import getUserInfo from "./getUserInfo";
 export class ScreeningClient {
   private readonly queue: WorkerQueue<ProcessParams, void> = new WorkerQueue({
     worker: processScreening,
-    limit: 4,
+    limit: 8, // New limit because we have a much easier time with the queue.
   });
   private readonly cooldowns: Set<string> = new Set();
 
@@ -73,22 +74,25 @@ export class ScreeningClient {
     userId: string,
     multiMessageParams: MessageOptions
   ): Promise<void> {
-    if (!this.processCooldowns(userId, multiMessageParams)) {
-      return;
-    }
-    const userInfo = await getUserInfo({
+    const autoInfo = await getAutoData({
       userId: userId,
       errorOnInvalid: multiMessageParams,
-    });
-    if (userInfo === null) {
+    })
+    const deviceInfo = await getDeviceData({userId: userId})
+    if (autoInfo === null){
+      return;
+    }
+    if (!this.processCooldowns(userId, multiMessageParams)) {
       return;
     }
     const processParams: ProcessParams = {
       generateScreenshotParams: {
-        firstName: userInfo.auto!.firstName,
-        lastName: userInfo.auto!.lastName,
-        email: userInfo.auto!.email,
-        isVaxxed: userInfo.auto!.vaccinated,
+        firstName: autoInfo.firstName,
+        lastName: autoInfo.lastName,
+        email: autoInfo.email,
+        isVaxxed: autoInfo.vaccinated,
+        device: deviceInfo.device,
+        type: autoInfo.type
       },
       multiMessageParams: {
         ...multiMessageParams,
@@ -105,13 +109,11 @@ export class ScreeningClient {
     if (!this.processCooldowns(userId, params.multiMessageParams)) {
       return;
     }
-    const userInfo = await getUserInfo({
-      userId: userId,
-    });
+    const deviceInfo = await getDeviceData({userId: userId})
     const processParams: ProcessParams = {
       generateScreenshotParams: {
         ...params.generateScreenshotParams,
-        deviceName: userInfo!.device,
+        device: deviceInfo.device
       },
       multiMessageParams: {
         ...params.multiMessageParams,
@@ -125,9 +127,10 @@ export class ScreeningClient {
     user: User,
     auto: AutoBatchOptions & { manual?: boolean }
   ): Promise<void> {
-    const userInfo = (await getUserInfo({
+    const autoInfo: AutoInfo = (await getAutoData({
       userId: user.id,
     }))!;
+    const deviceInfo = await getDeviceData({userId: user.id})
     let content =
       "If you enjoyed the bot, please share this server with your friends!: https://discord.gg/yJbvcD4QBP\n----\nHere is the screenshot that has been auto-generated for you:";
     if (auto.manual) {
@@ -137,11 +140,12 @@ export class ScreeningClient {
     }
     const processParams: ProcessParams = {
       generateScreenshotParams: {
-        firstName: userInfo.auto!.firstName,
-        lastName: userInfo.auto!.lastName,
-        email: userInfo.auto!.email,
-        isVaxxed: userInfo.auto!.vaccinated,
-        deviceName: userInfo!.device,
+        firstName: autoInfo.firstName,
+        lastName: autoInfo.lastName,
+        email: autoInfo.email,
+        isVaxxed: autoInfo.vaccinated,
+        device: deviceInfo.device,
+        type: autoInfo.type
       },
       multiMessageParams: {
         itemType: ItemType.user,
