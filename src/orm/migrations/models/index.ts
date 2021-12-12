@@ -16,10 +16,10 @@
  */
 import { readdirSync } from "fs";
 import * as path from "path";
-import { DataTypes, Sequelize } from "sequelize/types";
+import { DataTypes, Sequelize } from "sequelize";
 
 const basename = path.basename(__filename);
-import { database as config } from "../../../config";
+import { database as config } from "../../../../config";
 
 export interface DB {
   sequelize?: Sequelize;
@@ -27,7 +27,7 @@ export interface DB {
 }
 const db: DB = {};
 
-let sequelize: Sequelize = new Sequelize(config.database, config.username, config.password, config)
+let sequelize: Sequelize = new Sequelize(config)
 
 readdirSync(__dirname)
   .filter(file => {
@@ -47,4 +47,4 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-export default db;
+module.exports = db;

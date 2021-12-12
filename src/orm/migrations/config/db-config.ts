@@ -14,6 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { database } from "../../../config";
+import { database } from "../../../../config";
 
 export const development = database, testing = database, production = database

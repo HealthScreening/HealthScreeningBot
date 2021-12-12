@@ -1,0 +1,67 @@
+{
+    "tables": {
+        "AutoUsers": {
+            "tableName": "AutoUsers",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "userId": {
+                    "allowNull": false,
+                    "unique": true,
+                    "field": "userId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "firstName": {
+                    "allowNull": false,
+                    "field": "firstName",
+                    "seqType": "Sequelize.STRING"
+                },
+                "lastName": {
+                    "allowNull": false,
+                    "field": "lastName",
+                    "seqType": "Sequelize.STRING"
+                },
+                "email": {
+                    "allowNull": false,
+                    "field": "email",
+                    "seqType": "Sequelize.STRING"
+                },
+                "vaccinated": {
+                    "allowNull": false,
+                    "defaultValue": {
+                        "value": true
+                    },
+                    "field": "vaccinated",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "hour": {
+                    "allowNull": false,
+                    "defaultValue": {
+                        "value": 5
+                    },
+                    "field": "hour",
+                    "seqType": "Sequelize.SMALLINT"
+                },
+                "minute": {
+                    "allowNull": false,
+                    "defaultValue": {
+                        "value": 40
+                    },
+                    "field": "minute",
+                    "seqType": "Sequelize.SMALLINT"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        }
+    },
+    "revision": 1
+}

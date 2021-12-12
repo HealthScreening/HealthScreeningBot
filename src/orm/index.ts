@@ -1,4 +1,4 @@
-import { Sequelize } from "sequelize/types";
+import { Sequelize } from "sequelize";
 import { database } from "../../config";
 import { exit } from "process";
 export const sequelize: Sequelize = new Sequelize({

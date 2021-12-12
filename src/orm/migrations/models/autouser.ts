@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { Model, Sequelize, DataTypes as DT } from "sequelize/types";
+import { Model, Sequelize, DataTypes as DT } from "sequelize";
 
-export default (sequelize: Sequelize, DataTypes: typeof DT) => {
+module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
   class AutoUser extends Model {
     /**
      * Helper method for defining associations.
@@ -50,10 +50,26 @@ export default (sequelize: Sequelize, DataTypes: typeof DT) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    vaccinated: DataTypes.BOOLEAN
+    vaccinated: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
+    },
+    hour: {
+      type: DataTypes.SMALLINT,
+      allowNull: false,
+      defaultValue: 5
+    },
+    minute: {
+      type: DataTypes.SMALLINT,
+      allowNull: false,
+      defaultValue: 40
+    }
   }, {
     sequelize,
     modelName: 'AutoUser',
+    timestamps: true,
+    updatedAt: false
   });
   return AutoUser;
 };

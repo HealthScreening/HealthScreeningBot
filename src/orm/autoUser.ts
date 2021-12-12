@@ -1,37 +1,31 @@
-import { DataTypes, Model, Optional } from "sequelize/types";
+import { DataTypes, Model } from "sequelize";
 import { sequelize } from ".";
 
 export interface AutoUserAttributes{
-  id: number
-  userId?: string;
+  userId: string;
   firstName: string;
   lastName: string;
   email: string;
   vaccinated: boolean;
+  hour: number;
+  minute: number;
 }
 
-export type AutoUserCreationAttributes = Optional<AutoUserAttributes, 'id'>;
-
-class AutoUser extends Model<AutoUserAttributes, AutoUserCreationAttributes> implements AutoUserAttributes{
-  id!: number;
-  userId?: string;
+class AutoUser extends Model<AutoUserAttributes, AutoUserAttributes> implements AutoUserAttributes {
+  userId!: string;
   firstName!: string;
   lastName!: string;
   email!: string;
   vaccinated!: boolean;
-
+  hour!: number;
+  minute!: number;
+  createdAt!: Date;
 }
 
 AutoUser.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
   userId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    unique: true
+    type: DataTypes.STRING,
+    primaryKey: true,
   },
   firstName: {
     type: DataTypes.STRING,
@@ -45,8 +39,24 @@ AutoUser.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  vaccinated: DataTypes.BOOLEAN
+  vaccinated: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true
+  },
+  hour: {
+    type: DataTypes.SMALLINT,
+    allowNull: false,
+    defaultValue: 5
+  },
+  minute: {
+    type: DataTypes.SMALLINT,
+    allowNull: false,
+    defaultValue: 40
+  }
 }, {
   sequelize,
   modelName: 'AutoUser',
+  timestamps: true,
+  updatedAt: false
 });
