@@ -15,46 +15,49 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import HealthScreeningBotClient from "./extraClient";
-import { Config, sequelize } from "../orm";
+import { sequelize } from "../orm";
 import { TextChannel } from "discord.js";
+import { AutoUser } from "../orm/autoUser";
+import { DateTime } from "luxon";
+import getUsersForDayOfWeek from "../utils/getUsersForDayOfWeek";
+import getValidUserIDs from "../utils/getValidUserIDs";
 
 export default async function doAutoLoop(
   client: HealthScreeningBotClient,
   logChannel: TextChannel
 ): Promise<void> {
-  const validUserIDs = new Set();
-  for (const [, guild] of client.guilds.cache) {
-    for (const [userId] of await guild.members.fetch()) {
-      validUserIDs.add(userId);
-    }
-  }
+  const validUserIDs: Set<string> = await getValidUserIDs(client);
   const batchTimes: Map<[number, number], number> = new Map();
-  for (const config of await sequelize.query(
-    `SELECT * 
-        FROM Configs 
-        WHERE 
-            (strftime('%s', date('now')) + "timeHours" * 3600 + "timeMinutes" * 60) - strftime('%s', date('now')) <= 300 
-            AND (strftime('%s', date('now')) + "timeHours" * 3600 + "timeMinutes" * 60) - strftime('%s', date('now')) >=0;`,
+  const currentTime = DateTime.now().setZone("America/New_York");
+  const currentTimeMins = currentTime.hour * 60 + currentTime.minute;
+  const validDayOfWeekUsers = new Set(
+    await getUsersForDayOfWeek(currentTime.weekday)
+  );
+  for (const autoItem of await sequelize.query(
+    `SELECT *
+                                                FROM "AutoUsers"
+                                                WHERE ("AutoUsers".hour * 60 + "AutoUsers".minute) BETWEEN ? AND ?`,
     {
+      replacements: [currentTimeMins, currentTimeMins + 60 * 5],
       mapToModel: true,
-      model: Config,
+      model: AutoUser,
     }
   )) {
-    if (!validUserIDs.has(config.userId)) {
+    if (!validDayOfWeekUsers.has(autoItem.userId)) {
       continue;
     }
+    const dmScreenshot = validUserIDs.has(autoItem.userId);
     batchTimes.set(
-      [config.timeHours, config.timeMinutes],
-      batchTimes.get([config.timeHours, config.timeMinutes])
-        ? batchTimes.get([config.timeHours, config.timeMinutes]) + 1
-        : 1
+      [autoItem.hour, autoItem.minute],
+      (batchTimes.get([autoItem.hour, autoItem.minute]) || 0) + 1
     );
     await client.screeningClient.queueDailyAuto(
-      await client.users.fetch(config.userId),
+      await client.users.fetch(autoItem.userId),
       {
-        batchTime: [config.timeHours, config.timeMinutes],
-        itemNumber: batchTimes.get([config.timeHours, config.timeMinutes]),
+        batchTime: [autoItem.hour, autoItem.minute],
+        itemNumber: batchTimes.get([autoItem.hour, autoItem.minute]) || 1,
         logChannel,
+        dmScreenshot,
       }
     );
   }

@@ -14,26 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { Intents } from "discord.js";
-import { init } from "./orm";
-import HealthScreeningBotClient from "./client/extraClient";
-import { startupBrowser } from "./utils/produceScreenshot/browser";
-import { discord } from "../config";
 
-const myIntents = new Intents();
-myIntents.add(Intents.FLAGS.GUILDS);
-myIntents.add(Intents.FLAGS.GUILD_MEMBERS);
-myIntents.add(Intents.FLAGS.GUILD_MESSAGES);
-myIntents.add(Intents.FLAGS.DIRECT_MESSAGES);
-
-const client: HealthScreeningBotClient = new HealthScreeningBotClient({
-  intents: myIntents,
-  partials: ["CHANNEL"],
+import { Sequelize } from "sequelize";
+import { database } from "../../config";
+import { exit } from "process";
+export const sequelize: Sequelize = new Sequelize({
+  logging: false,
+  ...database,
 });
 
-// Login to Discord with your client's token
-init()
-  .then(startupBrowser)
-  .then(function () {
-    client.login(discord.token);
-  });
+export async function init(): Promise<void> {
+  try {
+    await sequelize.authenticate();
+    console.log("Connection has been established successfully.");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+    exit(1);
+  }
+}

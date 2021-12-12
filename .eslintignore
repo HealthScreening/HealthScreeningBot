@@ -1,2 +1,5 @@
 *.js
 package-lock.json
+src/screening-success-html
+# Auto generated
+src/orm/migrations/migrations

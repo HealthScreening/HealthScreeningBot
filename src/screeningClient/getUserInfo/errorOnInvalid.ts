@@ -14,28 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
-import { exit } from "process";
+import { MessageOptions, sendMessage } from "../../utils/multiMessage";
 
-import { browser } from "../utils/produceScreenshot/browser";
-
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("stop")
-    .setDescription("Stop the bot safely."),
-  async execute(interaction: CommandInteraction) {
-    if (interaction.user.id != "199605025914224641") {
-      interaction.reply({
-        content: "You are not the bot owner!",
-        ephemeral: true,
-      });
-    } else {
-      await interaction.reply("Stopping...");
-      if (browser) {
-        await browser.close();
-      }
-      exit(0);
-    }
-  },
-};
+export default async function errorOnInvalid(
+  params: MessageOptions
+): Promise<void> {
+  const messageParams: MessageOptions = {
+    content:
+      "You do not have any auto information stored! Use `/set_auto` to set some information.",
+    ephemeral: true,
+    ...params,
+  };
+  await sendMessage(messageParams);
+}

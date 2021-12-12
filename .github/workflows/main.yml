@@ -22,15 +22,24 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node: ["16", "17"]
+
+    name: Node ${{ matrix.node }} build
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
 
       # Runs a single command using the runners shell
       - name: Install dependencies
         run: npm ci
       - name: Copy config file over to allow tests to run
-        run: cp config.example.ts config.ts
+        run: cp .github/workflows/ci.config.ts config.ts
       - name: Compile via TypeScript
-        run: tsc -p tsconfig.json
+        run: npm run typescript

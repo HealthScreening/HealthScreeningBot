@@ -14,28 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
-import { exit } from "process";
 
-import { browser } from "../utils/produceScreenshot/browser";
-
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("stop")
-    .setDescription("Stop the bot safely."),
-  async execute(interaction: CommandInteraction) {
-    if (interaction.user.id != "199605025914224641") {
-      interaction.reply({
-        content: "You are not the bot owner!",
-        ephemeral: true,
-      });
-    } else {
-      await interaction.reply("Stopping...");
-      if (browser) {
-        await browser.close();
-      }
-      exit(0);
+export function objectToWrapper(input: {
+  // Skipped because no better way to do this
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [k: string]: any;
+}): Record<string, string> {
+  const obj: { [k: string]: string } = {};
+  for (const key in input) {
+    if (Object.prototype.hasOwnProperty.call(input, key)) {
+      obj[key] =
+        input[key] === null || input[key] === undefined
+          ? String(input[key])
+          : "";
     }
-  },
-};
+  }
+  return obj;
+}

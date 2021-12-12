@@ -1,0 +1,139 @@
+{
+  "tables": {
+    "AutoDays": {
+      "tableName": "AutoDays",
+      "schema": {
+        "userId": {
+          "primaryKey": true,
+          "field": "userId",
+          "seqType": "Sequelize.STRING"
+        },
+        "onSunday": {
+          "defaultValue": {
+            "value": false
+          },
+          "field": "onSunday",
+          "seqType": "Sequelize.BOOLEAN"
+        },
+        "onMonday": {
+          "defaultValue": {
+            "value": true
+          },
+          "field": "onMonday",
+          "seqType": "Sequelize.BOOLEAN"
+        },
+        "onTuesday": {
+          "defaultValue": {
+            "value": true
+          },
+          "field": "onTuesday",
+          "seqType": "Sequelize.BOOLEAN"
+        },
+        "onWednesday": {
+          "defaultValue": {
+            "value": true
+          },
+          "field": "onWednesday",
+          "seqType": "Sequelize.BOOLEAN"
+        },
+        "onThursday": {
+          "defaultValue": {
+            "value": true
+          },
+          "field": "onThursday",
+          "seqType": "Sequelize.BOOLEAN"
+        },
+        "onFriday": {
+          "defaultValue": {
+            "value": true
+          },
+          "field": "onFriday",
+          "seqType": "Sequelize.BOOLEAN"
+        },
+        "onSaturday": {
+          "defaultValue": {
+            "value": false
+          },
+          "field": "onSaturday",
+          "seqType": "Sequelize.BOOLEAN"
+        }
+      },
+      "indexes": []
+    },
+    "AutoUsers": {
+      "tableName": "AutoUsers",
+      "schema": {
+        "userId": {
+          "primaryKey": true,
+          "field": "userId",
+          "seqType": "Sequelize.STRING"
+        },
+        "firstName": {
+          "allowNull": false,
+          "field": "firstName",
+          "seqType": "Sequelize.STRING"
+        },
+        "lastName": {
+          "allowNull": false,
+          "field": "lastName",
+          "seqType": "Sequelize.STRING"
+        },
+        "email": {
+          "allowNull": false,
+          "field": "email",
+          "seqType": "Sequelize.STRING"
+        },
+        "vaccinated": {
+          "allowNull": false,
+          "defaultValue": {
+            "value": true
+          },
+          "field": "vaccinated",
+          "seqType": "Sequelize.BOOLEAN"
+        },
+        "hour": {
+          "allowNull": false,
+          "defaultValue": {
+            "value": 5
+          },
+          "field": "hour",
+          "seqType": "Sequelize.SMALLINT"
+        },
+        "minute": {
+          "allowNull": false,
+          "defaultValue": {
+            "value": 40
+          },
+          "field": "minute",
+          "seqType": "Sequelize.SMALLINT"
+        },
+        "createdAt": {
+          "allowNull": false,
+          "field": "createdAt",
+          "seqType": "Sequelize.DATE"
+        }
+      },
+      "indexes": []
+    },
+    "Devices": {
+      "tableName": "Devices",
+      "schema": {
+        "userId": {
+          "primaryKey": true,
+          "field": "userId",
+          "seqType": "Sequelize.STRING"
+        },
+        "device": {
+          "allowNull": false,
+          "defaultValue": {
+            "value": "iPhone 11"
+          },
+          "field": "device",
+          "seqType": "Sequelize.STRING"
+        }
+      },
+      "indexes": []
+    }
+  },
+  "revision": 3
+}

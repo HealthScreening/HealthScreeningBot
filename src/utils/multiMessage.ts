@@ -54,7 +54,7 @@ interface BaseMessageOptions {
   /**
    * Whether or not to send the message if the message being replied to is deleted.
    *
-   * If {@link NonInteractionMessageOptions.replyMessage} is not provided, this will be ignored.
+   * If {@link BaseMessageOptions.replyMessage} is not provided, this will be ignored.
    */
   failIfNotExists?: boolean;
   /**
@@ -118,7 +118,7 @@ export function sendMessage(
         content: trueOptions.content,
         embeds: trueOptions.embeds,
         reply: {
-          messageReference: trueOptions.replyMessage,
+          messageReference: trueOptions.replyMessage as Message<boolean>,
           failIfNotExists: trueOptions.failIfNotExists,
         },
         files: trueOptions.files,
@@ -128,7 +128,7 @@ export function sendMessage(
         content: trueOptions.content,
         embeds: trueOptions.embeds,
         reply: {
-          messageReference: trueOptions.replyMessage,
+          messageReference: trueOptions.replyMessage as Message<boolean>,
           failIfNotExists: trueOptions.failIfNotExists,
         },
         files: trueOptions.files,

@@ -14,28 +14,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
-import { exit } from "process";
+// @ts-nocheck We don't want to check this file because it's an auto generated
+// migration file.
 
-import { browser } from "../utils/produceScreenshot/browser";
+const Sequelize = require("sequelize");
 
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("stop")
-    .setDescription("Stop the bot safely."),
-  async execute(interaction: CommandInteraction) {
-    if (interaction.user.id != "199605025914224641") {
-      interaction.reply({
-        content: "You are not the bot owner!",
-        ephemeral: true,
-      });
-    } else {
-      await interaction.reply("Stopping...");
-      if (browser) {
-        await browser.close();
-      }
-      exit(0);
-    }
-  },
+/**
+ * Actions summary:
+ *
+ * addColumn "type" to table "AutoUsers"
+ *
+ **/
+
+let info = {
+  revision: 4,
+  name: "noname",
+  created: "2021-12-12T01:57:17.748Z",
+  comment: "",
 };
+
+let migrationCommands = [
+  {
+    fn: "addColumn",
+    params: [
+      "AutoUsers",
+      "type",
+      {
+        type: Sequelize.ENUM("G", "S", "E"),
+        field: "type",
+        defaultValue: "G",
+        allowNull: false,
+      },
+    ],
+  },
+];
+
+module.exports = require("../makeMigrationExport")(info, migrationCommands);

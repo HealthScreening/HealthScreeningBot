@@ -16,7 +16,8 @@
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, User } from "discord.js";
-import { Config } from "../orm";
+import { AutoUser } from "../orm/autoUser";
+import getValidUserIDs from "../utils/getValidUserIDs";
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -38,7 +39,7 @@ module.exports = {
         .setDescription(
           "The amount of time to wait between messages (in seconds)"
         )
-        .setRequired(true)
+        .setRequired(false)
     ),
   async execute(interaction: CommandInteraction) {
     if (interaction.user.id != "199605025914224641") {
@@ -47,32 +48,57 @@ module.exports = {
         ephemeral: true,
       });
     } else {
-      const timeToSleep = interaction.options.getInteger("time");
+      const timeToSleep = interaction.options.getInteger("time") || 0;
       await interaction.reply("Sending to all...");
-      const validUserIDs = new Set();
-      for (const [, guild] of interaction.client.guilds.cache) {
-        for (const [userId] of await guild.members.fetch()) {
-          validUserIDs.add(userId);
-        }
-      }
-      const items = await Config.findAll();
+      const validUserIDs: Set<string> = await getValidUserIDs(
+        interaction.client
+      );
+      const items = await AutoUser.findAll();
       const message =
         "The bot owner has sent a message to everyone registered under the auto health screening bot:\n----\n" +
         interaction.options.getString("message") +
         "\n----\nIf you have any questions, contact <@199605025914224641> (PokestarFan#8524).";
       let user: User;
-      for (const item of items) {
-        try {
+      if (timeToSleep === 0) {
+        let batchData: Promise<void>[] = [];
+        for (const item of items) {
           if (!validUserIDs.has(item.userId)) {
             continue;
           }
-          user = await interaction.client.users.fetch(item.userId);
-          await user.send({
-            content: message,
-          });
-          await sleep(timeToSleep * 1000);
-        } catch (e) {
-          console.error(e);
+          batchData.push(
+            (async () => {
+              try {
+                user = await interaction.client.users.fetch(item.userId);
+                await user.send({
+                  content: message,
+                });
+              } catch (e) {
+                console.log(e);
+              }
+            })()
+          );
+          if (batchData.length >= 10) {
+            await Promise.all(batchData);
+            batchData = [];
+          }
+        }
+        if (batchData.length > 0) {
+          await Promise.all(batchData);
+        }
+      } else {
+        for (const item of items) {
+          try {
+            if (!validUserIDs.has(item.userId)) {
+              continue;
+            }
+            user = await interaction.client.users.fetch(item.userId);
+            await user.send({
+              content: message,
+            });
+            await sleep(timeToSleep * 1000);
+          } catch (e) {
+            console.error(e);
+          }
         }
       }
     }

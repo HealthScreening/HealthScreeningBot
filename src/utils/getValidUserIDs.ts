@@ -14,28 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
-import { exit } from "process";
 
-import { browser } from "../utils/produceScreenshot/browser";
+import { Client } from "discord.js";
 
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("stop")
-    .setDescription("Stop the bot safely."),
-  async execute(interaction: CommandInteraction) {
-    if (interaction.user.id != "199605025914224641") {
-      interaction.reply({
-        content: "You are not the bot owner!",
-        ephemeral: true,
-      });
-    } else {
-      await interaction.reply("Stopping...");
-      if (browser) {
-        await browser.close();
-      }
-      exit(0);
+export default async function getValidUserIDs(
+  client: Client
+): Promise<Set<string>> {
+  const validUserIDs: Set<string> = new Set();
+  for (const [, guild] of client.guilds.cache) {
+    for (const [userId] of await guild.members.fetch()) {
+      validUserIDs.add(userId);
     }
-  },
-};
+  }
+  return validUserIDs;
+}

@@ -14,52 +14,45 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { DataTypes, Model, Optional, Sequelize } from "sequelize";
 
-import { database } from "../config";
-export const sequelize: Sequelize = new Sequelize(database);
+import { DataTypes, Model } from "sequelize";
+import { sequelize } from ".";
+import {
+  screeningTypes,
+  screeningTypeType,
+} from "../utils/produceScreenshot/interfaces";
 
-interface ConfigAttributes {
+export interface AutoUserAttributes {
   userId: string;
   firstName: string;
   lastName: string;
   email: string;
   vaccinated: boolean;
-  timeHours: number;
-  timeMinutes: number;
-  device: string;
+  hour: number;
+  minute: number;
+  type: screeningTypeType;
 }
 
-type ConfigCreationAttributes = Optional<
-  ConfigAttributes,
-  "vaccinated" | "timeHours" | "timeMinutes" | "device"
->;
-
-export class Config
-  extends Model<ConfigAttributes, ConfigCreationAttributes>
-  implements ConfigAttributes
+export class AutoUser
+  extends Model<AutoUserAttributes, AutoUserAttributes>
+  implements AutoUserAttributes
 {
-  public userId!: string;
-  public firstName!: string;
-  public lastName!: string;
-  public email!: string;
-  public vaccinated!: boolean;
-  public timeHours!: number;
-  public timeMinutes!: number;
-  public device!: string;
-
-  // timestamps!
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  userId!: string;
+  firstName!: string;
+  lastName!: string;
+  email!: string;
+  vaccinated!: boolean;
+  hour!: number;
+  minute!: number;
+  createdAt!: Date;
+  type!: screeningTypeType;
 }
 
-Config.init(
+AutoUser.init(
   {
-    // Model attributes are defined here
     userId: {
       type: DataTypes.STRING,
       primaryKey: true,
-      allowNull: false,
     },
     firstName: {
       type: DataTypes.STRING,
@@ -78,25 +71,27 @@ Config.init(
       allowNull: false,
       defaultValue: true,
     },
-    timeHours: {
+    hour: {
       type: DataTypes.SMALLINT,
       allowNull: false,
       defaultValue: 5,
     },
-    timeMinutes: {
+    minute: {
       type: DataTypes.SMALLINT,
       allowNull: false,
       defaultValue: 40,
     },
-    device: {
-      type: DataTypes.STRING,
+    type: {
+      type: DataTypes.ENUM,
+      values: Object.keys(screeningTypes),
       allowNull: false,
-      defaultValue: "iPhone 11",
+      defaultValue: "G",
     },
   },
-  { sequelize }
+  {
+    sequelize,
+    modelName: "AutoUser",
+    timestamps: true,
+    updatedAt: false,
+  }
 );
-
-export async function init(): Promise<void> {
-  await sequelize.sync({ alter: true });
-}

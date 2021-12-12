@@ -15,7 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { REST } from "@discordjs/rest";
-import { Routes } from "discord-api-types/v9";
+import {
+  RESTPostAPIApplicationCommandsJSONBody,
+  Routes,
+} from "discord-api-types/v9";
 
 import { readdirSync } from "fs";
 
@@ -28,8 +31,8 @@ import { Command } from "./client/extraClient";
  *
  * @return {Command[]} An array of command definition objects.
  */
-function getCommands(): Command[] {
-  const commands = [];
+function getCommands(): RESTPostAPIApplicationCommandsJSONBody[] {
+  const commands: RESTPostAPIApplicationCommandsJSONBody[] = [];
   const commandFiles = readdirSync("./commands").filter((file) =>
     file.endsWith(".js")
   );
@@ -37,7 +40,7 @@ function getCommands(): Command[] {
   for (const file of commandFiles) {
     /* eslint-disable @typescript-eslint/no-var-requires -- Disabled because
       we dynamically require, which is impossible with typescript's import system. */
-    const command = require(`./commands/${file}`);
+    const command: Command = require(`./commands/${file}`);
     /* eslint-enable @typescript-eslint/no-var-requires */
     commands.push(command.data.toJSON());
   }
@@ -49,10 +52,12 @@ const rest = new REST({ version: "9" }).setToken(discord.token);
 /**
  * Registers the given commands globally with Discord.
  * On success, logs a success message otherwise logs the error message.
- * @param {Command[]} commands An array of the commands to register, as returned by {@link getCommands}.
+ * @param {RESTPostAPIApplicationCommandsJSONBody[]} commands An array of the commands to register, as returned by {@link getCommands}.
  * @return {void} Nothing.
  */
-function registerCommands(commands: Command[]): void {
+function registerCommands(
+  commands: RESTPostAPIApplicationCommandsJSONBody[]
+): void {
   rest
     .put(Routes.applicationCommands(discord.clientId), { body: commands })
     .then(() => console.log("Successfully registered application commands."))

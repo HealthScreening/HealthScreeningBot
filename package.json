@@ -1,14 +1,56 @@
 {
+  "name": "healthscreeningbot",
+  "version": "2.0.0.rc1",
+  "author": {
+    "email": "sarkaraoyan@gmail.com",
+    "name": "Aoyan Sarkar"
+  },
+  "homepage": "https://github.com/HealthScreening/HealthScreeningBot",
+  "main": "src/client.js",
+  "license": "GNU GPLv3",
+  "maintainers": [
+    {
+      "email": "sarkaraoyan@gmail.com",
+      "name": "Aoyan Sarkar"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HealthScreening/HealthScreeningBot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/HealthScreening/HealthScreeningBot/issues"
+  },
+  "contributors": [
+    {
+      "email": "sarkaraoyan@gmail.com",
+      "name": "Aoyan Sarkar"
+    }
+  ],
+  "description": "A discord bot to run the health screening automatically",
+  "readme": "README.md",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [
+    "health",
+    "screening",
+    "bot",
+    "nyc"
+  ],
   "dependencies": {
     "@discordjs/builders": "^0.9.0",
     "@discordjs/rest": "^0.2.0-canary.0",
     "async-mutex": "^0.3.2",
+    "axios": "^0.24.0",
     "discord-api-types": "^0.24.0",
     "discord.js": "^13.3.1",
     "luxon": "^2.2.0",
+    "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4",
     "puppeteer": "^13.0.0",
     "sequelize": "^6.6.5",
-    "sqlite3": "npm:@vscode/sqlite3@^5.0.7"
+    "sequelize-lazy-migrations": "github:HealthScreening/sequelize-lazy-migrations#1.0.5"
   },
   "devDependencies": {
     "@types/luxon": "^2.0.7",
@@ -19,7 +61,7 @@
     "eslint": "^8.4.1",
     "eslint-config-prettier": "^8.3.0",
     "prettier": "2.5.1",
-    "sequelize-cli": "^6.2.0",
+    "sequelize-cli": "^6.3.0",
     "tslib": "^2.3.1",
     "typescript": "^4.5.3"
   },
@@ -28,6 +70,12 @@
     "deploy": "node src/deploy.js",
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check .",
-    "lint": "eslint src"
-  }
+    "lint": "eslint src",
+    "db:makemigrations": "./node_modules/sequelize-lazy-migrations/bin/makemigration.js",
+    "typescript": "tsc -p tsconfig.json",
+    "pre-push-check": "npm run lint && npm run prettier:check && npm run typescript",
+    "pre-push": "npm run lint && npm run prettier && npm run typescript",
+    "clean-typescript": "bash -c 'rm *.js src/*.js src/*/*.js src/*/*/*.js src/*/*/*/*.js'"
+  },
+  "type": "commonjs"
 }

@@ -16,14 +16,15 @@
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
-import { Config } from "../orm";
+import { AutoUser } from "../orm/autoUser";
+import { AutoDays } from "../orm/autoDays";
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("delete_auto")
     .setDescription("Delete any stored auto information."),
   async execute(interaction: CommandInteraction) {
-    const item = await Config.findOne({
+    const item = await AutoUser.findOne({
       where: { userId: interaction.user.id },
     });
     if (item === null) {
@@ -34,6 +35,12 @@ module.exports = {
       });
     } else {
       await item.destroy({ force: true });
+      const dayItem = await AutoDays.findOne({
+        where: { userId: interaction.user.id },
+      });
+      if (dayItem !== null) {
+        await dayItem.destroy({ force: true });
+      }
       await interaction.reply("Auto information deleted!");
     }
   },

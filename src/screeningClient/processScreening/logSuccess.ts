@@ -14,28 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
-import { exit } from "process";
+import { ProcessParams } from "../interfaces";
 
-import { browser } from "../utils/produceScreenshot/browser";
-
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("stop")
-    .setDescription("Stop the bot safely."),
-  async execute(interaction: CommandInteraction) {
-    if (interaction.user.id != "199605025914224641") {
-      interaction.reply({
-        content: "You are not the bot owner!",
-        ephemeral: true,
-      });
-    } else {
-      await interaction.reply("Stopping...");
-      if (browser) {
-        await browser.close();
-      }
-      exit(0);
-    }
-  },
-};
+export default async function logSuccess(
+  params: ProcessParams,
+  success: boolean,
+  timeElapsed?: number
+) {
+  if (success) {
+    params.auto?.logChannel.send(
+      `Finished screening **${params.auto.batchTime[0]}:${
+        params.auto.batchTime[1]
+      }::${params.auto.itemNumber}** in ${(timeElapsed! / 1000).toFixed(
+        2
+      )} seconds`
+    );
+  } else {
+    params.auto?.logChannel.send(
+      `Failed screening **${params.auto.batchTime[0]}:${params.auto.batchTime[1]}::${params.auto.itemNumber}**`
+    );
+  }
+}
