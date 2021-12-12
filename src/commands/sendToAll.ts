@@ -98,7 +98,10 @@ module.exports = {
             });
             await sleep(timeToSleep * 1000);
           } catch (e) {
-            logError(e)
+            await logError(e, "sendToAll", {
+              userId: item.userId,
+              message,
+            });
           }
         }
       }

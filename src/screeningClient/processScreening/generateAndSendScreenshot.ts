@@ -17,12 +17,19 @@
 import { ProcessParams } from "../interfaces";
 import { generateScreenshot } from "../../utils/produceScreenshot";
 import { MessageOptions, sendMessage } from "../../utils/multiMessage";
+import logError from "../../utils/logError";
 
 export default async function generateAndSendScreenshot(params: ProcessParams) {
   try {
-    const screenshot = await generateScreenshot(
-      params.generateScreenshotParams
-    );
+    let screenshot;
+    try {
+      screenshot = await generateScreenshot(
+        params.generateScreenshotParams
+      );
+    } catch (e) {
+      await logError(e, "generateAndSendScreenshot::generateScreenshot", params);
+      return false;
+    }
     const messageParams: MessageOptions = {
       content: "Here is the screenshot that you requested:",
       files: [
@@ -34,10 +41,15 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
       ],
       ...params.multiMessageParams,
     };
-    await sendMessage(messageParams);
+    try {
+      await sendMessage(messageParams);
+    } catch (e) {
+      await logError(e, "generateAndSendScreenshot::sendMessage", params);
+      return false;
+    }
     return true;
   } catch (e) {
-    console.error(e);
+    await logError(e, "generateAndSendScreenshot", params);
     return false;
   }
 }

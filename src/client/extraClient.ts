@@ -19,8 +19,9 @@ import {
   ClientOptions,
   Collection,
   CommandInteraction,
+  CommandInteractionOption,
   Message,
-  TextChannel,
+  TextChannel
 } from "discord.js";
 import path from "path";
 import fs from "fs";
@@ -29,11 +30,12 @@ import { ItemType } from "../utils/multiMessage";
 import assignAutoSchoolRole from "./autoAssignSchoolRole";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import doAutoLoop from "./doAutoLoop";
+import logError from "../utils/logError";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
   "hsb/generate-auto",
-  "hsb/generate_auto",
+  "hsb/generate_auto"
 ];
 
 export interface Command {
@@ -92,24 +94,30 @@ export default class HealthScreeningBotClient extends Client {
           await this.screeningClient.queueAutoCommand(message.author.id, {
             itemType: ItemType.message,
             item: message,
-            replyMessage: message,
+            replyMessage: message
           });
         }
       }
     } catch (e) {
-      console.error(e);
+      const metadata = {
+        command: message.content,
+        author: message.author.id,
+        channel: message.channelId,
+        guild: message.guildId
+      };
+      await logError(e, "textCommand", metadata);
       try {
         await message.reply({
           content: "There was an error while executing this command!",
-          failIfNotExists: false,
+          failIfNotExists: false
         });
       } catch (e2) {
-        console.error(e2);
+        await logError(e2, "textCommand::errorReply", metadata);
       }
     }
   }
 
-  private async oninteractionCreate(interaction) {
+  private async oninteractionCreate(interaction: CommandInteraction) {
     try {
       if (!interaction.isCommand()) return;
 
@@ -132,21 +140,59 @@ export default class HealthScreeningBotClient extends Client {
       try {
         await command.execute(interaction);
       } catch (error) {
-        console.error(error);
-        if (interaction.deferred || interaction.replied) {
-          await interaction.followUp({
-            content: "There was an error while executing this command!",
-            ephemeral: true,
-          });
-        } else {
-          await interaction.reply({
-            content: "There was an error while executing this command!",
-            ephemeral: true,
-          });
+        const metadata: { [k: string]: any } = {
+          command: interaction.commandName,
+          arguments: interaction.options.data.map((item: CommandInteractionOption) => {
+            let value;
+            switch (item.type) {
+            case "USER":
+              value = item.user!.id;
+              break;
+            case "CHANNEL":
+              value = item.channel!.id;
+              break;
+            case "ROLE":
+              value = item.role!.id;
+              break;
+            case "MENTIONABLE":
+              value = (item.user || item.role || item.channel)!.id;
+              break;
+            default:
+              value = item.value;
+              break;
+            }
+            return {
+              name: item.name,
+              type: item.type,
+              value,
+              focused: item.focused,
+              autocomplete: item.autocomplete
+            };
+          }),
+          user: interaction.user.id
+        };
+        await logError(error, "interactionCommand", metadata);
+        try {
+          if (interaction.deferred || interaction.replied) {
+            await interaction.followUp({
+              content: "There was an error while executing this command!",
+              ephemeral: true
+            });
+          }
+          else {
+            await interaction.reply({
+              content: "There was an error while executing this command!",
+              ephemeral: true
+            });
+          }
+        } catch (e2) {
+          metadata.deferred = interaction.deferred;
+          metadata.replied = interaction.replied;
+          await logError(e2, "interactionCommand::errorReply", metadata);
         }
       }
     } catch (e) {
-      console.error(e);
+      await logError(e, "interactionCommand::processing");
     }
   }
 
@@ -161,7 +207,7 @@ export default class HealthScreeningBotClient extends Client {
     ).channels.fetch("902375187150934037")) as TextChannel;
     await Promise.all([
       assignAutoSchoolRole(this),
-      doAutoLoop(this, logChannel),
+      doAutoLoop(this, logChannel)
     ]);
   }
 }
