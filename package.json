@@ -48,7 +48,7 @@
     "luxon": "^2.2.0",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
-    "puppeteer": "^11.0.0",
+    "puppeteer": "^13.0.0",
     "sequelize": "^6.6.5",
     "sequelize-lazy-migrations": "github:HealthScreening/sequelize-lazy-migrations#1.0.5"
   },
