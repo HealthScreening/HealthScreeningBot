@@ -52,7 +52,7 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
         allowNull: true
       },
       metadata: {
-        type: DataTypes.JSON,
+        type: DataTypes.JSONB,
         allowNull: true
       }
     },
