@@ -91,25 +91,4 @@ const migrationCommands = [{
   ]
 }];
 
-module.exports = {
-  pos: 0,
-  up: function(queryInterface) {
-    let index = this.pos;
-    return new Promise(function(resolve, reject) {
-      function next() {
-        if (index < migrationCommands.length) {
-          let command = migrationCommands[index];
-          console.log("[#" + index + "] execute: " + command.fn);
-          index++;
-          queryInterface[command.fn].apply(queryInterface, command.params).then(next, reject);
-        }
-        else {
-          resolve(null);
-        }
-      }
-
-      next();
-    });
-  },
-  info: info
-};
+module.exports = require("../makeMigrationExport")(info, migrationCommands);
