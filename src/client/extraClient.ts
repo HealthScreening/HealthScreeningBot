@@ -20,7 +20,7 @@ import {
   Collection,
   CommandInteraction,
   Message,
-  TextChannel,
+  TextChannel
 } from "discord.js";
 import path from "path";
 import fs from "fs";
@@ -33,7 +33,7 @@ import doAutoLoop from "./doAutoLoop";
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
   "hsb/generate-auto",
-  "hsb/generate_auto",
+  "hsb/generate_auto"
 ];
 
 export interface Command {
@@ -92,7 +92,7 @@ export default class HealthScreeningBotClient extends Client {
           await this.screeningClient.queueAutoCommand(message.author.id, {
             itemType: ItemType.message,
             item: message,
-            replyMessage: message,
+            replyMessage: message
           });
         }
       }
@@ -101,7 +101,7 @@ export default class HealthScreeningBotClient extends Client {
       try {
         await message.reply({
           content: "There was an error while executing this command!",
-          failIfNotExists: false,
+          failIfNotExists: false
         });
       } catch (e2) {
         console.error(e2);
@@ -136,12 +136,13 @@ export default class HealthScreeningBotClient extends Client {
         if (interaction.deferred || interaction.replied) {
           await interaction.followUp({
             content: "There was an error while executing this command!",
-            ephemeral: true,
+            ephemeral: true
           });
-        } else {
+        }
+        else {
           await interaction.reply({
             content: "There was an error while executing this command!",
-            ephemeral: true,
+            ephemeral: true
           });
         }
       }
@@ -151,12 +152,13 @@ export default class HealthScreeningBotClient extends Client {
   }
 
   private async doOnReady() {
+    console.log(`Health Screening Bot is ready! Running as user ${this.user!.username}#${this.user!.discriminator}`);
     const logChannel: TextChannel = (await (
       await this.guilds.fetch("889983763994521610")
     ).channels.fetch("902375187150934037")) as TextChannel;
     await Promise.all([
       assignAutoSchoolRole(this),
-      doAutoLoop(this, logChannel),
+      doAutoLoop(this, logChannel)
     ]);
   }
 }
