@@ -120,9 +120,12 @@ export default class HealthScreeningBotClient extends Client {
         interaction.commandName
       );
 
-      const command = this.commands.get(interaction.commandName);
+      const command: Command | undefined = this.commands.get(interaction.commandName);
 
-      if (!command) console.error("Invalid command entered:", command);
+      if (!command){
+        console.error("Invalid command entered:", command);
+        return;
+      }
 
       try {
         await command.execute(interaction);

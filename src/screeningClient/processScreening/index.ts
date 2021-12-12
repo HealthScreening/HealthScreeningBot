@@ -19,6 +19,7 @@ import timeMethod from "../../utils/timeMethod";
 import generateAndSendScreenshot from "./generateAndSendScreenshot";
 import logSuccess from "./logSuccess";
 import processCooldown from "./processCooldown";
+import sendRequest from "../../utils/produceScreenshot/sendRequest";
 
 
 /**
@@ -29,7 +30,13 @@ import processCooldown from "./processCooldown";
  */
 export default async function processScreening(params: ProcessParams) {
   try {
-    const [success, finish] = await timeMethod(() => generateAndSendScreenshot(params));
+    let success: boolean, finish: number
+    if (params.auto && !params.auto.dmScreenshot) {
+      [success, finish] = await timeMethod(() => sendRequest(params.generateScreenshotParams))
+    }
+    else {
+      [success, finish] = await timeMethod(() => generateAndSendScreenshot(params));
+    }
     await logSuccess(params, success, finish);
     processCooldown(params);
   } catch (e) {

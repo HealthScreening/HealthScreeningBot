@@ -54,7 +54,7 @@ interface BaseMessageOptions {
   /**
    * Whether or not to send the message if the message being replied to is deleted.
    *
-   * If {@link NonInteractionMessageOptions.replyMessage} is not provided, this will be ignored.
+   * If {@link BaseMessageOptions.replyMessage} is not provided, this will be ignored.
    */
   failIfNotExists?: boolean;
   /**

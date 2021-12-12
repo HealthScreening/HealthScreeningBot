@@ -22,6 +22,7 @@ export interface AutoBatchOptions {
   batchTime: [number, number];
   itemNumber: number;
   logChannel: TextChannel;
+  dmScreenshot: boolean
 }
 
 export interface Cooldown {
