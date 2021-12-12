@@ -54,7 +54,7 @@ export class ScreeningClient {
     }
   }
 
-  private async dealWithQueue(params: ProcessParams) {
+  private async dealWithQueue(params: ProcessParams, userId: string) {
     if (this.queue.willQueue()) {
       const messageOptions: MessageOptions = {
         content:
@@ -67,7 +67,14 @@ export class ScreeningClient {
     } else if (params.multiMessageParams.itemType === ItemType.interaction) {
       await params.multiMessageParams.item.deferReply();
     }
-    await this.queue.enqueue(params, 1);
+    const trueParams: ProcessParams = {
+      ...params,
+      cooldown: {
+        container: this.cooldowns,
+        id: userId,
+      }
+    }
+    await this.queue.enqueue(trueParams, 1);
   }
 
   public async queueAutoCommand(
@@ -99,7 +106,7 @@ export class ScreeningClient {
         content: `<@${userId}>, here is the screenshot that you requested:`,
       },
     };
-    await this.dealWithQueue(processParams);
+    await this.dealWithQueue(processParams, userId);
   }
 
   public async queueOnceCommand(
@@ -120,7 +127,7 @@ export class ScreeningClient {
         content: `<@${userId}>, here is the screenshot that you requested:`,
       },
     };
-    await this.dealWithQueue(processParams);
+    await this.dealWithQueue(processParams, userId);
   }
 
   public async queueDailyAuto(

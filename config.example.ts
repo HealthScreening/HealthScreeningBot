@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { Options } from "sequelize";
+import { DiscordTypes } from "./config.types";
 
 export const database: Options = {
   dialect: "postgres",
@@ -25,7 +26,9 @@ export const database: Options = {
   port: 5432
 };
 
-export const discord = {
+
+
+export let discord: DiscordTypes = {
   token: "<bot token>",
   clientId: "890001571004448800",
   guildId: "889983763994521610",

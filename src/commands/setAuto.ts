@@ -15,17 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Config } from "../orm";
 import { HSBCommandInteraction } from "../discordjs-overrides";
 import { ItemType } from "../utils/multiMessage";
 import { User } from "discord.js";
+import { AutoUser } from "../orm/autoUser";
 
 function createOrDelete(values, condition) {
-  return Config.findOne({ where: condition }).then(function (obj) {
+  return AutoUser.findOne({ where: condition }).then(function (obj) {
     // update
     if (obj) return obj.update(values);
     // insert
-    return Config.create(values);
+    return AutoUser.create(values);
   });
 }
 
@@ -58,9 +58,9 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction: HSBCommandInteraction) {
-    const firstName = interaction.options.getString("first_name");
-    const lastName = interaction.options.getString("last_name");
-    const email = interaction.options.getString("email");
+    const firstName = interaction.options.getString("first_name")!;
+    const lastName = interaction.options.getString("last_name")!;
+    const email = interaction.options.getString("email")!;
     if (
       !email.match(/^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/)
     ) {
@@ -68,7 +68,7 @@ module.exports = {
         "Invalid email! Please enter a valid email."
       );
     }
-    const isVaxxed = interaction.options.getBoolean("vaccinated");
+    const isVaxxed = interaction.options.getBoolean("vaccinated")!;
     await createOrDelete(
       {
         firstName,
