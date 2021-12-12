@@ -74,7 +74,8 @@
     "db:makemigrations": "./node_modules/sequelize-lazy-migrations/bin/makemigration.js",
     "typescript": "tsc -p tsconfig.json",
     "pre-push-check": "npm run lint && npm run prettier:check && npm run typescript",
-    "pre-push": "npm run lint && npm run prettier && npm run typescript"
+    "pre-push": "npm run lint && npm run prettier && npm run typescript",
+    "clean-typescript": "bash -c 'rm *.js src/*.js src/*/*.js src/*/*/*.js src/*/*/*/*.js'"
   },
   "type": "commonjs"
 }
