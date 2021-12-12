@@ -26,11 +26,11 @@ export const database: Options = {
   password: "user",
   database: "user",
   host: "localhost",
-  port: 5432
+  port: 5432,
 };
 
 export const discord = {
   token: "token",
   clientId: "id",
-  guildId: "id"
-}
+  guildId: "id",
+};
