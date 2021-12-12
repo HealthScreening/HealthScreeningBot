@@ -17,8 +17,7 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, MessageEmbed } from "discord.js";
 import { DateTime } from "luxon";
-
-import { Config } from "../orm";
+import { AutoUser } from "../orm/autoUser";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -30,7 +29,7 @@ module.exports = {
     interaction.client.guilds.cache.forEach((value) => {
       members += value.memberCount;
     });
-    const registeredPeople = await Config.count();
+    const registeredPeople = await AutoUser.count();
     const embed = new MessageEmbed()
       .setColor("#00FF00")
       .setTitle("Bot Stats")

@@ -20,17 +20,13 @@ import { TextChannel } from "discord.js";
 import { AutoUser } from "../orm/autoUser";
 import { DateTime } from "luxon";
 import getUsersForDayOfWeek from "../utils/getUsersForDayOfWeek";
+import getValidUserIDs from "../utils/getValidUserIDs";
 
 export default async function doAutoLoop(
   client: HealthScreeningBotClient,
   logChannel: TextChannel
 ): Promise<void> {
-  const validUserIDs = new Set();
-  for (const [, guild] of client.guilds.cache) {
-    for (const [userId] of await guild.members.fetch()) {
-      validUserIDs.add(userId);
-    }
-  }
+  const validUserIDs: Set<string> = await getValidUserIDs(client);
   const batchTimes: Map<[number, number], number> = new Map();
   const currentTime = DateTime.now().setZone("America/New_York");
   const currentTimeMins = currentTime.hour * 60 + currentTime.minute;

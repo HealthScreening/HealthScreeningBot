@@ -14,22 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { Options } from "sequelize";
-import { DiscordTypes } from "./config.types";
 
-export const database: Options = {
-  dialect: "postgres",
-  username: "healthscreeningbot",
-  password: "healthscreeningbot",
-  database: "healthscreeningbot",
-  host: "localhost",
-  port: 5432
-};
+import { Client } from "discord.js";
 
-
-
-export let discord: DiscordTypes = {
-  token: "<bot token>",
-  clientId: "890001571004448800",
-  guildId: "889983763994521610",
-};
+export default async function getValidUserIDs(client: Client): Promise<Set<string>> {
+  const validUserIDs: Set<string> = new Set();
+  for (const [, guild] of client.guilds.cache) {
+    for (const [userId] of await guild.members.fetch()) {
+      validUserIDs.add(userId);
+    }
+  }
+  return validUserIDs;
+}

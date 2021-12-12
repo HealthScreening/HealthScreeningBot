@@ -15,8 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { DiscordAPIError, GuildMember } from "discord.js";
-import { Config } from "../orm";
 import HealthScreeningBotClient from "./extraClient";
+import { AutoUser } from "../orm/autoUser";
 
 export default async function assignAutoSchoolRole(
   client: HealthScreeningBotClient
@@ -26,8 +26,8 @@ export default async function assignAutoSchoolRole(
     "bths.edu": "893918912188661850",
     "stuy.edu": "893918994216681473",
   };
-  const items = await Config.findAll();
-  const guild = client.guilds.cache.get("889983763994521610");
+  const items = await AutoUser.findAll();
+  const guild = client.guilds.cache.get("889983763994521610")!;
   let suffix: string, roleId: string, member: GuildMember;
   for (const item of items) {
     for (const suffix_data of Object.entries(data)) {
@@ -37,10 +37,10 @@ export default async function assignAutoSchoolRole(
         try {
           member = await guild.members.fetch(item.userId);
         } catch (e) {
-          if (e instanceof DiscordAPIError) {
-            continue;
+          if (!(e instanceof DiscordAPIError)) {
+            console.error(e);
           }
-          console.error(e);
+          continue;
         }
         try {
           await member.roles.add(roleId, "Autorole on email in storage");
