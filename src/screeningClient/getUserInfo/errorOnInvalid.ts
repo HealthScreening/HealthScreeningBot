@@ -14,24 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { MessageOptions, sendMessage } from "../../utils/multiMessage";
 
-import { UserInfo, UserInfoParams } from "../interfaces";
-import getDeviceData from "./getDeviceData";
-import getAutoData from "./getAutoData";
-import getAutoDayData from "./getAutoDayData";
+export default async function errorOnInvalid(
+  params: MessageOptions
+): Promise<void> {
+  const messageParams: MessageOptions = {
+    content:
+      "You do not have any auto information stored! Use `/set_auto` to set some information.",
+    ephemeral: true,
+    ...params
+  };
+  await sendMessage(messageParams);
 
-export default async function getUserInfo(options: UserInfoParams): Promise<UserInfo | null> {
-  const deviceData = await getDeviceData(options);
-  const dayData = await getAutoDayData(options);
-  const returnData: UserInfo = {
-    deviceInfo: deviceData,
-    auto: {
-      dayInfo: dayData,
-    }
-  }
-  const autoData = await getAutoData(options);
-  if (autoData !== null ) {
-    returnData.auto.info = autoData;
-  }
-  return returnData;
 }

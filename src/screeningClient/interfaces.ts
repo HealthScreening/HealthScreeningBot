@@ -44,22 +44,44 @@ export interface ProcessParams {
   cooldown?: Cooldown;
 }
 
+export interface AutoInfo {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  vaccinated: boolean;
+  time: {
+    hour: number;
+    minute: number;
+  };
+
+}
+
+export interface AutoDayInfo {
+  userId: string;
+  onSunday: boolean;
+  onMonday: boolean;
+  onTuesday: boolean;
+  onWednesday: boolean;
+  onThursday: boolean;
+  onFriday: boolean;
+  onSaturday: boolean;
+}
+
+export interface DeviceInfo {
+  userId: string;
+  device: string;
+}
+
 /**
  * Possible user info that is possible to obtain.
  */
 export interface UserInfo {
-  userId: string;
-  auto?: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    vaccinated: boolean;
-    time: {
-      hour: number;
-      minute: number;
-    };
-  };
-  device: string;
+  auto: {
+    info?: AutoInfo;
+    dayInfo: AutoDayInfo;
+  },
+  deviceInfo: DeviceInfo;
 }
 
 export interface UserInfoParams {

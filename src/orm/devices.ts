@@ -23,7 +23,7 @@ export interface DevicesAttributes {
   device: string
 }
 
-class Devices extends Model<DevicesAttributes, DevicesAttributes> implements DevicesAttributes {
+export class Devices extends Model<DevicesAttributes, DevicesAttributes> implements DevicesAttributes {
   userId!: string;
   device!: string;
 }

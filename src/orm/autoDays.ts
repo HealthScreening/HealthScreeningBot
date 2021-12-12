@@ -29,7 +29,7 @@ export interface AutoDaysAttributes {
   onSaturday: boolean;
 }
 
-class AutoDays extends Model<AutoDaysAttributes, AutoDaysAttributes> implements AutoDaysAttributes {
+export class AutoDays extends Model<AutoDaysAttributes, AutoDaysAttributes> implements AutoDaysAttributes {
   userId!: string;
   onSunday!: boolean;
   onMonday!: boolean;
@@ -43,7 +43,7 @@ class AutoDays extends Model<AutoDaysAttributes, AutoDaysAttributes> implements 
 AutoDays.init({
   userId: {
     type: DataTypes.STRING,
-    primaryKey: true
+    primaryKey: true,
   },
   onSunday: {
     type: DataTypes.BOOLEAN,

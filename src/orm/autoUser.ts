@@ -28,7 +28,7 @@ export interface AutoUserAttributes{
   minute: number;
 }
 
-class AutoUser extends Model<AutoUserAttributes, AutoUserAttributes> implements AutoUserAttributes {
+export class AutoUser extends Model<AutoUserAttributes, AutoUserAttributes> implements AutoUserAttributes {
   userId!: string;
   firstName!: string;
   lastName!: string;

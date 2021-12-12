@@ -14,24 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { DeviceInfo, UserInfoParams } from "../interfaces";
+import { Devices } from "../../orm/devices";
 
-import { UserInfo, UserInfoParams } from "../interfaces";
-import getDeviceData from "./getDeviceData";
-import getAutoData from "./getAutoData";
-import getAutoDayData from "./getAutoDayData";
-
-export default async function getUserInfo(options: UserInfoParams): Promise<UserInfo | null> {
-  const deviceData = await getDeviceData(options);
-  const dayData = await getAutoDayData(options);
-  const returnData: UserInfo = {
-    deviceInfo: deviceData,
-    auto: {
-      dayInfo: dayData,
-    }
+export default async function getDeviceData(options: UserInfoParams): Promise<DeviceInfo> {
+  const autoDaysItem = await Devices.findOne({
+    where: { userId: options.userId }
+  });
+  return {
+    userId: options.userId,
+    device: autoDaysItem?.device || "iPhone 11",
   }
-  const autoData = await getAutoData(options);
-  if (autoData !== null ) {
-    returnData.auto.info = autoData;
-  }
-  return returnData;
 }
