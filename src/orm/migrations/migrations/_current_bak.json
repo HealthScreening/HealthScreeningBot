@@ -107,6 +107,14 @@
           "field": "minute",
           "seqType": "Sequelize.SMALLINT"
         },
+        "type": {
+          "allowNull": false,
+          "defaultValue": {
+            "value": "G"
+          },
+          "field": "type",
+          "seqType": "Sequelize.ENUM('G', 'S', 'E')"
+        },
         "createdAt": {
           "allowNull": false,
           "field": "createdAt",
@@ -135,5 +143,5 @@
       "indexes": []
     }
   },
-  "revision": 3
+  "revision": 4
 }
