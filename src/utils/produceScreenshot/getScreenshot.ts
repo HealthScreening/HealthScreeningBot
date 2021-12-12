@@ -18,6 +18,7 @@ import { GetScreenshotParams } from "./interfaces";
 import * as Buffer from "buffer";
 import { browser } from "./browser";
 import { devices } from "puppeteer";
+import { objectToWrapper } from "../objectToWrapper";
 
 export default async function getScreenshot(
   options: GetScreenshotParams

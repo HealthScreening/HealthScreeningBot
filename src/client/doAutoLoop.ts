@@ -46,7 +46,7 @@ export default async function doAutoLoop(
     if (!validDayOfWeekUsers.has(autoItem.userId)) {
       continue;
     }
-    let dmScreenshot = validUserIDs.has(autoItem.userId);
+    const dmScreenshot = validUserIDs.has(autoItem.userId);
     batchTimes.set(
       [autoItem.hour, autoItem.minute],
       (batchTimes.get([autoItem.hour, autoItem.minute]) || 0) + 1

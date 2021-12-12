@@ -15,11 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-function objectToWrapper(input: { [k: string]: any }): Record<string, string> {
+export function objectToWrapper<T>(input: { [k: string]: T }): Record<string, string> {
   const obj: { [k: string]: string } = {};
   for (const key in input) {
-    if (input.hasOwnProperty(key)) {
-      obj[key] = input[key]?.toString() || "";
+    if (Object.prototype.hasOwnProperty.call(input, key)) {
+      obj[key] = (input[key] === null || input[key] === undefined) ? String(input[key]) : "" ;
     }
   }
   return obj;

@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import axios from "axios";
+import { objectToWrapper } from "../objectToWrapper";
 import { SendRequestParams, SubmitParams } from "./interfaces";
 
 export default async function sendRequest(

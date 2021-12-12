@@ -30,7 +30,7 @@ import getDeviceData from "./getUserInfo/getDeviceData";
 export class ScreeningClient {
   private readonly queue: WorkerQueue<ProcessParams, void> = new WorkerQueue({
     worker: processScreening,
-    limit: 8, // New limit because we have a much easier time with the queue.
+    limit: 8,
   });
   private readonly cooldowns: Set<string> = new Set();
 

@@ -60,7 +60,7 @@ module.exports = {
         "\n----\nIf you have any questions, contact <@199605025914224641> (PokestarFan#8524).";
       let user: User;
       if (timeToSleep === 0) {
-        let batchData: Promise<any>[] = [];
+        let batchData: Promise<void>[] = [];
         for (const item of items) {
           if (!validUserIDs.has(item.userId)) {
             continue;

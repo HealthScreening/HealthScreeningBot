@@ -27,7 +27,7 @@ export interface DB {
 }
 const db: DB = {};
 
-let sequelize: Sequelize = new Sequelize(config);
+const sequelize: Sequelize = new Sequelize(config);
 
 readdirSync(__dirname)
   .filter((file) => {
@@ -36,7 +36,10 @@ readdirSync(__dirname)
     );
   })
   .forEach((file) => {
+    /* eslint-disable @typescript-eslint/no-var-requires -- Disabled because
+      we dynamically require, which is impossible with typescript's import system. */
     const model = require(path.join(__dirname, file))(sequelize, DataTypes);
+    /* eslint-enable @typescript-eslint/no-var-requires */
     db[model.name] = model;
   });
 

@@ -1,18 +1,17 @@
-module.exports = function (info, migrationCommands) {
+module.exports = function(info, migrationCommands) {
   return {
     pos: 0,
-    up: function (queryInterface) {
+    up: function(queryInterface) {
       let index = this.pos;
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
         function next() {
           if (index < migrationCommands.length) {
-            let command = migrationCommands[index];
+            const command = migrationCommands[index];
             console.log("[#" + index + "] execute: " + command.fn);
             index++;
-            queryInterface[command.fn]
-              .apply(queryInterface, command.params)
-              .then(next, reject);
-          } else {
+            queryInterface[command.fn].bind(queryInterface)(...command.params).then(next, reject);
+          }
+          else {
             resolve(null);
           }
         }
@@ -20,6 +19,6 @@ module.exports = function (info, migrationCommands) {
         next();
       });
     },
-    info: info,
+    info: info
   };
 };
