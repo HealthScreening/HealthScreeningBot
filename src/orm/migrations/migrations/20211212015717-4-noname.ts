@@ -27,24 +27,26 @@ const Sequelize = require("sequelize");
  **/
 
 let info = {
-    "revision": 4,
-    "name": "noname",
-    "created": "2021-12-12T01:57:17.748Z",
-    "comment": ""
+  revision: 4,
+  name: "noname",
+  created: "2021-12-12T01:57:17.748Z",
+  comment: "",
 };
 
-let migrationCommands = [{
+let migrationCommands = [
+  {
     fn: "addColumn",
     params: [
-        "AutoUsers",
-        "type",
-        {
-            "type": Sequelize.ENUM('G', 'S', 'E'),
-            "field": "type",
-            "defaultValue": "G",
-            "allowNull": false
-        }
-    ]
-}];
+      "AutoUsers",
+      "type",
+      {
+        type: Sequelize.ENUM("G", "S", "E"),
+        field: "type",
+        defaultValue: "G",
+        allowNull: false,
+      },
+    ],
+  },
+];
 
 module.exports = require("../makeMigrationExport")(info, migrationCommands);

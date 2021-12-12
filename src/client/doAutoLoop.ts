@@ -30,14 +30,19 @@ export default async function doAutoLoop(
   const batchTimes: Map<[number, number], number> = new Map();
   const currentTime = DateTime.now().setZone("America/New_York");
   const currentTimeMins = currentTime.hour * 60 + currentTime.minute;
-  const validDayOfWeekUsers = new Set(await getUsersForDayOfWeek(currentTime.weekday));
-  for (const autoItem of await sequelize.query(`SELECT *
+  const validDayOfWeekUsers = new Set(
+    await getUsersForDayOfWeek(currentTime.weekday)
+  );
+  for (const autoItem of await sequelize.query(
+    `SELECT *
                                                 FROM "AutoUsers"
-                                                WHERE ("AutoUsers".hour * 60 + "AutoUsers".minute) BETWEEN ? AND ?`, {
-    replacements: [currentTimeMins, currentTimeMins + 60 * 5],
-    mapToModel: true,
-    model: AutoUser
-  })) {
+                                                WHERE ("AutoUsers".hour * 60 + "AutoUsers".minute) BETWEEN ? AND ?`,
+    {
+      replacements: [currentTimeMins, currentTimeMins + 60 * 5],
+      mapToModel: true,
+      model: AutoUser,
+    }
+  )) {
     if (!validDayOfWeekUsers.has(autoItem.userId)) {
       continue;
     }
@@ -50,9 +55,9 @@ export default async function doAutoLoop(
       await client.users.fetch(autoItem.userId),
       {
         batchTime: [autoItem.hour, autoItem.minute],
-        itemNumber: (batchTimes.get([autoItem.hour, autoItem.minute])) || 1,
+        itemNumber: batchTimes.get([autoItem.hour, autoItem.minute]) || 1,
         logChannel,
-        dmScreenshot
+        dmScreenshot,
       }
     );
   }

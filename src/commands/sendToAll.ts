@@ -45,13 +45,14 @@ module.exports = {
     if (interaction.user.id != "199605025914224641") {
       interaction.reply({
         content: "You are not the bot owner!",
-        ephemeral: true
+        ephemeral: true,
       });
-    }
-    else {
+    } else {
       const timeToSleep = interaction.options.getInteger("time") || 0;
       await interaction.reply("Sending to all...");
-      const validUserIDs: Set<string> = await getValidUserIDs(interaction.client);
+      const validUserIDs: Set<string> = await getValidUserIDs(
+        interaction.client
+      );
       const items = await AutoUser.findAll();
       const message =
         "The bot owner has sent a message to everyone registered under the auto health screening bot:\n----\n" +
@@ -64,16 +65,18 @@ module.exports = {
           if (!validUserIDs.has(item.userId)) {
             continue;
           }
-          batchData.push((async () => {
-            try {
-              user = await interaction.client.users.fetch(item.userId);
-              await user.send({
-                content: message
-              });
-            } catch (e) {
-              console.log(e);
-            }
-          })());
+          batchData.push(
+            (async () => {
+              try {
+                user = await interaction.client.users.fetch(item.userId);
+                await user.send({
+                  content: message,
+                });
+              } catch (e) {
+                console.log(e);
+              }
+            })()
+          );
           if (batchData.length >= 10) {
             await Promise.all(batchData);
             batchData = [];
@@ -82,8 +85,7 @@ module.exports = {
         if (batchData.length > 0) {
           await Promise.all(batchData);
         }
-      }
-      else {
+      } else {
         for (const item of items) {
           try {
             if (!validUserIDs.has(item.userId)) {
@@ -91,7 +93,7 @@ module.exports = {
             }
             user = await interaction.client.users.fetch(item.userId);
             await user.send({
-              content: message
+              content: message,
             });
             await sleep(timeToSleep * 1000);
           } catch (e) {
@@ -100,5 +102,5 @@ module.exports = {
         }
       }
     }
-  }
+  },
 };

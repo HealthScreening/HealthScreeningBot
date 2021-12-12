@@ -28,49 +28,52 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
       // define association here
     }
   }
-  AutoUser.init({
-    userId: {
-      type: DataTypes.STRING,
-      primaryKey: true
+  AutoUser.init(
+    {
+      userId: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+      },
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      vaccinated: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
+      hour: {
+        type: DataTypes.SMALLINT,
+        allowNull: false,
+        defaultValue: 5,
+      },
+      minute: {
+        type: DataTypes.SMALLINT,
+        allowNull: false,
+        defaultValue: 40,
+      },
+      type: {
+        type: DataTypes.ENUM,
+        values: Object.keys(screeningTypes),
+        allowNull: false,
+        defaultValue: "G",
+      },
     },
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    vaccinated: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: true
-    },
-    hour: {
-      type: DataTypes.SMALLINT,
-      allowNull: false,
-      defaultValue: 5
-    },
-    minute: {
-      type: DataTypes.SMALLINT,
-      allowNull: false,
-      defaultValue: 40
-    },
-    type: {
-      type: DataTypes.ENUM,
-      values: Object.keys(screeningTypes),
-      allowNull: false,
-      defaultValue: 'G'
+    {
+      sequelize,
+      modelName: "AutoUser",
+      timestamps: true,
+      updatedAt: false,
     }
-  }, {
-    sequelize,
-    modelName: 'AutoUser',
-    timestamps: true,
-    updatedAt: false
-  });
+  );
   return AutoUser;
 };

@@ -15,7 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { REST } from "@discordjs/rest";
-import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-types/v9";
+import {
+  RESTPostAPIApplicationCommandsJSONBody,
+  Routes,
+} from "discord-api-types/v9";
 
 import { readdirSync } from "fs";
 
@@ -52,7 +55,9 @@ const rest = new REST({ version: "9" }).setToken(discord.token);
  * @param {RESTPostAPIApplicationCommandsJSONBody[]} commands An array of the commands to register, as returned by {@link getCommands}.
  * @return {void} Nothing.
  */
-function registerCommands(commands: RESTPostAPIApplicationCommandsJSONBody[]): void {
+function registerCommands(
+  commands: RESTPostAPIApplicationCommandsJSONBody[]
+): void {
   rest
     .put(Routes.applicationCommands(discord.clientId), { body: commands })
     .then(() => console.log("Successfully registered application commands."))

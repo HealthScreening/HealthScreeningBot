@@ -28,20 +28,23 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
     }
   }
 
-  Devices.init({
-    userId: {
-      type: DataTypes.STRING,
-      primaryKey: true
+  Devices.init(
+    {
+      userId: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+      },
+      device: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "iPhone 11",
+      },
     },
-    device: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: "iPhone 11"
+    {
+      sequelize,
+      modelName: "Devices",
+      timestamps: false,
     }
-  }, {
-    sequelize,
-    modelName: "Devices",
-    timestamps: false
-  });
+  );
   return Devices;
 };

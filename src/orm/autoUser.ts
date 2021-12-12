@@ -17,9 +17,12 @@
 
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from ".";
-import { screeningTypes, screeningTypeType } from "../utils/produceScreenshot/interfaces";
+import {
+  screeningTypes,
+  screeningTypeType,
+} from "../utils/produceScreenshot/interfaces";
 
-export interface AutoUserAttributes{
+export interface AutoUserAttributes {
   userId: string;
   firstName: string;
   lastName: string;
@@ -27,10 +30,13 @@ export interface AutoUserAttributes{
   vaccinated: boolean;
   hour: number;
   minute: number;
-  type: screeningTypeType
+  type: screeningTypeType;
 }
 
-export class AutoUser extends Model<AutoUserAttributes, AutoUserAttributes> implements AutoUserAttributes {
+export class AutoUser
+  extends Model<AutoUserAttributes, AutoUserAttributes>
+  implements AutoUserAttributes
+{
   userId!: string;
   firstName!: string;
   lastName!: string;
@@ -42,47 +48,50 @@ export class AutoUser extends Model<AutoUserAttributes, AutoUserAttributes> impl
   type!: screeningTypeType;
 }
 
-AutoUser.init({
-  userId: {
-    type: DataTypes.STRING,
-    primaryKey: true,
+AutoUser.init(
+  {
+    userId: {
+      type: DataTypes.STRING,
+      primaryKey: true,
+    },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    vaccinated: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },
+    hour: {
+      type: DataTypes.SMALLINT,
+      allowNull: false,
+      defaultValue: 5,
+    },
+    minute: {
+      type: DataTypes.SMALLINT,
+      allowNull: false,
+      defaultValue: 40,
+    },
+    type: {
+      type: DataTypes.ENUM,
+      values: Object.keys(screeningTypes),
+      allowNull: false,
+      defaultValue: "G",
+    },
   },
-  firstName: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  lastName: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  vaccinated: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: true
-  },
-  hour: {
-    type: DataTypes.SMALLINT,
-    allowNull: false,
-    defaultValue: 5
-  },
-  minute: {
-    type: DataTypes.SMALLINT,
-    allowNull: false,
-    defaultValue: 40
-  },
-  type: {
-    type: DataTypes.ENUM,
-    values: Object.keys(screeningTypes),
-    allowNull: false,
-    defaultValue: 'G'
+  {
+    sequelize,
+    modelName: "AutoUser",
+    timestamps: true,
+    updatedAt: false,
   }
-}, {
-  sequelize,
-  modelName: 'AutoUser',
-  timestamps: true,
-  updatedAt: false
-});
+);

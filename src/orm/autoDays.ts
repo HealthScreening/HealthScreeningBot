@@ -29,7 +29,10 @@ export interface AutoDaysAttributes {
   onSaturday: boolean;
 }
 
-export class AutoDays extends Model<AutoDaysAttributes, AutoDaysAttributes> implements AutoDaysAttributes {
+export class AutoDays
+  extends Model<AutoDaysAttributes, AutoDaysAttributes>
+  implements AutoDaysAttributes
+{
   userId!: string;
   onSunday!: boolean;
   onMonday!: boolean;
@@ -40,41 +43,44 @@ export class AutoDays extends Model<AutoDaysAttributes, AutoDaysAttributes> impl
   onSaturday!: boolean;
 }
 
-AutoDays.init({
-  userId: {
-    type: DataTypes.STRING,
-    primaryKey: true,
+AutoDays.init(
+  {
+    userId: {
+      type: DataTypes.STRING,
+      primaryKey: true,
+    },
+    onSunday: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    onMonday: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    onTuesday: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    onWednesday: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    onThursday: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    onFriday: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    onSaturday: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   },
-  onSunday: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false
-  },
-  onMonday: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true
-  },
-  onTuesday: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true
-  },
-  onWednesday: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true
-  },
-  onThursday: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true
-  },
-  onFriday: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true
-  },
-  onSaturday: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false
+  {
+    sequelize,
+    modelName: "AutoDays",
+    timestamps: false,
   }
-}, {
-  sequelize,
-  modelName: "AutoDays",
-  timestamps: false
-});
+);

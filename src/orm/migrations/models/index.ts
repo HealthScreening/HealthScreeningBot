@@ -27,18 +27,20 @@ export interface DB {
 }
 const db: DB = {};
 
-let sequelize: Sequelize = new Sequelize(config)
+let sequelize: Sequelize = new Sequelize(config);
 
 readdirSync(__dirname)
-  .filter(file => {
-    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
+  .filter((file) => {
+    return (
+      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
+    );
   })
-  .forEach(file => {
+  .forEach((file) => {
     const model = require(path.join(__dirname, file))(sequelize, DataTypes);
     db[model.name] = model;
   });
 
-Object.keys(db).forEach(modelName => {
+Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
