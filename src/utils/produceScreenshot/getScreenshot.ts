@@ -19,6 +19,7 @@ import * as Buffer from "buffer";
 import { browser } from "./browser";
 import { devices } from "puppeteer";
 import { objectToWrapper } from "../objectToWrapper";
+import { resolve } from "path";
 
 export default async function getScreenshot(
   options: GetScreenshotParams
@@ -27,7 +28,7 @@ export default async function getScreenshot(
   try {
     await page.emulate(devices[options.device || "iPhone 11"]);
     await page.goto(
-      `file://${__dirname}/../screening-success-html/page.html?` +
+      resolve(`file://${__dirname}/../screening-success-html/page.html?`) +
         new URLSearchParams(objectToWrapper(options)).toString()
     );
     await page.evaluate(() => {
