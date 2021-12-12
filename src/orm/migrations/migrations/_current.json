@@ -176,6 +176,11 @@
                     "field": "metadata",
                     "seqType": "Sequelize.JSONB"
                 },
+                "type": {
+                    "allowNull": false,
+                    "field": "type",
+                    "seqType": "Sequelize.STRING"
+                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -202,9 +207,19 @@
                         "indexName": "error_logs_created_at",
                         "name": "error_logs_created_at"
                     }
+                },
+                "0c3afcfa2fb1977cd4f1d8b97bfb7fa8a39ba1f4": {
+                    "fields": [
+                        "type"
+                    ],
+                    "name": "error_logs_type",
+                    "options": {
+                        "indexName": "error_logs_type",
+                        "name": "error_logs_type"
+                    }
                 }
             }
         }
     },
-    "revision": 6
+    "revision": 7
 }

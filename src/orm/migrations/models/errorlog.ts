@@ -54,7 +54,11 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
       metadata: {
         type: DataTypes.JSONB,
         allowNull: true
-      }
+      },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       sequelize,
@@ -67,6 +71,9 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
         },
         {
           fields: ["createdAt"]
+        },
+        {
+          fields: ["type"]
         }
       ]
     }

@@ -174,7 +174,7 @@
                 "metadata": {
                     "allowNull": true,
                     "field": "metadata",
-                    "seqType": "Sequelize.JSON"
+                    "seqType": "Sequelize.JSONB"
                 },
                 "createdAt": {
                     "allowNull": false,
@@ -206,5 +206,5 @@
             }
         }
     },
-    "revision": 5
+    "revision": 6
 }
