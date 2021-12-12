@@ -75,7 +75,8 @@
     "typescript": "tsc -p tsconfig.json",
     "pre-push-check": "npm run lint && npm run prettier:check && npm run typescript",
     "pre-push": "npm run lint && npm run prettier && npm run typescript",
-    "clean-typescript": "bash -c 'rm *.js src/*.js src/*/*.js src/*/*/*.js src/*/*/*/*.js'"
+    "clean-typescript": "bash -c 'rm *.js src/*.js src/*/*.js src/*/*/*.js src/*/*/*/*.js'",
+    "update": "git pull && npm run typescript"
   },
   "type": "commonjs"
 }
