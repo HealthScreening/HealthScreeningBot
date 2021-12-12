@@ -1,19 +1,72 @@
 {
     "tables": {
+        "AutoDays": {
+            "tableName": "AutoDays",
+            "schema": {
+                "userId": {
+                    "primaryKey": true,
+                    "field": "userId",
+                    "seqType": "Sequelize.STRING"
+                },
+                "onSunday": {
+                    "defaultValue": {
+                        "value": false
+                    },
+                    "field": "onSunday",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "onMonday": {
+                    "defaultValue": {
+                        "value": true
+                    },
+                    "field": "onMonday",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "onTuesday": {
+                    "defaultValue": {
+                        "value": true
+                    },
+                    "field": "onTuesday",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "onWednesday": {
+                    "defaultValue": {
+                        "value": true
+                    },
+                    "field": "onWednesday",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "onThursday": {
+                    "defaultValue": {
+                        "value": true
+                    },
+                    "field": "onThursday",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "onFriday": {
+                    "defaultValue": {
+                        "value": true
+                    },
+                    "field": "onFriday",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "onSaturday": {
+                    "defaultValue": {
+                        "value": false
+                    },
+                    "field": "onSaturday",
+                    "seqType": "Sequelize.BOOLEAN"
+                }
+            },
+            "indexes": []
+        },
         "AutoUsers": {
             "tableName": "AutoUsers",
             "schema": {
-                "id": {
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER"
-                },
                 "userId": {
-                    "allowNull": false,
-                    "unique": true,
+                    "primaryKey": true,
                     "field": "userId",
-                    "seqType": "Sequelize.INTEGER"
+                    "seqType": "Sequelize.STRING"
                 },
                 "firstName": {
                     "allowNull": false,
@@ -63,5 +116,5 @@
             "indexes": []
         }
     },
-    "revision": 1
+    "revision": 2
 }

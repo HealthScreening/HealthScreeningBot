@@ -15,7 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { DataTypes } from "sequelize";
+// @ts-nocheck We don't want to check this file because it's an auto generated
+// migration file.
+const Sequelize = require("sequelize");
 
 /**
  * Actions summary:
@@ -43,42 +45,42 @@ let migrationCommands = [{
             "AutoDays",
             {
                 "userId": {
-                    "type": DataTypes.STRING,
+                    "type": Sequelize.STRING,
                     "field": "userId",
                     "primaryKey": true
                 },
                 "onSunday": {
-                    "type": DataTypes.BOOLEAN,
+                    "type": Sequelize.BOOLEAN,
                     "field": "onSunday",
                     "defaultValue": false
                 },
                 "onMonday": {
-                    "type": DataTypes.BOOLEAN,
+                    "type": Sequelize.BOOLEAN,
                     "field": "onMonday",
                     "defaultValue": true
                 },
                 "onTuesday": {
-                    "type": DataTypes.BOOLEAN,
+                    "type": Sequelize.BOOLEAN,
                     "field": "onTuesday",
                     "defaultValue": true
                 },
                 "onWednesday": {
-                    "type": DataTypes.BOOLEAN,
+                    "type": Sequelize.BOOLEAN,
                     "field": "onWednesday",
                     "defaultValue": true
                 },
                 "onThursday": {
-                    "type": DataTypes.BOOLEAN,
+                    "type": Sequelize.BOOLEAN,
                     "field": "onThursday",
                     "defaultValue": true
                 },
                 "onFriday": {
-                    "type": DataTypes.BOOLEAN,
+                    "type": Sequelize.BOOLEAN,
                     "field": "onFriday",
                     "defaultValue": true
                 },
                 "onSaturday": {
-                    "type": DataTypes.BOOLEAN,
+                    "type": Sequelize.BOOLEAN,
                     "field": "onSaturday",
                     "defaultValue": false
                 }
@@ -92,7 +94,7 @@ let migrationCommands = [{
             "AutoUsers",
             "userId",
             {
-                "type": DataTypes.STRING,
+                "type": Sequelize.STRING,
                 "field": "userId",
                 "primaryKey": true
             }

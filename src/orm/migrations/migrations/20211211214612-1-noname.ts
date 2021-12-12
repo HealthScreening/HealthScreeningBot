@@ -14,14 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+// @ts-nocheck We don't want to check this file because it's an auto generated
+// migration file.
+const Sequelize = require("sequelize");
 /**
  * Actions summary:
  *
  * createTable "AutoUsers", deps: []
  *
  **/
-
-import { DataTypes } from "sequelize";
 
 const info = {
   "revision": 1,
@@ -36,52 +37,52 @@ const migrationCommands = [{
     "AutoUsers",
     {
       "id": {
-        "type": DataTypes.INTEGER,
+        "type": Sequelize.INTEGER,
         "field": "id",
         "autoIncrement": true,
         "primaryKey": true
       },
       "userId": {
-        "type": DataTypes.INTEGER,
+        "type": Sequelize.INTEGER,
         "field": "userId",
         "unique": true,
         "allowNull": false
       },
       "firstName": {
-        "type": DataTypes.STRING,
+        "type": Sequelize.STRING,
         "field": "firstName",
         "allowNull": false
       },
       "lastName": {
-        "type": DataTypes.STRING,
+        "type": Sequelize.STRING,
         "field": "lastName",
         "allowNull": false
       },
       "email": {
-        "type": DataTypes.STRING,
+        "type": Sequelize.STRING,
         "field": "email",
         "allowNull": false
       },
       "vaccinated": {
-        "type": DataTypes.BOOLEAN,
+        "type": Sequelize.BOOLEAN,
         "field": "vaccinated",
         "defaultValue": true,
         "allowNull": false
       },
       "hour": {
-        "type": DataTypes.SMALLINT,
+        "type": Sequelize.SMALLINT,
         "field": "hour",
         "defaultValue": 5,
         "allowNull": false
       },
       "minute": {
-        "type": DataTypes.SMALLINT,
+        "type": Sequelize.SMALLINT,
         "field": "minute",
         "defaultValue": 40,
         "allowNull": false
       },
       "createdAt": {
-        "type": DataTypes.DATE,
+        "type": Sequelize.DATE,
         "field": "createdAt",
         "allowNull": false
       }
