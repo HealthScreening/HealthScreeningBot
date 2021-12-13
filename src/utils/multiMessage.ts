@@ -16,12 +16,7 @@
  */
 import { Embed } from "@discordjs/builders";
 import { APIMessage } from "discord-api-types";
-import {
-  CommandInteraction,
-  HTTPAttachmentData,
-  Message,
-  User,
-} from "discord.js";
+import { CommandInteraction, HTTPAttachmentData, Message, User } from "discord.js";
 
 /**
  * The type of a given item. This is used in favor of comparing the output of typeof because
@@ -29,6 +24,7 @@ import {
  *
  * @enum {number}
  */
+
 // eslint-disable-next-line no-shadow
 export enum ItemType {
   interaction,
@@ -99,13 +95,41 @@ export type MessageOptions =
   | UserMessageOptions
   | MessageMessageOptions;
 
+export function serializeMessageOptions(options: MessageOptions): object {
+  let itemOptions: [string, string | null];
+  switch (options.itemType) {
+  case ItemType.interaction:
+    itemOptions = ["interaction", null];
+    break;
+  case ItemType.user:
+    itemOptions = ["user", options.item.id];
+    break;
+  case ItemType.message:
+    itemOptions = ["message", options.item.id];
+    break;
+  }
+  return {
+    ...itemOptions,
+    text: {
+      content: options.content || null,
+      embeds: (options.embeds || []).map((embed) => embed.toJSON()),
+      fileCount: (options.files || []).map((file) => file.name),
+    },
+    ephemeral: options.ephemeral || false,
+    reply: {
+      message: options.replyMessage ? options.replyMessage.id : null,
+      failIfNotExists: options.failIfNotExists || false,
+    },
+  };
+}
+
 /**
  * The default options for fields in {@link MessageOptions} that are optional boolean fields.
  */
 const defaultOptions = {
   ephemeral: false,
   failIfNotExists: false,
-  files: [],
+  files: []
 };
 
 export function sendMessage(
@@ -113,42 +137,43 @@ export function sendMessage(
 ): Promise<Message | APIMessage> {
   const trueOptions: MessageOptions = { ...defaultOptions, ...options };
   switch (trueOptions.itemType) {
-    case ItemType.user:
-      return trueOptions.item.send({
+  case ItemType.user:
+    return trueOptions.item.send({
+      content: trueOptions.content,
+      embeds: trueOptions.embeds,
+      reply: {
+        messageReference: trueOptions.replyMessage as Message<boolean>,
+        failIfNotExists: trueOptions.failIfNotExists
+      },
+      files: trueOptions.files
+    });
+  case ItemType.message:
+    return trueOptions.item.channel.send({
+      content: trueOptions.content,
+      embeds: trueOptions.embeds,
+      reply: {
+        messageReference: trueOptions.replyMessage as Message<boolean>,
+        failIfNotExists: trueOptions.failIfNotExists
+      },
+      files: trueOptions.files
+    });
+  case ItemType.interaction:
+    if (trueOptions.item.deferred || trueOptions.item.replied) {
+      return trueOptions.item.followUp({
         content: trueOptions.content,
         embeds: trueOptions.embeds,
-        reply: {
-          messageReference: trueOptions.replyMessage as Message<boolean>,
-          failIfNotExists: trueOptions.failIfNotExists,
-        },
-        files: trueOptions.files,
+        ephemeral: trueOptions.ephemeral,
+        files: trueOptions.files
       });
-    case ItemType.message:
-      return trueOptions.item.channel.send({
+    }
+    else {
+      return trueOptions.item.reply({
         content: trueOptions.content,
         embeds: trueOptions.embeds,
-        reply: {
-          messageReference: trueOptions.replyMessage as Message<boolean>,
-          failIfNotExists: trueOptions.failIfNotExists,
-        },
+        ephemeral: trueOptions.ephemeral,
         files: trueOptions.files,
+        fetchReply: true
       });
-    case ItemType.interaction:
-      if (trueOptions.item.deferred || trueOptions.item.replied) {
-        return trueOptions.item.followUp({
-          content: trueOptions.content,
-          embeds: trueOptions.embeds,
-          ephemeral: trueOptions.ephemeral,
-          files: trueOptions.files,
-        });
-      } else {
-        return trueOptions.item.reply({
-          content: trueOptions.content,
-          embeds: trueOptions.embeds,
-          ephemeral: trueOptions.ephemeral,
-          files: trueOptions.files,
-          fetchReply: true,
-        });
-      }
+    }
   }
 }

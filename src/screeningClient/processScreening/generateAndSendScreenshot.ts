@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { ProcessParams } from "../interfaces";
+import { ProcessParams, serializeProcessParams } from "../interfaces";
 import { generateScreenshot } from "../../utils/produceScreenshot";
 import { MessageOptions, sendMessage } from "../../utils/multiMessage";
 import logError from "../../utils/logError";
@@ -27,7 +27,7 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
         params.generateScreenshotParams
       );
     } catch (e) {
-      await logError(e, "generateAndSendScreenshot::generateScreenshot", params);
+      await logError(e, "generateAndSendScreenshot::generateScreenshot", serializeProcessParams(params));
       return false;
     }
     const messageParams: MessageOptions = {
@@ -49,7 +49,7 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
     }
     return true;
   } catch (e) {
-    await logError(e, "generateAndSendScreenshot", params);
+    await logError(e, "generateAndSendScreenshot", serializeProcessParams(params));
     return false;
   }
 }

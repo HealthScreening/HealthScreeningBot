@@ -18,7 +18,7 @@ import {
   GenerateScreenshotParams,
   screeningTypeType,
 } from "../utils/produceScreenshot/interfaces";
-import { MessageOptions } from "../utils/multiMessage";
+import { MessageOptions, serializeMessageOptions } from "../utils/multiMessage";
 import { TextChannel } from "discord.js";
 
 export interface AutoBatchOptions {
@@ -28,9 +28,27 @@ export interface AutoBatchOptions {
   dmScreenshot: boolean;
 }
 
+export function serializeAutoBatchOptions(
+  options: AutoBatchOptions
+) {
+  return {
+    batchTime: options.batchTime,
+    itemNumber: options.itemNumber,
+    logChannel: options.logChannel.id,
+    dmScreenshot: options.dmScreenshot,
+  };
+}
+
 export interface Cooldown {
   container: Set<string>;
   id: string;
+}
+
+export function serializeCooldown(cooldown: Cooldown) {
+  return {
+    containerSize: cooldown.container.size,
+    id: cooldown.id,
+  };
 }
 
 /**
@@ -46,6 +64,22 @@ export interface ProcessParams {
   multiMessageParams: MessageOptions;
   auto?: AutoBatchOptions;
   cooldown?: Cooldown;
+}
+
+export function serializeProcessParams(
+  params: ProcessParams
+) {
+  const obj: { [k: string]: object } = {
+    generateScreenshotParams: params.generateScreenshotParams,
+    multiMessageParams: serializeMessageOptions(params.multiMessageParams),
+  }
+  if (params.auto) {
+    obj.auto = serializeAutoBatchOptions(params.auto);
+  }
+  if (params.cooldown) {
+    obj.cooldown = serializeCooldown(params.cooldown);
+  }
+  return obj;
 }
 
 export interface AutoInfo {
