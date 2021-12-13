@@ -54,7 +54,7 @@ module.exports = {
         .setRequired(false)
     ).addBooleanOption((option) =>
       option
-        .setName("withGithubIssueNumber")
+        .setName("with_github_issue_number")
         .setDescription("Show the errors with github issue numbers, default false")
         .setRequired(false)
     ).addStringOption((option) =>
@@ -71,7 +71,7 @@ module.exports = {
     const afterTime: number | null = interaction.options.getInteger("after_time");
     const typeStartsWith: string | null = interaction.options.getString("type_starts_with");
     const withGithubIssueNumber: boolean | null = interaction.options.getBoolean(
-      "withGithubIssueNumber",
+      "with_github_issue_number",
       false
     );
     if (before) {
