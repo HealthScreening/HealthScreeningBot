@@ -115,14 +115,14 @@ module.exports = {
       order: [
         ["createdAt", isDesc ? "DESC" : "ASC"]
       ],
-      limit: 10
+      limit: 25
     });
     const embed = new MessageEmbed();
     embed.setTitle("Error Log");
     if (items) {
       embed.setDescription(
         items.map((item: ErrorLog) => {
-          const base = `#${item.id}. [${item.type}] (${DateTime.fromMillis(item.createdAt.getTime()).toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS)}) ${item.errorName}: ${item.errorDescription}`;
+          const base = `#${item.id}. ${item.errorName}`;
           if (item.githubIssueNumber) {
             return `[${base}](https://github.com/HealthScreening/HealthScreeningBot/issues/${item.githubIssueNumber})`;
           }
