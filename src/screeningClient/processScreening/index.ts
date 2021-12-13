@@ -21,6 +21,8 @@ import logSuccess from "./logSuccess";
 import processCooldown from "./processCooldown";
 import sendRequest from "../../utils/produceScreenshot/sendRequest";
 import logError from "../../utils/logError";
+import runFunctionOnError from "../../utils/runFunctionOnError";
+import { AlreadyLogged } from "../../utils/logError/errors";
 
 /**
  * Actually processes a screening request.
@@ -44,7 +46,7 @@ export default async function processScreening(params: ProcessParams) {
     processCooldown(params);
   } catch (e) {
     if (params.auto) {
-      await logError(e, "dailyAutoScreening", params);
+      await runFunctionOnError(e, AlreadyLogged, () => logError(e, "dailyAutoScreening", params), false);
     } else {
       throw e;
     }

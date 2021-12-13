@@ -18,6 +18,8 @@ import { ProcessParams, serializeProcessParams } from "../interfaces";
 import { generateScreenshot } from "../../utils/produceScreenshot";
 import { MessageOptions, sendMessage } from "../../utils/multiMessage";
 import logError from "../../utils/logError";
+import { AlreadyLogged } from "../../utils/logError/errors";
+import runFunctionOnError from "../../utils/runFunctionOnError";
 
 export default async function generateAndSendScreenshot(params: ProcessParams) {
   try {
@@ -27,7 +29,7 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
         params.generateScreenshotParams
       );
     } catch (e) {
-      await logError(e, "generateAndSendScreenshot::generateScreenshot", serializeProcessParams(params));
+      await runFunctionOnError(e, AlreadyLogged, () => logError(e, "generateAndSendScreenshot::generateScreenshot", serializeProcessParams(params)));
       return false;
     }
     const messageParams: MessageOptions = {
@@ -44,12 +46,12 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
     try {
       await sendMessage(messageParams);
     } catch (e) {
-      await logError(e, "generateAndSendScreenshot::sendMessage", params);
+      await runFunctionOnError(e, AlreadyLogged, () => logError(e, "generateAndSendScreenshot::sendMessage", params));
       return false;
     }
     return true;
   } catch (e) {
-    await logError(e, "generateAndSendScreenshot", serializeProcessParams(params));
+    await runFunctionOnError(e, AlreadyLogged, () => logError(e, "generateAndSendScreenshot", serializeProcessParams(params)));
     return false;
   }
 }

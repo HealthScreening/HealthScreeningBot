@@ -31,6 +31,8 @@ import assignAutoSchoolRole from "./autoAssignSchoolRole";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import doAutoLoop from "./doAutoLoop";
 import logError from "../utils/logError";
+import runFunctionOnError from "../utils/runFunctionOnError";
+import { AlreadyLogged } from "../utils/logError/errors";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -105,14 +107,14 @@ export default class HealthScreeningBotClient extends Client {
         channel: message.channelId,
         guild: message.guildId
       };
-      await logError(e, "textCommand", metadata);
+      await runFunctionOnError(e, AlreadyLogged, () => logError(e, "textCommand", metadata), false);
       try {
         await message.reply({
           content: "There was an error while executing this command!",
           failIfNotExists: false
         });
       } catch (e2) {
-        await logError(e2, "textCommand::errorReply", metadata);
+        await runFunctionOnError(e2, AlreadyLogged,() => logError(e2, "textCommand::errorReply", metadata), false);
       }
     }
   }
@@ -171,7 +173,7 @@ export default class HealthScreeningBotClient extends Client {
           }),
           user: interaction.user.id
         };
-        await logError(error, "interactionCommand", metadata);
+        await runFunctionOnError(error, AlreadyLogged, () => logError(error, "interactionCommand", metadata));
         try {
           if (interaction.deferred || interaction.replied) {
             await interaction.followUp({
@@ -188,11 +190,11 @@ export default class HealthScreeningBotClient extends Client {
         } catch (e2) {
           metadata.deferred = interaction.deferred;
           metadata.replied = interaction.replied;
-          await logError(e2, "interactionCommand::errorReply", metadata);
+          await runFunctionOnError(e2, AlreadyLogged,() => logError(e2, "interactionCommand::errorReply", metadata));
         }
       }
     } catch (e) {
-      await logError(e, "interactionCommand::processing");
+      await runFunctionOnError(e, AlreadyLogged,() => logError(e, "interactionCommand::processing"), false);
     }
   }
 
