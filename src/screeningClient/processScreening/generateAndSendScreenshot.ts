@@ -16,8 +16,9 @@
  */
 import { ProcessParams, serializeProcessParams } from "../interfaces";
 import { generateScreenshot } from "../../utils/produceScreenshot";
-import { MessageOptions, sendMessage } from "../../utils/multiMessage";
+import { MessageOptions, sendMessage, serializeMessageOptions } from "../../utils/multiMessage";
 import logError from "../../utils/logError";
+import handleCommandError from "../../utils/handleCommandError";
 
 export default async function generateAndSendScreenshot(params: ProcessParams) {
   try {
@@ -28,6 +29,9 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
       );
     } catch (e) {
       await logError(e, "generateAndSendScreenshot::generateScreenshot", serializeProcessParams(params));
+      if (!params.auto){
+        await handleCommandError(params.multiMessageParams)
+      }
       return false;
     }
     const messageParams: MessageOptions = {
@@ -44,7 +48,7 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
     try {
       await sendMessage(messageParams);
     } catch (e) {
-      await logError(e, "generateAndSendScreenshot::sendMessage", params);
+      await logError(e, "generateAndSendScreenshot::sendMessage", serializeMessageOptions(messageParams));
       return false;
     }
     return true;
