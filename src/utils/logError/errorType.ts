@@ -24,5 +24,12 @@ export type errorType =
   | "textCommand"
   | "textCommand::errorReply"
   | "sendToAll"
+  | "generateAndSendScreenshot::generateScreenshot"
+  | "generateAndSendScreenshot::sendMessage"
+  | "generateAndSendScreenshot"
+  | "dailyAutoScreening"
 
-export const errorTypes: errorType[] = ["assignSchoolRole::fetchMember", "assignSchoolRole::assignRole", "interactionCommand", "interactionCommand::errorReply", "interactionCommand::processing", "textCommand", "textCommand::errorReply", "sendToAll"];
+export const errorTypes: errorType[] = ["assignSchoolRole::fetchMember", "assignSchoolRole::assignRole", "interactionCommand", "interactionCommand::errorReply", "interactionCommand::processing", "textCommand", "textCommand::errorReply", "sendToAll", "generateAndSendScreenshot::generateScreenshot"
+  , "generateAndSendScreenshot::sendMessage"
+  , "generateAndSendScreenshot"
+  , "dailyAutoScreening"];
