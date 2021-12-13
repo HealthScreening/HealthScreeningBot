@@ -64,7 +64,7 @@ module.exports = {
         .setRequired(false)),
   async execute(interaction: CommandInteraction) {
     const isDesc = interaction.options.getBoolean("desc", false) || true;
-    const whereQuery: { [k: string]: object  } = {};
+    const whereQuery: { [k: string]: object } = {};
     const before: number | null = interaction.options.getInteger("before");
     const after: number | null = interaction.options.getInteger("after");
     const beforeTime: number | null = interaction.options.getInteger("before_time");
@@ -119,54 +119,62 @@ module.exports = {
     });
     const embed = new MessageEmbed();
     embed.setTitle("Error Log");
-    if (items){
+    if (items) {
       embed.setDescription(
         items.map((item: ErrorLog) => {
-          const base = `[${item.type}] () #${item.id}. ${item.errorName}: ${item.errorDescription}`;
-          if (item.githubIssueNumber){
+          const base = `#${item.id}. [${item.type}] (${DateTime.fromMillis(item.createdAt.getMilliseconds() * 1000).toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS)}) ${item.errorName}: ${item.errorDescription}`;
+          if (item.githubIssueNumber) {
             return `[${base}](https://github.com/HealthScreening/HealthScreeningBot/issues/${item.githubIssueNumber})`;
-          } else {
+          }
+          else {
             return base;
           }
         }).join("\n")
       );
       embed.setColor("GREEN");
-    } else {
+    }
+    else {
       embed.setDescription("No errors found.");
       embed.setColor("RED");
     }
-    let fieldData: string = "Direction: **" + isDesc ? "Descending" : "Ascending" + "**"
+    let fieldData: string = "Direction: **" + (isDesc ? "Descending" : "Ascending") + "**";
     if (before) {
       fieldData += `\nBefore: **#${before}**`;
-    } else {
+    }
+    else {
       fieldData += "\nBefore: **None**";
     }
     if (after) {
       fieldData += `\nAfter: **#${after}**`;
-    } else {
+    }
+    else {
       fieldData += "\nAfter: **None**";
     }
     if (beforeTime) {
-      fieldData += `\nBefore Time: **${DateTime.fromMillis(beforeTime * 1000).toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS)}**`;
-    } else {
+      fieldData += `\nBefore Time: **${DateTime.fromMillis(beforeTime * 1000).toLocaleString(DateTime.DATETIME_HUGE_WITH_SECONDS)}**`;
+    }
+    else {
       fieldData += "\nBefore Time: **None**";
     }
     if (afterTime) {
-      fieldData += `\nAfter Time: **${DateTime.fromMillis(afterTime * 1000).toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS)}**`;
-    } else {
+      fieldData += `\nAfter Time: **${DateTime.fromMillis(afterTime * 1000).toLocaleString(DateTime.DATETIME_HUGE_WITH_SECONDS)}**`;
+    }
+    else {
       fieldData += "\nAfter Time: **None**";
     }
     if (typeStartsWith) {
       fieldData += `\nType Starts With: **\`${typeStartsWith}\`**`;
-    } else {
+    }
+    else {
       fieldData += "\nType Starts With: **None**";
     }
     if (withGithubIssueNumber) {
       fieldData += `\nWith Github Issue Number: **${withGithubIssueNumber}**`;
-    } else {
+    }
+    else {
       fieldData += "\nWith Github Issue Number: **None**";
     }
     embed.addField("Search Properties", fieldData);
-    return await interaction.reply({embeds: [embed]})
+    return await interaction.reply({ embeds: [embed] });
   }
 };
