@@ -122,7 +122,7 @@ module.exports = {
     if (items) {
       embed.setDescription(
         items.map((item: ErrorLog) => {
-          const base = `#${item.id}. [${item.type}] (${DateTime.fromMillis(item.createdAt.getMilliseconds()).toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS)}) ${item.errorName}: ${item.errorDescription}`;
+          const base = `#${item.id}. [${item.type}] (${DateTime.fromMillis(item.createdAt.getTime()).toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS)}) ${item.errorName}: ${item.errorDescription}`;
           if (item.githubIssueNumber) {
             return `[${base}](https://github.com/HealthScreening/HealthScreeningBot/issues/${item.githubIssueNumber})`;
           }
