@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { ErrorLog } from "../orm/errorLog";
+import { ErrorLog } from "../../orm/errorLog";
+import { errorType } from "./errorType";
 
-export default async function logError(error: Error, type: string, metadata?: object): Promise<ErrorLog>{
+export default async function logError(error: Error, type: errorType, metadata?: object): Promise<ErrorLog>{
   console.error(error); // Temporary until a log viewer is added
   const trueMetadata: object | null = metadata || null;
   const errorName: string = error.name;

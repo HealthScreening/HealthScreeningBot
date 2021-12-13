@@ -45,7 +45,7 @@ export default async function assignAutoSchoolRole(
             "roleId": roleId,
             "suffix": suffix,
           }
-          await logError(e, 'assignSchoolRole', metadata);
+          await logError(e, 'assignSchoolRole::fetchMember', metadata);
           continue;
         }
         try {
@@ -59,7 +59,7 @@ export default async function assignAutoSchoolRole(
             "suffix": suffix,
             "userRoles": member.roles.cache.map((r) => r.id),
           }
-          await logError(e, 'assignSchoolRole', metadata);
+          await logError(e, 'assignSchoolRole::assignRole', metadata);
         }
       }
     }
