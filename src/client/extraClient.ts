@@ -31,6 +31,8 @@ import assignAutoSchoolRole from "./autoAssignSchoolRole";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import doAutoLoop from "./doAutoLoop";
 import logError from "../utils/logError";
+import { Command, Subcommand } from "./interfaces";
+import resolveCommands from "./resolve";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -38,14 +40,10 @@ const GENERATE_AUTO_CHOICES = [
   "hsb/generate_auto"
 ];
 
-export interface Command {
-  data: SlashCommandBuilder;
 
-  execute(interaction: CommandInteraction): Promise<void>;
-}
 
 export default class HealthScreeningBotClient extends Client {
-  private readonly commands: Collection<string, Command> = new Collection();
+  private commands: Collection<string, Command>;
   public readonly screeningClient: ScreeningClient = new ScreeningClient();
 
   constructor(options: ClientOptions) {
@@ -54,19 +52,8 @@ export default class HealthScreeningBotClient extends Client {
     this.loadEventListeners();
   }
 
-  private loadCommands() {
-    const commandPath = path.resolve(__dirname, "..", "commands");
-    const commandFiles = fs
-      .readdirSync(commandPath)
-      .filter((file) => file.endsWith(".js"));
-
-    for (const file of commandFiles) {
-      /* eslint-disable @typescript-eslint/no-var-requires -- Disabled because
-      we dynamically require, which is impossible with typescript's import system. */
-      const command: Command = require(path.resolve(commandPath, file));
-      /* eslint-enable @typescript-eslint/no-var-requires */
-      this.commands.set(command.data.name, command);
-    }
+  public async loadCommands() {
+    this.commands = await resolveCommands();
   }
 
   private loadEventListeners() {

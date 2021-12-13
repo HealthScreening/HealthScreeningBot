@@ -15,19 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import { Collection, CommandInteraction } from "discord.js";
 
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("view_error")
-    .setDescription("View a singular error.")
-    .addIntegerOption((option) =>
-      option
-        .setName("id")
-        .setDescription("The ID of the error to view.")
-        .setRequired(true)
-    ),
-  async execute(interaction: CommandInteraction) {
-    return await runSubcommands(interaction);
-  }
-};
+export interface InteractionExecutor {
+  (interaction: CommandInteraction): Promise<void>
+}
+
+export type SubcommandObject = Collection<string, Subcommand>;
+
+export interface Subcommand {
+  name: string
+  execute: InteractionExecutor
+  subcommands?: SubcommandObject
+}
+
+export interface Command {
+  data: SlashCommandBuilder;
+  execute: InteractionExecutor;
+  subcommands?: SubcommandObject;
+}
