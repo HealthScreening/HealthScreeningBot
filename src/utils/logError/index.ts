@@ -16,7 +16,6 @@
  */
 import { ErrorLog } from "../../orm/errorLog";
 import { errorType } from "./errorType";
-import { AlreadyLogged } from "./errors";
 
 export default async function logError(error: Error, type: errorType, metadata?: object): Promise<ErrorLog>{
   console.error(error); // Temporary until a log viewer is added
@@ -24,12 +23,11 @@ export default async function logError(error: Error, type: errorType, metadata?:
   const errorName: string = error.name;
   const errorMessage: string | null = error.message.length > 0 ? error.message : null;
   const errorStack: string | null = error.stack || null;
-  await ErrorLog.create({
+  return await ErrorLog.create({
     errorName,
     errorDescription: errorMessage,
     errorStack,
     metadata: trueMetadata,
     type,
   });
-  throw new AlreadyLogged();
 }

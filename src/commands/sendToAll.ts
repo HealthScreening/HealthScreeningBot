@@ -19,8 +19,6 @@ import { CommandInteraction, User } from "discord.js";
 import { AutoUser } from "../orm/autoUser";
 import getValidUserIDs from "../utils/getValidUserIDs";
 import logError from "../utils/logError";
-import runFunctionOnError from "../utils/runFunctionOnError";
-import { AlreadyLogged } from "../utils/logError/errors";
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -100,10 +98,10 @@ module.exports = {
             });
             await sleep(timeToSleep * 1000);
           } catch (e) {
-            await runFunctionOnError(e, AlreadyLogged, () => logError(e, "sendToAll", {
+            await logError(e, "sendToAll", {
               userId: item.userId,
               message,
-            }), false);
+            });
           }
         }
       }
