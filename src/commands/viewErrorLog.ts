@@ -115,7 +115,7 @@ module.exports = {
       order: [
         ["createdAt", isDesc ? "DESC" : "ASC"]
       ],
-      limit: 25
+      limit: 10
     });
     const embed = new MessageEmbed();
     embed.setTitle("Error Log");
