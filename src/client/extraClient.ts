@@ -31,6 +31,9 @@ import { Command } from "./interfaces";
 import resolveCommands from "./resolve";
 import serializeInteraction from "../utils/logError/serializeInteraction";
 import handleCommandError from "../utils/handleCommandError";
+import { WorkerQueue } from "../utils/workerQueue";
+import postToGithub from "../utils/postToGithub";
+import sleep from "../utils/sleep";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -43,6 +46,14 @@ const GENERATE_AUTO_CHOICES = [
 export default class HealthScreeningBotClient extends Client {
   private commands: Collection<string, Command>;
   public readonly screeningClient: ScreeningClient = new ScreeningClient();
+  public readonly githubQueue: WorkerQueue<[string, string], void> = new WorkerQueue({
+    worker: async (args) => {
+      await postToGithub(...args);
+      await sleep(60 * 1000);
+    },
+    limit: 1,
+    }
+  );
 
   constructor(options: ClientOptions) {
     super(options);

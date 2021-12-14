@@ -34,3 +34,9 @@ export const discord = {
   clientId: "id",
   guildId: "id",
 };
+
+export const github = {
+  token: "token",
+  owner: "HealthScreening",
+  repo: "HealthScreeningBot",
+};

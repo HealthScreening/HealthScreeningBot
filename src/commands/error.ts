@@ -67,6 +67,14 @@ module.exports = {
         .setName("id")
         .setDescription("The ID of the error to view.")
         .setRequired(true)
+      ))
+    .addSubcommand((subcommand) => subcommand
+      .setName("post")
+      .setDescription("Post an individual error to GitHub")
+      .addIntegerOption((option) => option
+        .setName("id")
+        .setDescription("The ID of the error to post.")
+        .setRequired(true)
       )),
   async execute(interaction: CommandInteraction) {
     return await runSubcommands(this, interaction);
