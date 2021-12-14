@@ -76,7 +76,9 @@
     "pre-push-check": "npm run lint && npm run prettier:check && npm run typescript",
     "pre-push": "npm run lint && npm run prettier && npm run typescript",
     "clean-typescript": "bash -c 'rm *.js src/*.js src/*/*.js src/*/*/*.js src/*/*/*/*.js'",
-    "update": "git pull && npm run typescript"
+    "update": "git pull && npm run typescript",
+    "build": "npm run clean-typescript && npm run typescript",
+    "git-rebuild": "git pull && npm run build"
   },
   "type": "commonjs"
 }
