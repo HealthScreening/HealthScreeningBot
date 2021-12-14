@@ -28,14 +28,12 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("send_to_all")
     .setDescription("Send a message to every person registered in the bot.")
-    .addStringOption((option) =>
-      option
+    .addStringOption((option) => option
         .setName("message")
         .setDescription("The message to send")
         .setRequired(true)
     )
-    .addIntegerOption((option) =>
-      option
+    .addIntegerOption((option) => option
         .setName("time")
         .setDescription(
           "The amount of time to wait between messages (in seconds)"

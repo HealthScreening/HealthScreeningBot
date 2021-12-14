@@ -24,7 +24,7 @@ import { readdirSync } from "fs";
 import { resolve } from "path";
 
 import { discord } from "../config";
-import { Command } from "./client/extraClient";
+import { Command } from "./client/interfaces";
 
 const commandPathBase = resolve(__dirname, "commands");
 
