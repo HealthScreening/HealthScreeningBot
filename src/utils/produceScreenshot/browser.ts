@@ -29,3 +29,10 @@ export async function startupBrowser(): Promise<void> {
     });
   }
 }
+
+export async function closeBrowser(): Promise<void> {
+  if (browser !== null) {
+    await browser.close();
+    browser = null;
+  }
+}

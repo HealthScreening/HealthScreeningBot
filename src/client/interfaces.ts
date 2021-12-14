@@ -26,11 +26,11 @@ export type SubcommandObject = Collection<string, Subcommand>;
 export interface Subcommand {
   name: string
   execute: InteractionExecutor
-  subcommands?: SubcommandObject
+  subcommands: SubcommandObject
 }
 
 export interface Command {
   data: SlashCommandBuilder;
   execute: InteractionExecutor;
-  subcommands?: SubcommandObject;
+  subcommands: SubcommandObject;
 }

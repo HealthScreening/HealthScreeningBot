@@ -16,6 +16,7 @@
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
+import runSubcommands from "../utils/runSubcommands";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -28,6 +29,6 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction: CommandInteraction) {
-    return await runSubcommands(interaction);
+    return await runSubcommands(this, interaction);
   }
 };

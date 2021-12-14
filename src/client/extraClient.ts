@@ -19,20 +19,18 @@ import {
   ClientOptions,
   Collection,
   CommandInteraction,
-  CommandInteractionOption,
   Message,
   TextChannel
 } from "discord.js";
-import path from "path";
-import fs from "fs";
 import { ScreeningClient } from "../screeningClient";
 import { ItemType } from "../utils/multiMessage";
 import assignAutoSchoolRole from "./autoAssignSchoolRole";
-import { SlashCommandBuilder } from "@discordjs/builders";
 import doAutoLoop from "./doAutoLoop";
 import logError from "../utils/logError";
-import { Command, Subcommand } from "./interfaces";
+import { Command } from "./interfaces";
 import resolveCommands from "./resolve";
+import serializeInteraction from "../utils/logError/serializeInteraction";
+import handleCommandError from "../utils/handleCommandError";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -120,44 +118,19 @@ export default class HealthScreeningBotClient extends Client {
       );
 
       if (!command) {
-        console.error("Invalid command entered:", command);
+        await logError(
+          new Error(`Command ${interaction.commandName} not found`),
+          "interactionCommand::commandNotFound",
+          serializeInteraction(interaction)
+        );
+        await handleCommandError({itemType: ItemType.interaction, item: interaction}, interaction.commandName);
         return;
       }
 
       try {
         await command.execute(interaction);
       } catch (error) {
-        const metadata: { [k: string]: any } = {
-          command: interaction.commandName,
-          arguments: interaction.options.data.map((item: CommandInteractionOption) => {
-            let value;
-            switch (item.type) {
-            case "USER":
-              value = item.user!.id;
-              break;
-            case "CHANNEL":
-              value = item.channel!.id;
-              break;
-            case "ROLE":
-              value = item.role!.id;
-              break;
-            case "MENTIONABLE":
-              value = (item.user || item.role || item.channel)!.id;
-              break;
-            default:
-              value = item.value;
-              break;
-            }
-            return {
-              name: item.name,
-              type: item.type,
-              value,
-              focused: item.focused,
-              autocomplete: item.autocomplete
-            };
-          }),
-          user: interaction.user.id
-        };
+        const metadata: { [k: string]: any } = serializeInteraction(interaction);
         await logError(error, "interactionCommand", metadata);
         try {
           if (interaction.deferred || interaction.replied) {
@@ -179,7 +152,7 @@ export default class HealthScreeningBotClient extends Client {
         }
       }
     } catch (e) {
-      await logError(e, "interactionCommand::processing");
+      await logError(e, "interactionCommand::processing", serializeInteraction(interaction));
     }
   }
 
