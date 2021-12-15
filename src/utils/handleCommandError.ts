@@ -14,29 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { MessageOptions, sendMessage } from "./multiMessage";
 
-import { Options } from "sequelize";
-
-// This is a sample config.ts file so that typescript compilation succeeds on
-// continuous integration.
-
-export const database: Options = {
-  dialect: "postgres",
-  username: "user",
-  password: "user",
-  database: "user",
-  host: "localhost",
-  port: 5432,
-};
-
-export const discord = {
-  token: "token",
-  clientId: "id",
-  guildId: "id",
-};
-
-export const github = {
-  token: "token",
-  owner: "HealthScreening",
-  repo: "HealthScreeningBot",
-};
+export default async function handleCommandError(
+  params: MessageOptions,
+  name?: string
+) {
+  if (name) {
+    return await sendMessage({
+      ...params,
+      content: `Unfortunately, the \`${name}\` command has encountered an error. This error has been logged and will be fixed ASAP.`,
+    });
+  } else {
+    return await sendMessage({
+      ...params,
+      content: `Unfortunately, the command has encountered an error. This error has been logged and will be fixed ASAP.`,
+    });
+  }
+}

@@ -14,25 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { ItemType, MessageOptions, sendMessage } from "./multiMessage";
 
-import { Browser } from "puppeteer";
-/* eslint-disable @typescript-eslint/no-var-requires -- Really hates it if I don't do this */
-const puppeteer = require("puppeteer");
-/* eslint-enable @typescript-eslint/no-var-requires */
-
-export let browser: Browser | null = null;
-
-export async function startupBrowser(): Promise<void> {
-  if (browser === null) {
-    browser = await puppeteer.launch({
-      headless: true,
+export default async function checkOwner(
+  params: MessageOptions
+): Promise<boolean> {
+  let isOwner = false;
+  switch (params.itemType) {
+    case ItemType.interaction:
+      isOwner = params.item.user.id === "199605025914224641";
+      break;
+    case ItemType.message:
+      isOwner = params.item.author.id === "199605025914224641";
+      break;
+    case ItemType.user:
+      isOwner = params.item.id === "199605025914224641";
+      break;
+  }
+  if (!isOwner) {
+    await sendMessage({
+      content:
+        "You are not the owner of the bot, so you cannot run this command!",
+      ...params,
     });
   }
-}
-
-export async function closeBrowser(): Promise<void> {
-  if (browser !== null) {
-    await browser.close();
-    browser = null;
-  }
+  return isOwner;
 }

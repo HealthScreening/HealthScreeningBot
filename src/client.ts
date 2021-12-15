@@ -17,8 +17,12 @@
 import { Intents } from "discord.js";
 import { init } from "./orm";
 import HealthScreeningBotClient from "./client/extraClient";
-import { startupBrowser } from "./utils/produceScreenshot/browser";
+import {
+  closeBrowser,
+  startupBrowser,
+} from "./utils/produceScreenshot/browser";
 import { discord } from "../config";
+import logError from "./utils/logError";
 
 const myIntents = new Intents();
 myIntents.add(Intents.FLAGS.GUILDS);
@@ -36,4 +40,11 @@ init()
   .then(startupBrowser)
   .then(function () {
     client.login(discord.token);
+  })
+  .catch((error) => {
+    logError(error, "root").then(() => {
+      closeBrowser().then(() => {
+        process.exit(1);
+      });
+    });
   });

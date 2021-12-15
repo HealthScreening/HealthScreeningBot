@@ -29,6 +29,7 @@ import {
  *
  * @enum {number}
  */
+
 // eslint-disable-next-line no-shadow
 export enum ItemType {
   interaction,
@@ -98,6 +99,37 @@ export type MessageOptions =
   | InteractionMessageOptions
   | UserMessageOptions
   | MessageMessageOptions;
+
+export function serializeMessageOptions(options: MessageOptions): object {
+  let itemOptions: [string, string | null];
+  switch (options.itemType) {
+    case ItemType.interaction:
+      itemOptions = ["interaction", null];
+      break;
+    case ItemType.user:
+      itemOptions = ["user", options.item.id];
+      break;
+    case ItemType.message:
+      itemOptions = ["message", options.item.id];
+      break;
+  }
+  return {
+    item: {
+      type: itemOptions[0],
+      id: itemOptions[1],
+    },
+    text: {
+      content: options.content || null,
+      embeds: (options.embeds || []).map((embed) => embed.toJSON()),
+      fileCount: (options.files || []).map((file) => file.name),
+    },
+    ephemeral: options.ephemeral || false,
+    reply: {
+      message: options.replyMessage ? options.replyMessage.id : null,
+      failIfNotExists: options.failIfNotExists || false,
+    },
+  };
+}
 
 /**
  * The default options for fields in {@link MessageOptions} that are optional boolean fields.

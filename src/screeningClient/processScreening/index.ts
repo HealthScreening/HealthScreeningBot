@@ -20,6 +20,7 @@ import generateAndSendScreenshot from "./generateAndSendScreenshot";
 import logSuccess from "./logSuccess";
 import processCooldown from "./processCooldown";
 import sendRequest from "../../utils/produceScreenshot/sendRequest";
+import logError from "../../utils/logError";
 
 /**
  * Actually processes a screening request.
@@ -43,7 +44,7 @@ export default async function processScreening(params: ProcessParams) {
     processCooldown(params);
   } catch (e) {
     if (params.auto) {
-      console.error(e);
+      await logError(e, "dailyAutoScreening", params);
     } else {
       throw e;
     }

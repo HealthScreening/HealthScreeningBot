@@ -14,15 +14,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { ProcessParams } from "../interfaces";
+import { ProcessParams, serializeProcessParams } from "../interfaces";
 import { generateScreenshot } from "../../utils/produceScreenshot";
-import { MessageOptions, sendMessage } from "../../utils/multiMessage";
+import {
+  MessageOptions,
+  sendMessage,
+  serializeMessageOptions,
+} from "../../utils/multiMessage";
+import logError from "../../utils/logError";
+import handleCommandError from "../../utils/handleCommandError";
 
 export default async function generateAndSendScreenshot(params: ProcessParams) {
   try {
-    const screenshot = await generateScreenshot(
-      params.generateScreenshotParams
-    );
+    let screenshot;
+    try {
+      screenshot = await generateScreenshot(params.generateScreenshotParams);
+    } catch (e) {
+      await logError(
+        e,
+        "generateAndSendScreenshot::generateScreenshot",
+        serializeProcessParams(params)
+      );
+      if (!params.auto) {
+        await handleCommandError(params.multiMessageParams);
+      }
+      return false;
+    }
     const messageParams: MessageOptions = {
       content: "Here is the screenshot that you requested:",
       files: [
@@ -34,10 +51,23 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
       ],
       ...params.multiMessageParams,
     };
-    await sendMessage(messageParams);
+    try {
+      await sendMessage(messageParams);
+    } catch (e) {
+      await logError(
+        e,
+        "generateAndSendScreenshot::sendMessage",
+        serializeMessageOptions(messageParams)
+      );
+      return false;
+    }
     return true;
   } catch (e) {
-    console.error(e);
+    await logError(
+      e,
+      "generateAndSendScreenshot",
+      serializeProcessParams(params)
+    );
     return false;
   }
 }

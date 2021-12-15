@@ -14,29 +14,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { SlashCommandBuilder } from "@discordjs/builders";
+import { Collection, CommandInteraction } from "discord.js";
 
-import { Options } from "sequelize";
+export interface InteractionExecutor {
+  (interaction: CommandInteraction): Promise<void>;
+}
 
-// This is a sample config.ts file so that typescript compilation succeeds on
-// continuous integration.
+export type SubcommandObject = Collection<string, Subcommand>;
 
-export const database: Options = {
-  dialect: "postgres",
-  username: "user",
-  password: "user",
-  database: "user",
-  host: "localhost",
-  port: 5432,
-};
+export interface Subcommand {
+  name: string;
+  execute: InteractionExecutor;
+  subcommands: SubcommandObject;
+}
 
-export const discord = {
-  token: "token",
-  clientId: "id",
-  guildId: "id",
-};
-
-export const github = {
-  token: "token",
-  owner: "HealthScreening",
-  repo: "HealthScreeningBot",
-};
+export interface Command {
+  data: SlashCommandBuilder;
+  execute: InteractionExecutor;
+  subcommands: SubcommandObject;
+}

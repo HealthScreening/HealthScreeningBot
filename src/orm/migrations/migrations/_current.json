@@ -141,7 +141,79 @@
         }
       },
       "indexes": []
+    },
+    "ErrorLogs": {
+      "tableName": "ErrorLogs",
+      "schema": {
+        "id": {
+          "autoIncrement": true,
+          "primaryKey": true,
+          "field": "id",
+          "seqType": "Sequelize.INTEGER"
+        },
+        "errorName": {
+          "allowNull": false,
+          "field": "errorName",
+          "seqType": "Sequelize.STRING"
+        },
+        "errorDescription": {
+          "allowNull": true,
+          "field": "errorDescription",
+          "seqType": "Sequelize.TEXT"
+        },
+        "errorStack": {
+          "allowNull": true,
+          "field": "errorStack",
+          "seqType": "Sequelize.TEXT"
+        },
+        "githubIssueNumber": {
+          "allowNull": true,
+          "field": "githubIssueNumber",
+          "seqType": "Sequelize.INTEGER"
+        },
+        "metadata": {
+          "allowNull": true,
+          "field": "metadata",
+          "seqType": "Sequelize.JSONB"
+        },
+        "type": {
+          "allowNull": false,
+          "field": "type",
+          "seqType": "Sequelize.STRING"
+        },
+        "createdAt": {
+          "allowNull": false,
+          "field": "createdAt",
+          "seqType": "Sequelize.DATE"
+        }
+      },
+      "indexes": {
+        "e2b827380e3a0db05ebbe7a71e511d294e8523a3": {
+          "fields": ["githubIssueNumber"],
+          "name": "error_logs_github_issue_number",
+          "options": {
+            "indexName": "error_logs_github_issue_number",
+            "name": "error_logs_github_issue_number"
+          }
+        },
+        "d3a619f6d8ecc287ee469076130768eb314dde82": {
+          "fields": ["createdAt"],
+          "name": "error_logs_created_at",
+          "options": {
+            "indexName": "error_logs_created_at",
+            "name": "error_logs_created_at"
+          }
+        },
+        "0c3afcfa2fb1977cd4f1d8b97bfb7fa8a39ba1f4": {
+          "fields": ["type"],
+          "name": "error_logs_type",
+          "options": {
+            "indexName": "error_logs_type",
+            "name": "error_logs_type"
+          }
+        }
+      }
     }
   },
-  "revision": 4
+  "revision": 7
 }

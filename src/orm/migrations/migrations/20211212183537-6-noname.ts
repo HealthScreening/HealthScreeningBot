@@ -14,29 +14,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+// @ts-nocheck We don't want to check this file because it's an auto generated
+// migration file.
 
-import { Options } from "sequelize";
+const Sequelize = require("sequelize");
 
-// This is a sample config.ts file so that typescript compilation succeeds on
-// continuous integration.
+/**
+ * Actions summary:
+ *
+ * changeColumn "metadata" on table "ErrorLogs"
+ *
+ **/
 
-export const database: Options = {
-  dialect: "postgres",
-  username: "user",
-  password: "user",
-  database: "user",
-  host: "localhost",
-  port: 5432,
+let info = {
+  revision: 6,
+  name: "noname",
+  created: "2021-12-12T18:35:37.232Z",
+  comment: "",
 };
 
-export const discord = {
-  token: "token",
-  clientId: "id",
-  guildId: "id",
-};
+let migrationCommands = [
+  {
+    fn: "changeColumn",
+    params: [
+      "ErrorLogs",
+      "metadata",
+      {
+        type: Sequelize.JSONB,
+        field: "metadata",
+        allowNull: true,
+      },
+    ],
+  },
+];
 
-export const github = {
-  token: "token",
-  owner: "HealthScreening",
-  repo: "HealthScreeningBot",
-};
+module.exports = require("../makeMigrationExport")(info, migrationCommands);

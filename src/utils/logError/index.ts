@@ -14,29 +14,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { ErrorLog } from "../../orm/errorLog";
 
-import { Options } from "sequelize";
-
-// This is a sample config.ts file so that typescript compilation succeeds on
-// continuous integration.
-
-export const database: Options = {
-  dialect: "postgres",
-  username: "user",
-  password: "user",
-  database: "user",
-  host: "localhost",
-  port: 5432,
-};
-
-export const discord = {
-  token: "token",
-  clientId: "id",
-  guildId: "id",
-};
-
-export const github = {
-  token: "token",
-  owner: "HealthScreening",
-  repo: "HealthScreeningBot",
-};
+export default async function logError(
+  error: Error,
+  type: string,
+  metadata?: object
+): Promise<ErrorLog> {
+  const trueMetadata: object | null = metadata || null;
+  const errorName: string = error.name;
+  const errorMessage: string | null =
+    error.message.length > 0 ? error.message : null;
+  const errorStack: string | null = error.stack || null;
+  return await ErrorLog.create({
+    errorName,
+    errorDescription: errorMessage,
+    errorStack,
+    metadata: trueMetadata,
+    type,
+  });
+}

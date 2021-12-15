@@ -18,10 +18,8 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, User } from "discord.js";
 import { AutoUser } from "../orm/autoUser";
 import getValidUserIDs from "../utils/getValidUserIDs";
-
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+import logError from "../utils/logError";
+import sleep from "../utils/sleep";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -97,7 +95,10 @@ module.exports = {
             });
             await sleep(timeToSleep * 1000);
           } catch (e) {
-            console.error(e);
+            await logError(e, "sendToAll", {
+              userId: item.userId,
+              message,
+            });
           }
         }
       }

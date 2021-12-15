@@ -22,13 +22,18 @@ import {
   Message,
   TextChannel,
 } from "discord.js";
-import path from "path";
-import fs from "fs";
 import { ScreeningClient } from "../screeningClient";
 import { ItemType } from "../utils/multiMessage";
 import assignAutoSchoolRole from "./autoAssignSchoolRole";
-import { SlashCommandBuilder } from "@discordjs/builders";
 import doAutoLoop from "./doAutoLoop";
+import logError from "../utils/logError";
+import { Command } from "./interfaces";
+import resolveCommands from "./resolve";
+import serializeInteraction from "../utils/logError/serializeInteraction";
+import handleCommandError from "../utils/handleCommandError";
+import { WorkerQueue } from "../utils/workerQueue";
+import postToGithub from "../utils/postToGithub";
+import sleep from "../utils/sleep";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -36,15 +41,17 @@ const GENERATE_AUTO_CHOICES = [
   "hsb/generate_auto",
 ];
 
-export interface Command {
-  data: SlashCommandBuilder;
-
-  execute(interaction: CommandInteraction): Promise<void>;
-}
-
 export default class HealthScreeningBotClient extends Client {
-  private readonly commands: Collection<string, Command> = new Collection();
+  private commands: Collection<string, Command>;
   public readonly screeningClient: ScreeningClient = new ScreeningClient();
+  public readonly githubQueue: WorkerQueue<[string, string], void> =
+    new WorkerQueue({
+      worker: async (args) => {
+        await postToGithub(...args);
+        await sleep(60 * 1000);
+      },
+      limit: 1,
+    });
 
   constructor(options: ClientOptions) {
     super(options);
@@ -52,19 +59,8 @@ export default class HealthScreeningBotClient extends Client {
     this.loadEventListeners();
   }
 
-  private loadCommands() {
-    const commandPath = path.resolve(__dirname, "..", "commands");
-    const commandFiles = fs
-      .readdirSync(commandPath)
-      .filter((file) => file.endsWith(".js"));
-
-    for (const file of commandFiles) {
-      /* eslint-disable @typescript-eslint/no-var-requires -- Disabled because
-      we dynamically require, which is impossible with typescript's import system. */
-      const command: Command = require(path.resolve(commandPath, file));
-      /* eslint-enable @typescript-eslint/no-var-requires */
-      this.commands.set(command.data.name, command);
-    }
+  public async loadCommands() {
+    this.commands = await resolveCommands();
   }
 
   private loadEventListeners() {
@@ -97,19 +93,25 @@ export default class HealthScreeningBotClient extends Client {
         }
       }
     } catch (e) {
-      console.error(e);
+      const metadata = {
+        command: message.content,
+        author: message.author.id,
+        channel: message.channelId,
+        guild: message.guildId,
+      };
+      await logError(e, "textCommand", metadata);
       try {
         await message.reply({
           content: "There was an error while executing this command!",
           failIfNotExists: false,
         });
       } catch (e2) {
-        console.error(e2);
+        await logError(e2, "textCommand::errorReply", metadata);
       }
     }
   }
 
-  private async oninteractionCreate(interaction) {
+  private async oninteractionCreate(interaction: CommandInteraction) {
     try {
       if (!interaction.isCommand()) return;
 
@@ -125,28 +127,50 @@ export default class HealthScreeningBotClient extends Client {
       );
 
       if (!command) {
-        console.error("Invalid command entered:", command);
+        await logError(
+          new Error(`Command ${interaction.commandName} not found`),
+          "interactionCommand::commandNotFound",
+          serializeInteraction(interaction)
+        );
+        await handleCommandError(
+          { itemType: ItemType.interaction, item: interaction },
+          interaction.commandName
+        );
         return;
       }
 
       try {
         await command.execute(interaction);
       } catch (error) {
-        console.error(error);
-        if (interaction.deferred || interaction.replied) {
-          await interaction.followUp({
-            content: "There was an error while executing this command!",
-            ephemeral: true,
-          });
-        } else {
-          await interaction.reply({
-            content: "There was an error while executing this command!",
-            ephemeral: true,
-          });
+        // Skipped because no better way to do this
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const metadata: { [k: string]: any } =
+          serializeInteraction(interaction);
+        await logError(error, "interactionCommand", metadata);
+        try {
+          if (interaction.deferred || interaction.replied) {
+            await interaction.followUp({
+              content: "There was an error while executing this command!",
+              ephemeral: true,
+            });
+          } else {
+            await interaction.reply({
+              content: "There was an error while executing this command!",
+              ephemeral: true,
+            });
+          }
+        } catch (e2) {
+          metadata.deferred = interaction.deferred;
+          metadata.replied = interaction.replied;
+          await logError(e2, "interactionCommand::errorReply", metadata);
         }
       }
     } catch (e) {
-      console.error(e);
+      await logError(
+        e,
+        "interactionCommand::processing",
+        serializeInteraction(interaction)
+      );
     }
   }
 
