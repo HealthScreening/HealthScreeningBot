@@ -116,7 +116,7 @@ export function serializeMessageOptions(options: MessageOptions): object {
   return {
     item: {
       type: itemOptions[0],
-      id: itemOptions[1]
+      id: itemOptions[1],
     },
     text: {
       content: options.content || null,
