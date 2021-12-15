@@ -1,7 +1,16 @@
 import { DateTime } from "luxon";
 import { ErrorLog } from "../orm/errorLog";
 
-export default function formatErrorLogEntry(item: ErrorLog): string {
+export default function formatErrorLogEntry(
+  item: ErrorLog,
+  redact: boolean
+): string {
+  let metadata = item.metadata || {};
+  if (redact) {
+    metadata = {
+      redacted: true,
+    };
+  }
   return `# Error Details
 - Error Type: **${item.type}**
 - Error Name: **${item.errorName}**
@@ -19,7 +28,7 @@ ${item.errorStack || "None"}
 ## Error Metadata
 
 \`\`\`json
-${JSON.stringify(item.metadata || {}, null, 4)}
+${JSON.stringify(metadata, null, 4)}
 \`\`\`
 
 # Issue Details

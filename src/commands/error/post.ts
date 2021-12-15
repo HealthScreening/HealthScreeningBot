@@ -23,6 +23,8 @@ module.exports = {
   name: "post",
   async execute(interaction: HSBCommandInteraction) {
     const id: number = interaction.options.getInteger("id", true);
+    const redact: boolean =
+      interaction.options.getBoolean("redact", false) || false;
     const item: ErrorLog | null = await ErrorLog.findOne({
       where: {
         id: {
@@ -37,7 +39,7 @@ module.exports = {
     await interaction.client.githubQueue.enqueue(
       [
         `[${item.type}] ${item.errorName}: ${item.errorDescription}`,
-        formatErrorLogEntry(item),
+        formatErrorLogEntry(item, redact),
       ],
       0
     );
