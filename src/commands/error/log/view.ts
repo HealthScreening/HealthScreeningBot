@@ -65,7 +65,11 @@ module.exports = {
     if (items) {
       embed.setDescription(
         items.map((item: ErrorLog) => {
-          const base = `#${item.id}. ${item.errorName}`;
+          let description = item.errorDescription;
+          if (description && description.length > 50){
+            description = description.substring(0, 50) + "...";
+          }
+          const base = `#${item.id}. ${item.errorName}: ${description}`;
           if (item.githubIssueNumber) {
             return `[${base}](https://github.com/HealthScreening/HealthScreeningBot/issues/${item.githubIssueNumber})`;
           }

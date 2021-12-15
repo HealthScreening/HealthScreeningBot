@@ -17,6 +17,8 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
 import runSubcommands from "../utils/runSubcommands";
+import checkOwner from "../utils/checkOwner";
+import { ItemType } from "../utils/multiMessage";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -77,6 +79,9 @@ module.exports = {
         .setRequired(true)
       )),
   async execute(interaction: CommandInteraction) {
+    if (!await checkOwner({itemType: ItemType.interaction, item: interaction})){
+      return;
+    }
     return await runSubcommands(this, interaction);
   }
 };
