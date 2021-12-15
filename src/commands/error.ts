@@ -103,6 +103,12 @@ module.exports = {
             .setDescription("The ID of the error to post.")
             .setRequired(true)
         )
+        .addBooleanOption((option) =>
+          option
+            .setName("redact")
+            .setDescription("Whether or not to redact the metadata.")
+            .setRequired(false)
+        )
     ),
   async execute(interaction: CommandInteraction) {
     if (
