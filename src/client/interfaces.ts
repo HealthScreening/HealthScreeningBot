@@ -18,15 +18,15 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { Collection, CommandInteraction } from "discord.js";
 
 export interface InteractionExecutor {
-  (interaction: CommandInteraction): Promise<void>
+  (interaction: CommandInteraction): Promise<void>;
 }
 
 export type SubcommandObject = Collection<string, Subcommand>;
 
 export interface Subcommand {
-  name: string
-  execute: InteractionExecutor
-  subcommands: SubcommandObject
+  name: string;
+  execute: InteractionExecutor;
+  subcommands: SubcommandObject;
 }
 
 export interface Command {

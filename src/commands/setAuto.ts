@@ -33,22 +33,26 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("set_auto")
     .setDescription("Set data for the automatic screening generator")
-    .addStringOption((option) => option
+    .addStringOption((option) =>
+      option
         .setName("first_name")
         .setDescription("The first name to specify")
         .setRequired(true)
     )
-    .addStringOption((option) => option
+    .addStringOption((option) =>
+      option
         .setName("last_name")
         .setDescription("The last name to specify")
         .setRequired(true)
     )
-    .addStringOption((option) => option
+    .addStringOption((option) =>
+      option
         .setName("email")
         .setDescription("The email to specify")
         .setRequired(true)
     )
-    .addBooleanOption((option) => option
+    .addBooleanOption((option) =>
+      option
         .setName("vaccinated")
         .setDescription("Whether or not you are vaccinated.")
         .setRequired(true)

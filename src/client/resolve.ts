@@ -19,9 +19,14 @@ import { readdir } from "fs/promises";
 import { resolve } from "path";
 import { Command, SubcommandObject } from "./interfaces";
 
-async function resolveSubcommands(basePath: string, folderName: string): Promise<SubcommandObject> {
+async function resolveSubcommands(
+  basePath: string,
+  folderName: string
+): Promise<SubcommandObject> {
   try {
-    const files = (await readdir(resolve(basePath, folderName))).filter((file) => file.endsWith(".js"));
+    const files = (await readdir(resolve(basePath, folderName))).filter(
+      (file) => file.endsWith(".js")
+    );
     const subcommands: SubcommandObject = new Collection();
     for (const file of files) {
       const subcommand = require(resolve(basePath, folderName, file));
@@ -33,28 +38,41 @@ async function resolveSubcommands(basePath: string, folderName: string): Promise
   }
 }
 
-async function resolveCommand(basePath: string, name: string): Promise<Command> {
+async function resolveCommand(
+  basePath: string,
+  name: string
+): Promise<Command> {
   const fileWithoutExtension = name.replace(".js", "");
   const command: Command = require(resolve(basePath, name));
-  command.subcommands = await resolveSubcommands(basePath, fileWithoutExtension);
+  command.subcommands = await resolveSubcommands(
+    basePath,
+    fileWithoutExtension
+  );
   for (const subcommandGroup of command.subcommands.values()) {
-    subcommandGroup.subcommands = await resolveSubcommands(basePath, fileWithoutExtension + "/" + subcommandGroup.name);
+    subcommandGroup.subcommands = await resolveSubcommands(
+      basePath,
+      fileWithoutExtension + "/" + subcommandGroup.name
+    );
   }
   return command;
 }
 
-export default async function resolveCommands(): Promise<Collection<string, Command>>  {
+export default async function resolveCommands(): Promise<
+  Collection<string, Command>
+> {
   const commandPath = resolve(__dirname, "..", "commands");
-  const commandFiles = (await readdir(commandPath)).filter((file) => file.endsWith(".js"));
-  const promises:  Promise<void>[] = [];
+  const commandFiles = (await readdir(commandPath)).filter((file) =>
+    file.endsWith(".js")
+  );
+  const promises: Promise<void>[] = [];
   const commands: Collection<string, Command> = new Collection();
   for (const file of commandFiles) {
     promises.push(
       resolveCommand(commandPath, file).then((command) => {
         commands.set(command.data.name, command);
       })
-    )
+    );
   }
-  await Promise.all(promises)
+  await Promise.all(promises);
   return commands;
 }

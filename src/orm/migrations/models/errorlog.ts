@@ -33,27 +33,27 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
       },
       errorName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       errorDescription: {
         type: DataTypes.TEXT,
-        allowNull: true
+        allowNull: true,
       },
       errorStack: {
         type: DataTypes.TEXT,
-        allowNull: true
+        allowNull: true,
       },
       githubIssueNumber: {
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: true,
       },
       metadata: {
         type: DataTypes.JSONB,
-        allowNull: true
+        allowNull: true,
       },
       type: {
         type: DataTypes.STRING,
@@ -67,15 +67,15 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
       updatedAt: false,
       indexes: [
         {
-          fields: ["githubIssueNumber"]
+          fields: ["githubIssueNumber"],
         },
         {
-          fields: ["createdAt"]
+          fields: ["createdAt"],
         },
         {
-          fields: ["type"]
-        }
-      ]
+          fields: ["type"],
+        },
+      ],
     }
   );
   return ErrorLog;

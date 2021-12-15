@@ -23,7 +23,8 @@ module.exports = {
     .setDescription(
       "Set data for the device dimensions to use during health screenings"
     )
-    .addStringOption((option) => option
+    .addStringOption((option) =>
+      option
         .setName("device_name")
         .setDescription(
           "The name of the device. Get the device name from the website."

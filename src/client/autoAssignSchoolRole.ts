@@ -39,27 +39,27 @@ export default async function assignAutoSchoolRole(
           member = await guild.members.fetch(item.userId);
         } catch (e) {
           const metadata = {
-            "task": "fetchUser",
-            "userId": item.userId,
-            "email": item.email,
-            "roleId": roleId,
-            "suffix": suffix,
-          }
-          await logError(e, 'assignSchoolRole::fetchMember', metadata);
+            task: "fetchUser",
+            userId: item.userId,
+            email: item.email,
+            roleId: roleId,
+            suffix: suffix,
+          };
+          await logError(e, "assignSchoolRole::fetchMember", metadata);
           continue;
         }
         try {
           await member.roles.add(roleId, "Autorole on email in storage");
         } catch (e) {
           const metadata = {
-            "task": "assignRole",
-            "userId": item.userId,
-            "email": item.email,
-            "roleId": roleId,
-            "suffix": suffix,
-            "userRoles": member.roles.cache.map((r) => r.id),
-          }
-          await logError(e, 'assignSchoolRole::assignRole', metadata);
+            task: "assignRole",
+            userId: item.userId,
+            email: item.email,
+            roleId: roleId,
+            suffix: suffix,
+            userRoles: member.roles.cache.map((r) => r.id),
+          };
+          await logError(e, "assignSchoolRole::assignRole", metadata);
         }
       }
     }

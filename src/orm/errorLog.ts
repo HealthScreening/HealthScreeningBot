@@ -18,7 +18,7 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from ".";
 export interface ErrorLogAttributes {
-  id: number
+  id: number;
   errorName: string;
   errorDescription: string | null;
   errorStack: string | null;
@@ -27,7 +27,10 @@ export interface ErrorLogAttributes {
   type: string;
 }
 
-export type ErrorLogCreationAttributes = Optional<ErrorLogAttributes, "id" | "errorDescription" | "errorStack" | "githubIssueNumber" | "metadata" >
+export type ErrorLogCreationAttributes = Optional<
+  ErrorLogAttributes,
+  "id" | "errorDescription" | "errorStack" | "githubIssueNumber" | "metadata"
+>;
 
 export class ErrorLog
   extends Model<ErrorLogAttributes, ErrorLogCreationAttributes>
@@ -85,11 +88,11 @@ ErrorLog.init(
         fields: ["githubIssueNumber"],
       },
       {
-        fields: ["createdAt"]
+        fields: ["createdAt"],
       },
       {
-        fields: ["type"]
-      }
-    ]
+        fields: ["type"],
+      },
+    ],
   }
 );

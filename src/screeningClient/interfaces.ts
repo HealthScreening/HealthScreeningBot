@@ -28,9 +28,7 @@ export interface AutoBatchOptions {
   dmScreenshot: boolean;
 }
 
-export function serializeAutoBatchOptions(
-  options: AutoBatchOptions
-) {
+export function serializeAutoBatchOptions(options: AutoBatchOptions) {
   return {
     batchTime: options.batchTime,
     itemNumber: options.itemNumber,
@@ -66,13 +64,11 @@ export interface ProcessParams {
   cooldown?: Cooldown;
 }
 
-export function serializeProcessParams(
-  params: ProcessParams
-) {
+export function serializeProcessParams(params: ProcessParams) {
   const obj: { [k: string]: object } = {
     generateScreenshotParams: params.generateScreenshotParams,
     multiMessageParams: serializeMessageOptions(params.multiMessageParams),
-  }
+  };
   if (params.auto) {
     obj.auto = serializeAutoBatchOptions(params.auto);
   }

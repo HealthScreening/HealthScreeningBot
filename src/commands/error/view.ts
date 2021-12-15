@@ -34,26 +34,26 @@ module.exports = {
       return await interaction.reply("No error with that ID found.");
     }
     const embed = new MessageEmbed();
-    const embeds = [embed]
+    const embeds = [embed];
     embed.setTitle("Error #" + item.id);
     embed.addFields([
       {
         name: "Type",
         value: item.type,
-        inline: false
+        inline: false,
       },
       {
         name: "Name",
         value: item.errorName,
-        inline: false
-      }
-    ])
-    if (item.errorDescription){
+        inline: false,
+      },
+    ]);
+    if (item.errorDescription) {
       embed.addField("Description", item.errorDescription, false);
     } else {
       embed.addField("Description", "None", false);
     }
-    if (item.errorStack){
+    if (item.errorStack) {
       const stackEmbed = new MessageEmbed();
       stackEmbed.setTitle("Stack Trace for Error #" + item.id);
       stackEmbed.setDescription("```\n" + item.errorStack + "\n```");
@@ -61,16 +61,31 @@ module.exports = {
     } else {
       embed.addField("Stack Trace", "None", false);
     }
-    embed.addField("Date", DateTime.fromMillis(item.createdAt.getTime()).toLocaleString(DateTime.DATETIME_HUGE_WITH_SECONDS), false);
-    embed.addField("Github Issue", item.githubIssueNumber ? "https::/github.com/HealthScreening/HealthScreeningBot/issues/" + item.githubIssueNumber : "None", false);
-    if (item.metadata){
+    embed.addField(
+      "Date",
+      DateTime.fromMillis(item.createdAt.getTime()).toLocaleString(
+        DateTime.DATETIME_HUGE_WITH_SECONDS
+      ),
+      false
+    );
+    embed.addField(
+      "Github Issue",
+      item.githubIssueNumber
+        ? "https::/github.com/HealthScreening/HealthScreeningBot/issues/" +
+            item.githubIssueNumber
+        : "None",
+      false
+    );
+    if (item.metadata) {
       const metadataEmbed = new MessageEmbed();
       metadataEmbed.setTitle("Metadata for Error #" + item.id);
-      metadataEmbed.setDescription("```json\n" + JSON.stringify(item.metadata, null, 4) + "\n```");
+      metadataEmbed.setDescription(
+        "```json\n" + JSON.stringify(item.metadata, null, 4) + "\n```"
+      );
       embeds.push(metadataEmbed);
     } else {
       embed.addField("Metadata", "None", false);
     }
     return await interaction.reply({ embeds: embeds });
-  }
-}
+  },
+};

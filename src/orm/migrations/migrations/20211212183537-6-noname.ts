@@ -27,23 +27,25 @@ const Sequelize = require("sequelize");
  **/
 
 let info = {
-    "revision": 6,
-    "name": "noname",
-    "created": "2021-12-12T18:35:37.232Z",
-    "comment": ""
+  revision: 6,
+  name: "noname",
+  created: "2021-12-12T18:35:37.232Z",
+  comment: "",
 };
 
-let migrationCommands = [{
+let migrationCommands = [
+  {
     fn: "changeColumn",
     params: [
-        "ErrorLogs",
-        "metadata",
-        {
-            "type": Sequelize.JSONB,
-            "field": "metadata",
-            "allowNull": true
-        }
-    ]
-}];
+      "ErrorLogs",
+      "metadata",
+      {
+        type: Sequelize.JSONB,
+        field: "metadata",
+        allowNull: true,
+      },
+    ],
+  },
+];
 
 module.exports = require("../makeMigrationExport")(info, migrationCommands);

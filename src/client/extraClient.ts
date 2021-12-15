@@ -20,7 +20,7 @@ import {
   Collection,
   CommandInteraction,
   Message,
-  TextChannel
+  TextChannel,
 } from "discord.js";
 import { ScreeningClient } from "../screeningClient";
 import { ItemType } from "../utils/multiMessage";
@@ -38,22 +38,20 @@ import sleep from "../utils/sleep";
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
   "hsb/generate-auto",
-  "hsb/generate_auto"
+  "hsb/generate_auto",
 ];
-
-
 
 export default class HealthScreeningBotClient extends Client {
   private commands: Collection<string, Command>;
   public readonly screeningClient: ScreeningClient = new ScreeningClient();
-  public readonly githubQueue: WorkerQueue<[string, string], void> = new WorkerQueue({
-    worker: async (args) => {
-      await postToGithub(...args);
-      await sleep(60 * 1000);
-    },
-    limit: 1,
-    }
-  );
+  public readonly githubQueue: WorkerQueue<[string, string], void> =
+    new WorkerQueue({
+      worker: async (args) => {
+        await postToGithub(...args);
+        await sleep(60 * 1000);
+      },
+      limit: 1,
+    });
 
   constructor(options: ClientOptions) {
     super(options);
@@ -90,7 +88,7 @@ export default class HealthScreeningBotClient extends Client {
           await this.screeningClient.queueAutoCommand(message.author.id, {
             itemType: ItemType.message,
             item: message,
-            replyMessage: message
+            replyMessage: message,
           });
         }
       }
@@ -99,13 +97,13 @@ export default class HealthScreeningBotClient extends Client {
         command: message.content,
         author: message.author.id,
         channel: message.channelId,
-        guild: message.guildId
+        guild: message.guildId,
       };
       await logError(e, "textCommand", metadata);
       try {
         await message.reply({
           content: "There was an error while executing this command!",
-          failIfNotExists: false
+          failIfNotExists: false,
         });
       } catch (e2) {
         await logError(e2, "textCommand::errorReply", metadata);
@@ -134,26 +132,29 @@ export default class HealthScreeningBotClient extends Client {
           "interactionCommand::commandNotFound",
           serializeInteraction(interaction)
         );
-        await handleCommandError({itemType: ItemType.interaction, item: interaction}, interaction.commandName);
+        await handleCommandError(
+          { itemType: ItemType.interaction, item: interaction },
+          interaction.commandName
+        );
         return;
       }
 
       try {
         await command.execute(interaction);
       } catch (error) {
-        const metadata: { [k: string]: any } = serializeInteraction(interaction);
+        const metadata: { [k: string]: any } =
+          serializeInteraction(interaction);
         await logError(error, "interactionCommand", metadata);
         try {
           if (interaction.deferred || interaction.replied) {
             await interaction.followUp({
               content: "There was an error while executing this command!",
-              ephemeral: true
+              ephemeral: true,
             });
-          }
-          else {
+          } else {
             await interaction.reply({
               content: "There was an error while executing this command!",
-              ephemeral: true
+              ephemeral: true,
             });
           }
         } catch (e2) {
@@ -163,7 +164,11 @@ export default class HealthScreeningBotClient extends Client {
         }
       }
     } catch (e) {
-      await logError(e, "interactionCommand::processing", serializeInteraction(interaction));
+      await logError(
+        e,
+        "interactionCommand::processing",
+        serializeInteraction(interaction)
+      );
     }
   }
 
@@ -178,7 +183,7 @@ export default class HealthScreeningBotClient extends Client {
     ).channels.fetch("902375187150934037")) as TextChannel;
     await Promise.all([
       assignAutoSchoolRole(this),
-      doAutoLoop(this, logChannel)
+      doAutoLoop(this, logChannel),
     ]);
   }
 }

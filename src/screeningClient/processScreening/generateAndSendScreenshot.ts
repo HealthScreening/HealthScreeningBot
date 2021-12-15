@@ -16,7 +16,11 @@
  */
 import { ProcessParams, serializeProcessParams } from "../interfaces";
 import { generateScreenshot } from "../../utils/produceScreenshot";
-import { MessageOptions, sendMessage, serializeMessageOptions } from "../../utils/multiMessage";
+import {
+  MessageOptions,
+  sendMessage,
+  serializeMessageOptions,
+} from "../../utils/multiMessage";
 import logError from "../../utils/logError";
 import handleCommandError from "../../utils/handleCommandError";
 
@@ -24,13 +28,15 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
   try {
     let screenshot;
     try {
-      screenshot = await generateScreenshot(
-        params.generateScreenshotParams
-      );
+      screenshot = await generateScreenshot(params.generateScreenshotParams);
     } catch (e) {
-      await logError(e, "generateAndSendScreenshot::generateScreenshot", serializeProcessParams(params));
-      if (!params.auto){
-        await handleCommandError(params.multiMessageParams)
+      await logError(
+        e,
+        "generateAndSendScreenshot::generateScreenshot",
+        serializeProcessParams(params)
+      );
+      if (!params.auto) {
+        await handleCommandError(params.multiMessageParams);
       }
       return false;
     }
@@ -48,12 +54,20 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
     try {
       await sendMessage(messageParams);
     } catch (e) {
-      await logError(e, "generateAndSendScreenshot::sendMessage", serializeMessageOptions(messageParams));
+      await logError(
+        e,
+        "generateAndSendScreenshot::sendMessage",
+        serializeMessageOptions(messageParams)
+      );
       return false;
     }
     return true;
   } catch (e) {
-    await logError(e, "generateAndSendScreenshot", serializeProcessParams(params));
+    await logError(
+      e,
+      "generateAndSendScreenshot",
+      serializeProcessParams(params)
+    );
     return false;
   }
 }

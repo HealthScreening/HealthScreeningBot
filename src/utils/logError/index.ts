@@ -16,11 +16,16 @@
  */
 import { ErrorLog } from "../../orm/errorLog";
 
-export default async function logError(error: Error, type: string, metadata?: object): Promise<ErrorLog>{
+export default async function logError(
+  error: Error,
+  type: string,
+  metadata?: object
+): Promise<ErrorLog> {
   console.error(error); // Temporary until a log viewer is added
   const trueMetadata: object | null = metadata || null;
   const errorName: string = error.name;
-  const errorMessage: string | null = error.message.length > 0 ? error.message : null;
+  const errorMessage: string | null =
+    error.message.length > 0 ? error.message : null;
   const errorStack: string | null = error.stack || null;
   return await ErrorLog.create({
     errorName,

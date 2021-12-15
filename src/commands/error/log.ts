@@ -1,4 +1,4 @@
 module.exports = {
   name: "log",
-  execute: async () => null
-}
+  execute: async () => null,
+};
