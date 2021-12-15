@@ -142,6 +142,8 @@ export default class HealthScreeningBotClient extends Client {
       try {
         await command.execute(interaction);
       } catch (error) {
+        // Skipped because no better way to do this
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const metadata: { [k: string]: any } =
           serializeInteraction(interaction);
         await logError(error, "interactionCommand", metadata);

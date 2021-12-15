@@ -24,11 +24,15 @@ async function resolveSubcommands(
   folderName: string
 ): Promise<SubcommandObject> {
   try {
+    // Skipped because we are using dynamic imports
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const files = (await readdir(resolve(basePath, folderName))).filter(
       (file) => file.endsWith(".js")
     );
     const subcommands: SubcommandObject = new Collection();
     for (const file of files) {
+      // Skipped because we are using dynamic imports
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const subcommand = require(resolve(basePath, folderName, file));
       subcommands.set(subcommand.name, subcommand);
     }
@@ -43,6 +47,8 @@ async function resolveCommand(
   name: string
 ): Promise<Command> {
   const fileWithoutExtension = name.replace(".js", "");
+  // Skipped because we are using dynamic imports
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const command: Command = require(resolve(basePath, name));
   command.subcommands = await resolveSubcommands(
     basePath,

@@ -21,7 +21,6 @@ export default async function logError(
   type: string,
   metadata?: object
 ): Promise<ErrorLog> {
-  console.error(error); // Temporary until a log viewer is added
   const trueMetadata: object | null = metadata || null;
   const errorName: string = error.name;
   const errorMessage: string | null =
