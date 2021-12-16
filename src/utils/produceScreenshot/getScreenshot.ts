@@ -29,7 +29,7 @@ export default async function getScreenshot(
     await page.emulate(devices[options.device || "iPhone 11"]);
     await page.goto(
       "file://" +
-        resolve(`${__dirname}/../screening-success-html/page.html?`) +
+        resolve(`${__dirname}/../../screening-success-html/page.html?`) +
         new URLSearchParams(objectToWrapper(options)).toString()
     );
     await page.evaluate(() => {
