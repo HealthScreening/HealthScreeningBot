@@ -25,8 +25,8 @@ export function objectToWrapper(input: {
     if (Object.prototype.hasOwnProperty.call(input, key)) {
       obj[key] =
         input[key] === null || input[key] === undefined
-          ? String(input[key])
-          : "";
+          ? ""
+          : String(input[key]);
     }
   }
   return obj;
