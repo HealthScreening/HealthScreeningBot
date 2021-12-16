@@ -26,7 +26,7 @@ export function objectToWrapper(input: {
       obj[key] =
         input[key] === null || input[key] === undefined
           ? ""
-          : String(input[key]) ;
+          : String(input[key]);
     }
   }
   return obj;
