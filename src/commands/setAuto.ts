@@ -18,14 +18,17 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { HSBCommandInteraction } from "../discordjs-overrides";
 import { ItemType } from "../utils/multiMessage";
 import { User } from "discord.js";
-import { AutoUser } from "../orm/autoUser";
+import { AutoUser, AutoUserAttributes } from "../orm/autoUser";
+import { AutoDays } from "../orm/autoDays";
 
-function createOrDelete(values, condition) {
+function createOrDelete(values: AutoUserAttributes , condition) {
   return AutoUser.findOne({ where: condition }).then(function (obj) {
     // update
     if (obj) return obj.update(values);
     // insert
-    return AutoUser.create(values);
+    Promise.all([
+      AutoUser.create(values), AutoDays.create({userId: values.userId})
+    ])
   });
 }
 
