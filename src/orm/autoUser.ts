@@ -98,5 +98,13 @@ AutoUser.init(
     modelName: "AutoUser",
     timestamps: true,
     updatedAt: false,
+    indexes: [
+      {
+        fields: ["createdAt"],
+      },
+      {
+        fields: ["hour", "minute"],
+      },
+    ],
   }
 );
