@@ -78,10 +78,9 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
           fields: ["createdAt"],
         },
         {
-          fields: ["hour", "minute"]
-        }
+          fields: ["hour", "minute"],
+        },
       ],
-
     }
   );
   return AutoUser;

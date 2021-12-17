@@ -33,103 +33,104 @@ const Sequelize = require("sequelize");
  **/
 
 let info = {
-    "revision": 8,
-    "name": "noname",
-    "created": "2021-12-17T02:55:45.620Z",
-    "comment": ""
+  revision: 8,
+  name: "noname",
+  created: "2021-12-17T02:55:45.620Z",
+  comment: "",
 };
 
-let migrationCommands = [{
-        fn: "changeColumn",
-        params: [
-            "AutoDays",
-            "onSunday",
-            {
-                "type": Sequelize.BOOLEAN,
-                "field": "onSunday",
-                "defaultValue": false,
-                "allowNull": false
-            }
-        ]
-    },
-    {
-        fn: "changeColumn",
-        params: [
-            "AutoDays",
-            "onMonday",
-            {
-                "type": Sequelize.BOOLEAN,
-                "field": "onMonday",
-                "defaultValue": true,
-                "allowNull": false
-            }
-        ]
-    },
-    {
-        fn: "changeColumn",
-        params: [
-            "AutoDays",
-            "onTuesday",
-            {
-                "type": Sequelize.BOOLEAN,
-                "field": "onTuesday",
-                "defaultValue": true,
-                "allowNull": false
-            }
-        ]
-    },
-    {
-        fn: "changeColumn",
-        params: [
-            "AutoDays",
-            "onWednesday",
-            {
-                "type": Sequelize.BOOLEAN,
-                "field": "onWednesday",
-                "defaultValue": true,
-                "allowNull": false
-            }
-        ]
-    },
-    {
-        fn: "changeColumn",
-        params: [
-            "AutoDays",
-            "onThursday",
-            {
-                "type": Sequelize.BOOLEAN,
-                "field": "onThursday",
-                "defaultValue": true,
-                "allowNull": false
-            }
-        ]
-    },
-    {
-        fn: "changeColumn",
-        params: [
-            "AutoDays",
-            "onFriday",
-            {
-                "type": Sequelize.BOOLEAN,
-                "field": "onFriday",
-                "defaultValue": true,
-                "allowNull": false
-            }
-        ]
-    },
-    {
-        fn: "changeColumn",
-        params: [
-            "AutoDays",
-            "onSaturday",
-            {
-                "type": Sequelize.BOOLEAN,
-                "field": "onSaturday",
-                "defaultValue": false,
-                "allowNull": false
-            }
-        ]
-    }
+let migrationCommands = [
+  {
+    fn: "changeColumn",
+    params: [
+      "AutoDays",
+      "onSunday",
+      {
+        type: Sequelize.BOOLEAN,
+        field: "onSunday",
+        defaultValue: false,
+        allowNull: false,
+      },
+    ],
+  },
+  {
+    fn: "changeColumn",
+    params: [
+      "AutoDays",
+      "onMonday",
+      {
+        type: Sequelize.BOOLEAN,
+        field: "onMonday",
+        defaultValue: true,
+        allowNull: false,
+      },
+    ],
+  },
+  {
+    fn: "changeColumn",
+    params: [
+      "AutoDays",
+      "onTuesday",
+      {
+        type: Sequelize.BOOLEAN,
+        field: "onTuesday",
+        defaultValue: true,
+        allowNull: false,
+      },
+    ],
+  },
+  {
+    fn: "changeColumn",
+    params: [
+      "AutoDays",
+      "onWednesday",
+      {
+        type: Sequelize.BOOLEAN,
+        field: "onWednesday",
+        defaultValue: true,
+        allowNull: false,
+      },
+    ],
+  },
+  {
+    fn: "changeColumn",
+    params: [
+      "AutoDays",
+      "onThursday",
+      {
+        type: Sequelize.BOOLEAN,
+        field: "onThursday",
+        defaultValue: true,
+        allowNull: false,
+      },
+    ],
+  },
+  {
+    fn: "changeColumn",
+    params: [
+      "AutoDays",
+      "onFriday",
+      {
+        type: Sequelize.BOOLEAN,
+        field: "onFriday",
+        defaultValue: true,
+        allowNull: false,
+      },
+    ],
+  },
+  {
+    fn: "changeColumn",
+    params: [
+      "AutoDays",
+      "onSaturday",
+      {
+        type: Sequelize.BOOLEAN,
+        field: "onSaturday",
+        defaultValue: false,
+        allowNull: false,
+      },
+    ],
+  },
 ];
 
 module.exports = require("../makeMigrationExport")(info, migrationCommands);

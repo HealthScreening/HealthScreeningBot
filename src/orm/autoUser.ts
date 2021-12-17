@@ -103,8 +103,8 @@ AutoUser.init(
         fields: ["createdAt"],
       },
       {
-        fields: ["hour", "minute"]
-      }
+        fields: ["hour", "minute"],
+      },
     ],
   }
 );
