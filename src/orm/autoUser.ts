@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from ".";
 import {
   screeningTypes,
@@ -33,8 +33,10 @@ export interface AutoUserAttributes {
   type: screeningTypeType;
 }
 
+export type AutoUserCreationAttributes = Optional<AutoUserAttributes, "hour" | "minute" | "type">
+
 export class AutoUser
-  extends Model<AutoUserAttributes, AutoUserAttributes>
+  extends Model<AutoUserAttributes, AutoUserCreationAttributes>
   implements AutoUserAttributes
 {
   userId!: string;
