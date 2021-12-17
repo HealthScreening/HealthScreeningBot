@@ -73,6 +73,15 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
       modelName: "AutoUser",
       timestamps: true,
       updatedAt: false,
+      indexes: [
+        {
+          fields: ["createdAt"],
+        },
+        {
+          fields: ["hour", "minute"]
+        }
+      ],
+
     }
   );
   return AutoUser;
