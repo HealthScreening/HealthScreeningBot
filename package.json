@@ -49,7 +49,7 @@
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
     "puppeteer": "^13.0.0",
-    "sequelize": "^6.6.5",
+    "sequelize": "^6.12.0",
     "sequelize-lazy-migrations": "github:HealthScreening/sequelize-lazy-migrations#1.0.5"
   },
   "devDependencies": {
