@@ -29,7 +29,16 @@ export interface AutoDaysAttributes {
   onSaturday: boolean;
 }
 
-export type AutoDaysCreationAttributes = Optional<AutoDaysAttributes, "onSunday" | "onMonday" | "onTuesday" | "onWednesday" | "onThursday" | "onFriday" | "onSaturday">
+export type AutoDaysCreationAttributes = Optional<
+  AutoDaysAttributes,
+  | "onSunday"
+  | "onMonday"
+  | "onTuesday"
+  | "onWednesday"
+  | "onThursday"
+  | "onFriday"
+  | "onSaturday"
+>;
 
 export class AutoDays
   extends Model<AutoDaysAttributes, AutoDaysCreationAttributes>

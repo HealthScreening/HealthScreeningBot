@@ -32,48 +32,48 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
     {
       userId: {
         type: DataTypes.STRING,
-        primaryKey: true
+        primaryKey: true,
       },
       onSunday: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: false
+        defaultValue: false,
       },
       onMonday: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: true
+        defaultValue: true,
       },
       onTuesday: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: true
+        defaultValue: true,
       },
       onWednesday: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: true
+        defaultValue: true,
       },
       onThursday: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: true
+        defaultValue: true,
       },
       onFriday: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: true
+        defaultValue: true,
       },
       onSaturday: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: false
-      }
+        defaultValue: false,
+      },
     },
     {
       sequelize,
       modelName: "AutoDays",
-      timestamps: false
+      timestamps: false,
     }
   );
   return AutoDays;

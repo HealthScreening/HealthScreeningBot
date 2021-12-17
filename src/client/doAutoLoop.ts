@@ -34,7 +34,11 @@ export default async function doAutoLoop(
   const validDayOfWeekUsers = new Set(
     await getUsersForDayOfWeek(currentTime.weekday)
   );
-  console.debug("Found %s valid users for weekday %s", validDayOfWeekUsers.size, currentTime.weekday);
+  console.debug(
+    "Found %s valid users for weekday %s",
+    validDayOfWeekUsers.size,
+    currentTime.weekday
+  );
   for (const autoItem of await sequelize.query(
     `SELECT *
      FROM "AutoUsers"
@@ -42,7 +46,7 @@ export default async function doAutoLoop(
     {
       replacements: [currentTimeMins, currentTimeMins + 5],
       mapToModel: true,
-      model: AutoUser
+      model: AutoUser,
     }
   )) {
     if (!validDayOfWeekUsers.has(autoItem.userId)) {
@@ -60,7 +64,7 @@ export default async function doAutoLoop(
         batchTime: [autoItem.hour, autoItem.minute],
         itemNumber: batchTimes.get([autoItem.hour, autoItem.minute]) || 1,
         logChannel,
-        dmScreenshot
+        dmScreenshot,
       }
     );
   }

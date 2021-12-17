@@ -21,14 +21,15 @@ import { User } from "discord.js";
 import { AutoUser, AutoUserCreationAttributes } from "../orm/autoUser";
 import { AutoDays } from "../orm/autoDays";
 
-function createOrDelete(values: AutoUserCreationAttributes , condition) {
+function createOrDelete(values: AutoUserCreationAttributes, condition) {
   return AutoUser.findOne({ where: condition }).then(function (obj) {
     // update
     if (obj) return obj.update(values);
     // insert
     Promise.all([
-      AutoUser.create(values), AutoDays.create({userId: values.userId})
-    ])
+      AutoUser.create(values),
+      AutoDays.create({ userId: values.userId }),
+    ]);
   });
 }
 

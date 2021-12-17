@@ -33,7 +33,10 @@ export interface AutoUserAttributes {
   type: screeningTypeType;
 }
 
-export type AutoUserCreationAttributes = Optional<AutoUserAttributes, "hour" | "minute" | "type">
+export type AutoUserCreationAttributes = Optional<
+  AutoUserAttributes,
+  "hour" | "minute" | "type"
+>;
 
 export class AutoUser
   extends Model<AutoUserAttributes, AutoUserCreationAttributes>
