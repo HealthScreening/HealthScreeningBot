@@ -35,12 +35,12 @@ export default async function doAutoLoop(
   );
   for (const autoItem of await sequelize.query(
     `SELECT *
-                                                FROM "AutoUsers"
-                                                WHERE ("AutoUsers".hour * 60 + "AutoUsers".minute) BETWEEN ? AND ?`,
+     FROM "AutoUsers"
+     WHERE ("AutoUsers".hour * 60 + "AutoUsers".minute) BETWEEN ? AND ?`,
     {
-      replacements: [currentTimeMins, currentTimeMins + 60 * 5],
+      replacements: [currentTimeMins, currentTimeMins + 5],
       mapToModel: true,
-      model: AutoUser,
+      model: AutoUser
     }
   )) {
     if (!validDayOfWeekUsers.has(autoItem.userId)) {
@@ -57,7 +57,7 @@ export default async function doAutoLoop(
         batchTime: [autoItem.hour, autoItem.minute],
         itemNumber: batchTimes.get([autoItem.hour, autoItem.minute]) || 1,
         logChannel,
-        dmScreenshot,
+        dmScreenshot
       }
     );
   }
