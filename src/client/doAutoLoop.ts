@@ -26,6 +26,7 @@ export default async function doAutoLoop(
   client: HealthScreeningBotClient,
   logChannel: TextChannel
 ): Promise<void> {
+  console.debug("Starting auto loop");
   const validUserIDs: Set<string> = await getValidUserIDs(client);
   const batchTimes: Map<[number, number], number> = new Map();
   const currentTime = DateTime.now().setZone("America/New_York");
@@ -33,6 +34,7 @@ export default async function doAutoLoop(
   const validDayOfWeekUsers = new Set(
     await getUsersForDayOfWeek(currentTime.weekday)
   );
+  console.debug("Found %s valid users for weekday %s", validUserIDs.size, currentTime.weekday);
   for (const autoItem of await sequelize.query(
     `SELECT *
      FROM "AutoUsers"
@@ -46,6 +48,7 @@ export default async function doAutoLoop(
     if (!validDayOfWeekUsers.has(autoItem.userId)) {
       continue;
     }
+    console.log("Processing user %s", autoItem.userId);
     const dmScreenshot = validUserIDs.has(autoItem.userId);
     batchTimes.set(
       [autoItem.hour, autoItem.minute],
