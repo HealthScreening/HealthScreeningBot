@@ -15,37 +15,43 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import HealthScreeningBotClient from "./extraClient";
-import { sequelize } from "../orm";
 import { TextChannel } from "discord.js";
 import { AutoUser } from "../orm/autoUser";
 import { DateTime } from "luxon";
 import getUsersForDayOfWeek from "../utils/getUsersForDayOfWeek";
 import getValidUserIDs from "../utils/getValidUserIDs";
+import { Op } from "sequelize";
 
 export default async function doAutoLoop(
   client: HealthScreeningBotClient,
   logChannel: TextChannel
 ): Promise<void> {
+  console.debug("Starting auto loop");
   const validUserIDs: Set<string> = await getValidUserIDs(client);
   const batchTimes: Map<[number, number], number> = new Map();
   const currentTime = DateTime.now().setZone("America/New_York");
-  const currentTimeMins = currentTime.hour * 60 + currentTime.minute;
   const validDayOfWeekUsers = new Set(
     await getUsersForDayOfWeek(currentTime.weekday)
   );
-  for (const autoItem of await sequelize.query(
-    `SELECT *
-                                                FROM "AutoUsers"
-                                                WHERE ("AutoUsers".hour * 60 + "AutoUsers".minute) BETWEEN ? AND ?`,
-    {
-      replacements: [currentTimeMins, currentTimeMins + 60 * 5],
-      mapToModel: true,
-      model: AutoUser,
-    }
-  )) {
-    if (!validDayOfWeekUsers.has(autoItem.userId)) {
-      continue;
-    }
+  console.debug(
+    "Found %s valid users for weekday %s",
+    validDayOfWeekUsers.size,
+    currentTime.weekday
+  );
+  for (const autoItem of await AutoUser.findAll({
+    where: {
+      userId: {
+        [Op.in]: Array.from(validDayOfWeekUsers),
+      },
+      hour: {
+        [Op.eq]: currentTime.hour,
+      },
+      minute: {
+        [Op.eq]: currentTime.minute,
+      },
+    },
+  })) {
+    console.log("Processing user %s", autoItem.userId);
     const dmScreenshot = validUserIDs.has(autoItem.userId);
     batchTimes.set(
       [autoItem.hour, autoItem.minute],
@@ -61,5 +67,9 @@ export default async function doAutoLoop(
       }
     );
   }
-  setTimeout(() => doAutoLoop(client, logChannel), 5 * 60 * 1000);
+  setTimeout(
+    () => doAutoLoop(client, logChannel),
+    currentTime.plus({ minutes: 1 }).toMillis() -
+      DateTime.local().setZone("America/New_York").toMillis()
+  );
 }
