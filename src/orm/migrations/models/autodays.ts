@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { Model, Sequelize, DataTypes as DT } from "sequelize";
+import { DataTypes as DT, Model, Sequelize } from "sequelize";
 
 module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
   class AutoDays extends Model {
@@ -27,45 +27,53 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
       // define association here
     }
   }
+
   AutoDays.init(
     {
       userId: {
         type: DataTypes.STRING,
-        primaryKey: true,
+        primaryKey: true
       },
       onSunday: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false,
+        allowNull: false,
+        defaultValue: false
       },
       onMonday: {
         type: DataTypes.BOOLEAN,
-        defaultValue: true,
+        allowNull: false,
+        defaultValue: true
       },
       onTuesday: {
         type: DataTypes.BOOLEAN,
-        defaultValue: true,
+        allowNull: false,
+        defaultValue: true
       },
       onWednesday: {
         type: DataTypes.BOOLEAN,
-        defaultValue: true,
+        allowNull: false,
+        defaultValue: true
       },
       onThursday: {
         type: DataTypes.BOOLEAN,
-        defaultValue: true,
+        allowNull: false,
+        defaultValue: true
       },
       onFriday: {
         type: DataTypes.BOOLEAN,
-        defaultValue: true,
+        allowNull: false,
+        defaultValue: true
       },
       onSaturday: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
+        allowNull: false,
+        defaultValue: false
+      }
     },
     {
       sequelize,
       modelName: "AutoDays",
-      timestamps: false,
+      timestamps: false
     }
   );
   return AutoDays;
