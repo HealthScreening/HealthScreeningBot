@@ -50,6 +50,7 @@ export default async function doAutoLoop(
         [Op.eq]: currentTime.minute,
       },
     },
+    order: [["createdAt", "ASC"]],
   })) {
     console.log("Processing user %s", autoItem.userId);
     const dmScreenshot = validUserIDs.has(autoItem.userId);
