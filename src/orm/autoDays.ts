@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from ".";
 
 export interface AutoDaysAttributes {
@@ -29,8 +29,19 @@ export interface AutoDaysAttributes {
   onSaturday: boolean;
 }
 
+export type AutoDaysCreationAttributes = Optional<
+  AutoDaysAttributes,
+  | "onSunday"
+  | "onMonday"
+  | "onTuesday"
+  | "onWednesday"
+  | "onThursday"
+  | "onFriday"
+  | "onSaturday"
+>;
+
 export class AutoDays
-  extends Model<AutoDaysAttributes, AutoDaysAttributes>
+  extends Model<AutoDaysAttributes, AutoDaysCreationAttributes>
   implements AutoDaysAttributes
 {
   userId!: string;
@@ -51,30 +62,37 @@ AutoDays.init(
     },
     onSunday: {
       type: DataTypes.BOOLEAN,
+      allowNull: false,
       defaultValue: false,
     },
     onMonday: {
       type: DataTypes.BOOLEAN,
+      allowNull: false,
       defaultValue: true,
     },
     onTuesday: {
       type: DataTypes.BOOLEAN,
+      allowNull: false,
       defaultValue: true,
     },
     onWednesday: {
       type: DataTypes.BOOLEAN,
+      allowNull: false,
       defaultValue: true,
     },
     onThursday: {
       type: DataTypes.BOOLEAN,
+      allowNull: false,
       defaultValue: true,
     },
     onFriday: {
       type: DataTypes.BOOLEAN,
+      allowNull: false,
       defaultValue: true,
     },
     onSaturday: {
       type: DataTypes.BOOLEAN,
+      allowNull: false,
       defaultValue: false,
     },
   },
