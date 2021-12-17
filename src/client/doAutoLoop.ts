@@ -34,7 +34,7 @@ export default async function doAutoLoop(
   const validDayOfWeekUsers = new Set(
     await getUsersForDayOfWeek(currentTime.weekday)
   );
-  console.debug("Found %s valid users for weekday %s", validUserIDs.size, currentTime.weekday);
+  console.debug("Found %s valid users for weekday %s", validDayOfWeekUsers.size, currentTime.weekday);
   for (const autoItem of await sequelize.query(
     `SELECT *
      FROM "AutoUsers"
