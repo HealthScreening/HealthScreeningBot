@@ -21,52 +21,57 @@ import { DateTime } from "luxon";
 import getUsersForDayOfWeek from "../utils/getUsersForDayOfWeek";
 import getValidUserIDs from "../utils/getValidUserIDs";
 import { Op } from "sequelize";
+import logError from "../utils/logError";
 
 export default async function doAutoLoop(
   client: HealthScreeningBotClient,
   logChannel: TextChannel
 ): Promise<void> {
-  console.debug("Starting auto loop");
-  const validUserIDs: Set<string> = await getValidUserIDs(client);
-  const batchTimes: Map<[number, number], number> = new Map();
   const currentTime = DateTime.now().setZone("America/New_York");
-  const validDayOfWeekUsers = new Set(
-    await getUsersForDayOfWeek(currentTime.weekday)
-  );
-  console.debug(
-    "Found %s valid users for weekday %s",
-    validDayOfWeekUsers.size,
-    currentTime.weekday
-  );
-  for (const autoItem of await AutoUser.findAll({
-    where: {
-      userId: {
-        [Op.in]: Array.from(validDayOfWeekUsers),
-      },
-      hour: {
-        [Op.eq]: currentTime.hour,
-      },
-      minute: {
-        [Op.eq]: currentTime.minute,
-      },
-    },
-    order: [["createdAt", "ASC"]],
-  })) {
-    console.log("Processing user %s", autoItem.userId);
-    const dmScreenshot = validUserIDs.has(autoItem.userId);
-    batchTimes.set(
-      [autoItem.hour, autoItem.minute],
-      (batchTimes.get([autoItem.hour, autoItem.minute]) || 0) + 1
+  try {
+    const validUserIDs: Set<string> = await getValidUserIDs(client);
+    const batchTimes: Map<[number, number], number> = new Map();
+    const validDayOfWeekUsers = new Set(
+      await getUsersForDayOfWeek(currentTime.weekday)
     );
-    await client.screeningClient.queueDailyAuto(
-      await client.users.fetch(autoItem.userId),
-      {
-        batchTime: [autoItem.hour, autoItem.minute],
-        itemNumber: batchTimes.get([autoItem.hour, autoItem.minute]) || 1,
-        logChannel,
-        dmScreenshot,
-      }
-    );
+    for (const autoItem of await AutoUser.findAll({
+      where: {
+        userId: {
+          [Op.in]: Array.from(validDayOfWeekUsers),
+        },
+        hour: {
+          [Op.eq]: currentTime.hour,
+        },
+        minute: {
+          [Op.eq]: currentTime.minute,
+        },
+      },
+      order: [["createdAt", "ASC"]],
+    })) {
+      const dmScreenshot = validUserIDs.has(autoItem.userId);
+      batchTimes.set(
+        [autoItem.hour, autoItem.minute],
+        (batchTimes.get([autoItem.hour, autoItem.minute]) || 0) + 1
+      );
+      await client.screeningClient.queueDailyAuto(
+        await client.users.fetch(autoItem.userId),
+        {
+          batchTime: [autoItem.hour, autoItem.minute],
+          itemNumber: batchTimes.get([autoItem.hour, autoItem.minute]) || 1,
+          logChannel,
+          dmScreenshot,
+        }
+      );
+    }
+  } catch (e) {
+    await logError(e, "doAutoLoop", {
+      time: {
+        hour: currentTime.hour,
+        minute: currentTime.minute,
+        weekday: currentTime.weekday,
+      },
+      logChannel: logChannel.id,
+    });
   }
   setTimeout(
     () => doAutoLoop(client, logChannel),
