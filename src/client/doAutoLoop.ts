@@ -22,6 +22,7 @@ import getUsersForDayOfWeek from "../utils/getUsersForDayOfWeek";
 import getValidUserIDs from "../utils/getValidUserIDs";
 import { Op } from "sequelize";
 import logError from "../utils/logError";
+import ArrayStringMap from "array-string-map"
 
 export default async function doAutoLoop(
   client: HealthScreeningBotClient,
@@ -30,7 +31,7 @@ export default async function doAutoLoop(
   const currentTime = DateTime.now().setZone("America/New_York");
   try {
     const validUserIDs: Set<string> = await getValidUserIDs(client);
-    const batchTimes: Map<[number, number], number> = new Map();
+    const batchTimes: ArrayStringMap<[number, number], number> = new ArrayStringMap();
     const validDayOfWeekUsers = new Set(
       await getUsersForDayOfWeek(currentTime.weekday)
     );
