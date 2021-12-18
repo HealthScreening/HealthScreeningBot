@@ -22,7 +22,7 @@ export default async function logError(
   type: string,
   metadata?: object
 ): Promise<ErrorLog | null> {
-  if (ignoreError(error, type)){
+  if (ignoreError(error, type)) {
     return null;
   }
   const trueMetadata: object | null = metadata || null;
