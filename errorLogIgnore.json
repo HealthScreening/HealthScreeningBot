@@ -1,3 +1,7 @@
 [
-
+  {
+    "type": "assignSchoolRole::assignRole",
+    "name": "DiscordAPIError",
+    "message": "Missing Access"
+  }
 ]
