@@ -3,5 +3,10 @@
     "type": "assignSchoolRole::assignRole",
     "name": "DiscordAPIError",
     "message": "Missing Access"
+  },
+  {
+    "type": "assignSchoolRole::fetchMember",
+    "name": "DiscordAPIError",
+    "message": "Unknown Member"
   }
 ]
