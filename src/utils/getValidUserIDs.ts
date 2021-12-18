@@ -22,7 +22,7 @@ export default async function getValidUserIDs(
 ): Promise<Set<string>> {
   const validUserIDs: Set<string> = new Set();
   for (const [, guild] of client.guilds.cache) {
-    for (const [userId] of await guild.members.fetch()) {
+    for (const [userId] of await guild.members.cache) {
       validUserIDs.add(userId);
     }
   }
