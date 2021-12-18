@@ -41,7 +41,7 @@
   "dependencies": {
     "@discordjs/builders": "^0.9.0",
     "@discordjs/rest": "^0.2.0-canary.0",
-    "array-string-map": "file:../array-string-map",
+    "array-string-map": "^1.0.0",
     "async-mutex": "^0.3.2",
     "axios": "^0.24.0",
     "discord-api-types": "^0.24.0",
