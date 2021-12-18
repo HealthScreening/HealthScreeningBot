@@ -34,6 +34,7 @@ import handleCommandError from "../utils/handleCommandError";
 import { WorkerQueue } from "../utils/workerQueue";
 import postToGithub from "../utils/postToGithub";
 import sleep from "../utils/sleep";
+import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -186,6 +187,7 @@ export default class HealthScreeningBotClient extends Client {
     await Promise.all([
       assignAutoSchoolRole(this),
       doAutoLoop(this, logChannel),
+      doGuildMemberCacheUpdate(this),
     ]);
   }
 }
