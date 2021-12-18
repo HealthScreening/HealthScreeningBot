@@ -15,12 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { ErrorLog } from "../../orm/errorLog";
+import ignoreError from "./ignoreError";
 
 export default async function logError(
   error: Error,
   type: string,
   metadata?: object
-): Promise<ErrorLog> {
+): Promise<ErrorLog | null> {
+  if (ignoreError(error, type)) {
+    return null;
+  }
   const trueMetadata: object | null = metadata || null;
   const errorName: string = error.name;
   const errorMessage: string | null =
