@@ -187,7 +187,7 @@ export default class HealthScreeningBotClient extends Client {
     await Promise.all([
       assignAutoSchoolRole(this),
       doAutoLoop(this, logChannel),
-      doGuildMemberCacheUpdate(this)
+      doGuildMemberCacheUpdate(this),
     ]);
   }
 }
