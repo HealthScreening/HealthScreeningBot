@@ -1,6 +1,6 @@
 {
   "name": "healthscreeningbot",
-  "version": "2.1.0",
+  "version": "2.2.0rc1",
   "author": {
     "email": "sarkaraoyan@gmail.com",
     "name": "Aoyan Sarkar"
@@ -45,7 +45,7 @@
     "@healthscreening/generate-screenshot": "^1.0.0",
     "@healthscreening/screening-types": "^1.0.0",
     "@healthscreening/sequelize-lazy-migrations": "^1.0.6",
-    "array-string-map": "^2.0.0",
+    "array-string-map": "^3.0.0",
     "async-mutex": "^0.3.2",
     "axios": "^0.24.0",
     "discord-api-types": "^0.24.0",
@@ -55,7 +55,8 @@
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
     "puppeteer": "^13.0.0",
-    "sequelize": "^6.12.0"
+    "sequelize": "^6.12.0",
+    "sleep-promise": "^9.1.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.178",

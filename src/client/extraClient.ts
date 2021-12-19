@@ -33,7 +33,7 @@ import serializeInteraction from "../utils/logError/serializeInteraction";
 import handleCommandError from "../utils/handleCommandError";
 import { WorkerQueue } from "../utils/workerQueue";
 import postToGithub from "../utils/postToGithub";
-import sleep from "../utils/sleep";
+import sleep from "sleep-promise";
 import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
 
 const GENERATE_AUTO_CHOICES = [

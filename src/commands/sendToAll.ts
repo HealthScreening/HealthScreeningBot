@@ -19,7 +19,7 @@ import { CommandInteraction, User } from "discord.js";
 import { AutoUser } from "../orm/autoUser";
 import getValidUserIDs from "../utils/getValidUserIDs";
 import logError from "../utils/logError";
-import sleep from "../utils/sleep";
+import sleep from "sleep-promise";
 
 module.exports = {
   data: new SlashCommandBuilder()
