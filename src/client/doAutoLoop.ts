@@ -80,7 +80,7 @@ export default async function doAutoLoop(
   }
   setTimeout(
     () => doAutoLoop(client, logChannel),
-    currentTime.plus({ minutes: 1 }).toMillis() -
+    currentTime.plus({ minutes: 1 }).set({second: 0}).toMillis() -
       DateTime.local().setZone("America/New_York").toMillis()
   );
 }
