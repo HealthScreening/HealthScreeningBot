@@ -1,5 +1,5 @@
 import { isEqual } from "lodash";
-import * as errorLogIgnore from "../../../errorLogIgnore.json";
+import { ignores } from "../../../errorLogIgnore.json";
 
 export default function ignoreError(error: Error, type: string): boolean {
   const comparsionObject = {
@@ -7,5 +7,5 @@ export default function ignoreError(error: Error, type: string): boolean {
     name: error.name,
     message: error.message,
   };
-  return errorLogIgnore.some((item) => isEqual(comparsionObject, item));
+  return ignores.some((item) => isEqual(comparsionObject, item));
 }
