@@ -25,6 +25,7 @@ import { Devices, DevicesAttributes } from "../orm/devices";
 import { AutoUser } from "../orm/autoUser";
 import { ItemType } from "../utils/multiMessage";
 import { HSBCommandInteraction } from "../discordjs-overrides";
+import { AutoDays } from "../orm/autoDays";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -78,6 +79,48 @@ module.exports = {
         .setName("paused")
         .setDescription("Whether auto screenings should be paused.")
         .setRequired(false)
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("sunday")
+        .setDescription("Whether to run the screening on Sunday.")
+        .setRequired(false)
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("monday")
+        .setDescription("Whether to run the screening on Monday.")
+        .setRequired(false)
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("tuesday")
+        .setDescription("Whether to run the screening on Tuesday.")
+        .setRequired(false)
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("wednesday")
+        .setDescription("Whether to run the screening on Wednesday.")
+        .setRequired(false)
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("thursday")
+        .setDescription("Whether to run the screening on Thursday.")
+        .setRequired(false)
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("friday")
+        .setDescription("Whether to run the screening on Friday.")
+        .setRequired(false)
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("saturday")
+        .setDescription("Whether to run the screening on Saturday.")
+        .setRequired(false)
     ),
   async execute(interaction: HSBCommandInteraction) {
     const validDevices = Object.keys(devices);
@@ -87,6 +130,13 @@ module.exports = {
     const type = interaction.options.getString("type");
     const emailOnly = interaction.options.getBoolean("email_only");
     const paused = interaction.options.getBoolean("paused");
+    const sunday = interaction.options.getBoolean("sunday");
+    const monday = interaction.options.getBoolean("monday");
+    const tuesday = interaction.options.getBoolean("tuesday");
+    const wednesday = interaction.options.getBoolean("wednesday");
+    const thursday = interaction.options.getBoolean("thursday");
+    const friday = interaction.options.getBoolean("friday");
+    const saturday = interaction.options.getBoolean("saturday");
     if (deviceName && !validDevices.includes(deviceName)) {
       return await interaction.reply({
         content:
@@ -99,7 +149,22 @@ module.exports = {
         userId: interaction.user.id,
       },
     });
-    if (!userOptions && (hour || minute || type || emailOnly || paused)) {
+    const dayOptions = await AutoDays.findOne({
+      where: {
+        userId: interaction.user.id,
+      },
+    });
+    if (
+      (!userOptions && (hour || minute || type || emailOnly || paused)) ||
+      (!dayOptions &&
+        (sunday ||
+          monday ||
+          tuesday ||
+          wednesday ||
+          thursday ||
+          friday ||
+          saturday))
+    ) {
       return await interaction.reply({
         content:
           "You must first auto information using the `/set_auto` command.",
@@ -147,6 +212,30 @@ module.exports = {
         userOptions.paused = paused;
       }
       await userOptions.save();
+    }
+    if (dayOptions) {
+      if (sunday !== null) {
+        dayOptions.onSunday = sunday;
+      }
+      if (monday !== null) {
+        dayOptions.onMonday = monday;
+      }
+      if (tuesday !== null) {
+        dayOptions.onTuesday = tuesday;
+      }
+      if (wednesday !== null) {
+        dayOptions.onWednesday = wednesday;
+      }
+      if (thursday !== null) {
+        dayOptions.onThursday = thursday;
+      }
+      if (friday !== null) {
+        dayOptions.onFriday = friday;
+      }
+      if (saturday !== null) {
+        dayOptions.onSaturday = saturday;
+      }
+      await dayOptions.save();
     }
     await interaction.reply({
       content: "Successfully set new information!",
