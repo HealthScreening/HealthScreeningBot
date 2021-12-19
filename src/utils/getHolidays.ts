@@ -52,8 +52,8 @@ export default function dayIsHoliday(date: Date): Holiday | null {
         }
       );
       return (
-        end.toMillis() <= targetTimeMillis &&
-        targetTimeMillis <= start.toMillis()
+        start.toMillis() <= targetTimeMillis &&
+        targetTimeMillis <= end.toMillis()
       );
     });
   return holiday || null;
