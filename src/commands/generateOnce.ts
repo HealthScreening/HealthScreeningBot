@@ -17,10 +17,9 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { ItemType } from "../utils/multiMessage";
 import { HSBCommandInteraction } from "../discordjs-overrides";
-import {
-  screeningTypes,
+import screeningTypes, {
   screeningTypeType,
-} from "../utils/produceScreenshot/interfaces";
+} from "@healthscreening/screening-types";
 import getDeviceData from "../screeningClient/getUserInfo/getDeviceData";
 
 module.exports = {

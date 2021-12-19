@@ -20,7 +20,7 @@ import HealthScreeningBotClient from "./client/extraClient";
 import {
   closeBrowser,
   startupBrowser,
-} from "./utils/produceScreenshot/browser";
+} from "@healthscreening/generate-screenshot";
 import { discord } from "../config";
 import logError from "./utils/logError";
 
@@ -37,7 +37,7 @@ const client: HealthScreeningBotClient = new HealthScreeningBotClient({
 
 // Login to Discord with your client's token
 init()
-  .then(startupBrowser)
+  .then(() => startupBrowser())
   .then(function () {
     client.login(discord.token);
   })

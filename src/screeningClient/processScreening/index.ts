@@ -19,7 +19,7 @@ import timeMethod from "../../utils/timeMethod";
 import generateAndSendScreenshot from "./generateAndSendScreenshot";
 import logSuccess from "./logSuccess";
 import processCooldown from "./processCooldown";
-import sendRequest from "../../utils/produceScreenshot/sendRequest";
+import sendRequest from "@healthscreening/complete-screening";
 import logError from "../../utils/logError";
 
 /**
