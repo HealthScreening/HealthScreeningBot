@@ -86,6 +86,11 @@ module.exports = {
       },
       { userId: String(interaction.user.id) }
     );
+    if (autoUserObj.emailOnly) {
+      return await interaction.reply(
+        "Updated! As a reminder, you have email-only screenings on, and to disable that run `/toggle_email_only`."
+      );
+    }
     await interaction.reply(
       "Updated! Check your DMs for the confirmation screening."
     );
@@ -108,7 +113,7 @@ module.exports = {
         e.message === "Cannot send messages to this user"
       ) {
         await interaction.followUp(
-          "I cannot send you a screening, possibly due to DMs being disabled from server members. Therefore, you will be set to email-only screenings. In order to update your status, please run `/toggle_email_only` after making sure your DMs are open again."
+          "I cannot send you a screening, possibly due to DMs being disabled from server members. Therefore, you will be set to email-only screenings. In order to disable email-only mode, please run `/toggle_email_only` after making sure your DMs are open again."
         );
         autoUserObj.emailOnly = true;
         await autoUserObj.save();

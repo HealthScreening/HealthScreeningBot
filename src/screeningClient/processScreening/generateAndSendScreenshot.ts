@@ -23,7 +23,6 @@ import {
   serializeMessageOptions,
 } from "../../utils/multiMessage";
 import logError from "../../utils/logError";
-import handleCommandError from "../../utils/handleCommandError";
 import { AutoUser } from "../../orm/autoUser";
 
 export default async function generateAndSendScreenshot(params: ProcessParams) {
@@ -39,10 +38,6 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
         "generateAndSendScreenshot::generateScreenshot",
         serializeProcessParams(params)
       );
-      if (!params.auto) {
-        await handleCommandError(params.multiMessageParams);
-      }
-      return false;
     }
     const messageParams: MessageOptions = {
       content: "Here is the screenshot that you requested:",

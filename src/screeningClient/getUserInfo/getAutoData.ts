@@ -41,6 +41,8 @@ export default async function getAutoData(
         minute: autoUserItem.minute,
       },
       type: autoUserItem.type,
+      emailOnly: autoUserItem.emailOnly,
+      paused: autoUserItem.paused,
     };
   }
 }
