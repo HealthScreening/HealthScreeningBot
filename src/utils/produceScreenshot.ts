@@ -20,7 +20,9 @@ import completeScreening, {
   SendRequestParams,
 } from "@healthscreening/complete-screening";
 import screeningTypes from "@healthscreening/screening-types";
-import generateScreenshot, { GetScreenshotParams } from "@healthscreening/generate-screenshot";
+import generateScreenshot, {
+  GetScreenshotParams,
+} from "@healthscreening/generate-screenshot";
 
 export interface GenerateScreenshotParams extends SendRequestParams {
   device: string;

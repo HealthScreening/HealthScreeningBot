@@ -27,15 +27,15 @@ module.exports = {
     .setName("profile")
     .setDescription("Saw profile."),
   async execute(interaction: CommandInteraction) {
-    const autoData = await getAutoData({userId: interaction.user.id})
-    const autoDayData = await getAutoDayData({userId: interaction.user.id})
-    const deviceData = await getDeviceData({userId: interaction.user.id})
+    const autoData = await getAutoData({ userId: interaction.user.id });
+    const autoDayData = await getAutoDayData({ userId: interaction.user.id });
+    const deviceData = await getDeviceData({ userId: interaction.user.id });
     const embed = new MessageEmbed()
       .setColor("GREEN")
       .setTitle("Profile")
       .setAuthor(
         interaction.user.username,
-        interaction.user.displayAvatarURL({ format: 'jpg' })
+        interaction.user.displayAvatarURL({ format: "jpg" })
       )
       .setTimestamp(DateTime.local().toUTC().toMillis());
     if (autoData) {
@@ -46,20 +46,20 @@ Vaccinated: **${autoData.vaccinated}**
 Screening Time: **${autoData.time.hour}:${autoData.time.minute}**
 Screening Type: **${screeningTypes[autoData.type]}**
 Email Only: **${autoData.emailOnly}**
-Screenings Paused: **${autoData.paused}**`
-      embed.addField("Auto Data", autoDataString)
+Screenings Paused: **${autoData.paused}**`;
+      embed.addField("Auto Data", autoDataString);
     } else {
       embed.addField("Auto", "**No data**");
     }
-    if (autoDayData){
+    if (autoDayData) {
       const autoDayDataString = `Screening Sent on Sunday: **${autoDayData.onSunday}**
 Screening Sent on Monday: **${autoDayData.onMonday}**
 Screening Sent on Tuesday: **${autoDayData.onTuesday}**
 Screening Sent on Wednesday: **${autoDayData.onWednesday}**
 Screening Sent on Thursday: **${autoDayData.onThursday}**
 Screening Sent on Friday: **${autoDayData.onFriday}**
-Screening Sent on Saturday: **${autoDayData.onSaturday}**`
-      embed.addField("Auto Day Data", autoDayDataString)
+Screening Sent on Saturday: **${autoDayData.onSaturday}**`;
+      embed.addField("Auto Day Data", autoDayDataString);
     } else {
       embed.addField("Auto Day", "**No data**");
     }
