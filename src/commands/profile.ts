@@ -25,8 +25,15 @@ import getDeviceData from "../screeningClient/getUserInfo/getDeviceData";
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("profile")
-    .setDescription("Saw profile."),
+    .setDescription("Saw profile.")
+    .addBooleanOption((option) =>
+      option
+        .setName("ephemeral")
+        .setDescription("Whether to hide this message.")
+        .setRequired(true)
+    ),
   async execute(interaction: CommandInteraction) {
+    const isEphemeral = interaction.options.getBoolean("ephemeral")!;
     const autoData = await getAutoData({ userId: interaction.user.id });
     const autoDayData = await getAutoDayData({ userId: interaction.user.id });
     const deviceData = await getDeviceData({ userId: interaction.user.id });
@@ -64,6 +71,6 @@ Screening Sent on Saturday: **${autoDayData.onSaturday}**`;
       embed.addField("Auto Day", "**No data**");
     }
     embed.addField("Device Used for Screenings", deviceData.device);
-    await interaction.reply({ embeds: [embed] });
+    await interaction.reply({ embeds: [embed], ephemeral: isEphemeral });
   },
 };
