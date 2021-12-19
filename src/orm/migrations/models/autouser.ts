@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { Model, Sequelize, DataTypes as DT } from "sequelize";
-import screeningTypes from "@healthscreening/generate-screenshot";
+import screeningTypes from "@healthscreening/screening-types";
 
 module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
   class AutoUser extends Model {
