@@ -20,7 +20,9 @@ import completeScreening, {
   SendRequestParams,
 } from "@healthscreening/complete-screening";
 import screeningTypes from "@healthscreening/screening-types";
-import generateScreenshot from "@healthscreening/generate-screenshot";
+import generateScreenshot, {
+  GetScreenshotParams,
+} from "@healthscreening/generate-screenshot";
 
 export interface GenerateScreenshotParams extends SendRequestParams {
   device: string;
@@ -34,10 +36,11 @@ export async function sendRequestAndGenerateScreenshot(
   if (!successful) {
     throw new Error("Failed to send the request.");
   }
-  const pageParamObj = {
+  const pageParamObj: GetScreenshotParams = {
     type: screeningTypes[options.type || "G"],
     name: options.firstName + " " + options.lastName,
     date: DateTime.now().setZone("America/New_York").toFormat("DDDD t"),
+    device: options.device,
   };
   return await generateScreenshot(pageParamObj);
 }
