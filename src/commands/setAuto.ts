@@ -94,12 +94,12 @@ module.exports = {
     await interaction.reply(
       "Updated! Check your DMs for the confirmation screening."
     );
-    await interaction.user.send(
-      "In order to make sure you entered the correct information, a sample screening will be generated for you. If you find any errors, use `/set_auto` again."
-    );
-    const user: User = interaction.user;
-    await (await user.createDM()).sendTyping();
     try {
+      await interaction.user.send(
+        "In order to make sure you entered the correct information, a sample screening will be generated for you. If you find any errors, use `/set_auto` again."
+      );
+      const user: User = interaction.user;
+      await (await user.createDM()).sendTyping();
       await interaction.client.screeningClient.queueAutoCommand(
         interaction.user.id,
         {
