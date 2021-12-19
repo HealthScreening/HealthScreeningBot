@@ -15,21 +15,79 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import { TextChannel } from "discord.js";
+import getValidUserIDs from "../utils/getValidUserIDs";
+import getUsersForDayOfWeek from "../utils/getUsersForDayOfWeek";
+import { AutoUser } from "../orm/autoUser";
+import logError from "../utils/logError";
+import { DateTime } from "luxon";
+import ArrayStringMap from "array-string-map";
+import { Op } from "sequelize";
+import { HSBCommandInteraction } from "../discordjs-overrides";
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("trigger_auto")
-    .setDescription('Run the "auto" screenings now.'),
-  async execute(interaction: CommandInteraction) {
-    return await interaction.reply({
-      content:
-        "This command is currently disabled due to restructuring of the bot. Please wait for functionality to be added again.",
-      ephemeral: true,
-    });
-    /* if (interaction.user.id != "199605025914224641"){
-            interaction.reply({content: "You are not the bot owner!", ephemeral: true})
-        } else {
-            await interaction.reply("Starting auto session...")
-        }*/
+    .setDescription("Run the auto screenings now."),
+  async execute(interaction: HSBCommandInteraction) {
+    if (interaction.user.id != "199605025914224641") {
+      interaction.reply({
+        content: "You are not the bot owner!",
+        ephemeral: true,
+      });
+    } else {
+      await interaction.reply("Starting auto session...");
+    }
+    const logChannel: TextChannel = (await (
+      await this.guilds.fetch("889983763994521610")
+    ).channels.fetch("902375187150934037")) as TextChannel;
+    const currentTime = DateTime.now().setZone("America/New_York");
+    try {
+      const validUserIDs: Set<string> = await getValidUserIDs(
+        interaction.client
+      );
+      const batchTimes: ArrayStringMap<[number, number], number> =
+        new ArrayStringMap();
+      const validDayOfWeekUsers = new Set(
+        await getUsersForDayOfWeek(currentTime.weekday)
+      );
+      for (const autoItem of await AutoUser.findAll({
+        where: {
+          userId: {
+            [Op.in]: Array.from(validDayOfWeekUsers),
+          },
+          paused: {
+            [Op.eq]: false,
+          },
+        },
+        order: [["createdAt", "ASC"]],
+      })) {
+        const dmScreenshot = validUserIDs.has(autoItem.userId);
+        batchTimes.set(
+          [currentTime.hour, currentTime.minute],
+          (batchTimes.get([currentTime.hour, currentTime.minute]) || 0) + 1
+        );
+        await interaction.client.screeningClient.queueDailyAuto(
+          await interaction.client.users.fetch(autoItem.userId),
+          {
+            batchTime: [currentTime.hour, currentTime.minute],
+            itemNumber:
+              batchTimes.get([currentTime.hour, currentTime.minute]) || 1,
+            logChannel,
+            dmScreenshot,
+            manual: true
+          }
+        );
+      }
+    } catch (e) {
+      await logError(e, "triggerAuto", {
+        time: {
+          hour: currentTime.hour,
+          minute: currentTime.minute,
+          weekday: currentTime.weekday,
+        },
+        logChannel: logChannel.id,
+      });
+    }
   },
 };
