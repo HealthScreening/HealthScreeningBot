@@ -26,32 +26,27 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("generate_once")
     .setDescription("Generate a singular health screening")
-    .addStringOption((option) =>
-      option
+    .addStringOption((option) => option
         .setName("first_name")
         .setDescription("The first name to specify")
         .setRequired(true)
     )
-    .addStringOption((option) =>
-      option
+    .addStringOption((option) => option
         .setName("last_name")
         .setDescription("The last name to specify")
         .setRequired(true)
     )
-    .addStringOption((option) =>
-      option
+    .addStringOption((option) => option
         .setName("email")
         .setDescription("The email to specify")
         .setRequired(true)
     )
-    .addBooleanOption((option) =>
-      option
+    .addBooleanOption((option) => option
         .setName("vaccinated")
         .setDescription("Whether or not you are vaccinated.")
         .setRequired(true)
     )
-    .addStringOption((option) =>
-      option
+    .addStringOption((option) => option
         .setName("type")
         .setDescription("The type of screening to generate.")
         .setRequired(false)
