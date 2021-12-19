@@ -23,12 +23,17 @@ import getValidUserIDs from "../utils/getValidUserIDs";
 import { Op } from "sequelize";
 import logError from "../utils/logError";
 import ArrayStringMap from "array-string-map";
+import dayIsHoliday from "../utils/getHolidays";
 
 export default async function doAutoLoop(
   client: HealthScreeningBotClient,
   logChannel: TextChannel
 ): Promise<void> {
   const currentTime = DateTime.now().setZone("America/New_York");
+  const holiday = dayIsHoliday(currentTime);
+  if (holiday){
+    return;
+  }
   try {
     const validUserIDs: Set<string> = await getValidUserIDs(client);
     const batchTimes: ArrayStringMap<[number, number], number> =
