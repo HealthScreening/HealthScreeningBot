@@ -1,4 +1,3 @@
-
 /**
  * Copyright (C) 2021 PythonCoderAS
  *
@@ -26,7 +25,7 @@ import getDeviceData from "../screeningClient/getUserInfo/getDeviceData";
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("profile")
-    .setDescription("Saw profile."),
+    .setDescription("Saw profile.")
     .addBooleanOption((option) =>
       option
         .setName("ephemeral")
@@ -72,6 +71,6 @@ Screening Sent on Saturday: **${autoDayData.onSaturday}**`;
       embed.addField("Auto Day", "**No data**");
     }
     embed.addField("Device Used for Screenings", deviceData.device);
-    await interaction.reply({ embeds: [embed] , ephemeral: isEphemeral });
+    await interaction.reply({ embeds: [embed], ephemeral: isEphemeral });
   },
 };
