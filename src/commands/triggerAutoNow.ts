@@ -39,7 +39,7 @@ module.exports = {
       await interaction.reply("Starting auto session...");
     }
     const logChannel: TextChannel = (await (
-      await this.guilds.fetch("889983763994521610")
+      await interaction.client.guilds.fetch("889983763994521610")
     ).channels.fetch("902375187150934037")) as TextChannel;
     const currentTime = DateTime.now().setZone("America/New_York");
     try {
