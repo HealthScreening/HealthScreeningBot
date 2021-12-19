@@ -31,19 +31,19 @@ module.exports = {
       option
         .setName("year")
         .setDescription("The year of the day you intend to get the screening.")
-        .setRequired(true)
+        .setRequired(false)
     )
     .addIntegerOption((option) =>
       option
         .setName("month")
         .setDescription("The month of the day you intend to get the screening.")
-        .setRequired(true)
+        .setRequired(false)
     )
     .addIntegerOption((option) =>
       option
         .setName("day")
         .setDescription("The day of the month you intend to get the screening.")
-        .setRequired(true)
+        .setRequired(false)
     ),
   async execute(interaction: CommandInteraction) {
     const autoData = await getAutoData({ userId: interaction.user.id });
@@ -56,9 +56,10 @@ module.exports = {
       return;
     }
     const autoDayData = await getAutoDayData({ userId: interaction.user.id });
-    const year = interaction.options.getInteger("year")!;
-    const month = interaction.options.getInteger("month")!;
-    const day = interaction.options.getInteger("day")!;
+    const currentTime = DateTime.local().setZone("America/New_York");
+    const year = interaction.options.getInteger("year") || currentTime.year;
+    const month = interaction.options.getInteger("month") || currentTime.month;
+    const day = interaction.options.getInteger("day") || currentTime.day;
     const embed = new MessageEmbed()
       .setTitle(`Screening Logic for ${month}/${day}/${year}`)
       .setAuthor(
