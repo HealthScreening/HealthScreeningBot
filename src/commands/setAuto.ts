@@ -22,14 +22,17 @@ import { AutoUser, AutoUserCreationAttributes } from "../orm/autoUser";
 import { AutoDays } from "../orm/autoDays";
 
 function createOrDelete(values: AutoUserCreationAttributes, condition) {
-  return AutoUser.findOne({ where: condition }).then(function (obj) {
+  return AutoUser.findOne({ where: condition }).then(async function (obj) {
     // update
-    if (obj) return obj.update(values);
+    if (obj) {
+      return obj.update(values);
+    }
     // insert
-    Promise.all([
+    const [user] = await Promise.all([
       AutoUser.create(values),
       AutoDays.create({ userId: values.userId }),
     ]);
+    return user;
   });
 }
 
@@ -73,7 +76,7 @@ module.exports = {
       );
     }
     const isVaxxed = interaction.options.getBoolean("vaccinated")!;
-    await createOrDelete(
+    const autoUserObj = await createOrDelete(
       {
         firstName,
         lastName,
@@ -83,6 +86,11 @@ module.exports = {
       },
       { userId: String(interaction.user.id) }
     );
+    if (autoUserObj.emailOnly) {
+      return await interaction.reply(
+        "Updated! As a reminder, you have email-only screenings on, and to disable that run `/toggle_email_only`."
+      );
+    }
     await interaction.reply(
       "Updated! Check your DMs for the confirmation screening."
     );
@@ -91,12 +99,27 @@ module.exports = {
     );
     const user: User = interaction.user;
     await (await user.createDM()).sendTyping();
-    await interaction.client.screeningClient.queueAutoCommand(
-      interaction.user.id,
-      {
-        itemType: ItemType.user,
-        item: user,
+    try {
+      await interaction.client.screeningClient.queueAutoCommand(
+        interaction.user.id,
+        {
+          itemType: ItemType.user,
+          item: user,
+        }
+      );
+    } catch (e) {
+      if (
+        e.name === "DiscordAPIError" &&
+        e.message === "Cannot send messages to this user"
+      ) {
+        await interaction.followUp(
+          "I cannot send you a screening, possibly due to DMs being disabled from server members. Therefore, you will be set to email-only screenings. In order to disable email-only mode, please run `/toggle_email_only` after making sure your DMs are open again."
+        );
+        autoUserObj.emailOnly = true;
+        await autoUserObj.save();
+      } else {
+        throw e;
       }
-    );
+    }
   },
 };

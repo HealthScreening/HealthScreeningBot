@@ -67,6 +67,16 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
         allowNull: false,
         defaultValue: "G",
       },
+      emailOnly: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      paused: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
     },
     {
       sequelize,
@@ -79,6 +89,9 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
         },
         {
           fields: ["hour", "minute"],
+        },
+        {
+          fields: ["paused"],
         },
       ],
     }

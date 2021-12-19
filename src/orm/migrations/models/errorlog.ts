@@ -47,10 +47,6 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      githubIssueNumber: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
       metadata: {
         type: DataTypes.JSONB,
         allowNull: true,
@@ -66,9 +62,6 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
       timestamps: true,
       updatedAt: false,
       indexes: [
-        {
-          fields: ["githubIssueNumber"],
-        },
         {
           fields: ["createdAt"],
         },

@@ -26,12 +26,14 @@ import logError from "../../utils/logError";
  * Actually processes a screening request.
  *
  * @param params The parameters required for processing.
- * @private
  */
 export default async function processScreening(params: ProcessParams) {
   try {
     let success: boolean, finish: number;
-    if (params.auto && !params.auto.dmScreenshot) {
+    if (
+      (params.emailOnly && (params.auto || params.isSetAuto)) ||
+      !params.auto?.dmScreenshot
+    ) {
       [success, finish] = await timeMethod(() =>
         sendRequest(params.generateScreenshotParams)
       );

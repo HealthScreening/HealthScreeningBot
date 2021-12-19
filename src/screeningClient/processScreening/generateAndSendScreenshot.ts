@@ -17,12 +17,13 @@
 import { ProcessParams, serializeProcessParams } from "../interfaces";
 import { sendRequestAndGenerateScreenshot } from "../../utils/produceScreenshot";
 import {
+  getUserID,
   MessageOptions,
   sendMessage,
   serializeMessageOptions,
 } from "../../utils/multiMessage";
 import logError from "../../utils/logError";
-import handleCommandError from "../../utils/handleCommandError";
+import { AutoUser } from "../../orm/autoUser";
 
 export default async function generateAndSendScreenshot(params: ProcessParams) {
   try {
@@ -37,10 +38,6 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
         "generateAndSendScreenshot::generateScreenshot",
         serializeProcessParams(params)
       );
-      if (!params.auto) {
-        await handleCommandError(params.multiMessageParams);
-      }
-      return false;
     }
     const messageParams: MessageOptions = {
       content: "Here is the screenshot that you requested:",
@@ -56,12 +53,26 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
     try {
       await sendMessage(messageParams);
     } catch (e) {
-      await logError(
-        e,
-        "generateAndSendScreenshot::sendMessage",
-        serializeMessageOptions(messageParams)
-      );
-      return false;
+      if (
+        e.name === "DiscordAPIError" &&
+        e.message === "Cannot send messages to this user"
+      ) {
+        // Set to email only
+        const userId = getUserID(messageParams);
+        const autoUserObj = await AutoUser.findOne({ where: { userId } });
+        if (autoUserObj === null) {
+          return false;
+        }
+        autoUserObj.emailOnly = true;
+        await autoUserObj.save();
+      } else {
+        await logError(
+          e,
+          "generateAndSendScreenshot::sendMessage",
+          serializeMessageOptions(messageParams)
+        );
+        return false;
+      }
     }
     return true;
   } catch (e) {

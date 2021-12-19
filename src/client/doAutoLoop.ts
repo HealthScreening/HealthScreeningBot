@@ -47,6 +47,9 @@ export default async function doAutoLoop(
         minute: {
           [Op.eq]: currentTime.minute,
         },
+        paused: {
+          [Op.eq]: false,
+        },
       },
       order: [["createdAt", "ASC"]],
     })) {

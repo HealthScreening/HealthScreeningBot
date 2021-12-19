@@ -68,14 +68,6 @@ module.exports = {
       ),
       false
     );
-    embed.addField(
-      "Github Issue",
-      item.githubIssueNumber
-        ? "https::/github.com/HealthScreening/HealthScreeningBot/issues/" +
-            item.githubIssueNumber
-        : "None",
-      false
-    );
     if (item.metadata) {
       const metadataEmbed = new MessageEmbed();
       metadataEmbed.setTitle("Metadata for Error #" + item.id);

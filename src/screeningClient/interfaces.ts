@@ -60,6 +60,8 @@ export interface ProcessParams {
   multiMessageParams: MessageOptions;
   auto?: AutoBatchOptions;
   cooldown?: Cooldown;
+  isSetAuto?: boolean;
+  emailOnly?: boolean;
 }
 
 export function serializeProcessParams(params: ProcessParams) {
@@ -87,6 +89,8 @@ export interface AutoInfo {
     minute: number;
   };
   type: screeningTypeType;
+  emailOnly: boolean;
+  paused: boolean;
 }
 
 export interface AutoDayInfo {
