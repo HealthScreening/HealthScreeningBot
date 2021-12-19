@@ -16,7 +16,6 @@
  */
 import { Model, Sequelize, DataTypes as DT } from "sequelize";
 import screeningTypes from "@healthscreening/screening-types";
-import { AutoUser } from "../../autoUser";
 
 module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
   class AutoUser extends Model {
