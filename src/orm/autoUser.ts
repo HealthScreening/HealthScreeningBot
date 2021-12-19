@@ -119,8 +119,8 @@ AutoUser.init(
         fields: ["hour", "minute"],
       },
       {
-        fields: ["paused"]
-      }
+        fields: ["paused"],
+      },
     ],
   }
 );

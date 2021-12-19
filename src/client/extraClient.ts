@@ -155,7 +155,7 @@ export default class HealthScreeningBotClient extends Client {
             item: interaction,
             content: "There was an error while executing this command!",
             ephemeral: true,
-          })
+          });
         } catch (e2) {
           metadata.deferred = interaction.deferred;
           metadata.replied = interaction.replied;

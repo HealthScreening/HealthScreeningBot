@@ -92,8 +92,8 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
           fields: ["hour", "minute"],
         },
         {
-          fields: ["paused"]
-        }
+          fields: ["paused"],
+        },
       ],
     }
   );

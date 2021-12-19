@@ -26,23 +26,21 @@
  **/
 
 let info = {
-    "revision": 10,
-    "name": "noname",
-    "created": "2021-12-19T03:14:14.887Z",
-    "comment": ""
+  revision: 10,
+  name: "noname",
+  created: "2021-12-19T03:14:14.887Z",
+  comment: "",
 };
 
-let migrationCommands = [{
-        fn: "removeIndex",
-        params: [
-            "ErrorLogs",
-            "error_logs_github_issue_number"
-        ]
-    },
-    {
-        fn: "removeColumn",
-        params: ["ErrorLogs", "githubIssueNumber"]
-    }
+let migrationCommands = [
+  {
+    fn: "removeIndex",
+    params: ["ErrorLogs", "error_logs_github_issue_number"],
+  },
+  {
+    fn: "removeColumn",
+    params: ["ErrorLogs", "githubIssueNumber"],
+  },
 ];
 
 module.exports = require("../makeMigrationExport")(info, migrationCommands);

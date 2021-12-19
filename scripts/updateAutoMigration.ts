@@ -10,9 +10,9 @@ const migrationPath = resolve(
   "migrations"
 );
 
-const replacementsBasePath = resolve(__dirname, "updateAutoMigration")
+const replacementsBasePath = resolve(__dirname, "updateAutoMigration");
 
-type ReplacementData = { old: string; new: string }[]
+type ReplacementData = { old: string; new: string }[];
 
 const replacementPaths: ReplacementData = [
   {
@@ -25,7 +25,9 @@ const replacementPaths: ReplacementData = [
   },
 ];
 
-async function getReplacements(paths: ReplacementData): Promise<ReplacementData> {
+async function getReplacements(
+  paths: ReplacementData
+): Promise<ReplacementData> {
   const replacements: ReplacementData = [];
   for (const path of paths) {
     const old = await readFile(path.old, "utf8");
@@ -48,7 +50,10 @@ async function updateAutoMigration(replacements: ReplacementData) {
         await writeFile(resolve(migrationPath, file), text, "utf-8");
       }
     }
-    await rename(resolve(migrationPath, file), resolve(migrationPath, file.replace(".js", ".ts")));
+    await rename(
+      resolve(migrationPath, file),
+      resolve(migrationPath, file.replace(".js", ".ts"))
+    );
   }
 }
 

@@ -140,6 +140,17 @@ const defaultOptions = {
   files: [],
 };
 
+export function getUserID(options: MessageOptions): string {
+  switch (options.itemType) {
+    case ItemType.interaction:
+      return options.item.user.id;
+    case ItemType.user:
+      return options.item.id;
+    case ItemType.message:
+      return options.item.author.id;
+  }
+}
+
 export function sendMessage(
   options: MessageOptions
 ): Promise<Message | APIMessage> {

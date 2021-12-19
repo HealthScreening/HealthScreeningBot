@@ -28,49 +28,50 @@ const Sequelize = require("sequelize");
  **/
 
 let info = {
-    "revision": 11,
-    "name": "noname",
-    "created": "2021-12-19T04:09:13.669Z",
-    "comment": ""
+  revision: 11,
+  name: "noname",
+  created: "2021-12-19T04:09:13.669Z",
+  comment: "",
 };
 
-let migrationCommands = [{
-        fn: "addColumn",
-        params: [
-            "AutoUsers",
-            "emailOnly",
-            {
-                "type": Sequelize.BOOLEAN,
-                "field": "emailOnly",
-                "defaultValue": false,
-                "allowNull": false
-            }
-        ]
-    },
-    {
-        fn: "addColumn",
-        params: [
-            "AutoUsers",
-            "paused",
-            {
-                "type": Sequelize.BOOLEAN,
-                "field": "paused",
-                "defaultValue": false,
-                "allowNull": false
-            }
-        ]
-    },
-    {
-        fn: "addIndex",
-        params: [
-            "AutoUsers",
-            ["paused"],
-            {
-                "indexName": "auto_users_paused",
-                "name": "auto_users_paused"
-            }
-        ]
-    }
+let migrationCommands = [
+  {
+    fn: "addColumn",
+    params: [
+      "AutoUsers",
+      "emailOnly",
+      {
+        type: Sequelize.BOOLEAN,
+        field: "emailOnly",
+        defaultValue: false,
+        allowNull: false,
+      },
+    ],
+  },
+  {
+    fn: "addColumn",
+    params: [
+      "AutoUsers",
+      "paused",
+      {
+        type: Sequelize.BOOLEAN,
+        field: "paused",
+        defaultValue: false,
+        allowNull: false,
+      },
+    ],
+  },
+  {
+    fn: "addIndex",
+    params: [
+      "AutoUsers",
+      ["paused"],
+      {
+        indexName: "auto_users_paused",
+        name: "auto_users_paused",
+      },
+    ],
+  },
 ];
 
 module.exports = require("../makeMigrationExport")(info, migrationCommands);
