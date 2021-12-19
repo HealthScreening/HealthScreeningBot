@@ -15,7 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
-import screeningTypes, { screeningTypeType } from "@healthscreening/screening-types";
+import screeningTypes, {
+  screeningTypeType,
+} from "@healthscreening/screening-types";
 import { User } from "discord.js";
 import { devices } from "puppeteer";
 import createOrUpdate from "../utils/createOrUpdate";
@@ -77,22 +79,30 @@ module.exports = {
         .setName("paused")
         .setDescription("Whether auto screenings should be paused.")
         .setRequired(false)
-    ).addBooleanOption((option) => option
-      .setName("sunday")
-      .setDescription("Whether to run the screening on Sunday.")
-      .setRequired(false)
-    ).addBooleanOption((option) => option
-      .setName("monday")
-      .setDescription("Whether to run the screening on Monday.")
-      .setRequired(false)
-    ).addBooleanOption((option) => option
-      .setName("tuesday")
-      .setDescription("Whether to run the screening on Tuesday.")
-      .setRequired(false)
-    ).addBooleanOption((option) => option
-      .setName("wednesday")
-      .setDescription("Whether to run the screening on Wednesday.")
-      .setRequired(false)
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("sunday")
+        .setDescription("Whether to run the screening on Sunday.")
+        .setRequired(false)
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("monday")
+        .setDescription("Whether to run the screening on Monday.")
+        .setRequired(false)
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("tuesday")
+        .setDescription("Whether to run the screening on Tuesday.")
+        .setRequired(false)
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("wednesday")
+        .setDescription("Whether to run the screening on Wednesday.")
+        .setRequired(false)
     )
     .addBooleanOption((option) =>
       option
@@ -111,8 +121,7 @@ module.exports = {
         .setName("saturday")
         .setDescription("Whether to run the screening on Saturday.")
         .setRequired(false)
-    )
-  ,
+    ),
   async execute(interaction: HSBCommandInteraction) {
     const validDevices = Object.keys(devices);
     const deviceName = interaction.options.getString("device");
@@ -132,38 +141,48 @@ module.exports = {
       return await interaction.reply({
         content:
           "Invalid device name! Please enter a valid device name. See the list of valid device names by using the `/device_list` command.",
-        ephemeral: true
+        ephemeral: true,
       });
     }
     const userOptions = await AutoUser.findOne({
       where: {
-        userId: interaction.user.id
-      }
+        userId: interaction.user.id,
+      },
     });
     const dayOptions = await AutoDays.findOne({
       where: {
-        userId: interaction.user.id
-      }
+        userId: interaction.user.id,
+      },
     });
-    if ((!userOptions && (hour || minute || type || emailOnly || paused)) || (!dayOptions && (sunday || monday || tuesday || wednesday || thursday || friday || saturday))) {
+    if (
+      (!userOptions && (hour || minute || type || emailOnly || paused)) ||
+      (!dayOptions &&
+        (sunday ||
+          monday ||
+          tuesday ||
+          wednesday ||
+          thursday ||
+          friday ||
+          saturday))
+    ) {
       return await interaction.reply({
         content:
           "You must first auto information using the `/set_auto` command.",
-        ephemeral: true
+        ephemeral: true,
       });
     }
     if (hour && (hour < 0 || hour > 23)) {
       return await interaction.reply({
         content:
           "Invalid hour! Please enter a valid hour in the range [0, 23].",
-        ephemeral: true
+        ephemeral: true,
       });
     }
     if (minute && (minute < 0 || minute > 59)) {
       return await interaction.reply({
         content:
           "Invalid minute! Please enter a valid minute in the range [0, 59].",
-        ephemeral: true
+        ephemeral: true,
       });
     }
     if (deviceName) {
@@ -171,7 +190,7 @@ module.exports = {
         Devices,
         {
           userId: interaction.user.id,
-          device: deviceName
+          device: deviceName,
         },
         { userId: interaction.user.id }
       );
@@ -194,7 +213,7 @@ module.exports = {
       }
       await userOptions.save();
     }
-    if (dayOptions){
+    if (dayOptions) {
       if (sunday !== null) {
         dayOptions.onSunday = sunday;
       }
@@ -219,12 +238,12 @@ module.exports = {
       await dayOptions.save();
     }
     await interaction.reply({
-      content: "Successfully set new information!"
+      content: "Successfully set new information!",
     });
     if (userOptions && emailOnly === false) {
       await interaction.followUp({
         content:
-          "To confirm that email-only mode will work, the bot will attempt to send a test screenshot."
+          "To confirm that email-only mode will work, the bot will attempt to send a test screenshot.",
       });
       try {
         const user: User = interaction.user;
@@ -233,7 +252,7 @@ module.exports = {
           interaction.user.id,
           {
             itemType: ItemType.user,
-            item: user
+            item: user,
           }
         );
       } catch (e) {
@@ -246,11 +265,10 @@ module.exports = {
           );
           userOptions.emailOnly = true;
           await userOptions.save();
-        }
-        else {
+        } else {
           throw e;
         }
       }
     }
-  }
+  },
 };
