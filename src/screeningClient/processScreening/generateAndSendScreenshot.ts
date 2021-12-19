@@ -28,7 +28,9 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
   try {
     let screenshot;
     try {
-      screenshot = await sendRequestAndGenerateScreenshot(params.generateScreenshotParams);
+      screenshot = await sendRequestAndGenerateScreenshot(
+        params.generateScreenshotParams
+      );
     } catch (e) {
       await logError(
         e,

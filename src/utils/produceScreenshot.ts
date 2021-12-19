@@ -16,7 +16,9 @@
  */
 import * as Buffer from "buffer";
 import { DateTime } from "luxon";
-import completeScreening, { SendRequestParams } from "@healthscreening/complete-screening";
+import completeScreening, {
+  SendRequestParams,
+} from "@healthscreening/complete-screening";
 import screeningTypes from "@healthscreening/screening-types";
 import generateScreenshot from "@healthscreening/generate-screenshot";
 

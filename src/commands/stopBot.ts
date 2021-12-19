@@ -32,7 +32,7 @@ module.exports = {
       });
     } else {
       await interaction.reply("Stopping...");
-      await closeBrowser()
+      await closeBrowser();
       exit(0);
     }
   },
