@@ -190,11 +190,6 @@
           "field": "errorStack",
           "seqType": "Sequelize.TEXT"
         },
-        "githubIssueNumber": {
-          "allowNull": true,
-          "field": "githubIssueNumber",
-          "seqType": "Sequelize.INTEGER"
-        },
         "metadata": {
           "allowNull": true,
           "field": "metadata",
@@ -212,14 +207,6 @@
         }
       },
       "indexes": {
-        "e2b827380e3a0db05ebbe7a71e511d294e8523a3": {
-          "fields": ["githubIssueNumber"],
-          "name": "error_logs_github_issue_number",
-          "options": {
-            "indexName": "error_logs_github_issue_number",
-            "name": "error_logs_github_issue_number"
-          }
-        },
         "d3a619f6d8ecc287ee469076130768eb314dde82": {
           "fields": ["createdAt"],
           "name": "error_logs_created_at",
@@ -239,5 +226,5 @@
       }
     }
   },
-  "revision": 9
+  "revision": 10
 }

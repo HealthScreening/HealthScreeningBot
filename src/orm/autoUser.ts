@@ -30,11 +30,13 @@ export interface AutoUserAttributes {
   hour: number;
   minute: number;
   type: screeningTypeType;
+  emailOnly: boolean;
+  paused: boolean;
 }
 
 export type AutoUserCreationAttributes = Optional<
   AutoUserAttributes,
-  "hour" | "minute" | "type"
+  "hour" | "minute" | "type" | "emailOnly" | "paused"
 >;
 
 export class AutoUser
@@ -50,6 +52,8 @@ export class AutoUser
   minute!: number;
   createdAt!: Date;
   type!: screeningTypeType;
+  emailOnly!: boolean;
+  paused!: boolean;
 }
 
 AutoUser.init(
@@ -91,6 +95,16 @@ AutoUser.init(
       allowNull: false,
       defaultValue: "G",
     },
+    emailOnly: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    paused: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   {
     sequelize,
@@ -104,6 +118,9 @@ AutoUser.init(
       {
         fields: ["hour", "minute"],
       },
+      {
+        fields: ["paused"]
+      }
     ],
   }
 );
