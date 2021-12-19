@@ -75,7 +75,7 @@ module.exports = {
               batchTimes.get([currentTime.hour, currentTime.minute]) || 1,
             logChannel,
             dmScreenshot,
-            manual: true
+            manual: true,
           }
         );
       }

@@ -17,7 +17,10 @@
 import { Intents } from "discord.js";
 import { init } from "./orm";
 import HealthScreeningBotClient from "./client/extraClient";
-import { closeBrowser, startupBrowser } from "@healthscreening/generate-screenshot";
+import {
+  closeBrowser,
+  startupBrowser,
+} from "@healthscreening/generate-screenshot";
 import { discord } from "../config";
 import logError from "./utils/logError";
 
@@ -29,17 +32,17 @@ myIntents.add(Intents.FLAGS.DIRECT_MESSAGES);
 
 const client: HealthScreeningBotClient = new HealthScreeningBotClient({
   intents: myIntents,
-  partials: ["CHANNEL"]
+  partials: ["CHANNEL"],
 });
 
 // Login to Discord with your client's token
 init()
   .then(() => startupBrowser())
-  .then(function() {
+  .then(function () {
     client.login(discord.token);
   })
   .catch((error) => {
     logError(error, "root").then(() => {
-      closeBrowser()
+      closeBrowser();
     });
   });
