@@ -16,11 +16,13 @@
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
 import screeningTypes, { screeningTypeType } from "@healthscreening/screening-types";
-import { CommandInteraction } from "discord.js";
+import { User } from "discord.js";
 import { devices } from "puppeteer";
 import createOrUpdate from "../utils/createOrUpdate";
 import { Devices, DevicesAttributes } from "../orm/devices";
 import { AutoUser } from "../orm/autoUser";
+import { ItemType } from "../utils/multiMessage";
+import { HSBCommandInteraction } from "../discordjs-overrides";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -62,7 +64,7 @@ module.exports = {
       .setDescription("Whether auto screenings should be paused.")
       .setRequired(false)
     ),
-  async execute(interaction: CommandInteraction) {
+  async execute(interaction: HSBCommandInteraction) {
     const validDevices = Object.keys(devices);
     const deviceName = interaction.options.getString("device");
     const hour = interaction.options.getInteger("hour");
@@ -70,7 +72,6 @@ module.exports = {
     const type = interaction.options.getString("type");
     const emailOnly = interaction.options.getBoolean("email_only");
     const paused = interaction.options.getBoolean("paused");
-
     if (deviceName && !validDevices.includes(deviceName)) {
       return await interaction.reply({
         content: "Invalid device name! Please enter a valid device name. See the list of valid device names by using the `/device_list` command.",
@@ -116,17 +117,45 @@ module.exports = {
       if (type) {
         userOptions.type = type as screeningTypeType;
       }
-      if (emailOnly) {
+      if (emailOnly !== null) {
         userOptions.emailOnly = emailOnly;
       }
-      if (paused) {
+      if (paused !== null) {
         userOptions.paused = paused;
       }
       await userOptions.save();
     }
-    return await interaction.reply({
-      content: "Successfully set new information!",
-      ephemeral: true
+    await interaction.reply({
+      content: "Successfully set new information!"
     });
+    if (userOptions && emailOnly === false){
+      await interaction.followUp({
+        content: "To confirm that email-only mode will work, the bot will attempt to send a test screenshot."
+      });
+      try {
+        const user: User = interaction.user;
+        await (await user.createDM()).sendTyping();
+        await interaction.client.screeningClient.queueAutoCommand(
+          interaction.user.id,
+          {
+            itemType: ItemType.user,
+            item: user,
+          }
+        );
+      } catch (e) {
+        if (
+          e.name === "DiscordAPIError" &&
+          e.message === "Cannot send messages to this user"
+        ) {
+          await interaction.followUp(
+            "I cannot send you a screening, possibly due to DMs being disabled from server members. Therefore, you will be set to email-only screenings. In order to disable email-only mode, please rerun `/set` after making sure your DMs are open again."
+          );
+          userOptions.emailOnly = true;
+          await userOptions.save();
+        } else {
+          throw e;
+        }
+      }
+    }
   }
 };
