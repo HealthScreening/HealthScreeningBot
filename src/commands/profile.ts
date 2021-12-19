@@ -1,4 +1,4 @@
-```js
+
 /**
  * Copyright (C) 2021 PythonCoderAS
  *
@@ -75,4 +75,4 @@ Screening Sent on Saturday: **${autoDayData.onSaturday}**`;
     const isEphemeral = interaction.options.getBoolean("ephemeral")!;
     await interaction.reply({ embeds: [embed] , ephemeral: isEphemeral});
   },
-};```
+};
