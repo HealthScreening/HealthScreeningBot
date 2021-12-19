@@ -43,14 +43,3 @@ init()
       closeBrowser()
     });
   });
-
-process.on("uncaughtException", (error, origin) => {
-  logError(error, "root::uncaughtException", {
-    origin
-  }).catch(() => {
-    // Stop recursion if logError is broken
-    closeBrowser().then(() => {
-      process.exit(1);
-    });
-  });
-});
