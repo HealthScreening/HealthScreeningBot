@@ -35,6 +35,7 @@ import { WorkerQueue } from "../utils/workerQueue";
 import postToGithub from "../utils/postToGithub";
 import sleep from "sleep-promise";
 import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
+import runFunctionAndLogError from "../utils/logError/runAndLog";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -185,9 +186,18 @@ export default class HealthScreeningBotClient extends Client {
       await this.guilds.fetch("889983763994521610")
     ).channels.fetch("902375187150934037")) as TextChannel;
     await Promise.all([
-      assignAutoSchoolRole(this),
-      doAutoLoop(this, logChannel),
-      doGuildMemberCacheUpdate(this),
+      runFunctionAndLogError(
+        () => assignAutoSchoolRole(this),
+        "onReady::assignAutoSchoolRole"
+      ),
+      runFunctionAndLogError(
+        () => doAutoLoop(this, logChannel),
+        "onReady::doAutoLoop"
+      ),
+      runFunctionAndLogError(
+        () => doGuildMemberCacheUpdate(this),
+        "onReady::doGuildMemberCacheUpdate"
+      ),
     ]);
   }
 }
