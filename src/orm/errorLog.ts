@@ -22,14 +22,13 @@ export interface ErrorLogAttributes {
   errorName: string;
   errorDescription: string | null;
   errorStack: string | null;
-  githubIssueNumber: number | null;
   metadata: object | null;
   type: string;
 }
 
 export type ErrorLogCreationAttributes = Optional<
   ErrorLogAttributes,
-  "id" | "errorDescription" | "errorStack" | "githubIssueNumber" | "metadata"
+  "id" | "errorDescription" | "errorStack" | "metadata"
 >;
 
 export class ErrorLog
@@ -40,7 +39,6 @@ export class ErrorLog
   errorName!: string;
   errorDescription!: string | null;
   errorStack!: string | null;
-  githubIssueNumber!: number | null;
   metadata!: object | null;
   type!: string;
   createdAt!: Date;
@@ -65,10 +63,6 @@ ErrorLog.init(
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    githubIssueNumber: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
     metadata: {
       type: DataTypes.JSONB,
       allowNull: true,
@@ -84,9 +78,6 @@ ErrorLog.init(
     timestamps: true,
     updatedAt: false,
     indexes: [
-      {
-        fields: ["githubIssueNumber"],
-      },
       {
         fields: ["createdAt"],
       },

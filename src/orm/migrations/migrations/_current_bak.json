@@ -128,7 +128,24 @@
           "seqType": "Sequelize.DATE"
         }
       },
-      "indexes": []
+      "indexes": {
+        "7972f3c0bee7f8fd145d253496bf7d98e326eb85": {
+          "fields": ["createdAt"],
+          "name": "auto_users_created_at",
+          "options": {
+            "indexName": "auto_users_created_at",
+            "name": "auto_users_created_at"
+          }
+        },
+        "0c6a814c2dc671e688f84942c8cab6cdc502ce84": {
+          "fields": ["hour", "minute"],
+          "name": "auto_users_hour_minute",
+          "options": {
+            "indexName": "auto_users_hour_minute",
+            "name": "auto_users_hour_minute"
+          }
+        }
+      }
     },
     "Devices": {
       "tableName": "Devices",
@@ -222,5 +239,5 @@
       }
     }
   },
-  "revision": 8
+  "revision": 9
 }
