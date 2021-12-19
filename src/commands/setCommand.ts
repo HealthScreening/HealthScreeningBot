@@ -54,7 +54,7 @@ module.exports = {
       .setRequired(false)
       .addChoices(Object.entries(screeningTypes).map(([key, value]) => [value, key]))
     ).addBooleanOption((option) => option
-      .setName("emailOnly")
+      .setName("email_only")
       .setDescription("Whether the screening should be email only (meaning a screenshot is not DMed to you).")
       .setRequired(false)
     ).addBooleanOption((option) => option
@@ -68,7 +68,7 @@ module.exports = {
     const hour = interaction.options.getInteger("hour");
     const minute = interaction.options.getInteger("minute");
     const type = interaction.options.getString("type");
-    const emailOnly = interaction.options.getBoolean("emailOnly");
+    const emailOnly = interaction.options.getBoolean("email_only");
     const paused = interaction.options.getBoolean("paused");
 
     if (deviceName && !validDevices.includes(deviceName)) {
