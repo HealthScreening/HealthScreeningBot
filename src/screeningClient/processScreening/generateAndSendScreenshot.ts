@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { ProcessParams, serializeProcessParams } from "../interfaces";
-import { generateScreenshot } from "../../utils/produceScreenshot";
+import { sendRequestAndGenerateScreenshot } from "../../utils/produceScreenshot";
 import {
   MessageOptions,
   sendMessage,
@@ -28,7 +28,7 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
   try {
     let screenshot;
     try {
-      screenshot = await generateScreenshot(params.generateScreenshotParams);
+      screenshot = await sendRequestAndGenerateScreenshot(params.generateScreenshotParams);
     } catch (e) {
       await logError(
         e,

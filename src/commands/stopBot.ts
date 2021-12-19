@@ -18,7 +18,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
 import { exit } from "process";
 
-import { browser } from "../utils/produceScreenshot/browser";
+import { closeBrowser } from "@healthscreening/generate-screenshot";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -32,9 +32,7 @@ module.exports = {
       });
     } else {
       await interaction.reply("Stopping...");
-      if (browser) {
-        await browser.close();
-      }
+      await closeBrowser()
       exit(0);
     }
   },

@@ -17,10 +17,9 @@
 
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from ".";
-import {
-  screeningTypes,
+import screeningTypes, {
   screeningTypeType,
-} from "../utils/produceScreenshot/interfaces";
+} from "@healthscreening/screening-types";
 
 export interface AutoUserAttributes {
   userId: string;

@@ -15,11 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import {
-  GenerateScreenshotParams,
   screeningTypeType,
-} from "../utils/produceScreenshot/interfaces";
+} from "@healthscreening/screening-types";
 import { MessageOptions, serializeMessageOptions } from "../utils/multiMessage";
 import { TextChannel } from "discord.js";
+import { GenerateScreenshotParams } from "../utils/produceScreenshot";
 
 export interface AutoBatchOptions {
   batchTime: [number, number];
