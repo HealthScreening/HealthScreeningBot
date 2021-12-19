@@ -64,6 +64,6 @@ Screening Sent on Saturday: **${autoDayData.onSaturday}**`;
       embed.addField("Auto Day", "**No data**");
     }
     embed.addField("Device Used for Screenings", deviceData.device);
-    interaction.reply({ embeds: [embed] });
+    await interaction.reply({ embeds: [embed] });
   },
 };

@@ -17,12 +17,10 @@
 
 import { Client } from "discord.js";
 
-export default async function getValidUserIDs(
-  client: Client
-): Promise<Set<string>> {
+export default function getValidUserIDs(client: Client): Set<string> {
   const validUserIDs: Set<string> = new Set();
   for (const [, guild] of client.guilds.cache) {
-    for (const [userId] of await guild.members.cache) {
+    for (const [userId] of guild.members.cache) {
       validUserIDs.add(userId);
     }
   }

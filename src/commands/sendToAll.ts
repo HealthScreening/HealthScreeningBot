@@ -42,12 +42,12 @@ module.exports = {
         .setRequired(false)
     ),
   async execute(interaction: CommandInteraction) {
-    if (await checkOwner({item: interaction, itemType: ItemType.interaction})) {
+    if (
+      await checkOwner({ item: interaction, itemType: ItemType.interaction })
+    ) {
       const timeToSleep = interaction.options.getInteger("time") || 0;
       await interaction.reply("Sending to all...");
-      const validUserIDs: Set<string> = await getValidUserIDs(
-        interaction.client
-      );
+      const validUserIDs: Set<string> = getValidUserIDs(interaction.client);
       const items = await AutoUser.findAll();
       const message =
         "The bot owner has sent a message to everyone registered under the auto health screening bot:\n----\n" +

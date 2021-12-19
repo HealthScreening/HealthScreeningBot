@@ -31,11 +31,11 @@ export default async function doAutoLoop(
 ): Promise<void> {
   const currentTime = DateTime.now().setZone("America/New_York");
   const holiday = dayIsHoliday(currentTime);
-  if (holiday){
+  if (holiday) {
     return;
   }
   try {
-    const validUserIDs: Set<string> = await getValidUserIDs(client);
+    const validUserIDs: Set<string> = getValidUserIDs(client);
     const batchTimes: ArrayStringMap<[number, number], number> =
       new ArrayStringMap();
     const validDayOfWeekUsers = new Set(

@@ -44,6 +44,6 @@ module.exports = {
         String(registeredPeople)
       )
       .setTimestamp(DateTime.local().toUTC().toMillis());
-    interaction.reply({ embeds: [embed] });
+    await interaction.reply({ embeds: [embed] });
   },
 };
