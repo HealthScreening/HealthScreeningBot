@@ -32,7 +32,7 @@ export default async function processScreening(params: ProcessParams) {
     let success: boolean, finish: number;
     if (
       (params.emailOnly && (params.auto || params.isSetAuto)) ||
-      !params.auto?.dmScreenshot
+      params.auto?.dmScreenshot === false
     ) {
       [success, finish] = await timeMethod(() =>
         sendRequest(params.generateScreenshotParams)
