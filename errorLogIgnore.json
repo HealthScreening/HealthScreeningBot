@@ -9,6 +9,11 @@
       "type": "assignSchoolRole::fetchMember",
       "name": "DiscordAPIError",
       "message": "Unknown Member"
+    },
+    {
+      "type": "dailyAutoScreening",
+      "name": "DiscordAPIError",
+      "message": "Missing Permissions"
     }
   ]
 }
