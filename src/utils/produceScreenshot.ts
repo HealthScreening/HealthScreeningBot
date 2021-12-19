@@ -16,15 +16,19 @@
  */
 import * as Buffer from "buffer";
 import { DateTime } from "luxon";
-import { GenerateScreenshotParams, screeningTypes } from "./interfaces";
-import sendRequest from "./sendRequest";
-import getScreenshot from "./getScreenshot";
+import completeScreening, { SendRequestParams } from "@healthscreening/complete-screening";
+import screeningTypes from "@healthscreening/screening-types";
+import generateScreenshot from "@healthscreening/generate-screenshot";
 
-export async function generateScreenshot(
+export interface GenerateScreenshotParams extends SendRequestParams {
+  device: string;
+}
+
+export async function sendRequestAndGenerateScreenshot(
   options: GenerateScreenshotParams
 ): Promise<Buffer> {
   // We assume the browser has been started already.
-  const successful = await sendRequest(options);
+  const successful = await completeScreening(options);
   if (!successful) {
     throw new Error("Failed to send the request.");
   }
@@ -33,5 +37,5 @@ export async function generateScreenshot(
     name: options.firstName + " " + options.lastName,
     date: DateTime.now().setZone("America/New_York").toFormat("DDDD t"),
   };
-  return await getScreenshot(pageParamObj);
+  return await generateScreenshot(pageParamObj);
 }
