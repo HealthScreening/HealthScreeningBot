@@ -28,11 +28,11 @@ export default function dayIsHoliday(date: Date): Holiday | null {
         name: value.name,
       };
     })
-    .find((holiday) => {
+    .find((holidayItem) => {
       const start = DateTime.local(
-        holiday.start.year,
-        holiday.start.month,
-        holiday.start.day,
+        holidayItem.start.year,
+        holidayItem.start.month,
+        holidayItem.start.day,
         0,
         0,
         0,
@@ -41,9 +41,9 @@ export default function dayIsHoliday(date: Date): Holiday | null {
         }
       );
       const end = DateTime.local(
-        holiday.end.year,
-        holiday.end.month,
-        holiday.end.day,
+        holidayItem.end.year,
+        holidayItem.end.month,
+        holidayItem.end.day,
         23,
         59,
         59,
