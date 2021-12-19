@@ -109,10 +109,10 @@ module.exports = {
         willRunForWeekday = autoDayData.onSunday;
         break;
     }
-    const willRun = paused || holiday || !willRunForWeekday;
+    const willRun = !paused && !holiday && willRunForWeekday;
     let action =
-      (willRun ? "Will not" : "Will") +
-      `run auto screening for ${month}/${day}/${year}`;
+      (willRun ? "Will" : "Will not") +
+      ` run auto screening for ${month}/${day}/${year}`;
     if (willRun) {
       embed.setColor("GREEN");
     } else {
@@ -150,7 +150,7 @@ module.exports = {
     // Step 2, check if email only mode is on.
     const emailOnly = autoData.emailOnly;
     const willEmail = mutualServer && !emailOnly;
-    let action2 = (willEmail ? "Will" : "Will not") + `email screenshot`;
+    let action2 = (willEmail ? "Will" : "Will not") + ` email screenshot`;
     if (willEmail) {
       embed2.setColor("GREEN");
     } else {
