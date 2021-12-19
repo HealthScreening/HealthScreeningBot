@@ -36,13 +36,14 @@ const client: HealthScreeningBotClient = new HealthScreeningBotClient({
 });
 
 // Login to Discord with your client's token
-init()
-  .then(() => startupBrowser())
-  .then(function () {
-    client.login(discord.token);
-  })
-  .catch((error) => {
-    logError(error, "root").then(() => {
-      closeBrowser();
+init().then(() => {
+  startupBrowser()
+    .then(function () {
+      client.login(discord.token);
+    })
+    .catch((error) => {
+      logError(error, "root").then(() => {
+        closeBrowser();
+      });
     });
-  });
+});
