@@ -31,7 +31,7 @@ module.exports = {
     .setDescription("Run the auto screenings now."),
   async execute(interaction: HSBCommandInteraction) {
     if (interaction.user.id != "199605025914224641") {
-      interaction.reply({
+      await interaction.reply({
         content: "You are not the bot owner!",
         ephemeral: true,
       });
@@ -43,9 +43,7 @@ module.exports = {
     ).channels.fetch("902375187150934037")) as TextChannel;
     const currentTime = DateTime.now().setZone("America/New_York");
     try {
-      const validUserIDs: Set<string> = await getValidUserIDs(
-        interaction.client
-      );
+      const validUserIDs: Set<string> = getValidUserIDs(interaction.client);
       const batchTimes: ArrayStringMap<[number, number], number> =
         new ArrayStringMap();
       const validDayOfWeekUsers = new Set(
