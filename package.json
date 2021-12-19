@@ -44,6 +44,7 @@
     "@healthscreening/complete-screening": "^1.0.0",
     "@healthscreening/generate-screenshot": "^1.0.0",
     "@healthscreening/screening-types": "^1.0.0",
+    "@healthscreening/sequelize-lazy-migrations": "^1.0.6",
     "array-string-map": "^2.0.0",
     "async-mutex": "^0.3.2",
     "axios": "^0.24.0",
@@ -54,8 +55,7 @@
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
     "puppeteer": "^13.0.0",
-    "sequelize": "^6.12.0",
-    "sequelize-lazy-migrations": "github:HealthScreening/sequelize-lazy-migrations#1.0.5"
+    "sequelize": "^6.12.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.178",
@@ -76,7 +76,7 @@
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check .",
     "lint": "eslint src",
-    "db:makemigrations": "./node_modules/sequelize-lazy-migrations/bin/makemigration.js",
+    "db:makemigrations": "./node_modules/@healthscreening/sequelize-lazy-migrations/bin/makemigration.js",
     "typescript": "tsc -p tsconfig.json",
     "pre-push-check": "npm run lint && npm run prettier:check && npm run typescript",
     "pre-push": "npm run lint && npm run prettier && npm run typescript",
