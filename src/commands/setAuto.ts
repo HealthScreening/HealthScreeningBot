@@ -22,14 +22,17 @@ import { AutoUser, AutoUserCreationAttributes } from "../orm/autoUser";
 import { AutoDays } from "../orm/autoDays";
 
 function createOrDelete(values: AutoUserCreationAttributes, condition) {
-  return AutoUser.findOne({ where: condition }).then(function (obj) {
+  return AutoUser.findOne({ where: condition }).then(async function(obj) {
     // update
-    if (obj) return obj.update(values);
+    if (obj) {
+      return obj.update(values);
+    }
     // insert
-    Promise.all([
+    const [user] = await Promise.all([
       AutoUser.create(values),
-      AutoDays.create({ userId: values.userId }),
+      AutoDays.create({ userId: values.userId })
     ]);
+    return user;
   });
 }
 
@@ -73,13 +76,13 @@ module.exports = {
       );
     }
     const isVaxxed = interaction.options.getBoolean("vaccinated")!;
-    await createOrDelete(
+    const autoUserObj = await createOrDelete(
       {
         firstName,
         lastName,
         email,
         vaccinated: isVaxxed,
-        userId: String(interaction.user.id),
+        userId: String(interaction.user.id)
       },
       { userId: String(interaction.user.id) }
     );
@@ -91,12 +94,23 @@ module.exports = {
     );
     const user: User = interaction.user;
     await (await user.createDM()).sendTyping();
-    await interaction.client.screeningClient.queueAutoCommand(
-      interaction.user.id,
-      {
-        itemType: ItemType.user,
-        item: user,
+    try {
+      await interaction.client.screeningClient.queueAutoCommand(
+        interaction.user.id,
+        {
+          itemType: ItemType.user,
+          item: user
+        }
+      );
+    } catch (e) {
+      if (e.name === "DiscordAPIError" && e.message === "Cannot send messages to this user") {
+        await interaction.reply("I cannot send you a screening, possibly due to DMs being disabled from server members. Therefore, you will be set to email-only screenings. In order to update your status, please run `/toggle_email_only`.");
+        autoUserObj.emailOnly = true;
+        await autoUserObj.save();
       }
-    );
-  },
+      else {
+        throw e;
+      }
+    }
+  }
 };

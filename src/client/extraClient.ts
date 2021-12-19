@@ -23,7 +23,7 @@ import {
   TextChannel,
 } from "discord.js";
 import { ScreeningClient } from "../screeningClient";
-import { ItemType } from "../utils/multiMessage";
+import { ItemType, sendMessage } from "../utils/multiMessage";
 import assignAutoSchoolRole from "./autoAssignSchoolRole";
 import doAutoLoop from "./doAutoLoop";
 import logError from "../utils/logError";
@@ -150,17 +150,12 @@ export default class HealthScreeningBotClient extends Client {
           serializeInteraction(interaction);
         await logError(error, "interactionCommand", metadata);
         try {
-          if (interaction.deferred || interaction.replied) {
-            await interaction.followUp({
-              content: "There was an error while executing this command!",
-              ephemeral: true,
-            });
-          } else {
-            await interaction.reply({
-              content: "There was an error while executing this command!",
-              ephemeral: true,
-            });
-          }
+          await sendMessage({
+            itemType: ItemType.interaction,
+            item: interaction,
+            content: "There was an error while executing this command!",
+            ephemeral: true,
+          })
         } catch (e2) {
           metadata.deferred = interaction.deferred;
           metadata.replied = interaction.replied;
