@@ -18,23 +18,13 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { HSBCommandInteraction } from "../discordjs-overrides";
 import { ItemType } from "../utils/multiMessage";
 import { User } from "discord.js";
-import { AutoUser, AutoUserCreationAttributes } from "../orm/autoUser";
+import {
+  AutoUser,
+  AutoUserAttributes,
+  AutoUserCreationAttributes,
+} from "../orm/autoUser";
 import { AutoDays } from "../orm/autoDays";
-
-function createOrDelete(values: AutoUserCreationAttributes, condition) {
-  return AutoUser.findOne({ where: condition }).then(async function (obj) {
-    // update
-    if (obj) {
-      return obj.update(values);
-    }
-    // insert
-    const [user] = await Promise.all([
-      AutoUser.create(values),
-      AutoDays.create({ userId: values.userId }),
-    ]);
-    return user;
-  });
-}
+import createOrUpdate from "../utils/createOrUpdate";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -76,7 +66,12 @@ module.exports = {
       );
     }
     const isVaxxed = interaction.options.getBoolean("vaccinated")!;
-    const autoUserObj = await createOrDelete(
+    const autoUserObj = await createOrUpdate<
+      AutoUser,
+      AutoUserAttributes,
+      AutoUserCreationAttributes
+    >(
+      AutoUser,
       {
         firstName,
         lastName,
@@ -86,6 +81,7 @@ module.exports = {
       },
       { userId: String(interaction.user.id) }
     );
+    await AutoDays.create({ userId: String(interaction.user.id) });
     if (autoUserObj.emailOnly) {
       return await interaction.reply(
         "Updated! As a reminder, you have email-only screenings on, and to disable that run `/toggle_email_only`."
