@@ -2,6 +2,8 @@ import { CommandInteraction, MessageEmbed } from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
 import { ErrorLog } from "../../../orm/errorLog";
+import Paginator from "../../../utils/paginator";
+import { ItemType } from "../../../utils/multiMessage";
 
 module.exports = {
   name: "view",
@@ -16,8 +18,7 @@ module.exports = {
       interaction.options.getInteger("after_time");
     const typeStartsWith: string | null =
       interaction.options.getString("type_starts_with");
-    const withGithubIssueNumber: boolean | null =
-      interaction.options.getBoolean("with_github_issue_number", false);
+    const limit: number | null = interaction.options.getInteger("limit");
     if (before) {
       if (!whereQuery.id) {
         whereQuery.id = {};
@@ -48,36 +49,13 @@ module.exports = {
       }
       whereQuery.type[Op.startsWith] = typeStartsWith;
     }
-    if (withGithubIssueNumber) {
-      if (!whereQuery.githubIssueNumber) {
-        whereQuery.githubIssueNumber = {};
-      }
-      whereQuery.githubIssueNumber[Op.eq] = withGithubIssueNumber;
-    }
     const items: ErrorLog[] = await ErrorLog.findAll({
       where: whereQuery,
       order: [["createdAt", isDesc ? "DESC" : "ASC"]],
-      limit: 25,
+      limit: limit || undefined,
     });
     const embed = new MessageEmbed();
     embed.setTitle("Error Log");
-    if (items) {
-      embed.setDescription(
-        items
-          .map((item: ErrorLog) => {
-            let description = item.errorDescription;
-            if (description && description.length > 50) {
-              description = description.substring(0, 50) + "...";
-            }
-            return `#${item.id}. ${item.errorName}: ${description}`;
-          })
-          .join("\n")
-      );
-      embed.setColor("GREEN");
-    } else {
-      embed.setDescription("No errors found.");
-      embed.setColor("RED");
-    }
     let fieldData: string =
       "Direction: **" + (isDesc ? "Descending" : "Ascending") + "**";
     if (before) {
@@ -109,12 +87,31 @@ module.exports = {
     } else {
       fieldData += "\nType Starts With: **None**";
     }
-    if (withGithubIssueNumber) {
-      fieldData += `\nWith Github Issue Number: **${withGithubIssueNumber}**`;
-    } else {
-      fieldData += "\nWith Github Issue Number: **None**";
-    }
     embed.addField("Search Properties", fieldData);
-    return await interaction.reply({ embeds: [embed] });
+    const embeds: MessageEmbed[] = [];
+    if (items) {
+      let baseString = "";
+      let currentEmbed = new MessageEmbed(embed)
+      items
+        .map((item: ErrorLog) => {
+          return `#${item.id}. ${item.errorName}: ${item.errorDescription}`;
+        })
+        .forEach((item: string) => {
+          if (baseString.length + item.length > 2048) {
+            currentEmbed.setDescription(baseString.trimEnd());
+            embeds.push(currentEmbed);
+            currentEmbed = new MessageEmbed(embed);
+            baseString = "";
+          }
+          baseString += item + "\n";
+        });
+      embed.setColor("GREEN");
+      embed.toJSON()
+    } else {
+      embed.setDescription("No errors found.");
+      embed.setColor("RED");
+      embeds.push(embed)
+    }
+    return await new Paginator(embeds).send({itemType: ItemType.interaction, item: interaction})
   },
 };
