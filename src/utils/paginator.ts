@@ -41,7 +41,7 @@ export default class Paginator {
     this.discardButton
   );
 
-  constructor(pages: MessageEmbed[], timeout: number = 120000) {
+  constructor(pages: MessageEmbed[], timeout = 120000) {
     if (pages.length === 0) {
       throw new Error("No pages provided");
     }
