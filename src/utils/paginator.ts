@@ -119,6 +119,10 @@ export default class Paginator {
   }
 
   async send(options: MessageOptions) {
-    return await this.collector.send(options, this.timeout);
+    return await this.collector.send({
+      embeds: [this.pages[this._currentPage]],
+      components: [this.actionRow],
+      ...options,
+    }, this.timeout);
   }
 }

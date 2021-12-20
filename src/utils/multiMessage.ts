@@ -21,6 +21,7 @@ import {
   HTTPAttachmentData,
   Message,
   MessageActionRow,
+  MessageEmbed,
   User,
 } from "discord.js";
 
@@ -50,7 +51,7 @@ interface BaseMessageOptions {
   /**
    * The embeds to send.
    */
-  embeds?: Embed[];
+  embeds?: (Embed|MessageEmbed)[];
   files?: HTTPAttachmentData[];
   replyMessage?: Message;
   /**
