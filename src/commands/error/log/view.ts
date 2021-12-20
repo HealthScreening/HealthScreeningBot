@@ -90,6 +90,7 @@ module.exports = {
     embed.addField("Search Properties", fieldData);
     const embeds: MessageEmbed[] = [];
     if (items) {
+      embed.setColor("GREEN");
       let baseString = "";
       let currentEmbed = new MessageEmbed(embed)
       items
@@ -105,8 +106,10 @@ module.exports = {
           }
           baseString += item + "\n";
         });
-      embed.setColor("GREEN");
-      embed.toJSON()
+      if (baseString){
+        currentEmbed.setDescription(baseString.trimEnd());
+        embeds.push(currentEmbed);
+      }
     } else {
       embed.setDescription("No errors found.");
       embed.setColor("RED");
