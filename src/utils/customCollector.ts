@@ -114,7 +114,6 @@ export class CustomCollector {
     collector.on(
       "collect",
       async (interaction: MessageComponentInteraction) => {
-        await interaction.deferReply();
         if (this.onCollect) {
           await this.onCollect(interaction, this);
         }
