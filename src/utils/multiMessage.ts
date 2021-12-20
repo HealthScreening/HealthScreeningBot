@@ -20,6 +20,7 @@ import {
   CommandInteraction,
   HTTPAttachmentData,
   Message,
+  MessageActionRow,
   User,
 } from "discord.js";
 
@@ -63,6 +64,7 @@ interface BaseMessageOptions {
    * the user who created the interaction, but also vanishes if the client is restarted.
    */
   ephemeral?: boolean;
+  components?: MessageActionRow[]
 }
 
 /**
@@ -165,6 +167,7 @@ export function sendMessage(
           failIfNotExists: trueOptions.failIfNotExists,
         },
         files: trueOptions.files,
+        components: trueOptions.components,
       });
     case ItemType.message:
       return trueOptions.item.channel.send({
@@ -175,6 +178,7 @@ export function sendMessage(
           failIfNotExists: trueOptions.failIfNotExists,
         },
         files: trueOptions.files,
+        components: trueOptions.components,
       });
     case ItemType.interaction:
       if (trueOptions.item.deferred || trueOptions.item.replied) {
@@ -183,6 +187,7 @@ export function sendMessage(
           embeds: trueOptions.embeds,
           ephemeral: trueOptions.ephemeral,
           files: trueOptions.files,
+          components: trueOptions.components,
         });
       } else {
         return trueOptions.item.reply({
@@ -190,6 +195,7 @@ export function sendMessage(
           embeds: trueOptions.embeds,
           ephemeral: trueOptions.ephemeral,
           files: trueOptions.files,
+          components: trueOptions.components,
           fetchReply: true,
         });
       }
