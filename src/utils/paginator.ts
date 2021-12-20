@@ -11,27 +11,27 @@ export default class Paginator {
   private readonly toBeginningButton = new MessageButton()
     .setCustomId("tobeginning")
     .setStyle("PRIMARY")
-    .setEmoji("922315664578986015");
+    .setEmoji("922315496660021248");
 
   private readonly lastButton = new MessageButton()
     .setCustomId("last")
     .setStyle("PRIMARY")
-    .setEmoji("922315664578986015");
+    .setEmoji("922315496563560538");
 
   private readonly nextButton = new MessageButton()
     .setCustomId("next")
     .setStyle("PRIMARY")
-    .setEmoji("922315664578986015");
+    .setEmoji("922315496613879828");
 
   private readonly toEndButton = new MessageButton()
     .setCustomId("toend")
     .setStyle("PRIMARY")
-    .setEmoji("922315664578986015");
+    .setEmoji("922315496228003841");
 
   private readonly discardButton = new MessageButton()
     .setCustomId("discard")
     .setStyle("DANGER")
-    .setEmoji("922315664578986015");
+    .setEmoji("922315496559349800");
 
   private readonly actionRow = new MessageActionRow().addComponents(
     this.toBeginningButton,

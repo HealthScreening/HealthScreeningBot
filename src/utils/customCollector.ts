@@ -97,7 +97,7 @@ export class CustomCollector {
   ): Promise<
     [Message<boolean>, InteractionCollector<MessageComponentInteraction>]
   > {
-    if (this._currentRow) {
+    if (this._currentRow.length > 0) {
       this.compactIntoMessageActionRow();
     }
     const message = (await sendMessage({
