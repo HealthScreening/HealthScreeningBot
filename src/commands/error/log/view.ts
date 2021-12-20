@@ -69,12 +69,7 @@ module.exports = {
             if (description && description.length > 50) {
               description = description.substring(0, 50) + "...";
             }
-            const base = `#${item.id}. ${item.errorName}: ${description}`;
-            if (item.githubIssueNumber) {
-              return `[${base}](https://github.com/HealthScreening/HealthScreeningBot/issues/${item.githubIssueNumber})`;
-            } else {
-              return base;
-            }
+            return `#${item.id}. ${item.errorName}: ${description}`;
           })
           .join("\n")
       );

@@ -14,12 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import {
-  GenerateScreenshotParams,
-  screeningTypeType,
-} from "../utils/produceScreenshot/interfaces";
+import { screeningTypeType } from "@healthscreening/screening-types";
 import { MessageOptions, serializeMessageOptions } from "../utils/multiMessage";
 import { TextChannel } from "discord.js";
+import { GenerateScreenshotParams } from "../utils/produceScreenshot";
 
 export interface AutoBatchOptions {
   batchTime: [number, number];
@@ -62,6 +60,8 @@ export interface ProcessParams {
   multiMessageParams: MessageOptions;
   auto?: AutoBatchOptions;
   cooldown?: Cooldown;
+  isSetAuto?: boolean;
+  emailOnly?: boolean;
 }
 
 export function serializeProcessParams(params: ProcessParams) {
@@ -89,6 +89,8 @@ export interface AutoInfo {
     minute: number;
   };
   type: screeningTypeType;
+  emailOnly: boolean;
+  paused: boolean;
 }
 
 export interface AutoDayInfo {

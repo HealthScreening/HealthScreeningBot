@@ -19,19 +19,21 @@ import timeMethod from "../../utils/timeMethod";
 import generateAndSendScreenshot from "./generateAndSendScreenshot";
 import logSuccess from "./logSuccess";
 import processCooldown from "./processCooldown";
-import sendRequest from "../../utils/produceScreenshot/sendRequest";
+import sendRequest from "@healthscreening/complete-screening";
 import logError from "../../utils/logError";
 
 /**
  * Actually processes a screening request.
  *
  * @param params The parameters required for processing.
- * @private
  */
 export default async function processScreening(params: ProcessParams) {
   try {
     let success: boolean, finish: number;
-    if (params.auto && !params.auto.dmScreenshot) {
+    if (
+      (params.emailOnly && (params.auto || params.isSetAuto)) ||
+      params.auto?.dmScreenshot === false
+    ) {
       [success, finish] = await timeMethod(() =>
         sendRequest(params.generateScreenshotParams)
       );

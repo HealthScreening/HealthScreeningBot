@@ -1,0 +1,19 @@
+{
+  "ignores": [
+    {
+      "type": "assignSchoolRole::assignRole",
+      "name": "DiscordAPIError",
+      "message": "Missing Access"
+    },
+    {
+      "type": "assignSchoolRole::fetchMember",
+      "name": "DiscordAPIError",
+      "message": "Unknown Member"
+    },
+    {
+      "type": "dailyAutoScreening",
+      "name": "DiscordAPIError",
+      "message": "Missing Permissions"
+    }
+  ]
+}

@@ -22,7 +22,7 @@ export default async function logSuccess(
   timeElapsed?: number
 ) {
   if (success) {
-    params.auto?.logChannel.send(
+    await params.auto?.logChannel.send(
       `Finished screening **${params.auto.batchTime[0]}:${
         params.auto.batchTime[1]
       }::${params.auto.itemNumber}** in ${(timeElapsed! / 1000).toFixed(
@@ -30,7 +30,7 @@ export default async function logSuccess(
       )} seconds`
     );
   } else {
-    params.auto?.logChannel.send(
+    await params.auto?.logChannel.send(
       `Failed screening **${params.auto.batchTime[0]}:${params.auto.batchTime[1]}::${params.auto.itemNumber}**`
     );
   }

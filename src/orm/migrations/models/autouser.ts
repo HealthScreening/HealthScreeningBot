@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { Model, Sequelize, DataTypes as DT } from "sequelize";
-import { screeningTypes } from "../../../utils/produceScreenshot/interfaces";
+import screeningTypes from "@healthscreening/screening-types";
 
 module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
   class AutoUser extends Model {
@@ -67,12 +67,33 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
         allowNull: false,
         defaultValue: "G",
       },
+      emailOnly: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      paused: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
     },
     {
       sequelize,
       modelName: "AutoUser",
       timestamps: true,
       updatedAt: false,
+      indexes: [
+        {
+          fields: ["createdAt"],
+        },
+        {
+          fields: ["hour", "minute"],
+        },
+        {
+          fields: ["paused"],
+        },
+      ],
     }
   );
   return AutoUser;

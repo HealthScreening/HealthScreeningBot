@@ -14,26 +14,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
-import { exit } from "process";
+// @ts-nocheck We don't want to check this file because it's an auto generated
+// migration file.
 
-import { closeBrowser } from "@healthscreening/generate-screenshot";
+/**
+ * Actions summary:
+ *
+ * addIndex "auto_users_created_at" to table "AutoUsers"
+ *
+ **/
 
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("stop")
-    .setDescription("Stop the bot safely."),
-  async execute(interaction: CommandInteraction) {
-    if (interaction.user.id != "199605025914224641") {
-      await interaction.reply({
-        content: "You are not the bot owner!",
-        ephemeral: true,
-      });
-    } else {
-      await interaction.reply("Stopping...");
-      await closeBrowser();
-      exit(0);
-    }
-  },
+let info = {
+  revision: 9,
+  name: "noname",
+  created: "2021-12-17T02:57:21.876Z",
+  comment: "",
 };
+
+let migrationCommands = [
+  {
+    fn: "addIndex",
+    params: [
+      "AutoUsers",
+      ["createdAt"],
+      {
+        indexName: "auto_users_created_at",
+        name: "auto_users_created_at",
+      },
+    ],
+  },
+];
+
+module.exports = require("../makeMigrationExport")(info, migrationCommands);

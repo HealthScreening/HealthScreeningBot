@@ -18,16 +18,13 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { HSBCommandInteraction } from "../discordjs-overrides";
 import { ItemType } from "../utils/multiMessage";
 import { User } from "discord.js";
-import { AutoUser } from "../orm/autoUser";
-
-function createOrDelete(values, condition) {
-  return AutoUser.findOne({ where: condition }).then(function (obj) {
-    // update
-    if (obj) return obj.update(values);
-    // insert
-    return AutoUser.create(values);
-  });
-}
+import {
+  AutoUser,
+  AutoUserAttributes,
+  AutoUserCreationAttributes,
+} from "../orm/autoUser";
+import { AutoDays } from "../orm/autoDays";
+import createOrUpdate from "../utils/createOrUpdate";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -69,30 +66,56 @@ module.exports = {
       );
     }
     const isVaxxed = interaction.options.getBoolean("vaccinated")!;
-    await createOrDelete(
+    const autoUserObj = await createOrUpdate<
+      AutoUser,
+      AutoUserAttributes,
+      AutoUserCreationAttributes
+    >(
+      AutoUser,
       {
         firstName,
         lastName,
         email,
-        isVaxxed,
+        vaccinated: isVaxxed,
         userId: String(interaction.user.id),
       },
       { userId: String(interaction.user.id) }
     );
+    await AutoDays.create({ userId: String(interaction.user.id) });
+    if (autoUserObj.emailOnly) {
+      return await interaction.reply(
+        "Updated! As a reminder, you have email-only screenings on, and to disable that run `/toggle_email_only`."
+      );
+    }
     await interaction.reply(
       "Updated! Check your DMs for the confirmation screening."
     );
-    await interaction.user.send(
-      "In order to make sure you entered the correct information, a sample screening will be generated for you. If you find any errors, use `/set_auto` again."
-    );
-    const user: User = interaction.user;
-    await (await user.createDM()).sendTyping();
-    await interaction.client.screeningClient.queueAutoCommand(
-      interaction.user.id,
-      {
-        itemType: ItemType.user,
-        item: user,
+    try {
+      await interaction.user.send(
+        "In order to make sure you entered the correct information, a sample screening will be generated for you. If you find any errors, use `/set_auto` again."
+      );
+      const user: User = interaction.user;
+      await (await user.createDM()).sendTyping();
+      await interaction.client.screeningClient.queueAutoCommand(
+        interaction.user.id,
+        {
+          itemType: ItemType.user,
+          item: user,
+        }
+      );
+    } catch (e) {
+      if (
+        e.name === "DiscordAPIError" &&
+        e.message === "Cannot send messages to this user"
+      ) {
+        await interaction.followUp(
+          "I cannot send you a screening, possibly due to DMs being disabled from server members. Therefore, you will be set to email-only screenings. In order to disable email-only mode, please run `/toggle_email_only` after making sure your DMs are open again."
+        );
+        autoUserObj.emailOnly = true;
+        await autoUserObj.save();
+      } else {
+        throw e;
       }
-    );
+    }
   },
 };

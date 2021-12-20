@@ -19,7 +19,9 @@ import { CommandInteraction, User } from "discord.js";
 import { AutoUser } from "../orm/autoUser";
 import getValidUserIDs from "../utils/getValidUserIDs";
 import logError from "../utils/logError";
-import sleep from "../utils/sleep";
+import sleep from "sleep-promise";
+import checkOwner from "../utils/checkOwner";
+import { ItemType } from "../utils/multiMessage";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -40,17 +42,12 @@ module.exports = {
         .setRequired(false)
     ),
   async execute(interaction: CommandInteraction) {
-    if (interaction.user.id != "199605025914224641") {
-      interaction.reply({
-        content: "You are not the bot owner!",
-        ephemeral: true,
-      });
-    } else {
+    if (
+      await checkOwner({ item: interaction, itemType: ItemType.interaction })
+    ) {
       const timeToSleep = interaction.options.getInteger("time") || 0;
       await interaction.reply("Sending to all...");
-      const validUserIDs: Set<string> = await getValidUserIDs(
-        interaction.client
-      );
+      const validUserIDs: Set<string> = getValidUserIDs(interaction.client);
       const items = await AutoUser.findAll();
       const message =
         "The bot owner has sent a message to everyone registered under the auto health screening bot:\n----\n" +

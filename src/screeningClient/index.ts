@@ -159,6 +159,7 @@ export class ScreeningClient {
         content: content,
       },
       auto,
+      emailOnly: autoInfo.emailOnly,
     };
     this.queue.enqueue(processParams, 0);
   }

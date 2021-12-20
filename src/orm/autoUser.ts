@@ -15,12 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from ".";
-import {
-  screeningTypes,
+import screeningTypes, {
   screeningTypeType,
-} from "../utils/produceScreenshot/interfaces";
+} from "@healthscreening/screening-types";
 
 export interface AutoUserAttributes {
   userId: string;
@@ -31,10 +30,17 @@ export interface AutoUserAttributes {
   hour: number;
   minute: number;
   type: screeningTypeType;
+  emailOnly: boolean;
+  paused: boolean;
 }
 
+export type AutoUserCreationAttributes = Optional<
+  AutoUserAttributes,
+  "hour" | "minute" | "type" | "emailOnly" | "paused"
+>;
+
 export class AutoUser
-  extends Model<AutoUserAttributes, AutoUserAttributes>
+  extends Model<AutoUserAttributes, AutoUserCreationAttributes>
   implements AutoUserAttributes
 {
   userId!: string;
@@ -46,6 +52,8 @@ export class AutoUser
   minute!: number;
   createdAt!: Date;
   type!: screeningTypeType;
+  emailOnly!: boolean;
+  paused!: boolean;
 }
 
 AutoUser.init(
@@ -87,11 +95,32 @@ AutoUser.init(
       allowNull: false,
       defaultValue: "G",
     },
+    emailOnly: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    paused: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   {
     sequelize,
     modelName: "AutoUser",
     timestamps: true,
     updatedAt: false,
+    indexes: [
+      {
+        fields: ["createdAt"],
+      },
+      {
+        fields: ["hour", "minute"],
+      },
+      {
+        fields: ["paused"],
+      },
+    ],
   }
 );

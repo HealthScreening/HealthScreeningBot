@@ -23,7 +23,7 @@ import {
   TextChannel,
 } from "discord.js";
 import { ScreeningClient } from "../screeningClient";
-import { ItemType } from "../utils/multiMessage";
+import { ItemType, sendMessage } from "../utils/multiMessage";
 import assignAutoSchoolRole from "./autoAssignSchoolRole";
 import doAutoLoop from "./doAutoLoop";
 import logError from "../utils/logError";
@@ -33,7 +33,9 @@ import serializeInteraction from "../utils/logError/serializeInteraction";
 import handleCommandError from "../utils/handleCommandError";
 import { WorkerQueue } from "../utils/workerQueue";
 import postToGithub from "../utils/postToGithub";
-import sleep from "../utils/sleep";
+import sleep from "sleep-promise";
+import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
+import runFunctionAndLogError from "../utils/logError/runAndLog";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -148,17 +150,12 @@ export default class HealthScreeningBotClient extends Client {
           serializeInteraction(interaction);
         await logError(error, "interactionCommand", metadata);
         try {
-          if (interaction.deferred || interaction.replied) {
-            await interaction.followUp({
-              content: "There was an error while executing this command!",
-              ephemeral: true,
-            });
-          } else {
-            await interaction.reply({
-              content: "There was an error while executing this command!",
-              ephemeral: true,
-            });
-          }
+          await sendMessage({
+            itemType: ItemType.interaction,
+            item: interaction,
+            content: "There was an error while executing this command!",
+            ephemeral: true,
+          });
         } catch (e2) {
           metadata.deferred = interaction.deferred;
           metadata.replied = interaction.replied;
@@ -184,8 +181,18 @@ export default class HealthScreeningBotClient extends Client {
       await this.guilds.fetch("889983763994521610")
     ).channels.fetch("902375187150934037")) as TextChannel;
     await Promise.all([
-      assignAutoSchoolRole(this),
-      doAutoLoop(this, logChannel),
+      runFunctionAndLogError(
+        () => assignAutoSchoolRole(this),
+        "onReady::assignAutoSchoolRole"
+      ),
+      runFunctionAndLogError(
+        () => doAutoLoop(this, logChannel),
+        "onReady::doAutoLoop"
+      ),
+      runFunctionAndLogError(
+        () => doGuildMemberCacheUpdate(this),
+        "onReady::doGuildMemberCacheUpdate"
+      ),
     ]);
   }
 }

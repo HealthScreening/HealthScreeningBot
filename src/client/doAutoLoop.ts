@@ -15,51 +15,77 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import HealthScreeningBotClient from "./extraClient";
-import { sequelize } from "../orm";
 import { TextChannel } from "discord.js";
 import { AutoUser } from "../orm/autoUser";
 import { DateTime } from "luxon";
 import getUsersForDayOfWeek from "../utils/getUsersForDayOfWeek";
 import getValidUserIDs from "../utils/getValidUserIDs";
+import { Op } from "sequelize";
+import logError from "../utils/logError";
+import ArrayStringMap from "array-string-map";
+import dayIsHoliday from "../utils/getHolidays";
 
 export default async function doAutoLoop(
   client: HealthScreeningBotClient,
   logChannel: TextChannel
 ): Promise<void> {
-  const validUserIDs: Set<string> = await getValidUserIDs(client);
-  const batchTimes: Map<[number, number], number> = new Map();
   const currentTime = DateTime.now().setZone("America/New_York");
-  const currentTimeMins = currentTime.hour * 60 + currentTime.minute;
-  const validDayOfWeekUsers = new Set(
-    await getUsersForDayOfWeek(currentTime.weekday)
-  );
-  for (const autoItem of await sequelize.query(
-    `SELECT *
-                                                FROM "AutoUsers"
-                                                WHERE ("AutoUsers".hour * 60 + "AutoUsers".minute) BETWEEN ? AND ?`,
-    {
-      replacements: [currentTimeMins, currentTimeMins + 60 * 5],
-      mapToModel: true,
-      model: AutoUser,
-    }
-  )) {
-    if (!validDayOfWeekUsers.has(autoItem.userId)) {
-      continue;
-    }
-    const dmScreenshot = validUserIDs.has(autoItem.userId);
-    batchTimes.set(
-      [autoItem.hour, autoItem.minute],
-      (batchTimes.get([autoItem.hour, autoItem.minute]) || 0) + 1
-    );
-    await client.screeningClient.queueDailyAuto(
-      await client.users.fetch(autoItem.userId),
-      {
-        batchTime: [autoItem.hour, autoItem.minute],
-        itemNumber: batchTimes.get([autoItem.hour, autoItem.minute]) || 1,
-        logChannel,
-        dmScreenshot,
-      }
-    );
+  const holiday = dayIsHoliday(currentTime);
+  if (holiday) {
+    return;
   }
-  setTimeout(() => doAutoLoop(client, logChannel), 5 * 60 * 1000);
+  try {
+    const validUserIDs: Set<string> = getValidUserIDs(client);
+    const batchTimes: ArrayStringMap<[number, number], number> =
+      new ArrayStringMap();
+    const validDayOfWeekUsers = new Set(
+      await getUsersForDayOfWeek(currentTime.weekday)
+    );
+    for (const autoItem of await AutoUser.findAll({
+      where: {
+        userId: {
+          [Op.in]: Array.from(validDayOfWeekUsers),
+        },
+        hour: {
+          [Op.eq]: currentTime.hour,
+        },
+        minute: {
+          [Op.eq]: currentTime.minute,
+        },
+        paused: {
+          [Op.eq]: false,
+        },
+      },
+      order: [["createdAt", "ASC"]],
+    })) {
+      const dmScreenshot = validUserIDs.has(autoItem.userId);
+      batchTimes.set(
+        [autoItem.hour, autoItem.minute],
+        (batchTimes.get([autoItem.hour, autoItem.minute]) || 0) + 1
+      );
+      await client.screeningClient.queueDailyAuto(
+        await client.users.fetch(autoItem.userId),
+        {
+          batchTime: [autoItem.hour, autoItem.minute],
+          itemNumber: batchTimes.get([autoItem.hour, autoItem.minute]) || 1,
+          logChannel,
+          dmScreenshot,
+        }
+      );
+    }
+  } catch (e) {
+    await logError(e, "doAutoLoop", {
+      time: {
+        hour: currentTime.hour,
+        minute: currentTime.minute,
+        weekday: currentTime.weekday,
+      },
+      logChannel: logChannel.id,
+    });
+  }
+  setTimeout(
+    () => doAutoLoop(client, logChannel),
+    currentTime.plus({ minutes: 1 }).set({ second: 0 }).toMillis() -
+      DateTime.local().setZone("America/New_York").toMillis()
+  );
 }

@@ -1,0 +1,144 @@
+{
+  "holidayData": [
+    {
+      "start": {
+        "year": 2021,
+        "month": 9,
+        "day": 16
+      },
+      "name": "Yom Kippur"
+    },
+    {
+      "start": {
+        "year": 2021,
+        "month": 10,
+        "day": 11
+      },
+      "name": "Italian Heritage Day/Indigenous Peoples’ Day"
+    },
+    {
+      "start": {
+        "year": 2021,
+        "month": 11,
+        "day": 2
+      },
+      "name": "Election Day"
+    },
+    {
+      "start": {
+        "year": 2021,
+        "month": 11,
+        "day": 11
+      },
+      "name": "Veterans Day"
+    },
+    {
+      "start": {
+        "year": 2021,
+        "month": 11,
+        "day": 25
+      },
+      "name": "Thanksgiving Break",
+      "end": {
+        "year": 2021,
+        "month": 11,
+        "day": 26
+      }
+    },
+    {
+      "start": {
+        "year": 2021,
+        "month": 12,
+        "day": 24
+      },
+      "name": "Winter Recess",
+      "end": {
+        "year": 2022,
+        "month": 1,
+        "day": 2
+      }
+    },
+    {
+      "start": {
+        "year": 2022,
+        "month": 1,
+        "day": 17
+      },
+      "name": "Dr. Martin Luther King Jr. Day"
+    },
+    {
+      "start": {
+        "year": 2022,
+        "month": 1,
+        "day": 31
+      },
+      "name": "Professional Development day"
+    },
+    {
+      "start": {
+        "year": 2022,
+        "month": 2,
+        "day": 1
+      },
+      "name": "Lunar New Year"
+    },
+    {
+      "start": {
+        "year": 2022,
+        "month": 2,
+        "day": 21
+      },
+      "name": "Midwinter Recess",
+      "end": {
+        "year": 2022,
+        "month": 2,
+        "day": 27
+      }
+    },
+    {
+      "start": {
+        "year": 2022,
+        "month": 4,
+        "day": 15
+      },
+      "name": "Spring Recess",
+      "end": {
+        "year": 2022,
+        "month": 4,
+        "day": 24
+      }
+    },
+    {
+      "start": {
+        "year": 2022,
+        "month": 5,
+        "day": 2
+      },
+      "name": "Eid al-Fitr"
+    },
+    {
+      "start": {
+        "year": 2022,
+        "month": 5,
+        "day": 30
+      },
+      "name": "Memorial Day"
+    },
+    {
+      "start": {
+        "year": 2022,
+        "month": 6,
+        "day": 9
+      },
+      "name": "Anniversary Day"
+    },
+    {
+      "start": {
+        "year": 2022,
+        "month": 6,
+        "day": 20
+      },
+      "name": "Juneteenth"
+    }
+  ]
+}

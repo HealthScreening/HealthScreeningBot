@@ -14,25 +14,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+// @ts-nocheck We don't want to check this file because it's an auto generated
+// migration file.
 
-import { Browser } from "puppeteer";
-/* eslint-disable @typescript-eslint/no-var-requires -- Really hates it if I don't do this */
-const puppeteer = require("puppeteer");
-/* eslint-enable @typescript-eslint/no-var-requires */
+/**
+ * Actions summary:
+ *
+ * removeIndex "error_logs_github_issue_number" from table "ErrorLogs"
+ * removeColumn "githubIssueNumber" from table "ErrorLogs"
+ *
+ **/
 
-export let browser: Browser | null = null;
+let info = {
+  revision: 10,
+  name: "noname",
+  created: "2021-12-19T03:14:14.887Z",
+  comment: "",
+};
 
-export async function startupBrowser(): Promise<void> {
-  if (browser === null) {
-    browser = await puppeteer.launch({
-      headless: true,
-    });
-  }
-}
+let migrationCommands = [
+  {
+    fn: "removeIndex",
+    params: ["ErrorLogs", "error_logs_github_issue_number"],
+  },
+  {
+    fn: "removeColumn",
+    params: ["ErrorLogs", "githubIssueNumber"],
+  },
+];
 
-export async function closeBrowser(): Promise<void> {
-  if (browser !== null) {
-    await browser.close();
-    browser = null;
-  }
-}
+module.exports = require("../makeMigrationExport")(info, migrationCommands);
