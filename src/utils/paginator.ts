@@ -1,42 +1,46 @@
-const {
+import {
   MessageActionRow,
-  Message,
   MessageEmbed,
   MessageButton,
-} = require("discord.js");
+  CommandInteraction
+} from "discord.js";
 
 /**
  * Creates a pagination embed
- * @param {Interaction} interaction
+ * @param {CommandInteraction} interaction
  * @param {MessageEmbed[]} pages
  * @param {MessageButton[]} buttonList
  * @param {number} timeout
  * @returns
  */
-const paginationEmbed = async (interaction, pages, buttonList, timeout = 120000) => {
-  if (!pages) throw new Error("No pages for paginationEmbed!.");
-  if (!buttonList) buttonList = [
+export default async function (interaction: CommandInteraction, pages: MessageEmbed[], buttonList: MessageButton[], timeout: number = 120000) {
+  if (!pages){
+    throw new Error("No pages for paginationEmbed!.");
+  }
+  if (!buttonList){
+    buttonList = [
       new MessageButton()
-                    .setCustomId('tobeginning')
-                    .setStyle('PRIMARY')
-                    .setEmoji('921073324094804038'),
+        .setCustomId('tobeginning')
+        .setStyle('PRIMARY')
+        .setEmoji('921073324094804038'),
       new MessageButton()
-                    .setCustomId('last')
-                    .setStyle('PRIMARY')
-                    .setEmoji('921073293572853803'),
+        .setCustomId('last')
+        .setStyle('PRIMARY')
+        .setEmoji('921073293572853803'),
       new MessageButton()
-                    .setCustomId('next')
-                      .setEmoji('921073355073933313')
-                    .setStyle('PRIMARY'),
+        .setCustomId('next')
+        .setEmoji('921073355073933313')
+        .setStyle('PRIMARY'),
       new MessageButton()
-                    .setCustomId('toend')
-                  .setEmoji('921073383955922995')
-                    .setStyle('PRIMARY'),
+        .setCustomId('toend')
+        .setEmoji('921073383955922995')
+        .setStyle('PRIMARY'),
       new MessageButton()
-                    .setCustomId('discard')
-                  .setEmoji('921074968660414485')
-                    .setStyle('DANGER'),
-  ]
+        .setCustomId('discard')
+        .setEmoji('921074968660414485')
+        .setStyle('DANGER'),
+    ]
+  }
   if (buttonList[0].style === "LINK" || buttonList[1].style === "LINK")
     throw new Error(
       "Link buttons are not supported!"
@@ -48,8 +52,8 @@ const paginationEmbed = async (interaction, pages, buttonList, timeout = 120000)
 
   //has the interaction already been deferred? If not, defer the reply.
   if (interaction.deferred == false){
-    await interaction.deferReply()
-  };
+    await interaction.deferReply();
+  }
 
   const curPage = await interaction.editReply({
     embeds: [pages[page].setFooter(`Page ${page + 1} / ${pages.length}`)],
@@ -115,7 +119,3 @@ const paginationEmbed = async (interaction, pages, buttonList, timeout = 120000)
 
   return curPage;
 };
-
-              // usage: paginationEmbed(interaction, embeds, buttons, timeOut)
-                // timeout and buttons (a list of 5 buttons, really) are optional
-module.exports = paginationEmbed;
