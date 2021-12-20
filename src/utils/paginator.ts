@@ -2,120 +2,125 @@ import {
   MessageActionRow,
   MessageEmbed,
   MessageButton,
-  CommandInteraction
 } from "discord.js";
+import { CollectedComponent, CustomCollector } from "./customCollector";
+import { MessageOptions } from "./multiMessage";
 
-/**
- * Creates a pagination embed
- * @param {CommandInteraction} interaction
- * @param {MessageEmbed[]} pages
- * @param {MessageButton[]} buttonList
- * @param {number} timeout
- * @returns
- */
-export default async function (interaction: CommandInteraction, pages: MessageEmbed[], buttonList: MessageButton[], timeout: number = 120000) {
-  if (!pages){
-    throw new Error("No pages for paginationEmbed!.");
-  }
-  if (!buttonList){
-    buttonList = [
-      new MessageButton()
-        .setCustomId('tobeginning')
-        .setStyle('PRIMARY')
-        .setEmoji('921073324094804038'),
-      new MessageButton()
-        .setCustomId('last')
-        .setStyle('PRIMARY')
-        .setEmoji('921073293572853803'),
-      new MessageButton()
-        .setCustomId('next')
-        .setEmoji('921073355073933313')
-        .setStyle('PRIMARY'),
-      new MessageButton()
-        .setCustomId('toend')
-        .setEmoji('921073383955922995')
-        .setStyle('PRIMARY'),
-      new MessageButton()
-        .setCustomId('discard')
-        .setEmoji('921074968660414485')
-        .setStyle('DANGER'),
-    ]
-  }
-  if (buttonList[0].style === "LINK" || buttonList[1].style === "LINK")
-    throw new Error(
-      "Link buttons are not supported!"
+export default class Paginator {
+  readonly pages: MessageEmbed[];
+  readonly timeout: number;
+  private _currentPage: number;
+  private readonly collector: CustomCollector = new CustomCollector();
+
+  private readonly toBeginningButton = new MessageButton()
+    .setCustomId('tobeginning')
+    .setStyle('PRIMARY')
+    .setEmoji('921073324094804038');
+
+  private readonly lastButton = new MessageButton()
+    .setCustomId('last')
+    .setStyle('PRIMARY')
+    .setEmoji('921073293572853803')
+
+  private readonly nextButton = new MessageButton()
+    .setCustomId('next')
+    .setEmoji('921073355073933313')
+    .setStyle('PRIMARY')
+
+  private readonly toEndButton = new MessageButton()
+    .setCustomId('toend')
+    .setEmoji('921073383955922995')
+    .setStyle('PRIMARY')
+
+  private readonly discardButton = new MessageButton()
+    .setCustomId('discard')
+    .setEmoji('921074968660414485')
+    .setStyle('DANGER')
+
+  private readonly actionRow = new MessageActionRow()
+    .addComponents(
+      this.toBeginningButton,
+      this.lastButton,
+      this.nextButton,
+      this.toEndButton,
+      this.discardButton
     );
 
-  let page = 0;
-
-  const row = new MessageActionRow().addComponents(buttonList);
-
-  //has the interaction already been deferred? If not, defer the reply.
-  if (interaction.deferred == false){
-    await interaction.deferReply();
+  constructor(pages: MessageEmbed[], timeout: number = 120000) {
+    if (pages.length === 0){
+      throw new Error("No pages provided");
+    }
+    this.pages = pages.map((page, index) => page.setFooter(`Page ${index + 1}/${pages.length}`));
+    this.timeout = timeout;
+    this._currentPage = 0;
+    this.loadButtons();
   }
 
-  const curPage = await interaction.editReply({
-    embeds: [pages[page].setFooter(`Page ${page + 1} / ${pages.length}`)],
-    components: [row],fetchReply: true,
-  });
+  get currentPage(): number {
+    return this._currentPage;
+  }
 
-  const filter = (i) =>
-    i.customId === buttonList[0].customId ||
-    i.customId === buttonList[1].customId ||
-    i.customId === buttonList[2].customId ||
-    i.customId === buttonList[3].customId ||
-    i.customId === buttonList[4].customId;
-  const collector = await curPage.createMessageComponentCollector({
-    filter,
-    time: timeout,
-  });
-
-  collector.on("collect", async (i) => {
-    switch (i.customId) {
-      case buttonList[0].customId:
-        page = 0;
-        break;
-      case buttonList[1].customId:
-        page = page > 0 ? --page : pages.length - 1;
-        break;
-      case buttonList[2].customId:
-        page = page + 1 < pages.length ? ++page : 0;
-        break;
-      case buttonList[3].customId:
-        page = pages.length - 1;
-        break;
-      case buttonList[4].customId:
-        await interaction.deleteReply();
-        return;
-
-      default:
-        break;
+  private setButtonState() {
+    if (this._currentPage === 0){
+      this.toBeginningButton.setDisabled(true);
+      this.lastButton.setDisabled(true);
+    } else {
+      this.toBeginningButton.setDisabled(false);
+      this.lastButton.setDisabled(false);
     }
-    await i.deferUpdate();
-    await i.editReply({
-      embeds: [pages[page].setFooter(`Page ${page + 1} / ${pages.length}`)],
-      components: [row],
+    if (this._currentPage === this.pages.length - 1){
+      this.toEndButton.setDisabled(true);
+      this.nextButton.setDisabled(true);
+    }
+    else {
+      this.toEndButton.setDisabled(false);
+      this.nextButton.setDisabled(false);
+    }
+  }
+
+  private async disablePaginator(options: CollectedComponent<MessageButton>) {
+    for (const component of this.actionRow.components){
+      component.setDisabled(true);
+    }
+    return await options.interaction.editReply({
+      components: [this.actionRow]
     });
-    collector.resetTimer();
-  });
+  }
 
-  collector.on("end", () => {
-    if (!curPage.deleted) {
-      const disabledRow = new MessageActionRow().addComponents(
-        buttonList[0].setDisabled(true),
-        buttonList[1].setDisabled(true),
-        buttonList[2].setDisabled(true),
-          buttonList[3].setDisabled(true),
-          buttonList[4].setDisabled(true)
-
-      );
-      curPage.edit({
-        embeds: [pages[page].setFooter(`Page ${page + 1} / ${pages.length}`)],
-        components: [disabledRow],
-      });
+  private async setPage(page: number, options: CollectedComponent<MessageButton>) {
+    if (page < 0 || page >= this.pages.length){
+      throw Error("Page is out of bounds!");
     }
-  });
+    this._currentPage = page;
+    this.setButtonState();
+    return await options.interaction.editReply({
+      embeds: [this.pages[page]],
+      components: [this.actionRow]
+    });
+  }
 
-  return curPage;
-};
+  private loadButtons(){
+    this.collector.addActionRow(this.actionRow, [
+      async (options: CollectedComponent<MessageButton>) => {
+        await this.setPage(0, options);
+      },
+      async (options: CollectedComponent<MessageButton>) => {
+        await this.setPage(this._currentPage - 1, options);
+      },
+      async (options: CollectedComponent<MessageButton>) => {
+        await this.setPage(this._currentPage + 1, options);
+      },
+      async (options: CollectedComponent<MessageButton>) => {
+        await this.setPage(this.pages.length - 1, options);
+      },
+      async (options: CollectedComponent<MessageButton>) => {
+        await this.disablePaginator(options);
+      }
+    ]);
+  }
+
+  async send(options: MessageOptions){
+    return await this.collector.send(options, this.timeout);
+  }
+
+}

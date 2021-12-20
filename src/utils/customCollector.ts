@@ -5,9 +5,9 @@ import {
   MessageActionRow,
   MessageActionRowComponent,
   MessageSelectMenu,
-  Snowflake
+  Snowflake,
+  InteractionCollector
 } from "discord.js";
-import EventEmitter from "events";
 import { MessageOptions, sendMessage } from "./multiMessage";
 import { v4 } from "uuid";
 
@@ -25,7 +25,7 @@ export interface CustomCollectorComponent<T extends MessageActionRowComponent> {
 /**
  * Custom collector that automatically filters by ID.
  */
-export class CustomCollector extends EventEmitter {
+export class CustomCollector {
   readonly components: CustomCollectorComponent<MessageActionRowComponent>[] = [];
   private _currentRow: MessageActionRowComponent[] = [];
   readonly rows: MessageActionRow[] = [];
@@ -33,7 +33,6 @@ export class CustomCollector extends EventEmitter {
   private _message: Message;
 
   constructor() {
-    super();
     this.randomCustomIdPrefix = v4().replace(/-/g, "").toLowerCase();
   }
 
@@ -78,7 +77,7 @@ export class CustomCollector extends EventEmitter {
     return this;
   }
 
-  async send(options: MessageOptions, collectMs: number) {
+  async send(options: MessageOptions, collectMs: number): Promise<[Message<boolean>, InteractionCollector<MessageComponentInteraction>]> {
     if (this._currentRow){
       this.compactIntoMessageActionRow();
     }
@@ -87,9 +86,9 @@ export class CustomCollector extends EventEmitter {
       ...options
     }) as Message;
     this._message = message;
-    const collector = await message.createMessageComponentCollector({
-      time: collectMs,
-      filter: (component) => component.customId.startsWith(this.randomCustomIdPrefix)
+    const collector: InteractionCollector<MessageComponentInteraction> = await message.createMessageComponentCollector({
+      idle: collectMs,
+      filter: (component) => component.customId.startsWith(this.randomCustomIdPrefix),
     });
     collector.on("collect", async (interaction: MessageComponentInteraction) => {
       if (this.onCollect) {
@@ -108,6 +107,7 @@ export class CustomCollector extends EventEmitter {
         await this.onEnd(collected, reason, this);
       }
     });
+    return [message, collector];
   }
 
   onCollect?: (interaction: MessageComponentInteraction, customCollector: this) => Promise<void>;
