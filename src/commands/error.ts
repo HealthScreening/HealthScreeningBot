@@ -64,20 +64,18 @@ module.exports = {
                 )
                 .setRequired(false)
             )
-            .addBooleanOption((option) =>
-              option
-                .setName("with_github_issue_number")
-                .setDescription(
-                  "Show the errors with github issue numbers, default false"
-                )
-                .setRequired(false)
-            )
             .addStringOption((option) =>
               option
                 .setName("type_starts_with")
                 .setDescription(
                   "Shows the errors with a type starting with the given string"
                 )
+                .setRequired(false)
+            )
+            .addIntegerOption((option) =>
+              option
+                .setName("limit")
+                .setDescription("Limit the number of errors shown")
                 .setRequired(false)
             )
         )
