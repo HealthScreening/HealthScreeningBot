@@ -10,6 +10,8 @@ import {
 } from "discord.js";
 import { MessageOptions, sendMessage } from "./multiMessage";
 import { v4 } from "uuid";
+import logError from "./logError";
+import serializeMessageComponentInteraction from "./logError/serializeMessageComponentInteraction";
 
 export interface CollectedComponent<T extends MessageActionRowComponent> {
   component: T;
@@ -32,9 +34,11 @@ export class CustomCollector {
   readonly rows: MessageActionRow[] = [];
   readonly randomCustomIdPrefix: string;
   private _message: Message;
+  readonly name: string;
 
-  constructor() {
+  constructor(name: string = "customCollector") {
     this.randomCustomIdPrefix = v4().replace(/-/g, "").toLowerCase();
+    this.name = name;
   }
 
   get message(): Message {
@@ -115,17 +119,34 @@ export class CustomCollector {
       "collect",
       async (interaction: MessageComponentInteraction) => {
         if (this.onCollect) {
+          try {
           await this.onCollect(interaction, this);
+          } catch (e) {
+            logError(e, "CustomCollector::collect::globalOnCollect", {
+              name: this.name,
+              interaction: serializeMessageComponentInteraction(interaction),
+            });
+          }
         }
         const customId = interaction.customId;
         const component = this.components.find(
           (value) => value.component.customId === customId
         )!;
-        await component.collector({
-          component: component.component,
-          interaction,
-          collector: this,
-        });
+        try {
+          await component.collector({
+            component: component.component,
+            interaction,
+            collector: this,
+          });
+        } catch (e) {
+          await interaction.reply(
+            "An error occurred while running this button action. The error has been logged."
+          );
+          await logError(e, "CustomCollector::collect::componentCollect", {
+            name: this.name,
+            interaction: serializeMessageComponentInteraction(interaction),
+          });
+        }
       }
     );
     collector.on(
@@ -134,8 +155,16 @@ export class CustomCollector {
         collected: Collection<Snowflake, MessageActionRowComponent>,
         reason: string
       ) => {
-        if (this.onEnd) {
-          await this.onEnd(collected, reason, this);
+        try {
+          if (this.onEnd) {
+            await this.onEnd(collected, reason, this);
+          }
+        }
+        catch (e) {
+          logError(e, "CustomCollector::end::globalOnEnd", {
+            name: this.name,
+            reason: reason,
+          });
         }
       }
     );

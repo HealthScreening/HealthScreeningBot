@@ -1,6 +1,8 @@
 import { MessageActionRow, MessageEmbed, MessageButton } from "discord.js";
 import { CollectedComponent, CustomCollector } from "./customCollector";
 import { MessageOptions } from "./multiMessage";
+import logError from "./logError";
+import serializeMessageComponentInteraction from "./logError/serializeMessageComponentInteraction";
 
 export default class Paginator {
   readonly pages: MessageEmbed[];
@@ -11,17 +13,17 @@ export default class Paginator {
   private readonly toBeginningButton = new MessageButton()
     .setCustomId("tobeginning")
     .setStyle("PRIMARY")
-    .setEmoji("922315496660021248");
+    .setEmoji("922315496613879828");
 
   private readonly lastButton = new MessageButton()
     .setCustomId("last")
     .setStyle("PRIMARY")
-    .setEmoji("922315496563560538");
+    .setEmoji("922315496660021248");
 
   private readonly nextButton = new MessageButton()
     .setCustomId("next")
     .setStyle("PRIMARY")
-    .setEmoji("922315496613879828");
+    .setEmoji("922315496563560538");
 
   private readonly toEndButton = new MessageButton()
     .setCustomId("toend")
@@ -33,13 +35,7 @@ export default class Paginator {
     .setStyle("DANGER")
     .setEmoji("922315496559349800");
 
-  private readonly actionRow = new MessageActionRow().addComponents(
-    this.toBeginningButton,
-    this.lastButton,
-    this.nextButton,
-    this.toEndButton,
-    this.discardButton
-  );
+  private readonly actionRow: MessageActionRow;
 
   constructor(pages: MessageEmbed[], timeout = 120000) {
     if (pages.length === 0) {
@@ -50,6 +46,18 @@ export default class Paginator {
     );
     this.timeout = timeout;
     this._currentPage = 0;
+    this.actionRow = new MessageActionRow().addComponents(
+      this.toBeginningButton,
+      this.lastButton,
+      this.nextButton,
+      this.toEndButton,
+      this.discardButton
+    );
+    [this.toBeginningButton,
+      this.lastButton,
+      this.nextButton,
+      this.toEndButton,
+      this.discardButton] = this.actionRow.components as MessageButton[];
     this.loadButtons();
   }
 
@@ -78,7 +86,7 @@ export default class Paginator {
     for (const component of this.actionRow.components) {
       component.setDisabled(true);
     }
-    return await options.interaction.editReply({
+    return await options.interaction.update({
       components: [this.actionRow],
     });
   }
@@ -88,11 +96,19 @@ export default class Paginator {
     options: CollectedComponent<MessageButton>
   ) {
     if (page < 0 || page >= this.pages.length) {
-      throw Error("Page is out of bounds!");
+      await options.interaction.reply(
+        "Tried to access an invalid page, this should not happen! Error has been logged."
+      );
+      await logError(Error("Page is out of bounds!"), "paginator::setPage", {
+        currentPage: this._currentPage,
+        targetPage: page,
+        interaction: serializeMessageComponentInteraction(options.interaction),
+      })
+      return;
     }
     this._currentPage = page;
     this.setButtonState();
-    return await options.interaction.editReply({
+    return await options.interaction.update({
       embeds: [this.pages[page]],
       components: [this.actionRow],
     });
@@ -101,6 +117,7 @@ export default class Paginator {
   private loadButtons() {
     this.collector.addActionRow(this.actionRow, [
       async (options: CollectedComponent<MessageButton>) => {
+
         await this.setPage(0, options);
       },
       async (options: CollectedComponent<MessageButton>) => {
@@ -116,6 +133,7 @@ export default class Paginator {
         await this.disablePaginator(options);
       },
     ]);
+    this.setButtonState();
   }
 
   async send(options: MessageOptions) {
