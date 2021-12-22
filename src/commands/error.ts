@@ -72,7 +72,7 @@ module.exports = {
                 )
                 .setRequired(false)
             )
-            .addNumberOption((option) =>
+            .addIntegerOption((option) =>
               option
                 .setName("limit")
                 .setDescription("Limit the number of errors shown")
