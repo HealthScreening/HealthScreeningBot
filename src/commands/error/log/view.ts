@@ -92,7 +92,7 @@ module.exports = {
     if (items) {
       embed.setColor("GREEN");
       let baseString = "";
-      let currentEmbed = new MessageEmbed(embed)
+      let currentEmbed = new MessageEmbed(embed);
       items
         .map((item: ErrorLog) => {
           return `#${item.id}. ${item.errorName}: ${item.errorDescription}`;
@@ -106,15 +106,18 @@ module.exports = {
           }
           baseString += item + "\n";
         });
-      if (baseString){
+      if (baseString) {
         currentEmbed.setDescription(baseString.trimEnd());
         embeds.push(currentEmbed);
       }
     } else {
       embed.setDescription("No errors found.");
       embed.setColor("RED");
-      embeds.push(embed)
+      embeds.push(embed);
     }
-    return await new Paginator(embeds).send({itemType: ItemType.interaction, item: interaction})
+    return await new Paginator(embeds).send({
+      itemType: ItemType.interaction,
+      item: interaction,
+    });
   },
 };

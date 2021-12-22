@@ -53,11 +53,13 @@ export default class Paginator {
       this.toEndButton,
       this.discardButton
     );
-    [this.toBeginningButton,
+    [
+      this.toBeginningButton,
       this.lastButton,
       this.nextButton,
       this.toEndButton,
-      this.discardButton] = this.actionRow.components as MessageButton[];
+      this.discardButton,
+    ] = this.actionRow.components as MessageButton[];
     this.loadButtons();
   }
 
@@ -103,7 +105,7 @@ export default class Paginator {
         currentPage: this._currentPage,
         targetPage: page,
         interaction: serializeMessageComponentInteraction(options.interaction),
-      })
+      });
       return;
     }
     this._currentPage = page;
@@ -117,7 +119,6 @@ export default class Paginator {
   private loadButtons() {
     this.collector.addActionRow(this.actionRow, [
       async (options: CollectedComponent<MessageButton>) => {
-
         await this.setPage(0, options);
       },
       async (options: CollectedComponent<MessageButton>) => {
@@ -137,10 +138,13 @@ export default class Paginator {
   }
 
   async send(options: MessageOptions) {
-    return await this.collector.send({
-      embeds: [this.pages[this._currentPage]],
-      components: [this.actionRow],
-      ...options,
-    }, this.timeout);
+    return await this.collector.send(
+      {
+        embeds: [this.pages[this._currentPage]],
+        components: [this.actionRow],
+        ...options,
+      },
+      this.timeout
+    );
   }
 }

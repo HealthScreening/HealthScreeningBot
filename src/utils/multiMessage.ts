@@ -51,7 +51,7 @@ interface BaseMessageOptions {
   /**
    * The embeds to send.
    */
-  embeds?: (Embed|MessageEmbed)[];
+  embeds?: (Embed | MessageEmbed)[];
   files?: HTTPAttachmentData[];
   replyMessage?: Message;
   /**

@@ -36,7 +36,7 @@ export class CustomCollector {
   private _message: Message;
   readonly name: string;
 
-  constructor(name: string = "customCollector") {
+  constructor(name = "customCollector") {
     this.randomCustomIdPrefix = v4().replace(/-/g, "").toLowerCase();
     this.name = name;
   }
@@ -120,7 +120,7 @@ export class CustomCollector {
       async (interaction: MessageComponentInteraction) => {
         if (this.onCollect) {
           try {
-          await this.onCollect(interaction, this);
+            await this.onCollect(interaction, this);
           } catch (e) {
             logError(e, "CustomCollector::collect::globalOnCollect", {
               name: this.name,
@@ -159,8 +159,7 @@ export class CustomCollector {
           if (this.onEnd) {
             await this.onEnd(collected, reason, this);
           }
-        }
-        catch (e) {
+        } catch (e) {
           logError(e, "CustomCollector::end::globalOnEnd", {
             name: this.name,
             reason: reason,
