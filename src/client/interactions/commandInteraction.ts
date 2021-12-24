@@ -1,4 +1,3 @@
-import { Command } from "../interfaces";
 import logError from "../../utils/logError";
 import serializeInteraction from "../../utils/logError/serializeInteraction";
 import handleCommandError from "../../utils/handleCommandError";
@@ -14,7 +13,7 @@ export default async function commandInteraction(interaction: HSBCommandInteract
       interaction.commandName
     );
 
-    const command: Command | undefined = this.commands.get(
+    const command = interaction.client.commands.get(
       interaction.commandName
     );
 

@@ -32,5 +32,6 @@ export interface Subcommand {
 export interface Command {
   data: SlashCommandBuilder;
   execute: InteractionExecutor;
+  showAutocomplete?: InteractionExecutor;
   subcommands: SubcommandObject;
 }

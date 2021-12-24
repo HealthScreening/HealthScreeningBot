@@ -36,6 +36,7 @@ import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
 import runFunctionAndLogError from "../utils/logError/runAndLog";
 import commandInteraction from "./interactions/commandInteraction";
 import { HSBCommandInteraction } from "../discordjs-overrides";
+import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -44,7 +45,7 @@ const GENERATE_AUTO_CHOICES = [
 ];
 
 export default class HealthScreeningBotClient extends Client {
-  private commands: Collection<string, Command>;
+  public commands: Collection<string, Command>;
   public readonly screeningClient: ScreeningClient = new ScreeningClient();
   public readonly githubQueue: WorkerQueue<[string, string], void> =
     new WorkerQueue({
@@ -118,6 +119,10 @@ export default class HealthScreeningBotClient extends Client {
       switch (interaction.type) {
       case "APPLICATION_COMMAND":
         return await commandInteraction(interaction as HSBCommandInteraction);
+      case "APPLICATION_COMMAND_AUTOCOMPLETE":
+        return await commandInteractionAutocomplete(
+          interaction as HSBCommandInteraction
+        );
       }
     } catch (e) {
       await logError(e, "interaction")
