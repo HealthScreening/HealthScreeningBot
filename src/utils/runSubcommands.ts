@@ -1,5 +1,5 @@
 import { CommandInteraction } from "discord.js";
-import { Command, Subcommand } from "../client/interfaces";
+import { Command, CommandMethod, Subcommand } from "../client/interfaces";
 import logError from "./logError";
 import serializeInteraction from "./logError/serializeInteraction";
 import handleCommandError from "./handleCommandError";
@@ -8,7 +8,8 @@ import { ItemType } from "./multiMessage";
 // This function does the base level execution.
 async function runSubcommand(
   parent: Command | Subcommand,
-  interaction: CommandInteraction
+  interaction: CommandInteraction,
+  method: CommandMethod = CommandMethod.EXECUTE
 ): Promise<void> {
   const subcommand: string | null = interaction.options.getSubcommand(false);
   if (!subcommand) {

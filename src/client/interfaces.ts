@@ -15,23 +15,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Collection, CommandInteraction } from "discord.js";
+import { AutocompleteInteraction, Collection, CommandInteraction, Interaction } from "discord.js";
 
-export interface InteractionExecutor {
-  (interaction: CommandInteraction): Promise<void>;
+export interface InteractionExecutor<T extends Interaction = CommandInteraction> {
+  (interaction: T): Promise<void>;
 }
 
 export type SubcommandObject = Collection<string, Subcommand>;
 
-export interface Subcommand {
-  name: string;
+export enum CommandMethod {
+  EXECUTE,
+  SHOW_AUTOCOMPLETE
+}
+
+export interface BaseCommand {
   execute: InteractionExecutor;
+  showAutocomplete?: InteractionExecutor<AutocompleteInteraction>;
   subcommands: SubcommandObject;
 }
 
-export interface Command {
+export interface Subcommand extends BaseCommand {
+  name: string;
+}
+
+export interface Command extends BaseCommand {
   data: SlashCommandBuilder;
-  execute: InteractionExecutor;
-  showAutocomplete?: InteractionExecutor;
-  subcommands: SubcommandObject;
 }

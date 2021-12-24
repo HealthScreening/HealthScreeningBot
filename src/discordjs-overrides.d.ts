@@ -14,9 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { CommandInteraction } from "discord.js";
+import { AutocompleteInteraction, CommandInteraction, MessageComponentInteraction } from "discord.js";
 import HealthScreeningBotClient from "./client/extraClient";
 
 export declare class HSBCommandInteraction extends CommandInteraction {
+  public readonly client: HealthScreeningBotClient;
+}
+
+export declare class HSBAutocompleteInteraction extends AutocompleteInteraction {
+  public readonly client: HealthScreeningBotClient;
+}
+
+export declare class HSBMessageComponentInteraction extends MessageComponentInteraction {
   public readonly client: HealthScreeningBotClient;
 }

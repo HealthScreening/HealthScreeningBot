@@ -1,10 +1,8 @@
-import { HSBCommandInteraction } from "../../discordjs-overrides";
+import { HSBAutocompleteInteraction } from "../../discordjs-overrides";
 import logError from "../../utils/logError";
 import serializeInteraction from "../../utils/logError/serializeInteraction";
-import handleCommandError from "../../utils/handleCommandError";
-import { ItemType, sendMessage } from "../../utils/multiMessage";
 
-export default async function commandInteractionAutocomplete(interaction: HSBCommandInteraction){
+export default async function commandInteractionAutocomplete(interaction: HSBAutocompleteInteraction){
 try {
   const command = interaction.client.commands.get(
     interaction.commandName
@@ -16,11 +14,7 @@ try {
       "interaction::commandInteractionAutocomplete::commandNotFound",
       serializeInteraction(interaction)
     );
-    await handleCommandError(
-      { itemType: ItemType.interaction, item: interaction },
-      interaction.commandName
-    );
-    return;
+    return await interaction.respond([])
   }
 
   if (!command.showAutocomplete){
@@ -29,10 +23,7 @@ try {
       "interaction::commandInteractionAutocomplete::commandDoesNotSupportAutocomplete",
       serializeInteraction(interaction)
     );
-    await handleCommandError(
-      { itemType: ItemType.interaction, item: interaction },
-      interaction.commandName
-    );
+    return await interaction.respond([])
   } else {
     try {
       await command.showAutocomplete(interaction);
@@ -42,18 +33,7 @@ try {
       const metadata: { [k: string]: any } =
         serializeInteraction(interaction);
       await logError(error, "interaction::commandInteractionAutocomplete", metadata);
-      try {
-        await sendMessage({
-          itemType: ItemType.interaction,
-          item: interaction,
-          content: "There was an error while executing this command!",
-          ephemeral: true,
-        });
-      } catch (e2) {
-        metadata.deferred = interaction.deferred;
-        metadata.replied = interaction.replied;
-        await logError(e2, "interaction::commandInteractionAutocomplete::errorReply", metadata);
-      }
+      return await interaction.respond([])
     }
   }
 } catch (e) {

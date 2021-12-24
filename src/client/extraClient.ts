@@ -35,7 +35,7 @@ import sleep from "sleep-promise";
 import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
 import runFunctionAndLogError from "../utils/logError/runAndLog";
 import commandInteraction from "./interactions/commandInteraction";
-import { HSBCommandInteraction } from "../discordjs-overrides";
+import { HSBAutocompleteInteraction, HSBCommandInteraction } from "../discordjs-overrides";
 import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
 
 const GENERATE_AUTO_CHOICES = [
@@ -121,7 +121,7 @@ export default class HealthScreeningBotClient extends Client {
         return await commandInteraction(interaction as HSBCommandInteraction);
       case "APPLICATION_COMMAND_AUTOCOMPLETE":
         return await commandInteractionAutocomplete(
-          interaction as HSBCommandInteraction
+          interaction as HSBAutocompleteInteraction
         );
       }
     } catch (e) {
