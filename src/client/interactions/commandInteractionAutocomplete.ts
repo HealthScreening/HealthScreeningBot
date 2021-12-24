@@ -1,32 +1,31 @@
 import { HSBAutocompleteInteraction } from "../../discordjs-overrides";
 import logError from "../../utils/logError";
 import serializeInteraction from "../../utils/logError/serializeInteraction";
+import { getTrueCommand } from "../resolve";
 
 export default async function commandInteractionAutocomplete(interaction: HSBAutocompleteInteraction){
 try {
-  const command = interaction.client.commands.get(
-    interaction.commandName
-  );
-
-  if (!command) {
-    await logError(
-      new Error(`Command ${interaction.commandName} not found`),
-      "interaction::commandInteractionAutocomplete::commandNotFound",
-      serializeInteraction(interaction)
-    );
-    return await interaction.respond([])
+  const command = await getTrueCommand(interaction)
+  if (!command){
+    return;
   }
 
-  if (!command.showAutocomplete){
+  const autocompleteField = interaction.options.getFocused(false);
+
+  if (!command.autocompleteFields.has(autocompleteField)){
     await logError(
-      new Error(`Command ${interaction.commandName} does not support autocomplete`),
+      new Error(`Command ${interaction.commandName} does not support autocomplete for field ${autocompleteField}`),
       "interaction::commandInteractionAutocomplete::commandDoesNotSupportAutocomplete",
-      serializeInteraction(interaction)
+      {
+        interaction: serializeInteraction(interaction),
+        supportedAutocompleteFields: Array.from(command.autocompleteFields.keys()),
+      }
     );
     return await interaction.respond([])
   } else {
     try {
-      await command.showAutocomplete(interaction);
+      // We confirmed earlier if it exists
+      await command.autocompleteFields.get(autocompleteField)!(interaction);
     } catch (error) {
       // Skipped because no better way to do this
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

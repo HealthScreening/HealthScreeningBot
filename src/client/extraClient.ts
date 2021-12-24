@@ -27,8 +27,6 @@ import { ItemType } from "../utils/multiMessage";
 import assignAutoSchoolRole from "./autoAssignSchoolRole";
 import doAutoLoop from "./doAutoLoop";
 import logError from "../utils/logError";
-import { Command } from "./interfaces";
-import resolveCommands from "./resolve";
 import { WorkerQueue } from "../utils/workerQueue";
 import postToGithub from "../utils/postToGithub";
 import sleep from "sleep-promise";
@@ -37,6 +35,7 @@ import runFunctionAndLogError from "../utils/logError/runAndLog";
 import commandInteraction from "./interactions/commandInteraction";
 import { HSBAutocompleteInteraction, HSBCommandInteraction } from "../discordjs-overrides";
 import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
+import { Command } from "./command";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -45,7 +44,9 @@ const GENERATE_AUTO_CHOICES = [
 ];
 
 export default class HealthScreeningBotClient extends Client {
-  public commands: Collection<string, Command>;
+  public commands: Collection<string, Command> = new Collection(Object.entries({
+
+  }));
   public readonly screeningClient: ScreeningClient = new ScreeningClient();
   public readonly githubQueue: WorkerQueue<[string, string], void> =
     new WorkerQueue({
@@ -58,12 +59,7 @@ export default class HealthScreeningBotClient extends Client {
 
   constructor(options: ClientOptions) {
     super(options);
-    this.loadCommands();
     this.loadEventListeners();
-  }
-
-  public async loadCommands() {
-    this.commands = await resolveCommands();
   }
 
   private loadEventListeners() {

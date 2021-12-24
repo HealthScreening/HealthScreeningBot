@@ -1,8 +1,8 @@
 import logError from "../../utils/logError";
 import serializeInteraction from "../../utils/logError/serializeInteraction";
-import handleCommandError from "../../utils/handleCommandError";
 import { ItemType, sendMessage } from "../../utils/multiMessage";
 import { HSBCommandInteraction } from "../../discordjs-overrides";
+import { getTrueCommand } from "../resolve";
 
 export default async function commandInteraction(interaction: HSBCommandInteraction){
   try {
@@ -13,20 +13,8 @@ export default async function commandInteraction(interaction: HSBCommandInteract
       interaction.commandName
     );
 
-    const command = interaction.client.commands.get(
-      interaction.commandName
-    );
-
-    if (!command) {
-      await logError(
-        new Error(`Command ${interaction.commandName} not found`),
-        "interaction::commandInteraction::commandNotFound",
-        serializeInteraction(interaction)
-      );
-      await handleCommandError(
-        { itemType: ItemType.interaction, item: interaction },
-        interaction.commandName
-      );
+    const command = await getTrueCommand(interaction)
+    if (!command){
       return;
     }
 
