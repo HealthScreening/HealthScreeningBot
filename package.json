@@ -47,7 +47,7 @@
     "array-string-map": "^3.0.0",
     "axios": "^0.24.0",
     "discord-api-types": "^0.24.0",
-    "discord.js": "^13.3.1",
+    "discord.js": "^13.4.0",
     "lodash": "^4.17.21",
     "luxon": "^2.2.0",
     "pg": "^8.7.1",
