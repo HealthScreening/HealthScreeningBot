@@ -18,24 +18,24 @@ import {
   Client,
   ClientOptions,
   Collection,
-  CommandInteraction,
+  Interaction,
   Message,
   TextChannel,
 } from "discord.js";
 import { ScreeningClient } from "../screeningClient";
-import { ItemType, sendMessage } from "../utils/multiMessage";
+import { ItemType } from "../utils/multiMessage";
 import assignAutoSchoolRole from "./autoAssignSchoolRole";
 import doAutoLoop from "./doAutoLoop";
 import logError from "../utils/logError";
 import { Command } from "./interfaces";
 import resolveCommands from "./resolve";
-import serializeInteraction from "../utils/logError/serializeInteraction";
-import handleCommandError from "../utils/handleCommandError";
 import { WorkerQueue } from "../utils/workerQueue";
 import postToGithub from "../utils/postToGithub";
 import sleep from "sleep-promise";
 import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
 import runFunctionAndLogError from "../utils/logError/runAndLog";
+import commandInteraction from "./interactions/commandInteraction";
+import { HSBCommandInteraction } from "../discordjs-overrides";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -113,61 +113,14 @@ export default class HealthScreeningBotClient extends Client {
     }
   }
 
-  private async oninteractionCreate(interaction: CommandInteraction) {
+  private async oninteractionCreate(interaction: Interaction) {
     try {
-      if (!interaction.isCommand()) return;
-
-      console.debug(
-        "%s%s ran %s",
-        interaction.user.username,
-        interaction.user.discriminator,
-        interaction.commandName
-      );
-
-      const command: Command | undefined = this.commands.get(
-        interaction.commandName
-      );
-
-      if (!command) {
-        await logError(
-          new Error(`Command ${interaction.commandName} not found`),
-          "interactionCommand::commandNotFound",
-          serializeInteraction(interaction)
-        );
-        await handleCommandError(
-          { itemType: ItemType.interaction, item: interaction },
-          interaction.commandName
-        );
-        return;
-      }
-
-      try {
-        await command.execute(interaction);
-      } catch (error) {
-        // Skipped because no better way to do this
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const metadata: { [k: string]: any } =
-          serializeInteraction(interaction);
-        await logError(error, "interactionCommand", metadata);
-        try {
-          await sendMessage({
-            itemType: ItemType.interaction,
-            item: interaction,
-            content: "There was an error while executing this command!",
-            ephemeral: true,
-          });
-        } catch (e2) {
-          metadata.deferred = interaction.deferred;
-          metadata.replied = interaction.replied;
-          await logError(e2, "interactionCommand::errorReply", metadata);
-        }
+      switch (interaction.type) {
+      case "APPLICATION_COMMAND":
+        return await commandInteraction(interaction as HSBCommandInteraction);
       }
     } catch (e) {
-      await logError(
-        e,
-        "interactionCommand::processing",
-        serializeInteraction(interaction)
-      );
+      await logError(e, "interaction")
     }
   }
 
