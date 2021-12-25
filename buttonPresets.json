@@ -6,6 +6,7 @@
   },
   "go_to_dm": {
     "customId": "go_to_dm",
-    "label": "Go to DMs"
+    "label": "Go to DMs",
+    "style": "PRIMARY"
   }
 }

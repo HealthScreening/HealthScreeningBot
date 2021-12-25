@@ -9,7 +9,7 @@ export interface PresetButton {
   label?: string;
   emoji?: string;
   url?: string;
-  style?: string;
+  style: string;
 }
 
 const buttonData: { [k: string]: PresetButton } = _buttonData;
