@@ -74,6 +74,7 @@ export default class Guide extends Command {
         itemType: ItemType.interaction,
         item: interaction,
       });
+      return;
     }
     const guide = interaction.client.guideData.get(name)!;
     if (paginate) {
