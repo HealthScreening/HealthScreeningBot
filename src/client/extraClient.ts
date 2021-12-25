@@ -36,6 +36,18 @@ import commandInteraction from "./interactions/commandInteraction";
 import { HSBAutocompleteInteraction, HSBCommandInteraction } from "../discordjs-overrides";
 import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
 import { Command } from "./command";
+import ErrorCommand from "../commands/error";
+import DeleteAuto from "../commands/deleteAuto";
+import GenerateAuto from "../commands/generateAuto";
+import GenerateOnce from "../commands/generateOnce";
+import Profile from "../commands/profile";
+import SendToAll from "../commands/sendToAll";
+import SetAuto from "../commands/setAuto";
+import SetCommand from "../commands/setCommand";
+import Stats from "../commands/stats";
+import StopBot from "../commands/stopBot";
+import TestScreening from "../commands/testScreening";
+import TriggerAutoNow from "../commands/triggerAutoNow";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -45,7 +57,18 @@ const GENERATE_AUTO_CHOICES = [
 
 export default class HealthScreeningBotClient extends Client {
   public commands: Collection<string, Command> = new Collection(Object.entries({
-
+    error: new ErrorCommand(),
+    delete_auto: new DeleteAuto(),
+    generate_auto: new GenerateAuto(),
+    generate_once: new GenerateOnce(),
+    profile: new Profile(),
+    send_to_all: new SendToAll(),
+    set_auto: new SetAuto(),
+    set: new SetCommand(),
+    stats: new Stats(),
+    stop: new StopBot(),
+    test_screening: new TestScreening(),
+    trigger_auto: new TriggerAutoNow()
   }));
   public readonly screeningClient: ScreeningClient = new ScreeningClient();
   public readonly githubQueue: WorkerQueue<[string, string], void> =

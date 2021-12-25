@@ -19,45 +19,12 @@ import {
   RESTPostAPIApplicationCommandsJSONBody,
   Routes,
 } from "discord-api-types/v9";
-
-import { readdirSync } from "fs";
-import { resolve } from "path";
-
 import { discord } from "../config";
-import { Command } from "./client/interfaces";
+import HealthScreeningBotClient from "./client/extraClient";
 
-const commandPathBase = resolve(__dirname, "commands");
-
-/**
- * Gets an array of command definition objects from the command source files located at src/commands.
- * This is the JSON form of the discord.js SlashCommandBuilder class.
- *
- * @return {Command[]} An array of command definition objects.
- */
-function getCommands(): RESTPostAPIApplicationCommandsJSONBody[] {
-  const commands: RESTPostAPIApplicationCommandsJSONBody[] = [];
-  const commandFiles = readdirSync(commandPathBase).filter((file) =>
-    file.endsWith(".js")
-  );
-
-  for (const file of commandFiles) {
-    /* eslint-disable @typescript-eslint/no-var-requires -- Disabled because
-      we dynamically require, which is impossible with typescript's import system. */
-    const command: Command = require(resolve(commandPathBase, file));
-    /* eslint-enable @typescript-eslint/no-var-requires */
-    commands.push(command.data.toJSON());
-  }
-  return commands;
-}
 
 const rest = new REST({ version: "9" }).setToken(discord.token);
 
-/**
- * Registers the given commands globally with Discord.
- * On success, logs a success message otherwise logs the error message.
- * @param {RESTPostAPIApplicationCommandsJSONBody[]} commands An array of the commands to register, as returned by {@link getCommands}.
- * @return {void} Nothing.
- */
 function registerCommands(
   commands: RESTPostAPIApplicationCommandsJSONBody[]
 ): void {
@@ -67,4 +34,4 @@ function registerCommands(
     .catch(console.error);
 }
 
-registerCommands(getCommands());
+registerCommands(new HealthScreeningBotClient({intents: []}).commands.map((value) => value.data.toJSON()));
