@@ -28,17 +28,20 @@ export default class GenerateAuto extends Command {
     .addBooleanOption((option) =>
       option
         .setName("ephemeral")
-        .setDescription("Whether or not the contents are hidden to everyone else.")
+        .setDescription(
+          "Whether or not the contents are hidden to everyone else."
+        )
         .setRequired(false)
     ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
-    const ephemeral = interaction.options.getBoolean("ephemeral", false) || false;
+    const ephemeral =
+      interaction.options.getBoolean("ephemeral", false) || false;
     await interaction.client.screeningClient.queueAutoCommand(
       interaction.user.id,
       {
         itemType: ItemType.interaction,
         item: interaction,
-        ephemeral
+        ephemeral,
       }
     );
   }

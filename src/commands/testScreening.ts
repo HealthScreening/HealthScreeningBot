@@ -45,10 +45,13 @@ export default class TestScreening extends Command {
         .setName("day")
         .setDescription("The day of the month you intend to get the screening.")
         .setRequired(false)
-    ).addBooleanOption((option) =>
+    )
+    .addBooleanOption((option) =>
       option
         .setName("ephemeral")
-        .setDescription("Whether or not the contents are hidden to everyone else.")
+        .setDescription(
+          "Whether or not the contents are hidden to everyone else."
+        )
         .setRequired(false)
     ) as SlashCommandBuilder;
   async execute(interaction: CommandInteraction) {
@@ -66,7 +69,8 @@ export default class TestScreening extends Command {
     const year = interaction.options.getInteger("year") || currentTime.year;
     const month = interaction.options.getInteger("month") || currentTime.month;
     const day = interaction.options.getInteger("day") || currentTime.day;
-    const ephemeral = interaction.options.getBoolean("ephemeral", false) || false;
+    const ephemeral =
+      interaction.options.getBoolean("ephemeral", false) || false;
     const embed = new MessageEmbed()
       .setTitle(`Screening Logic for ${month}/${day}/${year}`)
       .setAuthor(

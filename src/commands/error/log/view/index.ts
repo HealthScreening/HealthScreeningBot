@@ -84,10 +84,13 @@ export default class ErrorLogViewCommand extends Subcommand {
           .setName("limit")
           .setDescription("Limit the number of errors shown")
           .setRequired(false)
-      ).addBooleanOption((option) =>
+      )
+      .addBooleanOption((option) =>
         option
           .setName("ephemeral")
-          .setDescription("Whether or not the contents are hidden to everyone else")
+          .setDescription(
+            "Whether or not the contents are hidden to everyone else"
+          )
           .setRequired(false)
       );
   }
@@ -198,11 +201,12 @@ export default class ErrorLogViewCommand extends Subcommand {
       embed.setColor("RED");
       embeds.push(embed);
     }
-    const ephemeral = interaction.options.getBoolean("ephemeral", false) || false;
+    const ephemeral =
+      interaction.options.getBoolean("ephemeral", false) || false;
     await new Paginator(embeds).send({
       itemType: ItemType.interaction,
       item: interaction,
-      ephemeral
+      ephemeral,
     });
     return;
   }

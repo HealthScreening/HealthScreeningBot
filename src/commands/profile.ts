@@ -30,7 +30,9 @@ export default class Profile extends Command {
     .addBooleanOption((option) =>
       option
         .setName("ephemeral")
-        .setDescription("Whether or not the contents are hidden to everyone else.")
+        .setDescription(
+          "Whether or not the contents are hidden to everyone else."
+        )
         .setRequired(false)
     ) as SlashCommandBuilder;
   async execute(interaction: CommandInteraction) {
@@ -71,7 +73,8 @@ Screening Sent on Saturday: **${autoDayData.onSaturday}**`;
       embed.addField("Auto Day", "**No data**");
     }
     embed.addField("Device Used for Screenings", deviceData.device);
-    const ephemeral = interaction.options.getBoolean("ephemeral", false) || false;
+    const ephemeral =
+      interaction.options.getBoolean("ephemeral", false) || false;
     await interaction.reply({ embeds: [embed], ephemeral });
   }
 }
