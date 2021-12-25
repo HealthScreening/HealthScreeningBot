@@ -161,7 +161,7 @@ export default class TestScreening extends Command {
     // Step 2, check if email only mode is on.
     const emailOnly = autoData.emailOnly;
     const willEmail = mutualServer && !emailOnly;
-    let action2 = (willEmail ? "Will" : "Will not") + ` email screenshot`;
+    let action2 = (willEmail ? "Will" : "Will not") + ` DM a screenshot`;
     if (willEmail) {
       embed2.setColor("GREEN");
     } else {
