@@ -10,13 +10,15 @@ import typeStartsWithAutocomplete from "./autocomplete/typeStartsWith";
 import beforeAutocomplete from "./autocomplete/before";
 import afterAutocomplete from "./autocomplete/after";
 import afterTimeAutocomplete from "./autocomplete/afterTime";
+import beforeTimeAutocomplete from "./autocomplete/beforeTime";
 
 export default class ErrorLogViewCommand extends Subcommand {
   public readonly autocompleteFields: Collection<string, (interaction: AutocompleteInteraction) => Promise<void>> = new Collection(Object.entries({
     type_starts_with: typeStartsWithAutocomplete,
     before: beforeAutocomplete,
     after: afterAutocomplete,
-    after_time: afterTimeAutocomplete
+    after_time: afterTimeAutocomplete,
+    before_time: beforeTimeAutocomplete,
   }));
   registerSubcommand(subcommand: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder {
     return subcommand
@@ -48,6 +50,7 @@ export default class ErrorLogViewCommand extends Subcommand {
           .setName("before_time")
           .setDescription("Show errors before the given UNIX timestamp")
           .setRequired(false)
+          .setAutocomplete(true)
       )
       .addBooleanOption((option) =>
         option
