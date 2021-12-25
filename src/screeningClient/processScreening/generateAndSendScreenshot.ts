@@ -52,8 +52,10 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
       ],
       ...params.multiMessageParams,
     };
-    if (!messageParams.ephemeral){
-      messageParams.components = [new MessageActionRow().addComponents(getPresetButton("delete"))]
+    if (!messageParams.ephemeral) {
+      messageParams.components = [
+        new MessageActionRow().addComponents(getPresetButton("delete")),
+      ];
     }
     try {
       await sendMessage(messageParams);

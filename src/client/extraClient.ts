@@ -35,7 +35,8 @@ import runFunctionAndLogError from "../utils/logError/runAndLog";
 import commandInteraction from "./interactions/commandInteraction";
 import {
   HSBAutocompleteInteraction,
-  HSBCommandInteraction, HSBMessageComponentInteraction
+  HSBCommandInteraction,
+  HSBMessageComponentInteraction,
 } from "../discordjs-overrides";
 import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
 import { Command } from "./command";
@@ -86,9 +87,14 @@ export default class HealthScreeningBotClient extends Client {
       },
       limit: 1,
     });
-  public readonly globalButtons: Collection<string, (interaction: HSBMessageComponentInteraction) => Promise<void>> = new Collection(Object.entries({
-    delete: deleteButton
-  }));
+  public readonly globalButtons: Collection<
+    string,
+    (interaction: HSBMessageComponentInteraction) => Promise<void>
+  > = new Collection(
+    Object.entries({
+      delete: deleteButton,
+    })
+  );
   constructor(options: ClientOptions) {
     super(options);
     this.loadEventListeners();
