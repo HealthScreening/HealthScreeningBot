@@ -1,8 +1,8 @@
-import { Op } from "sequelize";
+import { cast, Op, where } from "sequelize";
 import { HSBAutocompleteInteraction } from "../../../../../discordjs-overrides";
 import { ErrorLog } from "../../../../../orm/errorLog";
 
-export default async function beforeAutocomplete(interaction: HSBAutocompleteInteraction){
+export default async function beforeAutocomplete(interaction: HSBAutocompleteInteraction) {
   const response = interaction.options.getFocused(false) as number;
   const after: number | null = interaction.options.getInteger("after");
   const beforeTime: number | null =
@@ -12,10 +12,12 @@ export default async function beforeAutocomplete(interaction: HSBAutocompleteInt
   const typeStartsWith: string | null =
     interaction.options.getString("type_starts_with");
   const whereQuery: { [k: string]: object } = {
-    ["id::varchar(255)"]: {
-      [Op.startsWith]: String(response)
-    }
-  }
+    [Op.and]: [
+      where(cast("id", "text"), {
+        [Op.startsWith]: String(response)
+      })
+    ]
+  };
   if (after) {
     if (!whereQuery.id) {
       whereQuery.id = {};
@@ -49,6 +51,6 @@ export default async function beforeAutocomplete(interaction: HSBAutocompleteInt
     return {
       name: item.id.toString(),
       value: item.id
-    }
-  }))
+    };
+  }));
 }
