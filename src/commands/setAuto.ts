@@ -54,6 +54,11 @@ export default class SetAuto extends Command {
         .setName("vaccinated")
         .setDescription("Whether or not you are vaccinated.")
         .setRequired(true)
+    ).addBooleanOption((option) =>
+      option
+        .setName("ephemeral")
+        .setDescription("Whether or not the contents are hidden to everyone else.")
+        .setRequired(false)
     ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
     const firstName = interaction.options.getString("first_name")!;
@@ -84,13 +89,14 @@ export default class SetAuto extends Command {
       { userId: String(interaction.user.id) }
     );
     await AutoDays.create({ userId: String(interaction.user.id) });
+    const ephemeral = interaction.options.getBoolean("ephemeral", false) || false;
     if (autoUserObj.emailOnly) {
       return await interaction.reply(
-        "Updated! As a reminder, you have email-only screenings on, and to disable that run `/toggle_email_only`."
+        { content: "Updated! As a reminder, you have email-only screenings on, and to disable that run `/toggle_email_only`.", ephemeral }
       );
     }
     await interaction.reply(
-      "Updated! Check your DMs for the confirmation screening."
+      { content: "Updated! Check your DMs for the confirmation screening.", ephemeral }
     );
     try {
       await interaction.user.send(
@@ -103,6 +109,7 @@ export default class SetAuto extends Command {
         {
           itemType: ItemType.user,
           item: user,
+          ephemeral
         }
       );
     } catch (e) {
