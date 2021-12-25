@@ -10,7 +10,8 @@ export default async function typeStartsWithAutocomplete(interaction: HSBAutocom
         [Op.startsWith]: response as string
       }
     },
-    limit: 25
+    limit: 25,
+    group: ["type"]
   })).map((item) => {
     return {
       name: item.type,
