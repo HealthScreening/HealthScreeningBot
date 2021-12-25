@@ -23,6 +23,7 @@ import {
 } from "@healthscreening/generate-screenshot";
 import { discord } from "../config";
 import logError from "./utils/logError";
+import { loadAllGuides } from "./utils/guides";
 
 const myIntents = new Intents();
 myIntents.add(Intents.FLAGS.GUILDS);
@@ -39,6 +40,7 @@ async function startup() {
   try {
     await init();
     await startupBrowser();
+    await loadAllGuides(client);
     await client.login(discord.token);
   } catch (e) {
     await logError(e, "root");

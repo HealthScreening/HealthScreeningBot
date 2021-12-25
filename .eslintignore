@@ -1,5 +1,8 @@
 *.js
 package-lock.json
-src/screening-success-html
+
 # Auto generated
 src/orm/migrations/migrations
+
+# Cannot be autoformatted or linted due to discord not respecting traditional Markdown rules
+guides
