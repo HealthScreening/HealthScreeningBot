@@ -104,7 +104,7 @@ export default class HealthScreeningBotClient extends Client {
   > = new Collection(
     Object.entries({
       delete: deleteButton,
-      go_to_dm: goToDMButton
+      go_to_dm: goToDMButton,
     })
   );
   /**
@@ -118,10 +118,10 @@ export default class HealthScreeningBotClient extends Client {
         title: "Rules",
         files: [getGuidePath("rules")],
       },
-      "quickstart": {
+      quickstart: {
         title: "Quickstart",
         files: [getGuidePath("quickstart")],
-      }
+      },
     })
   );
   constructor(options: ClientOptions) {

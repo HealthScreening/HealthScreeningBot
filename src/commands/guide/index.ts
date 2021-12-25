@@ -69,8 +69,11 @@ export default class Guide extends Command {
       });
       return;
     }
-    if (name === "quickstart"){
-      await sendQuickstart(interaction.client, {itemType: ItemType.interaction, item: interaction});
+    if (name === "quickstart") {
+      await sendQuickstart(interaction.client, {
+        itemType: ItemType.interaction,
+        item: interaction,
+      });
     }
     const guide = interaction.client.guideData.get(name)!;
     if (paginate) {
