@@ -1,22 +1,20 @@
-import { cast, col, Op, where } from "sequelize";
+import { DateTime } from "luxon";
+import { Op } from "sequelize";
 import { HSBAutocompleteInteraction } from "../../../../../discordjs-overrides";
 import { ErrorLog } from "../../../../../orm/errorLog";
 
-export default async function afterAutocomplete(interaction: HSBAutocompleteInteraction) {
+export default async function afterTimeAutocomplete(interaction: HSBAutocompleteInteraction) {
   const response = interaction.options.getFocused(false) as number;
   const before: number | null = interaction.options.getInteger("before");
+  const after: number | null = interaction.options.getInteger("after");
   const beforeTime: number | null =
     interaction.options.getInteger("before_time");
-  const afterTime: number | null =
-    interaction.options.getInteger("after_time");
   const typeStartsWith: string | null =
     interaction.options.getString("type_starts_with");
   const whereQuery: { [k: string]: object } = {
-    [Op.and]: [
-      where(cast(col("id"), "text"), {
-        [Op.startsWith]: String(response)
-      })
-    ]
+    createdAt: {
+      [Op.gt]: response
+    }
   };
   if (before) {
     if (!whereQuery.id) {
@@ -24,18 +22,17 @@ export default async function afterAutocomplete(interaction: HSBAutocompleteInte
     }
     whereQuery.id[Op.lt] = before;
   }
-
+  if (after) {
+    if (!whereQuery.id) {
+      whereQuery.id = {};
+    }
+    whereQuery.id[Op.gt] = after;
+  }
   if (beforeTime) {
     if (!whereQuery.createdAt) {
       whereQuery.createdAt = {};
     }
     whereQuery.createdAt[Op.lt] = new Date(beforeTime * 1000);
-  }
-  if (afterTime) {
-    if (!whereQuery.createdAt) {
-      whereQuery.createdAt = {};
-    }
-    whereQuery.createdAt[Op.gt] = new Date(afterTime * 1000);
   }
   if (typeStartsWith) {
     if (!whereQuery.type) {
@@ -44,14 +41,15 @@ export default async function afterAutocomplete(interaction: HSBAutocompleteInte
     whereQuery.type[Op.startsWith] = typeStartsWith;
   }
   await interaction.respond((await ErrorLog.findAll({
-    attributes: ["id"],
+    attributes: ["createdAt"],
     where: whereQuery,
     limit: 25,
-    order: [["id", "ASC"]]
+    order: [["createdAt", "ASC"]]
   })).map((item) => {
+    const dt = DateTime.fromMillis(item.createdAt.getTime())
     return {
-      name: item.id.toString(),
-      value: item.id
+      name: dt.setZone("America/New_York").toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS),
+      value: dt.toSeconds()
     };
   }));
 }

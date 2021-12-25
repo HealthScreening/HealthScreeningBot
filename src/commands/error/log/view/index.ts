@@ -9,12 +9,14 @@ import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import typeStartsWithAutocomplete from "./autocomplete/typeStartsWith";
 import beforeAutocomplete from "./autocomplete/before";
 import afterAutocomplete from "./autocomplete/after";
+import afterTimeAutocomplete from "./autocomplete/afterTime";
 
 export default class ErrorLogViewCommand extends Subcommand {
   public readonly autocompleteFields: Collection<string, (interaction: AutocompleteInteraction) => Promise<void>> = new Collection(Object.entries({
     type_starts_with: typeStartsWithAutocomplete,
     before: beforeAutocomplete,
-    after: afterAutocomplete
+    after: afterAutocomplete,
+    afterTime: afterTimeAutocomplete
   }));
   registerSubcommand(subcommand: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder {
     return subcommand
@@ -39,6 +41,7 @@ export default class ErrorLogViewCommand extends Subcommand {
           .setName("after_time")
           .setDescription("Show errors after the given UNIX timestamp")
           .setRequired(false)
+          .setAutocomplete(true)
       )
       .addIntegerOption((option) =>
         option
