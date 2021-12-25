@@ -24,6 +24,8 @@ import {
 } from "../../utils/multiMessage";
 import logError from "../../utils/logError";
 import { AutoUser } from "../../orm/autoUser";
+import { MessageActionRow } from "discord.js";
+import getPresetButton from "../../utils/buttonPresets";
 
 export default async function generateAndSendScreenshot(params: ProcessParams) {
   try {
@@ -50,6 +52,9 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
       ],
       ...params.multiMessageParams,
     };
+    if (!messageParams.ephemeral){
+      messageParams.components = [new MessageActionRow().addComponents(getPresetButton("delete"))]
+    }
     try {
       await sendMessage(messageParams);
     } catch (e) {
