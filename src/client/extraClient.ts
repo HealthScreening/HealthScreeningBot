@@ -20,6 +20,7 @@ import {
   Collection,
   Interaction,
   Message,
+  MessageEmbed,
   TextChannel,
 } from "discord.js";
 import { ScreeningClient } from "../screeningClient";
@@ -54,12 +55,19 @@ import TestScreening from "../commands/testScreening";
 import TriggerAutoNow from "../commands/triggerAutoNow";
 import messageComponentInteraction from "./interactions/messageComponentInteraction";
 import deleteButton from "../buttons/delete";
+import { getGuidePath } from "../utils/guides";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
   "hsb/generate-auto",
   "hsb/generate_auto",
 ];
+
+export interface GuideData {
+  title?: string
+  files?: string[]
+  embeds?: MessageEmbed[]
+}
 
 export default class HealthScreeningBotClient extends Client {
   public commands: Collection<string, Command> = new Collection(
@@ -95,6 +103,17 @@ export default class HealthScreeningBotClient extends Client {
       delete: deleteButton,
     })
   );
+  /**
+   * Guides can either be an array of message embeds *or* an array of paths to check for the pages.
+   * If providing paths, they must be relative to the root of the guides folder at the
+   * root of the project, not the root of the source.
+   */
+  public readonly guideData: Collection<string, GuideData> = new Collection(Object.entries({
+    rules: {
+      title: "Rules",
+      files: [getGuidePath("rules")]
+    },
+  }))
   constructor(options: ClientOptions) {
     super(options);
     this.loadEventListeners();
