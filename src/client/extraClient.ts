@@ -56,6 +56,7 @@ import TriggerAutoNow from "../commands/triggerAutoNow";
 import messageComponentInteraction from "./interactions/messageComponentInteraction";
 import deleteButton from "../buttons/delete";
 import { getGuidePath } from "../utils/guides";
+import Guide from "../commands/guide";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -76,6 +77,7 @@ export default class HealthScreeningBotClient extends Client {
       delete_auto: new DeleteAuto(),
       generate_auto: new GenerateAuto(),
       generate_once: new GenerateOnce(),
+      guide: new Guide(),
       profile: new Profile(),
       send_to_all: new SendToAll(),
       set_auto: new SetAuto(),
