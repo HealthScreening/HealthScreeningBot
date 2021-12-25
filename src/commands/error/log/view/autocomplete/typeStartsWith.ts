@@ -5,6 +5,7 @@ import { ErrorLog } from "../../../../../orm/errorLog";
 export default async function typeStartsWithAutocomplete(interaction: HSBAutocompleteInteraction){
   const response = interaction.options.getFocused(false) as string;
   await interaction.respond((await ErrorLog.findAll({
+    attributes: ["type"],
     where: {
       type: {
         [Op.startsWith]: response as string
