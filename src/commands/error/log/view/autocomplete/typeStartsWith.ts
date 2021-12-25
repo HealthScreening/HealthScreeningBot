@@ -12,7 +12,8 @@ export default async function typeStartsWithAutocomplete(interaction: HSBAutocom
       }
     },
     limit: 25,
-    group: ["type"]
+    group: ["type"],
+    order: [["type", "ASC"]]
   })).map((item) => {
     return {
       name: item.type,
