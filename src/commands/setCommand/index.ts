@@ -18,20 +18,30 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import screeningTypes, {
   screeningTypeType,
 } from "@healthscreening/screening-types";
-import { User } from "discord.js";
+import { AutocompleteInteraction, Collection, User } from "discord.js";
 import { devices } from "puppeteer";
-import createOrUpdate from "../utils/createOrUpdate";
-import { Devices, DevicesAttributes } from "../orm/devices";
-import { AutoUser } from "../orm/autoUser";
-import { ItemType } from "../utils/multiMessage";
-import { HSBCommandInteraction } from "../discordjs-overrides";
-import { AutoDays } from "../orm/autoDays";
-import { Command } from "../client/command";
+import createOrUpdate from "../../utils/createOrUpdate";
+import { Devices, DevicesAttributes } from "../../orm/devices";
+import { AutoUser } from "../../orm/autoUser";
+import { ItemType } from "../../utils/multiMessage";
+import { HSBCommandInteraction } from "../../discordjs-overrides";
+import { AutoDays } from "../../orm/autoDays";
+import { Command } from "../../client/command";
+import generateNumberChoicesInRange from "../../utils/generateNumberChoicesInRange";
+import devicesAutocomplete from "./autocomplete/devices";
+import minuteAutocomplete from "./autocomplete/minute";
 
 export default class SetCommand extends Command {
+  public autocompleteFields: Collection<
+    string,
+    (interaction: AutocompleteInteraction) => Promise<void>
+    > = new Collection(Object.entries({
+    device: devicesAutocomplete,
+    minute: minuteAutocomplete
+  }));
   public readonly data = new SlashCommandBuilder()
     .setName("set")
-    .setDescription("Set optional heatlh screening data")
+    .setDescription("Set optional health screening data")
     .addStringOption((option) =>
       option
         .setName("device")
@@ -39,6 +49,7 @@ export default class SetCommand extends Command {
           "The name of the device to use. Use `/device_list` to get a list of various devices."
         )
         .setRequired(false)
+        .setAutocomplete(true)
     )
     .addIntegerOption((option) =>
       option
@@ -47,6 +58,9 @@ export default class SetCommand extends Command {
           "The hour to run the screening at. Must a number in the range 0-23."
         )
         .setRequired(false)
+        .setMinValue(0)
+        .setMaxValue(23)
+        .addChoices(generateNumberChoicesInRange(0, 23))
     )
     .addIntegerOption((option) =>
       option
@@ -55,6 +69,9 @@ export default class SetCommand extends Command {
           "The minute to run the screening at. Must a number in the range 0-59."
         )
         .setRequired(false)
+        .setAutocomplete(true)
+        .setMinValue(0)
+        .setMaxValue(59)
     )
     .addStringOption((option) =>
       option
