@@ -16,7 +16,7 @@ export default class ErrorLogViewCommand extends Subcommand {
     type_starts_with: typeStartsWithAutocomplete,
     before: beforeAutocomplete,
     after: afterAutocomplete,
-    afterTime: afterTimeAutocomplete
+    after_time: afterTimeAutocomplete
   }));
   registerSubcommand(subcommand: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder {
     return subcommand
