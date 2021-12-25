@@ -61,7 +61,7 @@ export default class ErrorViewCommand extends Subcommand {
       },
     ]);
     if (item.errorDescription) {
-      embed.addField("Description", item.errorDescription, false);
+      embed.addField("Description", item.errorDescription.substring(0, 1024), false);
     } else {
       embed.addField("Description", "None", false);
     }

@@ -164,7 +164,7 @@ export default class ErrorLogViewCommand extends Subcommand {
           return `#${item.id}. ${item.errorName}: ${item.errorDescription}`;
         })
         .forEach((item: string) => {
-          if (baseString.length + item.length > 2048) {
+          if (baseString.length + item.length > 4096) {
             currentEmbed.setDescription(baseString.trimEnd());
             embeds.push(currentEmbed);
             currentEmbed = new MessageEmbed(embed);

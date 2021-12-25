@@ -56,7 +56,7 @@ export default class ErrorPostCommand extends Subcommand {
     await interaction.reply("Posting to GitHub...");
     await interaction.client.githubQueue.enqueue(
       [
-        `[${item.type}] ${item.errorName}: ${item.errorDescription}`,
+        `[${item.type}] ${item.errorName}: ${item.errorDescription}`.substring(0, 256),
         formatErrorLogEntry(item, redact),
       ],
       0
