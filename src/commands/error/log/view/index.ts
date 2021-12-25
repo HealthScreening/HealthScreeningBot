@@ -1,4 +1,4 @@
-import { CommandInteraction, MessageEmbed } from "discord.js";
+import { AutocompleteInteraction, Collection, CommandInteraction, MessageEmbed } from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
 import { ErrorLog } from "../../../../orm/errorLog";
@@ -6,8 +6,12 @@ import Paginator from "../../../../utils/paginator";
 import { ItemType } from "../../../../utils/multiMessage";
 import { Subcommand } from "../../../../client/command";
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
+import typeStartsWithAutocomplete from "./autocomplete/typeStartsWith";
 
 export default class ErrorLogViewCommand extends Subcommand {
+  public readonly autocompleteFields: Collection<string | number, (interaction: AutocompleteInteraction) => Promise<void>> = new Collection(Object.entries({
+    type_starts_with: typeStartsWithAutocomplete
+  }));
   registerSubcommand(subcommand: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder {
     return subcommand
       .setName("view")
@@ -51,6 +55,7 @@ export default class ErrorLogViewCommand extends Subcommand {
             "Shows the errors with a type starting with the given string"
           )
           .setRequired(false)
+          .setAutocomplete(true)
       )
       .addIntegerOption((option) =>
         option
