@@ -9,7 +9,7 @@ import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import typeStartsWithAutocomplete from "./autocomplete/typeStartsWith";
 
 export default class ErrorLogViewCommand extends Subcommand {
-  public readonly autocompleteFields: Collection<string | number, (interaction: AutocompleteInteraction) => Promise<void>> = new Collection(Object.entries({
+  public readonly autocompleteFields: Collection<string, (interaction: AutocompleteInteraction) => Promise<void>> = new Collection(Object.entries({
     type_starts_with: typeStartsWithAutocomplete
   }));
   registerSubcommand(subcommand: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder {
