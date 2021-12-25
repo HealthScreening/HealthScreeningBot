@@ -1,5 +1,3 @@
-__**Bot Rules**__
-
 While it would be nice to let anyone do anything, there has to be some rules so that one person cannot ruin it for everyone else.
 
 1. **No Harassment**: Do not intentionally create screenings with first and last names designed to spell out a message that can be seen as  harassing an individual or a group of people.

@@ -15,10 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { ItemType } from "../utils/multiMessage";
-import { Command } from "../client/command";
-import { HSBCommandInteraction } from "../discordjs-overrides";
-import Paginator from "../utils/paginator";
+import { ItemType } from "../../utils/multiMessage";
+import { Command } from "../../client/command";
+import { HSBCommandInteraction } from "../../discordjs-overrides";
+import Paginator from "../../utils/paginator";
 
 export default class Guide extends Command {
   public readonly data = new SlashCommandBuilder()
