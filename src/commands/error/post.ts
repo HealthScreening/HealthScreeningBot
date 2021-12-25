@@ -18,9 +18,27 @@ import { Op } from "sequelize";
 import { ErrorLog } from "../../orm/errorLog";
 import { HSBCommandInteraction } from "../../discordjs-overrides";
 import formatErrorLogEntry from "../../utils/formatErrorLogEntry";
+import { Subcommand } from "../../client/command";
+import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 
-module.exports = {
-  name: "post",
+export default class ErrorPostCommand extends Subcommand {
+  registerSubcommand(subcommand: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder{
+    return subcommand
+      .setName("post")
+      .setDescription("Post an individual error to GitHub")
+      .addIntegerOption((option) =>
+        option
+          .setName("id")
+          .setDescription("The ID of the error to post.")
+          .setRequired(true)
+      )
+      .addBooleanOption((option) =>
+        option
+          .setName("redact")
+          .setDescription("Whether or not to redact the metadata.")
+          .setRequired(false)
+      )
+  }
   async execute(interaction: HSBCommandInteraction) {
     const id: number = interaction.options.getInteger("id", true);
     const redact: boolean =
@@ -43,5 +61,5 @@ module.exports = {
       ],
       0
     );
-  },
-};
+  }
+}

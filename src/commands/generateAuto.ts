@@ -17,13 +17,14 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { HSBCommandInteraction } from "../discordjs-overrides";
 import { ItemType } from "../utils/multiMessage";
+import { Command } from "../client/command";
 
-module.exports = {
-  data: new SlashCommandBuilder()
+export default class GenerateAuto extends Command {
+  public readonly data = new SlashCommandBuilder()
     .setName("generate_auto")
     .setDescription(
       "Generate a singular health screening using your auto information."
-    ),
+    )
   async execute(interaction: HSBCommandInteraction) {
     await interaction.client.screeningClient.queueAutoCommand(
       interaction.user.id,
@@ -32,5 +33,5 @@ module.exports = {
         item: interaction,
       }
     );
-  },
-};
+  }
+}

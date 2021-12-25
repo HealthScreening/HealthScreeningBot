@@ -26,9 +26,10 @@ import { AutoUser } from "../orm/autoUser";
 import { ItemType } from "../utils/multiMessage";
 import { HSBCommandInteraction } from "../discordjs-overrides";
 import { AutoDays } from "../orm/autoDays";
+import { Command } from "../client/command";
 
-module.exports = {
-  data: new SlashCommandBuilder()
+export default class SetCommand extends Command {
+  public readonly data = new SlashCommandBuilder()
     .setName("set")
     .setDescription("Set optional heatlh screening data")
     .addStringOption((option) =>
@@ -121,7 +122,7 @@ module.exports = {
         .setName("saturday")
         .setDescription("Whether to run the screening on Saturday.")
         .setRequired(false)
-    ),
+    ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
     const validDevices = Object.keys(devices);
     const deviceName = interaction.options.getString("device");
@@ -270,5 +271,5 @@ module.exports = {
         }
       }
     }
-  },
-};
+  }
+}

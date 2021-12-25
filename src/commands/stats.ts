@@ -18,11 +18,12 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, MessageEmbed } from "discord.js";
 import { DateTime } from "luxon";
 import { AutoUser } from "../orm/autoUser";
+import { Command } from "../client/command";
 
-module.exports = {
-  data: new SlashCommandBuilder()
+export default class Stats extends Command {
+  public readonly data = new SlashCommandBuilder()
     .setName("stats")
-    .setDescription("Get bot stats."),
+    .setDescription("Get bot stats.")
   async execute(interaction: CommandInteraction) {
     const guildSize = interaction.client.guilds.cache.size;
     let members = 0;
@@ -45,5 +46,5 @@ module.exports = {
       )
       .setTimestamp(DateTime.local().toUTC().toMillis());
     await interaction.reply({ embeds: [embed] });
-  },
-};
+  }
+}

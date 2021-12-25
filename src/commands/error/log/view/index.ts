@@ -1,12 +1,64 @@
 import { CommandInteraction, MessageEmbed } from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
-import { ErrorLog } from "../../../orm/errorLog";
-import Paginator from "../../../utils/paginator";
-import { ItemType } from "../../../utils/multiMessage";
+import { ErrorLog } from "../../../../orm/errorLog";
+import Paginator from "../../../../utils/paginator";
+import { ItemType } from "../../../../utils/multiMessage";
+import { Subcommand } from "../../../../client/command";
+import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 
-module.exports = {
-  name: "view",
+export default class ErrorLogViewCommand extends Subcommand {
+  registerSubcommand(subcommand: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder {
+    return subcommand
+      .setName("view")
+      .setDescription("View the error log.")
+      .addIntegerOption((option) =>
+        option
+          .setName("before")
+          .setDescription("Show the errors before this error #")
+          .setRequired(false)
+      )
+      .addIntegerOption((option) =>
+        option
+          .setName("after")
+          .setDescription("Show the errors after this error #")
+          .setRequired(false)
+      )
+      .addIntegerOption((option) =>
+        option
+          .setName("after_time")
+          .setDescription("Show errors after the given UNIX timestamp")
+          .setRequired(false)
+      )
+      .addIntegerOption((option) =>
+        option
+          .setName("before_time")
+          .setDescription("Show errors before the given UNIX timestamp")
+          .setRequired(false)
+      )
+      .addBooleanOption((option) =>
+        option
+          .setName("desc")
+          .setDescription(
+            "Show the errors in descending order, default true"
+          )
+          .setRequired(false)
+      )
+      .addStringOption((option) =>
+        option
+          .setName("type_starts_with")
+          .setDescription(
+            "Shows the errors with a type starting with the given string"
+          )
+          .setRequired(false)
+      )
+      .addIntegerOption((option) =>
+        option
+          .setName("limit")
+          .setDescription("Limit the number of errors shown")
+          .setRequired(false)
+      )
+  }
   async execute(interaction: CommandInteraction) {
     const isDesc = interaction.options.getBoolean("desc", false) || true;
     const whereQuery: { [k: string]: object } = {};
@@ -115,9 +167,10 @@ module.exports = {
       embed.setColor("RED");
       embeds.push(embed);
     }
-    return await new Paginator(embeds).send({
+    await new Paginator(embeds).send({
       itemType: ItemType.interaction,
       item: interaction,
     });
-  },
-};
+    return;
+  }
+}

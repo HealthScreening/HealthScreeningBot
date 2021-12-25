@@ -21,9 +21,10 @@ import screeningTypes, {
   screeningTypeType,
 } from "@healthscreening/screening-types";
 import getDeviceData from "../screeningClient/getUserInfo/getDeviceData";
+import { Command } from "../client/command";
 
-module.exports = {
-  data: new SlashCommandBuilder()
+export default class GenerateOnce extends Command {
+  public readonly data = new SlashCommandBuilder()
     .setName("generate_once")
     .setDescription("Generate a singular health screening")
     .addStringOption((option) =>
@@ -58,7 +59,7 @@ module.exports = {
         .addChoices(
           Object.entries(screeningTypes).map(([key, value]) => [value, key])
         )
-    ),
+    ) as SlashCommandBuilder
   async execute(interaction: HSBCommandInteraction) {
     const firstName = interaction.options.getString("first_name")!;
     const lastName = interaction.options.getString("last_name")!;
@@ -67,7 +68,10 @@ module.exports = {
       !email.match(/^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/)
     ) {
       return await interaction.reply(
-        "Invalid email! Please enter a valid email."
+        {
+          content: "Invalid email! Please enter a valid email.",
+          ephemeral: true
+        }
       );
     }
     const isVaxxed = interaction.options.getBoolean("vaccinated")!;
@@ -91,5 +95,5 @@ module.exports = {
         },
       }
     );
-  },
-};
+  }
+}

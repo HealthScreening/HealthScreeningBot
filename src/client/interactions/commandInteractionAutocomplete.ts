@@ -12,26 +12,29 @@ try {
 
   const autocompleteField = interaction.options.getFocused(false);
 
-  if (!command.autocompleteFields.has(autocompleteField)){
+  const toRun = command.parts.filter((item) => item.beforeAutocomplete)
+  for (const checkToRun of toRun){
+    if (!(await checkToRun.beforeAutocomplete!(interaction))){
+      return await interaction.respond([]);
+    }
+  }
+
+  if (!command.resolved.autocompleteFields.has(autocompleteField)){
     await logError(
-      new Error(`Command ${interaction.commandName} does not support autocomplete for field ${autocompleteField}`),
+      new Error(`Command ${command.fullName} does not support autocomplete for field ${autocompleteField}`),
       "interaction::commandInteractionAutocomplete::commandDoesNotSupportAutocomplete",
       {
         interaction: serializeInteraction(interaction),
-        supportedAutocompleteFields: Array.from(command.autocompleteFields.keys()),
+        supportedAutocompleteFields: Array.from(command.resolved.autocompleteFields.keys()),
       }
     );
     return await interaction.respond([])
   } else {
     try {
       // We confirmed earlier if it exists
-      await command.autocompleteFields.get(autocompleteField)!(interaction);
+      await command.resolved.autocompleteFields.get(autocompleteField)!(interaction);
     } catch (error) {
-      // Skipped because no better way to do this
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const metadata: { [k: string]: any } =
-        serializeInteraction(interaction);
-      await logError(error, "interaction::commandInteractionAutocomplete", metadata);
+      await logError(error, "interaction::commandInteractionAutocomplete", serializeInteraction(interaction));
       return await interaction.respond([])
     }
   }

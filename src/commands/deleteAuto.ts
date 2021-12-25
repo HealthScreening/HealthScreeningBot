@@ -18,30 +18,32 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
 import { AutoUser } from "../orm/autoUser";
 import { AutoDays } from "../orm/autoDays";
+import { Command } from "../client/command";
 
-module.exports = {
-  data: new SlashCommandBuilder()
+export default class DeleteAuto extends Command {
+  readonly data = new SlashCommandBuilder()
     .setName("delete_auto")
-    .setDescription("Delete any stored auto information."),
+    .setDescription("Delete any stored auto information.");
   async execute(interaction: CommandInteraction) {
     const item = await AutoUser.findOne({
-      where: { userId: interaction.user.id },
+      where: { userId: interaction.user.id }
     });
     if (item === null) {
       return await interaction.reply({
         content:
           "You do not have any auto information stored! Use `/set_auto` to set some information.",
-        ephemeral: true,
+        ephemeral: true
       });
-    } else {
+    }
+    else {
       await item.destroy({ force: true });
       const dayItem = await AutoDays.findOne({
-        where: { userId: interaction.user.id },
+        where: { userId: interaction.user.id }
       });
       if (dayItem !== null) {
         await dayItem.destroy({ force: true });
       }
       await interaction.reply("Auto information deleted!");
     }
-  },
-};
+  }
+}

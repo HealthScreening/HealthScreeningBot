@@ -20,9 +20,10 @@ import { DateTime } from "luxon";
 import getAutoData from "../screeningClient/getUserInfo/getAutoData";
 import getAutoDayData from "../screeningClient/getUserInfo/getAutoDayData";
 import dayIsHoliday from "../utils/getHolidays";
+import { Command } from "../client/command";
 
-module.exports = {
-  data: new SlashCommandBuilder()
+export default class TestScreening extends Command {
+  public readonly data = new SlashCommandBuilder()
     .setName("test_screening")
     .setDescription(
       "See whether or not a screening will occur on the given date."
@@ -44,7 +45,7 @@ module.exports = {
         .setName("day")
         .setDescription("The day of the month you intend to get the screening.")
         .setRequired(false)
-    ),
+    ) as SlashCommandBuilder;
   async execute(interaction: CommandInteraction) {
     const autoData = await getAutoData({ userId: interaction.user.id });
     if (!autoData) {
@@ -81,33 +82,33 @@ module.exports = {
     let willRunForWeekday = false;
     let weekdayName = "sunday";
     switch (weekday) {
-      case 1:
-        willRunForWeekday = autoDayData.onMonday;
-        weekdayName = "monday";
-        break;
-      case 2:
-        willRunForWeekday = autoDayData.onTuesday;
-        weekdayName = "tuesday";
-        break;
-      case 3:
-        willRunForWeekday = autoDayData.onWednesday;
-        weekdayName = "wednesday";
-        break;
-      case 4:
-        willRunForWeekday = autoDayData.onThursday;
-        weekdayName = "thursday";
-        break;
-      case 5:
-        willRunForWeekday = autoDayData.onFriday;
-        weekdayName = "friday";
-        break;
-      case 6:
-        willRunForWeekday = autoDayData.onSaturday;
-        weekdayName = "saturday";
-        break;
-      case 7:
-        willRunForWeekday = autoDayData.onSunday;
-        break;
+    case 1:
+      willRunForWeekday = autoDayData.onMonday;
+      weekdayName = "monday";
+      break;
+    case 2:
+      willRunForWeekday = autoDayData.onTuesday;
+      weekdayName = "tuesday";
+      break;
+    case 3:
+      willRunForWeekday = autoDayData.onWednesday;
+      weekdayName = "wednesday";
+      break;
+    case 4:
+      willRunForWeekday = autoDayData.onThursday;
+      weekdayName = "thursday";
+      break;
+    case 5:
+      willRunForWeekday = autoDayData.onFriday;
+      weekdayName = "friday";
+      break;
+    case 6:
+      willRunForWeekday = autoDayData.onSaturday;
+      weekdayName = "saturday";
+      break;
+    case 7:
+      willRunForWeekday = autoDayData.onSunday;
+      break;
     }
     const willRun = !paused && !holiday && willRunForWeekday;
     let action =
@@ -167,5 +168,5 @@ module.exports = {
     }
     embed2.setDescription(action2);
     await interaction.reply({ embeds: [embed, embed2] });
-  },
-};
+  }
+}

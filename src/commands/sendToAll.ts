@@ -22,9 +22,10 @@ import logError from "../utils/logError";
 import sleep from "sleep-promise";
 import checkOwner from "../utils/checkOwner";
 import { ItemType } from "../utils/multiMessage";
+import { Command } from "../client/command";
 
-module.exports = {
-  data: new SlashCommandBuilder()
+export default class SendToAll extends Command {
+  public readonly data = new SlashCommandBuilder()
     .setName("send_to_all")
     .setDescription("Send a message to every person registered in the bot.")
     .addStringOption((option) =>
@@ -40,7 +41,7 @@ module.exports = {
           "The amount of time to wait between messages (in seconds)"
         )
         .setRequired(false)
-    ),
+    ) as SlashCommandBuilder
   async execute(interaction: CommandInteraction) {
     if (
       await checkOwner({ item: interaction, itemType: ItemType.interaction })
@@ -100,5 +101,5 @@ module.exports = {
         }
       }
     }
-  },
-};
+  }
+}
