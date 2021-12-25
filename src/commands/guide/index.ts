@@ -19,8 +19,16 @@ import { ItemType } from "../../utils/multiMessage";
 import { Command } from "../../client/command";
 import { HSBCommandInteraction } from "../../discordjs-overrides";
 import Paginator from "../../utils/paginator";
+import { AutocompleteInteraction, Collection } from "discord.js";
+import nameAutocomplete from "./autocomplete/name";
 
 export default class Guide extends Command {
+  public autocompleteFields: Collection<
+    string,
+    (interaction: AutocompleteInteraction) => Promise<void>
+    > = new Collection(Object.entries({
+    name: nameAutocomplete
+  }));
   public readonly data = new SlashCommandBuilder()
     .setName("guide")
     .setDescription("Sends a possible guide.")
