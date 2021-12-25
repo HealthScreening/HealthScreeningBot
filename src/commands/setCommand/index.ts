@@ -35,19 +35,19 @@ export default class SetCommand extends Command {
   public autocompleteFields: Collection<
     string,
     (interaction: AutocompleteInteraction) => Promise<void>
-    > = new Collection(Object.entries({
-    device: devicesAutocomplete,
-    minute: minuteAutocomplete
-  }));
+  > = new Collection(
+    Object.entries({
+      device: devicesAutocomplete,
+      minute: minuteAutocomplete,
+    })
+  );
   public readonly data = new SlashCommandBuilder()
     .setName("set")
     .setDescription("Set optional health screening data")
     .addStringOption((option) =>
       option
         .setName("device")
-        .setDescription(
-          "The name of the device to use."
-        )
+        .setDescription("The name of the device to use.")
         .setRequired(false)
         .setAutocomplete(true)
     )
@@ -157,8 +157,8 @@ export default class SetCommand extends Command {
     const saturday = interaction.options.getBoolean("saturday");
     let foundDeviceName: string | undefined;
     if (deviceName) {
-      foundDeviceName = validDevices.find((device) =>
-        device.toLowerCase() == deviceName.toLowerCase()
+      foundDeviceName = validDevices.find(
+        (device) => device.toLowerCase() == deviceName.toLowerCase()
       );
       if (!foundDeviceName) {
         return await interaction.reply({

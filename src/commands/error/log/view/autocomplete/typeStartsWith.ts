@@ -12,12 +12,9 @@ export default async function typeStartsWithAutocomplete(
     interaction.options.getInteger("before_time");
   const afterTime: number | null = interaction.options.getInteger("after_time");
   const whereQuery: { [k: string]: object } = {
-    type: where(
-      fn("lower", col("type")),
-      {
-        [Op.startsWith]: (response as string).toLowerCase(),
-      }
-    ),
+    type: where(fn("lower", col("type")), {
+      [Op.startsWith]: (response as string).toLowerCase(),
+    }),
   };
   if (before) {
     if (!whereQuery.id) {

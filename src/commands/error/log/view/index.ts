@@ -123,12 +123,9 @@ export default class ErrorLogViewCommand extends Subcommand {
       whereQuery.createdAt[Op.gt] = new Date(afterTime * 1000);
     }
     if (typeStartsWith) {
-      whereQuery.type = where(
-        fn("lower", col("type")),
-        {
-          [Op.startsWith]: typeStartsWith.toLowerCase(),
-        }
-      )
+      whereQuery.type = where(fn("lower", col("type")), {
+        [Op.startsWith]: typeStartsWith.toLowerCase(),
+      });
     }
     const items: ErrorLog[] = await ErrorLog.findAll({
       where: whereQuery,
