@@ -10,7 +10,7 @@ try {
     return;
   }
 
-  const autocompleteField = interaction.options.getFocused(false);
+  const autocompleteField = interaction.options.getFocused(true).name;
 
   const toRun = command.parts.filter((item) => item.beforeAutocomplete)
   for (const checkToRun of toRun){

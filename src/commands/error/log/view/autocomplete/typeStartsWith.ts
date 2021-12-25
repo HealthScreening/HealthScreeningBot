@@ -3,11 +3,11 @@ import { HSBAutocompleteInteraction } from "../../../../../discordjs-overrides";
 import { ErrorLog } from "../../../../../orm/errorLog";
 
 export default async function typeStartsWithAutocomplete(interaction: HSBAutocompleteInteraction){
-  const response = interaction.options.getString("type_starts_with", true)
+  const response = interaction.options.getFocused(false) as string;
   await interaction.respond((await ErrorLog.findAll({
     where: {
       type: {
-        [Op.startsWith]: response
+        [Op.startsWith]: response as string
       }
     },
     limit: 25
