@@ -42,7 +42,7 @@
     "@discordjs/builders": "^0.10.0",
     "@discordjs/rest": "^0.2.0-canary.0",
     "@healthscreening/complete-screening": "^1.0.1",
-    "@healthscreening/generate-screenshot": "^1.0.0",
+    "@healthscreening/generate-screenshot": "^1.1.0",
     "@healthscreening/screening-types": "^1.0.0",
     "array-string-map": "^3.0.0",
     "axios": "^0.24.0",
