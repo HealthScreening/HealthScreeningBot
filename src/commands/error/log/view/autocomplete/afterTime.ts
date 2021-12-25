@@ -49,7 +49,7 @@ export default async function afterTimeAutocomplete(interaction: HSBAutocomplete
     const dt = DateTime.fromMillis(item.createdAt.getTime())
     return {
       name: dt.setZone("America/New_York").toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS),
-      value: dt.toSeconds()
+      value: Math.round(dt.toSeconds()) - 1
     };
   }));
 }
