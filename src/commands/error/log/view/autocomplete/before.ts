@@ -1,4 +1,4 @@
-import { cast, Op, where } from "sequelize";
+import { cast, col, Op, where } from "sequelize";
 import { HSBAutocompleteInteraction } from "../../../../../discordjs-overrides";
 import { ErrorLog } from "../../../../../orm/errorLog";
 
@@ -13,7 +13,7 @@ export default async function beforeAutocomplete(interaction: HSBAutocompleteInt
     interaction.options.getString("type_starts_with");
   const whereQuery: { [k: string]: object } = {
     [Op.and]: [
-      where(cast("id", "text"), {
+      where(cast(col("id"), "text"), {
         [Op.startsWith]: String(response)
       })
     ]
