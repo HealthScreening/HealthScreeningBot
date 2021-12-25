@@ -21,9 +21,10 @@ import { DateTime } from "luxon";
 import getAutoData from "../screeningClient/getUserInfo/getAutoData";
 import getAutoDayData from "../screeningClient/getUserInfo/getAutoDayData";
 import getDeviceData from "../screeningClient/getUserInfo/getDeviceData";
+import { Command } from "../client/command";
 
-module.exports = {
-  data: new SlashCommandBuilder()
+export default class Profile extends Command {
+  public readonly data = new SlashCommandBuilder()
     .setName("profile")
     .setDescription("Saw profile.")
     .addBooleanOption((option) =>
@@ -31,7 +32,7 @@ module.exports = {
         .setName("ephemeral")
         .setDescription("Whether to hide this message.")
         .setRequired(true)
-    ),
+    ) as SlashCommandBuilder;
   async execute(interaction: CommandInteraction) {
     const isEphemeral = interaction.options.getBoolean("ephemeral")!;
     const autoData = await getAutoData({ userId: interaction.user.id });
@@ -72,5 +73,5 @@ Screening Sent on Saturday: **${autoDayData.onSaturday}**`;
     }
     embed.addField("Device Used for Screenings", deviceData.device);
     await interaction.reply({ embeds: [embed], ephemeral: isEphemeral });
-  },
-};
+  }
+}

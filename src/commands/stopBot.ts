@@ -19,11 +19,12 @@ import { CommandInteraction } from "discord.js";
 import { exit } from "process";
 
 import { closeBrowser } from "@healthscreening/generate-screenshot";
+import { Command } from "../client/command";
 
-module.exports = {
-  data: new SlashCommandBuilder()
+export default class StopBot extends Command {
+  public readonly data = new SlashCommandBuilder()
     .setName("stop")
-    .setDescription("Stop the bot safely."),
+    .setDescription("Stop the bot safely.");
   async execute(interaction: CommandInteraction) {
     if (interaction.user.id != "199605025914224641") {
       await interaction.reply({
@@ -35,5 +36,5 @@ module.exports = {
       await closeBrowser();
       exit(0);
     }
-  },
-};
+  }
+}

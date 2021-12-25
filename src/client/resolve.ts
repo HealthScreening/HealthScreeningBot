@@ -14,71 +14,133 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { Collection } from "discord.js";
-import { readdir } from "fs/promises";
-import { resolve } from "path";
-import { Command, SubcommandObject } from "./interfaces";
+import {
+  HSBAutocompleteInteraction,
+  HSBCommandInteraction,
+} from "../discordjs-overrides";
+import logError from "../utils/logError";
+import serializeInteraction from "../utils/logError/serializeInteraction";
+import handleCommandError from "../utils/handleCommandError";
+import { ItemType } from "../utils/multiMessage";
+import { CommandInteraction } from "discord.js";
+import { BaseCommand, PreCommandChecks } from "./command";
 
-async function resolveSubcommands(
-  basePath: string,
-  folderName: string
-): Promise<SubcommandObject> {
-  try {
-    // Skipped because we are using dynamic imports
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const files = (await readdir(resolve(basePath, folderName))).filter(
-      (file) => file.endsWith(".js")
+export class CommandData {
+  public readonly resolved: BaseCommand;
+  public readonly parts: PreCommandChecks[];
+  public readonly names: string[];
+  public constructor(
+    resolved: BaseCommand,
+    parts: PreCommandChecks[],
+    names: string[]
+  ) {
+    this.resolved = resolved;
+    this.parts = parts;
+    this.names = names;
+  }
+  public get fullName(): string {
+    return this.names.join(" ");
+  }
+}
+
+/**
+ * Gets the actual command object to execute/autocomplete against.
+ * @param interaction The interaction to resolve against.
+ * @returns The command object to execute/autocomplete against as well as an
+ * array of all of the command/subcommand/subcommand groups involved.
+ * This is useful for the executor to run the before* checks.
+ */
+export async function getTrueCommand(
+  interaction: HSBCommandInteraction | HSBAutocompleteInteraction
+): Promise<CommandData | null> {
+  const baseCommand = interaction.commandName;
+  const subcommandGroup = interaction.options.getSubcommandGroup(false);
+  const subcommand = interaction.options.getSubcommand(false);
+  const command = interaction.client.commands.get(baseCommand);
+
+  if (!command) {
+    await logError(
+      new Error(`Command ${interaction.commandName} not found`),
+      "interaction::resolveCommand::commandNotFound",
+      serializeInteraction(interaction)
     );
-    const subcommands: SubcommandObject = new Collection();
-    for (const file of files) {
-      // Skipped because we are using dynamic imports
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const subcommand = require(resolve(basePath, folderName, file));
-      subcommands.set(subcommand.name, subcommand);
+    if (interaction instanceof CommandInteraction) {
+      await handleCommandError(
+        { itemType: ItemType.interaction, item: interaction },
+        interaction.commandName
+      );
     }
-    return subcommands;
-  } catch (error) {
-    return new Collection();
+    return null;
   }
-}
 
-async function resolveCommand(
-  basePath: string,
-  name: string
-): Promise<Command> {
-  const fileWithoutExtension = name.replace(".js", "");
-  // Skipped because we are using dynamic imports
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const command: Command = require(resolve(basePath, name));
-  command.subcommands = await resolveSubcommands(
-    basePath,
-    fileWithoutExtension
-  );
-  for (const subcommandGroup of command.subcommands.values()) {
-    subcommandGroup.subcommands = await resolveSubcommands(
-      basePath,
-      fileWithoutExtension + "/" + subcommandGroup.name
-    );
+  if (subcommandGroup) {
+    const foundSubcommandGroup = command.subcommandGroups.get(subcommandGroup);
+    if (!foundSubcommandGroup) {
+      await logError(
+        new Error(
+          `Subcommand group ${subcommandGroup} not found for command ${baseCommand}`
+        ),
+        "interaction::resolveCommand::subCommandGroupNotFound",
+        serializeInteraction(interaction)
+      );
+      if (interaction instanceof CommandInteraction) {
+        await handleCommandError(
+          { itemType: ItemType.interaction, item: interaction },
+          interaction.commandName
+        );
+      }
+      return null;
+    } else {
+      // If subcommand group exists, subcommand exists
+      const foundSubcommand = foundSubcommandGroup.subcommands.get(subcommand!);
+      if (!foundSubcommand) {
+        await logError(
+          new Error(
+            `Subcommand ${subcommand} not found for command ${baseCommand} in subcommand group ${subcommandGroup}`
+          ),
+          "interaction::resolveCommand::subCommandNotFound",
+          serializeInteraction(interaction)
+        );
+        if (interaction instanceof CommandInteraction) {
+          await handleCommandError(
+            { itemType: ItemType.interaction, item: interaction },
+            interaction.commandName
+          );
+        }
+        return null;
+      } else {
+        return new CommandData(
+          foundSubcommand,
+          [command, foundSubcommandGroup, foundSubcommand],
+          [baseCommand, subcommandGroup, subcommand!]
+        );
+      }
+    }
+  } else if (subcommand) {
+    const foundSubcommand = command.subcommands.get(subcommand);
+    if (!foundSubcommand) {
+      await logError(
+        new Error(
+          `Subcommand ${subcommand} not found for command ${baseCommand}`
+        ),
+        "interaction::resolveCommand::subCommandNotFound",
+        serializeInteraction(interaction)
+      );
+      if (interaction instanceof CommandInteraction) {
+        await handleCommandError(
+          { itemType: ItemType.interaction, item: interaction },
+          interaction.commandName
+        );
+      }
+      return null;
+    } else {
+      return new CommandData(
+        foundSubcommand,
+        [command, foundSubcommand],
+        [baseCommand, subcommand]
+      );
+    }
+  } else {
+    return new CommandData(command, [command], [baseCommand]);
   }
-  return command;
-}
-
-export default async function resolveCommands(): Promise<
-  Collection<string, Command>
-> {
-  const commandPath = resolve(__dirname, "..", "commands");
-  const commandFiles = (await readdir(commandPath)).filter((file) =>
-    file.endsWith(".js")
-  );
-  const promises: Promise<void>[] = [];
-  const commands: Collection<string, Command> = new Collection();
-  for (const file of commandFiles) {
-    promises.push(
-      resolveCommand(commandPath, file).then((command) => {
-        commands.set(command.data.name, command);
-      })
-    );
-  }
-  await Promise.all(promises);
-  return commands;
 }

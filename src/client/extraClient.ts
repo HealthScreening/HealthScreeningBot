@@ -18,24 +18,39 @@ import {
   Client,
   ClientOptions,
   Collection,
-  CommandInteraction,
+  Interaction,
   Message,
   TextChannel,
 } from "discord.js";
 import { ScreeningClient } from "../screeningClient";
-import { ItemType, sendMessage } from "../utils/multiMessage";
+import { ItemType } from "../utils/multiMessage";
 import assignAutoSchoolRole from "./autoAssignSchoolRole";
 import doAutoLoop from "./doAutoLoop";
 import logError from "../utils/logError";
-import { Command } from "./interfaces";
-import resolveCommands from "./resolve";
-import serializeInteraction from "../utils/logError/serializeInteraction";
-import handleCommandError from "../utils/handleCommandError";
 import { WorkerQueue } from "../utils/workerQueue";
 import postToGithub from "../utils/postToGithub";
 import sleep from "sleep-promise";
 import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
 import runFunctionAndLogError from "../utils/logError/runAndLog";
+import commandInteraction from "./interactions/commandInteraction";
+import {
+  HSBAutocompleteInteraction,
+  HSBCommandInteraction,
+} from "../discordjs-overrides";
+import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
+import { Command } from "./command";
+import ErrorCommand from "../commands/error";
+import DeleteAuto from "../commands/deleteAuto";
+import GenerateAuto from "../commands/generateAuto";
+import GenerateOnce from "../commands/generateOnce";
+import Profile from "../commands/profile";
+import SendToAll from "../commands/sendToAll";
+import SetAuto from "../commands/setAuto";
+import SetCommand from "../commands/setCommand";
+import Stats from "../commands/stats";
+import StopBot from "../commands/stopBot";
+import TestScreening from "../commands/testScreening";
+import TriggerAutoNow from "../commands/triggerAutoNow";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -44,7 +59,22 @@ const GENERATE_AUTO_CHOICES = [
 ];
 
 export default class HealthScreeningBotClient extends Client {
-  private commands: Collection<string, Command>;
+  public commands: Collection<string, Command> = new Collection(
+    Object.entries({
+      error: new ErrorCommand(),
+      delete_auto: new DeleteAuto(),
+      generate_auto: new GenerateAuto(),
+      generate_once: new GenerateOnce(),
+      profile: new Profile(),
+      send_to_all: new SendToAll(),
+      set_auto: new SetAuto(),
+      set: new SetCommand(),
+      stats: new Stats(),
+      stop: new StopBot(),
+      test_screening: new TestScreening(),
+      trigger_auto: new TriggerAutoNow(),
+    })
+  );
   public readonly screeningClient: ScreeningClient = new ScreeningClient();
   public readonly githubQueue: WorkerQueue<[string, string], void> =
     new WorkerQueue({
@@ -57,12 +87,7 @@ export default class HealthScreeningBotClient extends Client {
 
   constructor(options: ClientOptions) {
     super(options);
-    this.loadCommands();
     this.loadEventListeners();
-  }
-
-  public async loadCommands() {
-    this.commands = await resolveCommands();
   }
 
   private loadEventListeners() {
@@ -113,61 +138,18 @@ export default class HealthScreeningBotClient extends Client {
     }
   }
 
-  private async oninteractionCreate(interaction: CommandInteraction) {
+  private async oninteractionCreate(interaction: Interaction) {
     try {
-      if (!interaction.isCommand()) return;
-
-      console.debug(
-        "%s%s ran %s",
-        interaction.user.username,
-        interaction.user.discriminator,
-        interaction.commandName
-      );
-
-      const command: Command | undefined = this.commands.get(
-        interaction.commandName
-      );
-
-      if (!command) {
-        await logError(
-          new Error(`Command ${interaction.commandName} not found`),
-          "interactionCommand::commandNotFound",
-          serializeInteraction(interaction)
-        );
-        await handleCommandError(
-          { itemType: ItemType.interaction, item: interaction },
-          interaction.commandName
-        );
-        return;
-      }
-
-      try {
-        await command.execute(interaction);
-      } catch (error) {
-        // Skipped because no better way to do this
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const metadata: { [k: string]: any } =
-          serializeInteraction(interaction);
-        await logError(error, "interactionCommand", metadata);
-        try {
-          await sendMessage({
-            itemType: ItemType.interaction,
-            item: interaction,
-            content: "There was an error while executing this command!",
-            ephemeral: true,
-          });
-        } catch (e2) {
-          metadata.deferred = interaction.deferred;
-          metadata.replied = interaction.replied;
-          await logError(e2, "interactionCommand::errorReply", metadata);
-        }
+      switch (interaction.type) {
+        case "APPLICATION_COMMAND":
+          return await commandInteraction(interaction as HSBCommandInteraction);
+        case "APPLICATION_COMMAND_AUTOCOMPLETE":
+          return await commandInteractionAutocomplete(
+            interaction as HSBAutocompleteInteraction
+          );
       }
     } catch (e) {
-      await logError(
-        e,
-        "interactionCommand::processing",
-        serializeInteraction(interaction)
-      );
+      await logError(e, "interaction");
     }
   }
 

@@ -25,9 +25,10 @@ import {
 } from "../orm/autoUser";
 import { AutoDays } from "../orm/autoDays";
 import createOrUpdate from "../utils/createOrUpdate";
+import { Command } from "../client/command";
 
-module.exports = {
-  data: new SlashCommandBuilder()
+export default class SetAuto extends Command {
+  public readonly data = new SlashCommandBuilder()
     .setName("set_auto")
     .setDescription("Set data for the automatic screening generator")
     .addStringOption((option) =>
@@ -53,7 +54,7 @@ module.exports = {
         .setName("vaccinated")
         .setDescription("Whether or not you are vaccinated.")
         .setRequired(true)
-    ),
+    ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
     const firstName = interaction.options.getString("first_name")!;
     const lastName = interaction.options.getString("last_name")!;
@@ -61,9 +62,10 @@ module.exports = {
     if (
       !email.match(/^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/)
     ) {
-      return await interaction.reply(
-        "Invalid email! Please enter a valid email."
-      );
+      return await interaction.reply({
+        content: "Invalid email! Please enter a valid email.",
+        ephemeral: true,
+      });
     }
     const isVaxxed = interaction.options.getBoolean("vaccinated")!;
     const autoUserObj = await createOrUpdate<
@@ -117,5 +119,5 @@ module.exports = {
         throw e;
       }
     }
-  },
-};
+  }
+}

@@ -18,9 +18,23 @@ import { CommandInteraction, MessageEmbed } from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
 import { ErrorLog } from "../../orm/errorLog";
+import { Subcommand } from "../../client/command";
+import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 
-module.exports = {
-  name: "view",
+export default class ErrorViewCommand extends Subcommand {
+  registerSubcommand(
+    subcommand: SlashCommandSubcommandBuilder
+  ): SlashCommandSubcommandBuilder {
+    return subcommand
+      .setName("view")
+      .setDescription("View an individual error")
+      .addIntegerOption((option) =>
+        option
+          .setName("id")
+          .setDescription("The ID of the error to view.")
+          .setRequired(true)
+      );
+  }
   async execute(interaction: CommandInteraction) {
     const id: number = interaction.options.getInteger("id", true);
     const item: ErrorLog | null = await ErrorLog.findOne({
@@ -49,7 +63,11 @@ module.exports = {
       },
     ]);
     if (item.errorDescription) {
-      embed.addField("Description", item.errorDescription, false);
+      embed.addField(
+        "Description",
+        item.errorDescription.substring(0, 1024),
+        false
+      );
     } else {
       embed.addField("Description", "None", false);
     }
@@ -79,5 +97,5 @@ module.exports = {
       embed.addField("Metadata", "None", false);
     }
     return await interaction.reply({ embeds: embeds });
-  },
-};
+  }
+}

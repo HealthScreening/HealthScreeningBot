@@ -24,11 +24,12 @@ import { DateTime } from "luxon";
 import ArrayStringMap from "array-string-map";
 import { Op } from "sequelize";
 import { HSBCommandInteraction } from "../discordjs-overrides";
+import { Command } from "../client/command";
 
-module.exports = {
-  data: new SlashCommandBuilder()
+export default class TriggerAutoNow extends Command {
+  public readonly data = new SlashCommandBuilder()
     .setName("trigger_auto")
-    .setDescription("Run the auto screenings now."),
+    .setDescription("Run the auto screenings now.");
   async execute(interaction: HSBCommandInteraction) {
     if (interaction.user.id != "199605025914224641") {
       await interaction.reply({
@@ -87,5 +88,5 @@ module.exports = {
         logChannel: logChannel.id,
       });
     }
-  },
-};
+  }
+}

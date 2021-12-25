@@ -141,7 +141,7 @@ export default class Paginator {
     return await this.collector.send(
       {
         embeds: [this.pages[this._currentPage]],
-        components: [this.actionRow],
+        components: this.pages.length === 1 ? [] : [this.actionRow],
         ...options,
       },
       this.timeout

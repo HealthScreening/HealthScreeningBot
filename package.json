@@ -1,6 +1,6 @@
 {
   "name": "healthscreeningbot",
-  "version": "2.3.0",
+  "version": "2.4.0-dev",
   "author": {
     "email": "sarkaraoyan@gmail.com",
     "name": "Aoyan Sarkar"
@@ -81,7 +81,7 @@
     "typescript": "tsc -p tsconfig.json",
     "pre-push-check": "npm run lint && npm run prettier:check && npm run typescript",
     "pre-push": "npm run lint && npm run prettier && npm run typescript",
-    "clean-typescript": "bash -c 'shopt -s nullglob && compgen -G \"*.js src/*.js src/*/*.js src/*/*/*.js src/*/*/*/*.js\" > /dev/null && rm *.js src/*.js src/*/*.js src/*/*/*.js src/*/*/*/*.js' || exit 0",
+    "clean-typescript": "find src -name '*.js' -exec rm -f {} +",
     "update": "git pull && npm run typescript",
     "build": "npm run clean-typescript && npm run typescript",
     "git-rebuild": "git pull && npm run build"

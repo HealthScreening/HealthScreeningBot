@@ -1,12 +1,91 @@
-import { CommandInteraction, MessageEmbed } from "discord.js";
+import {
+  AutocompleteInteraction,
+  Collection,
+  CommandInteraction,
+  MessageEmbed,
+} from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
-import { ErrorLog } from "../../../orm/errorLog";
-import Paginator from "../../../utils/paginator";
-import { ItemType } from "../../../utils/multiMessage";
+import { ErrorLog } from "../../../../orm/errorLog";
+import Paginator from "../../../../utils/paginator";
+import { ItemType } from "../../../../utils/multiMessage";
+import { Subcommand } from "../../../../client/command";
+import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
+import typeStartsWithAutocomplete from "./autocomplete/typeStartsWith";
+import beforeAutocomplete from "./autocomplete/before";
+import afterAutocomplete from "./autocomplete/after";
+import afterTimeAutocomplete from "./autocomplete/afterTime";
+import beforeTimeAutocomplete from "./autocomplete/beforeTime";
 
-module.exports = {
-  name: "view",
+export default class ErrorLogViewCommand extends Subcommand {
+  public readonly autocompleteFields: Collection<
+    string,
+    (interaction: AutocompleteInteraction) => Promise<void>
+  > = new Collection(
+    Object.entries({
+      type_starts_with: typeStartsWithAutocomplete,
+      before: beforeAutocomplete,
+      after: afterAutocomplete,
+      after_time: afterTimeAutocomplete,
+      before_time: beforeTimeAutocomplete,
+    })
+  );
+  registerSubcommand(
+    subcommand: SlashCommandSubcommandBuilder
+  ): SlashCommandSubcommandBuilder {
+    return subcommand
+      .setName("view")
+      .setDescription("View the error log.")
+      .addIntegerOption((option) =>
+        option
+          .setName("before")
+          .setDescription("Show the errors before this error #")
+          .setRequired(false)
+          .setAutocomplete(true)
+      )
+      .addIntegerOption((option) =>
+        option
+          .setName("after")
+          .setDescription("Show the errors after this error #")
+          .setRequired(false)
+          .setAutocomplete(true)
+      )
+      .addIntegerOption((option) =>
+        option
+          .setName("after_time")
+          .setDescription("Show errors after the given UNIX timestamp")
+          .setRequired(false)
+          .setAutocomplete(true)
+      )
+      .addIntegerOption((option) =>
+        option
+          .setName("before_time")
+          .setDescription("Show errors before the given UNIX timestamp")
+          .setRequired(false)
+          .setAutocomplete(true)
+      )
+      .addBooleanOption((option) =>
+        option
+          .setName("desc")
+          .setDescription("Show the errors in descending order, default true")
+          .setRequired(false)
+      )
+      .addStringOption((option) =>
+        option
+          .setName("type_starts_with")
+          .setDescription(
+            "Shows the errors with a type starting with the given string"
+          )
+          .setRequired(false)
+          .setAutocomplete(true)
+      )
+      .addIntegerOption((option) =>
+        option
+          .setName("limit")
+          .setDescription("Limit the number of errors shown")
+          .setRequired(false)
+      );
+  }
   async execute(interaction: CommandInteraction) {
     const isDesc = interaction.options.getBoolean("desc", false) || true;
     const whereQuery: { [k: string]: object } = {};
@@ -98,7 +177,7 @@ module.exports = {
           return `#${item.id}. ${item.errorName}: ${item.errorDescription}`;
         })
         .forEach((item: string) => {
-          if (baseString.length + item.length > 2048) {
+          if (baseString.length + item.length > 4096) {
             currentEmbed.setDescription(baseString.trimEnd());
             embeds.push(currentEmbed);
             currentEmbed = new MessageEmbed(embed);
@@ -115,9 +194,10 @@ module.exports = {
       embed.setColor("RED");
       embeds.push(embed);
     }
-    return await new Paginator(embeds).send({
+    await new Paginator(embeds).send({
       itemType: ItemType.interaction,
       item: interaction,
     });
-  },
-};
+    return;
+  }
+}
