@@ -47,9 +47,10 @@ export default async function afterTimeAutocomplete(interaction: HSBAutocomplete
     order: [["createdAt", "ASC"]]
   })).map((item) => {
     const dt = DateTime.fromMillis(item.createdAt.getTime())
+    const value = Math.round(dt.toSeconds()) - 1
     return {
-      name: dt.setZone("America/New_York").toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS),
-      value: Math.round(dt.toSeconds()) - 1
+      name: String(value),
+      value: value
     };
   }));
 }
