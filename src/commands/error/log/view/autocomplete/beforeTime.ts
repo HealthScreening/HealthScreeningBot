@@ -13,14 +13,14 @@ export default async function beforeTimeAutocomplete(interaction: HSBAutocomplet
     interaction.options.getString("type_starts_with");
   const whereQuery: { [k: string]: object } = {
     createdAt: {
-      [Op.gt]: response
+      [Op.lt]: response
     }
   };
   if (before) {
     if (!whereQuery.id) {
       whereQuery.id = {};
     }
-    whereQuery.id[Op.lt] = before;
+    whereQuery.id[Op.gt] = before;
   }
   if (after) {
     if (!whereQuery.id) {
