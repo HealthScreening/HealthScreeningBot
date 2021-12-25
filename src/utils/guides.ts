@@ -3,7 +3,7 @@ import { MessageEmbed } from "discord.js";
 import { readFile } from "fs/promises";
 import HealthScreeningBotClient from "../client/extraClient";
 
-export const guideRoot = resolve(__dirname, '../../../guides/');
+export const guideRoot = resolve(__dirname, '../../guides/');
 
 export function getGuidePath(guideName: string): string {
   return resolve(guideRoot, guideName + ".md");
