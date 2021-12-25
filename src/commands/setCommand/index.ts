@@ -139,6 +139,11 @@ export default class SetCommand extends Command {
         .setName("saturday")
         .setDescription("Whether to run the screening on Saturday.")
         .setRequired(false)
+    ).addBooleanOption((option) =>
+      option
+        .setName("ephemeral")
+        .setDescription("Whether or not the contents are hidden to everyone else.")
+        .setRequired(false)
     ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
     const validDevices = Object.keys(devices);
@@ -155,6 +160,7 @@ export default class SetCommand extends Command {
     const thursday = interaction.options.getBoolean("thursday");
     const friday = interaction.options.getBoolean("friday");
     const saturday = interaction.options.getBoolean("saturday");
+    const ephemeral = interaction.options.getBoolean("ephemeral", false) || false;
     let foundDeviceName: string | undefined;
     if (deviceName) {
       foundDeviceName = validDevices.find(
@@ -263,11 +269,13 @@ export default class SetCommand extends Command {
     }
     await interaction.reply({
       content: "Successfully set new information!",
+      ephemeral
     });
     if (userOptions && emailOnly === false) {
       await interaction.followUp({
         content:
           "To confirm that email-only mode will work, the bot will attempt to send a test screenshot.",
+        ephemeral
       });
       try {
         const user: User = interaction.user;
@@ -285,7 +293,7 @@ export default class SetCommand extends Command {
           e.message === "Cannot send messages to this user"
         ) {
           await interaction.followUp(
-            "I cannot send you a screening, possibly due to DMs being disabled from server members. Therefore, you will be set to email-only screenings. In order to disable email-only mode, please rerun `/set` after making sure your DMs are open again."
+            { content: "I cannot send you a screening, possibly due to DMs being disabled from server members. Therefore, you will be set to email-only screenings. In order to disable email-only mode, please rerun `/set` after making sure your DMs are open again.", ephemeral }
           );
           userOptions.emailOnly = true;
           await userOptions.save();
