@@ -36,6 +36,7 @@ import commandInteraction from "./interactions/commandInteraction";
 import {
   HSBAutocompleteInteraction,
   HSBCommandInteraction,
+  HSBMessageComponentInteraction,
 } from "../discordjs-overrides";
 import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
 import { Command } from "./command";
@@ -51,6 +52,8 @@ import Stats from "../commands/stats";
 import StopBot from "../commands/stopBot";
 import TestScreening from "../commands/testScreening";
 import TriggerAutoNow from "../commands/triggerAutoNow";
+import messageComponentInteraction from "./interactions/messageComponentInteraction";
+import deleteButton from "../buttons/delete";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -80,11 +83,18 @@ export default class HealthScreeningBotClient extends Client {
     new WorkerQueue({
       worker: async (args) => {
         await postToGithub(...args);
-        await sleep(60 * 1000);
+        await sleep(10 * 1000);
       },
       limit: 1,
     });
-
+  public readonly globalButtons: Collection<
+    string,
+    (interaction: HSBMessageComponentInteraction) => Promise<void>
+  > = new Collection(
+    Object.entries({
+      delete: deleteButton,
+    })
+  );
   constructor(options: ClientOptions) {
     super(options);
     this.loadEventListeners();
@@ -146,6 +156,10 @@ export default class HealthScreeningBotClient extends Client {
         case "APPLICATION_COMMAND_AUTOCOMPLETE":
           return await commandInteractionAutocomplete(
             interaction as HSBAutocompleteInteraction
+          );
+        case "MESSAGE_COMPONENT":
+          return await messageComponentInteraction(
+            interaction as HSBMessageComponentInteraction
           );
       }
     } catch (e) {

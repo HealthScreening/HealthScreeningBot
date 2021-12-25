@@ -21,6 +21,7 @@ import {
   HTTPAttachmentData,
   Message,
   MessageActionRow,
+  MessageComponentInteraction,
   MessageEmbed,
   User,
 } from "discord.js";
@@ -74,7 +75,7 @@ interface BaseMessageOptions {
  */
 export interface InteractionMessageOptions extends BaseMessageOptions {
   itemType: ItemType.interaction;
-  item: CommandInteraction;
+  item: CommandInteraction | MessageComponentInteraction;
 }
 
 /**
