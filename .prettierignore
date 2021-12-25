@@ -5,3 +5,6 @@
 node_modules
 package-lock.json
 src/screening-success-html
+
+# Cannot be autoformatted or linted due to discord not respecting traditional Markdown rules
+guides
