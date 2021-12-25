@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, User } from "discord.js";
+import { AutocompleteInteraction, Collection, MessageEmbed, User } from "discord.js";
 import { AutoUser } from "../orm/autoUser";
 import getValidUserIDs from "../utils/getValidUserIDs";
 import logError from "../utils/logError";
@@ -23,8 +23,16 @@ import sleep from "sleep-promise";
 import checkOwner from "../utils/checkOwner";
 import { ItemType } from "../utils/multiMessage";
 import { Command } from "../client/command";
+import nameAutocomplete from "./guide/autocomplete/name";
+import { HSBCommandInteraction } from "../discordjs-overrides";
 
 export default class SendToAll extends Command {
+  public autocompleteFields: Collection<
+    string,
+    (interaction: AutocompleteInteraction) => Promise<void>
+    > = new Collection(Object.entries({
+    guide_name: nameAutocomplete
+  }));
   public readonly data = new SlashCommandBuilder()
     .setName("send_to_all")
     .setDescription("Send a message to every person registered in the bot.")
@@ -41,8 +49,14 @@ export default class SendToAll extends Command {
           "The amount of time to wait between messages (in seconds)"
         )
         .setRequired(false)
+    ).addStringOption((option) =>
+      option
+        .setName("guide_name")
+        .setDescription("The name of the guide to send")
+        .setRequired(false)
+        .setAutocomplete(true)
     ) as SlashCommandBuilder;
-  async execute(interaction: CommandInteraction) {
+  async execute(interaction: HSBCommandInteraction) {
     if (
       await checkOwner({ item: interaction, itemType: ItemType.interaction })
     ) {
@@ -50,10 +64,23 @@ export default class SendToAll extends Command {
       await interaction.reply("Sending to all...");
       const validUserIDs: Set<string> = getValidUserIDs(interaction.client);
       const items = await AutoUser.findAll();
-      const message =
+      const guideName = interaction.options.getString("guide_name");
+      const message: string =
         "The bot owner has sent a message to everyone registered under the auto health screening bot:\n----\n" +
         interaction.options.getString("message") +
         "\n----\nIf you have any questions, contact <@199605025914224641> (PokestarFan#8524).";
+      let embeds: MessageEmbed[] | undefined = undefined;
+      if (guideName){
+        if (!interaction.client.guideData.has(guideName)) {
+          await interaction.reply(
+            { content: "The guide you requested does not exist. Please try again.", ephemeral: true}
+          );
+          return;
+        } else {
+          const guide = interaction.client.guideData.get(guideName)!;
+          embeds = guide.embeds;
+        }
+      }
       let user: User;
       if (timeToSleep === 0) {
         let batchData: Promise<void>[] = [];
@@ -67,6 +94,7 @@ export default class SendToAll extends Command {
                 user = await interaction.client.users.fetch(item.userId);
                 await user.send({
                   content: message,
+                  embeds
                 });
               } catch (e) {
                 console.log(e);
@@ -90,6 +118,7 @@ export default class SendToAll extends Command {
             user = await interaction.client.users.fetch(item.userId);
             await user.send({
               content: message,
+              embeds
             });
             await sleep(timeToSleep * 1000);
           } catch (e) {

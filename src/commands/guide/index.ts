@@ -59,7 +59,7 @@ export default class Guide extends Command {
     const paginate = interaction.options.getBoolean("paginate") || true;
     const ephemeral = interaction.options.getBoolean("ephemeral") || false;
     if (!interaction.client.guideData.has(name)) {
-      interaction.reply(
+      await interaction.reply(
         { content: "The guide you requested does not exist. Please try again.", ephemeral: true}
       );
       return;
