@@ -57,7 +57,9 @@ export default class TriggerAutoNow extends Command {
         .setRequired(false)
     ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
-    if (!await checkOwner({itemType: ItemType.interaction, item: interaction})) {
+    if (
+      !(await checkOwner({ itemType: ItemType.interaction, item: interaction }))
+    ) {
       return;
     }
     const skipPaused =
