@@ -30,15 +30,38 @@ export default class TriggerAutoNow extends Command {
   public readonly data = new SlashCommandBuilder()
     .setName("trigger_auto")
     .setDescription("Run the auto screenings now.")
-    .addBooleanOption((option) => option.setName("skip_paused").setDescription("Skip the apused check.").setRequired(false))
-    .addBooleanOption((option) => option.setName("skip_day").setDescription("Skip the day check.").setRequired(false))
-    .addBooleanOption((option) => option.setName("skip_email_only").setDescription("Skip the email-only check.").setRequired(false))
-    .addBooleanOption((option) => option.setName("skip_mutual_guild").setDescription("Skip the mutual guild check.").setRequired(false)) as SlashCommandBuilder;
+    .addBooleanOption((option) =>
+      option
+        .setName("skip_paused")
+        .setDescription("Skip the apused check.")
+        .setRequired(false)
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("skip_day")
+        .setDescription("Skip the day check.")
+        .setRequired(false)
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("skip_email_only")
+        .setDescription("Skip the email-only check.")
+        .setRequired(false)
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("skip_mutual_guild")
+        .setDescription("Skip the mutual guild check.")
+        .setRequired(false)
+    ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
-    const skipPaused = interaction.options.getBoolean("skip_paused", false) || false;
+    const skipPaused =
+      interaction.options.getBoolean("skip_paused", false) || false;
     const skipDay = interaction.options.getBoolean("skip_day", false) || false;
-    const skipEmailOnly = interaction.options.getBoolean("skip_email_only", false) || false;
-    const skipMutualGuild = interaction.options.getBoolean("skip_mutual_guild", false) || false;
+    const skipEmailOnly =
+      interaction.options.getBoolean("skip_email_only", false) || false;
+    const skipMutualGuild =
+      interaction.options.getBoolean("skip_mutual_guild", false) || false;
     if (interaction.user.id != "199605025914224641") {
       await interaction.reply({
         content: "You are not the bot owner!",
@@ -58,22 +81,26 @@ export default class TriggerAutoNow extends Command {
       const validDayOfWeekUsers = new Set(
         await getUsersForDayOfWeek(currentTime.weekday)
       );
-      const whereData: { [k: string]: object } = {}
-      if (!skipDay){
+      const whereData: { [k: string]: object } = {};
+      if (!skipDay) {
         whereData.userId = {
           [Op.in]: Array.from(validDayOfWeekUsers),
-        }
+        };
       }
-      if (!skipPaused){
+      if (!skipPaused) {
         whereData.paused = {
           [Op.eq]: false,
-        }
+        };
       }
       for (const autoItem of await AutoUser.findAll({
         where: whereData,
         order: [["createdAt", "ASC"]],
       })) {
-        const dmScreenshot = skipEmailOnly? true : (skipMutualGuild ? true : validUserIDs.has(autoItem.userId));
+        const dmScreenshot = skipEmailOnly
+          ? true
+          : skipMutualGuild
+          ? true
+          : validUserIDs.has(autoItem.userId);
         batchTimes.set(
           [currentTime.hour, currentTime.minute],
           (batchTimes.get([currentTime.hour, currentTime.minute]) || 0) + 1
