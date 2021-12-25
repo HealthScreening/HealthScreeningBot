@@ -16,6 +16,7 @@ export default async function goToDMButton(
           .setURL("https://discord.com/channels/@me/" + dmChannel.id)
           .setLabel("Click to Open DM")
           .setStyle("SUCCESS")
+          .setCustomId("___ignore___")
       ),
     ],
   });
