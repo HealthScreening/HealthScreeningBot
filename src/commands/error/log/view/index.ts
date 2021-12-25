@@ -5,7 +5,7 @@ import {
   MessageEmbed,
 } from "discord.js";
 import { DateTime } from "luxon";
-import { Op } from "sequelize";
+import { col, fn, Op, where } from "sequelize";
 import { ErrorLog } from "../../../../orm/errorLog";
 import Paginator from "../../../../utils/paginator";
 import { ItemType } from "../../../../utils/multiMessage";
@@ -123,10 +123,12 @@ export default class ErrorLogViewCommand extends Subcommand {
       whereQuery.createdAt[Op.gt] = new Date(afterTime * 1000);
     }
     if (typeStartsWith) {
-      if (!whereQuery.type) {
-        whereQuery.type = {};
-      }
-      whereQuery.type[Op.startsWith] = typeStartsWith;
+      whereQuery.type = where(
+        fn("lower", col("type")),
+        {
+          [Op.startsWith]: typeStartsWith.toLowerCase(),
+        }
+      )
     }
     const items: ErrorLog[] = await ErrorLog.findAll({
       where: whereQuery,

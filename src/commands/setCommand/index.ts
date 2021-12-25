@@ -46,7 +46,7 @@ export default class SetCommand extends Command {
       option
         .setName("device")
         .setDescription(
-          "The name of the device to use. Use `/device_list` to get a list of various devices."
+          "The name of the device to use."
         )
         .setRequired(false)
         .setAutocomplete(true)
@@ -155,12 +155,18 @@ export default class SetCommand extends Command {
     const thursday = interaction.options.getBoolean("thursday");
     const friday = interaction.options.getBoolean("friday");
     const saturday = interaction.options.getBoolean("saturday");
-    if (deviceName && !validDevices.includes(deviceName)) {
-      return await interaction.reply({
-        content:
-          "Invalid device name! Please enter a valid device name. See the list of valid device names by using the `/device_list` command.",
-        ephemeral: true,
-      });
+    let foundDeviceName: string | undefined;
+    if (deviceName) {
+      foundDeviceName = validDevices.find((device) =>
+        device.toLowerCase() == deviceName.toLowerCase()
+      );
+      if (!foundDeviceName) {
+        return await interaction.reply({
+          content:
+            "Invalid device name! Please enter a valid device name. Use the autocomplete options to find a valid device name.",
+          ephemeral: true,
+        });
+      }
     }
     const userOptions = await AutoUser.findOne({
       where: {
@@ -203,12 +209,12 @@ export default class SetCommand extends Command {
         ephemeral: true,
       });
     }
-    if (deviceName) {
+    if (foundDeviceName) {
       await createOrUpdate<Devices, DevicesAttributes, DevicesAttributes>(
         Devices,
         {
           userId: interaction.user.id,
-          device: deviceName,
+          device: foundDeviceName,
         },
         { userId: interaction.user.id }
       );
