@@ -52,6 +52,7 @@ import StopBot from "../commands/stopBot";
 import TestScreening from "../commands/testScreening";
 import TriggerAutoNow from "../commands/triggerAutoNow";
 import messageComponentInteraction from "./interactions/messageComponentInteraction";
+import deleteButton from "../buttons/delete";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -86,7 +87,7 @@ export default class HealthScreeningBotClient extends Client {
       limit: 1,
     });
   public readonly globalButtons: Collection<string, (interaction: HSBMessageComponentInteraction) => Promise<void>> = new Collection(Object.entries({
-
+    delete: deleteButton
   }));
   constructor(options: ClientOptions) {
     super(options);
