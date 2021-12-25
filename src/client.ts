@@ -42,6 +42,7 @@ async function startup() {
     await client.login(discord.token);
   } catch (e) {
     await logError(e, "root");
+    console.error(e);
     await closeBrowser();
   }
 }
