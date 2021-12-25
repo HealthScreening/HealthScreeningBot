@@ -1,9 +1,13 @@
 import {
   SlashCommandBuilder,
   SlashCommandSubcommandBuilder,
-  SlashCommandSubcommandGroupBuilder
+  SlashCommandSubcommandGroupBuilder,
 } from "@discordjs/builders";
-import { AutocompleteInteraction, Collection, CommandInteraction } from "discord.js";
+import {
+  AutocompleteInteraction,
+  Collection,
+  CommandInteraction,
+} from "discord.js";
 
 export interface PreCommandChecks {
   /**
@@ -36,7 +40,7 @@ export interface PreCommandChecks {
 }
 
 export interface SubcommandContainer {
-  subcommands: Collection<string, Subcommand>
+  subcommands: Collection<string, Subcommand>;
 }
 
 export abstract class BaseCommand implements PreCommandChecks {
@@ -50,25 +54,38 @@ export abstract class BaseCommand implements PreCommandChecks {
    * A mapping of fields that will support autocomplete to the functions that will
    * be executed when said fields are autocompleted.
    */
-  public autocompleteFields: Collection<string, (interaction: AutocompleteInteraction) => Promise<void>> = new Collection();
+  public autocompleteFields: Collection<
+    string,
+    (interaction: AutocompleteInteraction) => Promise<void>
+  > = new Collection();
   // Hack to silence typescript
   beforeExecute?(interaction: CommandInteraction): Promise<boolean>;
   beforeAutocomplete?(interaction: AutocompleteInteraction): Promise<boolean>;
 }
 
-export abstract class SubcommandGroup implements PreCommandChecks, SubcommandContainer {
-  abstract registerSubcommandGroup(subcommandGroup: SlashCommandSubcommandGroupBuilder): SlashCommandSubcommandGroupBuilder
+export abstract class SubcommandGroup
+  implements PreCommandChecks, SubcommandContainer
+{
+  abstract registerSubcommandGroup(
+    subcommandGroup: SlashCommandSubcommandGroupBuilder
+  ): SlashCommandSubcommandGroupBuilder;
   public subcommands: Collection<string, Subcommand> = new Collection();
   beforeExecute?(interaction: CommandInteraction): Promise<boolean>;
   beforeAutocomplete?(interaction: AutocompleteInteraction): Promise<boolean>;
 }
 
 export abstract class Subcommand extends BaseCommand {
-  abstract registerSubcommand(subcommandGroup: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder
+  abstract registerSubcommand(
+    subcommandGroup: SlashCommandSubcommandBuilder
+  ): SlashCommandSubcommandBuilder;
 }
 
-export abstract class Command extends BaseCommand implements SubcommandContainer {
-  public readonly abstract data: SlashCommandBuilder;
+export abstract class Command
+  extends BaseCommand
+  implements SubcommandContainer
+{
+  public abstract readonly data: SlashCommandBuilder;
   public subcommands: Collection<string, Subcommand> = new Collection();
-  public subcommandGroups: Collection<string, SubcommandGroup> = new Collection();
+  public subcommandGroups: Collection<string, SubcommandGroup> =
+    new Collection();
 }

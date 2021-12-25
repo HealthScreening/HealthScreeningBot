@@ -59,7 +59,7 @@ export default class GenerateOnce extends Command {
         .addChoices(
           Object.entries(screeningTypes).map(([key, value]) => [value, key])
         )
-    ) as SlashCommandBuilder
+    ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
     const firstName = interaction.options.getString("first_name")!;
     const lastName = interaction.options.getString("last_name")!;
@@ -67,12 +67,10 @@ export default class GenerateOnce extends Command {
     if (
       !email.match(/^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/)
     ) {
-      return await interaction.reply(
-        {
-          content: "Invalid email! Please enter a valid email.",
-          ephemeral: true
-        }
-      );
+      return await interaction.reply({
+        content: "Invalid email! Please enter a valid email.",
+        ephemeral: true,
+      });
     }
     const isVaxxed = interaction.options.getBoolean("vaccinated")!;
     const type = (interaction.options.getString("type") ||

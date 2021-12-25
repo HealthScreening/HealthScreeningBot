@@ -41,7 +41,7 @@ export default class SendToAll extends Command {
           "The amount of time to wait between messages (in seconds)"
         )
         .setRequired(false)
-    ) as SlashCommandBuilder
+    ) as SlashCommandBuilder;
   async execute(interaction: CommandInteraction) {
     if (
       await checkOwner({ item: interaction, itemType: ItemType.interaction })

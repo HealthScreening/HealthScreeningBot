@@ -22,7 +22,6 @@ import {
 import { discord } from "../config";
 import HealthScreeningBotClient from "./client/extraClient";
 
-
 const rest = new REST({ version: "9" }).setToken(discord.token);
 
 function registerCommands(
@@ -34,4 +33,8 @@ function registerCommands(
     .catch(console.error);
 }
 
-registerCommands(new HealthScreeningBotClient({intents: []}).commands.map((value) => value.data.toJSON()));
+registerCommands(
+  new HealthScreeningBotClient({ intents: [] }).commands.map((value) =>
+    value.data.toJSON()
+  )
+);

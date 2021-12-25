@@ -22,7 +22,9 @@ import { Subcommand } from "../../client/command";
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 
 export default class ErrorViewCommand extends Subcommand {
-  registerSubcommand(subcommand: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder {
+  registerSubcommand(
+    subcommand: SlashCommandSubcommandBuilder
+  ): SlashCommandSubcommandBuilder {
     return subcommand
       .setName("view")
       .setDescription("View an individual error")
@@ -31,7 +33,7 @@ export default class ErrorViewCommand extends Subcommand {
           .setName("id")
           .setDescription("The ID of the error to view.")
           .setRequired(true)
-      )
+      );
   }
   async execute(interaction: CommandInteraction) {
     const id: number = interaction.options.getInteger("id", true);
@@ -61,7 +63,11 @@ export default class ErrorViewCommand extends Subcommand {
       },
     ]);
     if (item.errorDescription) {
-      embed.addField("Description", item.errorDescription.substring(0, 1024), false);
+      embed.addField(
+        "Description",
+        item.errorDescription.substring(0, 1024),
+        false
+      );
     } else {
       embed.addField("Description", "None", false);
     }

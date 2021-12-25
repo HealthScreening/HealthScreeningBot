@@ -29,7 +29,7 @@ import { Command } from "../client/command";
 export default class TriggerAutoNow extends Command {
   public readonly data = new SlashCommandBuilder()
     .setName("trigger_auto")
-    .setDescription("Run the auto screenings now.")
+    .setDescription("Run the auto screenings now.");
   async execute(interaction: HSBCommandInteraction) {
     if (interaction.user.id != "199605025914224641") {
       await interaction.reply({

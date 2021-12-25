@@ -22,7 +22,9 @@ import { Subcommand } from "../../client/command";
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 
 export default class ErrorPostCommand extends Subcommand {
-  registerSubcommand(subcommand: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder{
+  registerSubcommand(
+    subcommand: SlashCommandSubcommandBuilder
+  ): SlashCommandSubcommandBuilder {
     return subcommand
       .setName("post")
       .setDescription("Post an individual error to GitHub")
@@ -37,7 +39,7 @@ export default class ErrorPostCommand extends Subcommand {
           .setName("redact")
           .setDescription("Whether or not to redact the metadata.")
           .setRequired(false)
-      )
+      );
   }
   async execute(interaction: HSBCommandInteraction) {
     const id: number = interaction.options.getInteger("id", true);
@@ -56,7 +58,10 @@ export default class ErrorPostCommand extends Subcommand {
     await interaction.reply("Posting to GitHub...");
     await interaction.client.githubQueue.enqueue(
       [
-        `[${item.type}] ${item.errorName}: ${item.errorDescription}`.substring(0, 256),
+        `[${item.type}] ${item.errorName}: ${item.errorDescription}`.substring(
+          0,
+          256
+        ),
         formatErrorLogEntry(item, redact),
       ],
       0

@@ -24,7 +24,7 @@ import { Command } from "../client/command";
 export default class StopBot extends Command {
   public readonly data = new SlashCommandBuilder()
     .setName("stop")
-    .setDescription("Stop the bot safely.")
+    .setDescription("Stop the bot safely.");
   async execute(interaction: CommandInteraction) {
     if (interaction.user.id != "199605025914224641") {
       await interaction.reply({

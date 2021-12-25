@@ -1,4 +1,8 @@
-import { AutocompleteInteraction, CommandInteraction, CommandInteractionOption } from "discord.js";
+import {
+  AutocompleteInteraction,
+  CommandInteraction,
+  CommandInteractionOption,
+} from "discord.js";
 
 export default function serializeInteraction(
   interaction: CommandInteraction | AutocompleteInteraction

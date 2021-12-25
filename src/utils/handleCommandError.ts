@@ -24,13 +24,13 @@ export default async function handleCommandError(
     return await sendMessage({
       ...params,
       content: `Unfortunately, the \`${name}\` command has encountered an error. This error has been logged and will be fixed ASAP.`,
-      ephemeral: true
+      ephemeral: true,
     });
   } else {
     return await sendMessage({
       ...params,
       content: `Unfortunately, the command has encountered an error. This error has been logged and will be fixed ASAP.`,
-      ephemeral: true
+      ephemeral: true,
     });
   }
 }

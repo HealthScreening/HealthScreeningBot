@@ -32,7 +32,7 @@ export default class Profile extends Command {
         .setName("ephemeral")
         .setDescription("Whether to hide this message.")
         .setRequired(true)
-    ) as SlashCommandBuilder
+    ) as SlashCommandBuilder;
   async execute(interaction: CommandInteraction) {
     const isEphemeral = interaction.options.getBoolean("ephemeral")!;
     const autoData = await getAutoData({ userId: interaction.user.id });

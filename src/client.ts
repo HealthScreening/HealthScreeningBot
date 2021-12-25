@@ -35,14 +35,14 @@ const client: HealthScreeningBotClient = new HealthScreeningBotClient({
   partials: ["CHANNEL"],
 });
 
-async function startup(){
+async function startup() {
   try {
     await init();
     await startupBrowser();
     await client.login(discord.token);
   } catch (e) {
-    await logError(e, "root")
-    await closeBrowser()
+    await logError(e, "root");
+    await closeBrowser();
   }
 }
 

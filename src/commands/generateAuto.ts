@@ -24,7 +24,7 @@ export default class GenerateAuto extends Command {
     .setName("generate_auto")
     .setDescription(
       "Generate a singular health screening using your auto information."
-    )
+    );
   async execute(interaction: HSBCommandInteraction) {
     await interaction.client.screeningClient.queueAutoCommand(
       interaction.user.id,

@@ -1,4 +1,9 @@
-import { AutocompleteInteraction, Collection, CommandInteraction, MessageEmbed } from "discord.js";
+import {
+  AutocompleteInteraction,
+  Collection,
+  CommandInteraction,
+  MessageEmbed,
+} from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
 import { ErrorLog } from "../../../../orm/errorLog";
@@ -13,14 +18,21 @@ import afterTimeAutocomplete from "./autocomplete/afterTime";
 import beforeTimeAutocomplete from "./autocomplete/beforeTime";
 
 export default class ErrorLogViewCommand extends Subcommand {
-  public readonly autocompleteFields: Collection<string, (interaction: AutocompleteInteraction) => Promise<void>> = new Collection(Object.entries({
-    type_starts_with: typeStartsWithAutocomplete,
-    before: beforeAutocomplete,
-    after: afterAutocomplete,
-    after_time: afterTimeAutocomplete,
-    before_time: beforeTimeAutocomplete,
-  }));
-  registerSubcommand(subcommand: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder {
+  public readonly autocompleteFields: Collection<
+    string,
+    (interaction: AutocompleteInteraction) => Promise<void>
+  > = new Collection(
+    Object.entries({
+      type_starts_with: typeStartsWithAutocomplete,
+      before: beforeAutocomplete,
+      after: afterAutocomplete,
+      after_time: afterTimeAutocomplete,
+      before_time: beforeTimeAutocomplete,
+    })
+  );
+  registerSubcommand(
+    subcommand: SlashCommandSubcommandBuilder
+  ): SlashCommandSubcommandBuilder {
     return subcommand
       .setName("view")
       .setDescription("View the error log.")
@@ -55,9 +67,7 @@ export default class ErrorLogViewCommand extends Subcommand {
       .addBooleanOption((option) =>
         option
           .setName("desc")
-          .setDescription(
-            "Show the errors in descending order, default true"
-          )
+          .setDescription("Show the errors in descending order, default true")
           .setRequired(false)
       )
       .addStringOption((option) =>
@@ -74,7 +84,7 @@ export default class ErrorLogViewCommand extends Subcommand {
           .setName("limit")
           .setDescription("Limit the number of errors shown")
           .setRequired(false)
-      )
+      );
   }
   async execute(interaction: CommandInteraction) {
     const isDesc = interaction.options.getBoolean("desc", false) || true;

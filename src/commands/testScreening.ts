@@ -82,33 +82,33 @@ export default class TestScreening extends Command {
     let willRunForWeekday = false;
     let weekdayName = "sunday";
     switch (weekday) {
-    case 1:
-      willRunForWeekday = autoDayData.onMonday;
-      weekdayName = "monday";
-      break;
-    case 2:
-      willRunForWeekday = autoDayData.onTuesday;
-      weekdayName = "tuesday";
-      break;
-    case 3:
-      willRunForWeekday = autoDayData.onWednesday;
-      weekdayName = "wednesday";
-      break;
-    case 4:
-      willRunForWeekday = autoDayData.onThursday;
-      weekdayName = "thursday";
-      break;
-    case 5:
-      willRunForWeekday = autoDayData.onFriday;
-      weekdayName = "friday";
-      break;
-    case 6:
-      willRunForWeekday = autoDayData.onSaturday;
-      weekdayName = "saturday";
-      break;
-    case 7:
-      willRunForWeekday = autoDayData.onSunday;
-      break;
+      case 1:
+        willRunForWeekday = autoDayData.onMonday;
+        weekdayName = "monday";
+        break;
+      case 2:
+        willRunForWeekday = autoDayData.onTuesday;
+        weekdayName = "tuesday";
+        break;
+      case 3:
+        willRunForWeekday = autoDayData.onWednesday;
+        weekdayName = "wednesday";
+        break;
+      case 4:
+        willRunForWeekday = autoDayData.onThursday;
+        weekdayName = "thursday";
+        break;
+      case 5:
+        willRunForWeekday = autoDayData.onFriday;
+        weekdayName = "friday";
+        break;
+      case 6:
+        willRunForWeekday = autoDayData.onSaturday;
+        weekdayName = "saturday";
+        break;
+      case 7:
+        willRunForWeekday = autoDayData.onSunday;
+        break;
     }
     const willRun = !paused && !holiday && willRunForWeekday;
     let action =

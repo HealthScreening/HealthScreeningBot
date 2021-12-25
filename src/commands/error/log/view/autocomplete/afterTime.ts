@@ -3,7 +3,9 @@ import { Op } from "sequelize";
 import { HSBAutocompleteInteraction } from "../../../../../discordjs-overrides";
 import { ErrorLog } from "../../../../../orm/errorLog";
 
-export default async function afterTimeAutocomplete(interaction: HSBAutocompleteInteraction) {
+export default async function afterTimeAutocomplete(
+  interaction: HSBAutocompleteInteraction
+) {
   const response = interaction.options.getFocused(false) as number;
   const before: number | null = interaction.options.getInteger("before");
   const after: number | null = interaction.options.getInteger("after");
@@ -13,8 +15,8 @@ export default async function afterTimeAutocomplete(interaction: HSBAutocomplete
     interaction.options.getString("type_starts_with");
   const whereQuery: { [k: string]: object } = {
     createdAt: {
-      [Op.gt]: response
-    }
+      [Op.gt]: response,
+    },
   };
   if (before) {
     if (!whereQuery.id) {
@@ -40,17 +42,21 @@ export default async function afterTimeAutocomplete(interaction: HSBAutocomplete
     }
     whereQuery.type[Op.startsWith] = typeStartsWith;
   }
-  await interaction.respond((await ErrorLog.findAll({
-    attributes: ["createdAt"],
-    where: whereQuery,
-    limit: 25,
-    order: [["createdAt", "ASC"]]
-  })).map((item) => {
-    const dt = DateTime.fromMillis(item.createdAt.getTime())
-    const value = Math.round(dt.toSeconds()) - 1
-    return {
-      name: String(value),
-      value: value
-    };
-  }));
+  await interaction.respond(
+    (
+      await ErrorLog.findAll({
+        attributes: ["createdAt"],
+        where: whereQuery,
+        limit: 25,
+        order: [["createdAt", "ASC"]],
+      })
+    ).map((item) => {
+      const dt = DateTime.fromMillis(item.createdAt.getTime());
+      const value = Math.round(dt.toSeconds()) - 1;
+      return {
+        name: String(value),
+        value: value,
+      };
+    })
+  );
 }

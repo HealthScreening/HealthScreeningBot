@@ -33,7 +33,10 @@ import sleep from "sleep-promise";
 import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
 import runFunctionAndLogError from "../utils/logError/runAndLog";
 import commandInteraction from "./interactions/commandInteraction";
-import { HSBAutocompleteInteraction, HSBCommandInteraction } from "../discordjs-overrides";
+import {
+  HSBAutocompleteInteraction,
+  HSBCommandInteraction,
+} from "../discordjs-overrides";
 import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
 import { Command } from "./command";
 import ErrorCommand from "../commands/error";
@@ -56,20 +59,22 @@ const GENERATE_AUTO_CHOICES = [
 ];
 
 export default class HealthScreeningBotClient extends Client {
-  public commands: Collection<string, Command> = new Collection(Object.entries({
-    error: new ErrorCommand(),
-    delete_auto: new DeleteAuto(),
-    generate_auto: new GenerateAuto(),
-    generate_once: new GenerateOnce(),
-    profile: new Profile(),
-    send_to_all: new SendToAll(),
-    set_auto: new SetAuto(),
-    set: new SetCommand(),
-    stats: new Stats(),
-    stop: new StopBot(),
-    test_screening: new TestScreening(),
-    trigger_auto: new TriggerAutoNow()
-  }));
+  public commands: Collection<string, Command> = new Collection(
+    Object.entries({
+      error: new ErrorCommand(),
+      delete_auto: new DeleteAuto(),
+      generate_auto: new GenerateAuto(),
+      generate_once: new GenerateOnce(),
+      profile: new Profile(),
+      send_to_all: new SendToAll(),
+      set_auto: new SetAuto(),
+      set: new SetCommand(),
+      stats: new Stats(),
+      stop: new StopBot(),
+      test_screening: new TestScreening(),
+      trigger_auto: new TriggerAutoNow(),
+    })
+  );
   public readonly screeningClient: ScreeningClient = new ScreeningClient();
   public readonly githubQueue: WorkerQueue<[string, string], void> =
     new WorkerQueue({
@@ -136,15 +141,15 @@ export default class HealthScreeningBotClient extends Client {
   private async oninteractionCreate(interaction: Interaction) {
     try {
       switch (interaction.type) {
-      case "APPLICATION_COMMAND":
-        return await commandInteraction(interaction as HSBCommandInteraction);
-      case "APPLICATION_COMMAND_AUTOCOMPLETE":
-        return await commandInteractionAutocomplete(
-          interaction as HSBAutocompleteInteraction
-        );
+        case "APPLICATION_COMMAND":
+          return await commandInteraction(interaction as HSBCommandInteraction);
+        case "APPLICATION_COMMAND_AUTOCOMPLETE":
+          return await commandInteractionAutocomplete(
+            interaction as HSBAutocompleteInteraction
+          );
       }
     } catch (e) {
-      await logError(e, "interaction")
+      await logError(e, "interaction");
     }
   }
 
