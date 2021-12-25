@@ -59,6 +59,14 @@ export default class GenerateOnce extends Command {
         .addChoices(
           Object.entries(screeningTypes).map(([key, value]) => [value, key])
         )
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("ephemeral")
+        .setDescription(
+          "Whether or not the contents are hidden to everyone else."
+        )
+        .setRequired(false)
     ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
     const firstName = interaction.options.getString("first_name")!;
@@ -76,6 +84,8 @@ export default class GenerateOnce extends Command {
     const type = (interaction.options.getString("type") ||
       "G") as screeningTypeType;
     const deviceData = await getDeviceData({ userId: interaction.user.id });
+    const ephemeral =
+      interaction.options.getBoolean("ephemeral", false) || false;
     await interaction.client.screeningClient.queueOnceCommand(
       interaction.user.id,
       {
@@ -90,6 +100,7 @@ export default class GenerateOnce extends Command {
         multiMessageParams: {
           itemType: ItemType.interaction,
           item: interaction,
+          ephemeral,
         },
       }
     );

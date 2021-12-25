@@ -33,6 +33,14 @@ export default class ErrorViewCommand extends Subcommand {
           .setName("id")
           .setDescription("The ID of the error to view.")
           .setRequired(true)
+      )
+      .addBooleanOption((option) =>
+        option
+          .setName("ephemeral")
+          .setDescription(
+            "Whether or not the contents are hidden to everyone else"
+          )
+          .setRequired(false)
       );
   }
   async execute(interaction: CommandInteraction) {
@@ -96,6 +104,8 @@ export default class ErrorViewCommand extends Subcommand {
     } else {
       embed.addField("Metadata", "None", false);
     }
-    return await interaction.reply({ embeds: embeds });
+    const ephemeral =
+      interaction.options.getBoolean("ephemeral", false) || false;
+    return await interaction.reply({ embeds: embeds, ephemeral });
   }
 }
