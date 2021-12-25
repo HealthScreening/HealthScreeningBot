@@ -65,9 +65,9 @@ const GENERATE_AUTO_CHOICES = [
 ];
 
 export interface GuideData {
-  title?: string
-  files?: string[]
-  embeds?: MessageEmbed[]
+  title?: string;
+  files?: string[];
+  embeds?: MessageEmbed[];
 }
 
 export default class HealthScreeningBotClient extends Client {
@@ -110,12 +110,14 @@ export default class HealthScreeningBotClient extends Client {
    * If providing paths, they must be relative to the root of the guides folder at the
    * root of the project, not the root of the source.
    */
-  public readonly guideData: Collection<string, GuideData> = new Collection(Object.entries({
-    rules: {
-      title: "Rules",
-      files: [getGuidePath("rules")]
-    },
-  }))
+  public readonly guideData: Collection<string, GuideData> = new Collection(
+    Object.entries({
+      rules: {
+        title: "Rules",
+        files: [getGuidePath("rules")],
+      },
+    })
+  );
   constructor(options: ClientOptions) {
     super(options);
     this.loadEventListeners();

@@ -40,7 +40,7 @@ async function startup() {
   try {
     await init();
     await startupBrowser();
-    await loadAllGuides(client)
+    await loadAllGuides(client);
     await client.login(discord.token);
   } catch (e) {
     await logError(e, "root");

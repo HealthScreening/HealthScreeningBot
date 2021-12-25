@@ -15,7 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { AutocompleteInteraction, Collection, MessageEmbed, User } from "discord.js";
+import {
+  AutocompleteInteraction,
+  Collection,
+  MessageEmbed,
+  User,
+} from "discord.js";
 import { AutoUser } from "../orm/autoUser";
 import getValidUserIDs from "../utils/getValidUserIDs";
 import logError from "../utils/logError";
@@ -30,9 +35,11 @@ export default class SendToAll extends Command {
   public autocompleteFields: Collection<
     string,
     (interaction: AutocompleteInteraction) => Promise<void>
-    > = new Collection(Object.entries({
-    guide_name: nameAutocomplete
-  }));
+  > = new Collection(
+    Object.entries({
+      guide_name: nameAutocomplete,
+    })
+  );
   public readonly data = new SlashCommandBuilder()
     .setName("send_to_all")
     .setDescription("Send a message to every person registered in the bot.")
@@ -49,7 +56,8 @@ export default class SendToAll extends Command {
           "The amount of time to wait between messages (in seconds)"
         )
         .setRequired(false)
-    ).addStringOption((option) =>
+    )
+    .addStringOption((option) =>
       option
         .setName("guide_name")
         .setDescription("The name of the guide to send")
@@ -70,11 +78,13 @@ export default class SendToAll extends Command {
         interaction.options.getString("message") +
         "\n----\nIf you have any questions, contact <@199605025914224641> (PokestarFan#8524).";
       let embeds: MessageEmbed[] | undefined = undefined;
-      if (guideName){
+      if (guideName) {
         if (!interaction.client.guideData.has(guideName)) {
-          await interaction.reply(
-            { content: "The guide you requested does not exist. Please try again.", ephemeral: true}
-          );
+          await interaction.reply({
+            content:
+              "The guide you requested does not exist. Please try again.",
+            ephemeral: true,
+          });
           return;
         } else {
           const guide = interaction.client.guideData.get(guideName)!;
@@ -94,7 +104,7 @@ export default class SendToAll extends Command {
                 user = await interaction.client.users.fetch(item.userId);
                 await user.send({
                   content: message,
-                  embeds
+                  embeds,
                 });
               } catch (e) {
                 console.log(e);
@@ -118,7 +128,7 @@ export default class SendToAll extends Command {
             user = await interaction.client.users.fetch(item.userId);
             await user.send({
               content: message,
-              embeds
+              embeds,
             });
             await sleep(timeToSleep * 1000);
           } catch (e) {

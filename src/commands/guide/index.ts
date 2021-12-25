@@ -26,9 +26,11 @@ export default class Guide extends Command {
   public autocompleteFields: Collection<
     string,
     (interaction: AutocompleteInteraction) => Promise<void>
-    > = new Collection(Object.entries({
-    name: nameAutocomplete
-  }));
+  > = new Collection(
+    Object.entries({
+      name: nameAutocomplete,
+    })
+  );
   public readonly data = new SlashCommandBuilder()
     .setName("guide")
     .setDescription("Sends a possible guide.")
@@ -46,7 +48,8 @@ export default class Guide extends Command {
           "Whether to send the guide as a paginator or as a flat list of embeds"
         )
         .setRequired(false)
-    ).addBooleanOption((option) =>
+    )
+    .addBooleanOption((option) =>
       option
         .setName("ephemeral")
         .setDescription(
@@ -59,22 +62,23 @@ export default class Guide extends Command {
     const paginate = interaction.options.getBoolean("paginate") || true;
     const ephemeral = interaction.options.getBoolean("ephemeral") || false;
     if (!interaction.client.guideData.has(name)) {
-      await interaction.reply(
-        { content: "The guide you requested does not exist. Please try again.", ephemeral: true}
-      );
+      await interaction.reply({
+        content: "The guide you requested does not exist. Please try again.",
+        ephemeral: true,
+      });
       return;
     }
     const guide = interaction.client.guideData.get(name)!;
-    if (paginate){
+    if (paginate) {
       await new Paginator(guide.embeds!).send({
         itemType: ItemType.interaction,
         item: interaction,
-        ephemeral
-      })
+        ephemeral,
+      });
     } else {
       await interaction.reply({
         embeds: guide.embeds,
-        ephemeral
+        ephemeral,
       });
     }
   }
