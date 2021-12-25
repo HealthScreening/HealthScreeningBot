@@ -7,10 +7,12 @@ import { ItemType } from "../../../../utils/multiMessage";
 import { Subcommand } from "../../../../client/command";
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import typeStartsWithAutocomplete from "./autocomplete/typeStartsWith";
+import beforeAutocomplete from "./autocomplete/before";
 
 export default class ErrorLogViewCommand extends Subcommand {
   public readonly autocompleteFields: Collection<string, (interaction: AutocompleteInteraction) => Promise<void>> = new Collection(Object.entries({
-    type_starts_with: typeStartsWithAutocomplete
+    type_starts_with: typeStartsWithAutocomplete,
+    before: beforeAutocomplete
   }));
   registerSubcommand(subcommand: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder {
     return subcommand
@@ -21,6 +23,7 @@ export default class ErrorLogViewCommand extends Subcommand {
           .setName("before")
           .setDescription("Show the errors before this error #")
           .setRequired(false)
+          .setAutocomplete(true)
       )
       .addIntegerOption((option) =>
         option
