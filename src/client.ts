@@ -47,5 +47,5 @@ async function startup(){
 }
 
 startup().then(() => {
-  console.log("Exiting bot");
+  console.log("Bot startup complete.");
 });

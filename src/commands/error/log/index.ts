@@ -11,6 +11,6 @@ export default class ErrorLogCommand extends SubcommandGroup {
     return subcommandGroup
       .setName("log")
       .setDescription("Interact with multiple errors from the error log")
-      .addSubcommand(this.subcommands.get("view")!.registerSubcommand);
+      .addSubcommand(this.subcommands.get("view")!.registerSubcommand.bind(this.subcommands.get("view")));
   }
 }

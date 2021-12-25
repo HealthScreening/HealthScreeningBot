@@ -34,9 +34,9 @@ export default class ErrorCommand extends Command {
   public readonly data = new SlashCommandBuilder()
     .setName("error")
     .setDescription("Interact with the bot's error log.")
-    .addSubcommandGroup(this.subcommandGroups.get("log")!.registerSubcommandGroup)
-    .addSubcommand(this.subcommands.get("view")!.registerSubcommand)
-    .addSubcommand(this.subcommands.get("post")!.registerSubcommand) as SlashCommandBuilder;
+    .addSubcommandGroup(this.subcommandGroups.get("log")!.registerSubcommandGroup.bind(this.subcommandGroups.get("log")))
+    .addSubcommand(this.subcommands.get("view")!.registerSubcommand.bind(this.subcommands.get("view")))
+    .addSubcommand(this.subcommands.get("post")!.registerSubcommand.bind(this.subcommands.get("post"))) as SlashCommandBuilder;
 
   async beforeExecute(interaction): Promise<boolean> {
     return await checkOwner({ itemType: ItemType.interaction, item: interaction })
