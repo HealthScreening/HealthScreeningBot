@@ -30,7 +30,7 @@ export default class GenerateAuto extends Command {
         .setName("ephemeral")
         .setDescription("Whether or not the contents are hidden to everyone else.")
         .setRequired(false)
-    );
+    ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
     const ephemeral = interaction.options.getBoolean("ephemeral", false) || false;
     await interaction.client.screeningClient.queueAutoCommand(
