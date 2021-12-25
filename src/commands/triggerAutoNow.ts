@@ -25,6 +25,8 @@ import ArrayStringMap from "array-string-map";
 import { Op } from "sequelize";
 import { HSBCommandInteraction } from "../discordjs-overrides";
 import { Command } from "../client/command";
+import checkOwner from "../utils/checkOwner";
+import { ItemType } from "../utils/multiMessage";
 
 export default class TriggerAutoNow extends Command {
   public readonly data = new SlashCommandBuilder()
@@ -55,6 +57,11 @@ export default class TriggerAutoNow extends Command {
         .setRequired(false)
     ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
+    if (
+      !(await checkOwner({ itemType: ItemType.interaction, item: interaction }))
+    ) {
+      return;
+    }
     const skipPaused =
       interaction.options.getBoolean("skip_paused", false) || false;
     const skipDay = interaction.options.getBoolean("skip_day", false) || false;
@@ -62,14 +69,7 @@ export default class TriggerAutoNow extends Command {
       interaction.options.getBoolean("skip_email_only", false) || false;
     const skipMutualGuild =
       interaction.options.getBoolean("skip_mutual_guild", false) || false;
-    if (interaction.user.id != "199605025914224641") {
-      await interaction.reply({
-        content: "You are not the bot owner!",
-        ephemeral: true,
-      });
-    } else {
-      await interaction.reply("Starting auto session...");
-    }
+    await interaction.reply("Starting auto session...");
     const logChannel: TextChannel = (await (
       await interaction.client.guilds.fetch("889983763994521610")
     ).channels.fetch("902375187150934037")) as TextChannel;

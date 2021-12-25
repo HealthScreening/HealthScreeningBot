@@ -16,25 +16,25 @@
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
-import { exit } from "process";
-
-import { closeBrowser } from "@healthscreening/generate-screenshot";
 import { Command } from "../client/command";
+import checkOwner from "../utils/checkOwner";
+import { ItemType } from "../utils/multiMessage";
+import { closeBrowser } from "@healthscreening/generate-screenshot";
+import { exit } from "process";
 
 export default class StopBot extends Command {
   public readonly data = new SlashCommandBuilder()
     .setName("stop")
     .setDescription("Stop the bot safely.");
   async execute(interaction: CommandInteraction) {
-    if (interaction.user.id != "199605025914224641") {
-      await interaction.reply({
-        content: "You are not the bot owner!",
-        ephemeral: true,
-      });
-    } else {
-      await interaction.reply("Stopping...");
-      await closeBrowser();
-      exit(0);
+    if (
+      !(await checkOwner({ itemType: ItemType.interaction, item: interaction }))
+    ) {
+      return;
     }
+    await interaction.reply("Stopping...");
+    await closeBrowser();
+    await interaction.client.destroy();
+    await exit(0);
   }
 }
