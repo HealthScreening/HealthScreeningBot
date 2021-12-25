@@ -24,13 +24,21 @@ export default class GenerateAuto extends Command {
     .setName("generate_auto")
     .setDescription(
       "Generate a singular health screening using your auto information."
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("ephemeral")
+        .setDescription("Whether or not the contents are hidden to everyone else.")
+        .setRequired(false)
     );
   async execute(interaction: HSBCommandInteraction) {
+    const ephemeral = interaction.options.getBoolean("ephemeral", false) || false;
     await interaction.client.screeningClient.queueAutoCommand(
       interaction.user.id,
       {
         itemType: ItemType.interaction,
         item: interaction,
+        ephemeral
       }
     );
   }
