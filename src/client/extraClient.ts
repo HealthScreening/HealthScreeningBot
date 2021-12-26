@@ -124,7 +124,29 @@ export default class HealthScreeningBotClient extends Client {
       },
       post_set_auto: {
         title: "Post Set Auto",
-        files: [getGuidePath("postSetAuto")],
+        files: [getGuidePath("post_set_auto")],
+      },
+      whats_new_version_2_1: {
+        title: "What's New in Version 2.1",
+        files: [getGuidePath("whats_new_version_2_1")],
+      },
+      whats_new_version_2_3: {
+        title: "What's New in Version 2.3",
+        files: [getGuidePath("whats_new_version_2_3")],
+      },
+      _send_to_all_whats_new_2_1_and_2_3: {
+        files: [
+          getGuidePath("whats_new_version_2_1"),
+          getGuidePath("whats_new_version_2_3"),
+        ],
+      },
+      guides: {
+        title: "Guide List",
+        files: [getGuidePath("guides")],
+      },
+      contributing_a_guide: {
+        title: "Contributing a Guide",
+        files: [getGuidePath("contributing_a_guide")],
       },
     })
   );
