@@ -160,7 +160,9 @@ export default class Paginator {
           components: [this.actionRow],
         });
       }
-      // @ts-ignore: Ephemeral does not exist on normal messages so we want the undefined
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore: Ephemeral does not exist on normal messages,
+      // so it'll become undefined, which is boolean false.
       else if (!customCollector.message.ephemeral) {
         await customCollector.message.edit({
           components: [this.actionRow],
