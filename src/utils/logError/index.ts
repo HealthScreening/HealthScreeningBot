@@ -14,8 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { ValidationError } from "sequelize";
 import { ErrorLog } from "../../orm/errorLog";
 import ignoreError from "./ignoreError";
+import sequelizeValidationError from "./supplementors/sequelizeValidationError";
+
+export type SupplementorFunction<E extends Error = Error> = (
+  error: E,
+  type: string,
+  metadata?: object
+) => object;
+
+export const supplementors: {
+  [key: string]: SupplementorFunction;
+} = {
+  ValidationError:
+    sequelizeValidationError as SupplementorFunction<ValidationError>,
+  SequelizeUniqueConstraintError:
+    sequelizeValidationError as SupplementorFunction<ValidationError>,
+};
 
 export default async function logError(
   error: Error,
@@ -25,10 +42,15 @@ export default async function logError(
   if (ignoreError(error, type)) {
     return null;
   }
-  const trueMetadata: object | null = metadata || null;
   const errorName: string = error.name;
   const errorMessage: string | null =
     error.message.length > 0 ? error.message : null;
+  const trueMetadata: object | null = Object.prototype.hasOwnProperty.call(
+    supplementors,
+    errorName
+  )
+    ? supplementors[errorName](error, type, metadata)
+    : metadata || null;
   const errorStack: string | null = error.stack || null;
   return await ErrorLog.create({
     errorName,
