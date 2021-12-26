@@ -125,7 +125,7 @@ export default class HealthScreeningBotClient extends Client {
       server_rules: {
         title: "Server Rules",
         files: [getGuidePath("server_rules")],
-      }
+      },
     })
   );
   constructor(options: ClientOptions) {
