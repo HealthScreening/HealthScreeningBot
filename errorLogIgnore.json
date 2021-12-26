@@ -14,6 +14,11 @@
       "type": "dailyAutoScreening",
       "name": "DiscordAPIError",
       "message": "Missing Permissions"
+    },
+    {
+      "type": "doGuildMemberCacheUpdate",
+      "name": "Error [GUILD_MEMBERS_TIMEOUT]",
+      "message": "Members didn't arrive in time."
     }
   ]
 }
