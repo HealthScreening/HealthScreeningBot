@@ -1,4 +1,12 @@
-import { MessageActionRow, MessageEmbed, MessageButton } from "discord.js";
+import {
+  MessageActionRow,
+  MessageEmbed,
+  MessageButton,
+  MessageComponentInteraction,
+  Collection,
+  Snowflake,
+  MessageActionRowComponent,
+} from "discord.js";
 import { CollectedComponent, CustomCollector } from "./customCollector";
 import { MessageOptions } from "./multiMessage";
 import logError from "./logError";
@@ -9,6 +17,7 @@ export default class Paginator {
   readonly timeout: number;
   private _currentPage: number;
   private readonly collector: CustomCollector = new CustomCollector();
+  private _lastInteraction: MessageComponentInteraction | null = null;
 
   private readonly toBeginningButton = new MessageButton()
     .setCustomId("tobeginning")
@@ -84,10 +93,14 @@ export default class Paginator {
     }
   }
 
-  private async disablePaginator(options: CollectedComponent<MessageButton>) {
+  private disableActionRow() {
     for (const component of this.actionRow.components) {
       component.setDisabled(true);
     }
+  }
+
+  private async disablePaginator(options: CollectedComponent<MessageButton>) {
+    this.disableActionRow();
     return await options.interaction.update({
       components: [this.actionRow],
     });
@@ -110,6 +123,7 @@ export default class Paginator {
     }
     this._currentPage = page;
     this.setButtonState();
+    this._lastInteraction = options.interaction;
     return await options.interaction.update({
       embeds: [this.pages[page]],
       components: [this.actionRow],
@@ -135,6 +149,26 @@ export default class Paginator {
       },
     ]);
     this.setButtonState();
+    this.collector.onEnd = async function (
+      collected: Collection<Snowflake, MessageActionRowComponent>,
+      reason: string,
+      customCollector: CustomCollector
+    ) {
+      this.disableActionRow();
+      if (this._lastInteraction !== null) {
+        await this._lastInteraction.editReply({
+          components: [this.actionRow],
+        });
+      }
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore: Ephemeral does not exist on normal messages,
+      // so it'll become undefined, which is boolean false.
+      else if (!customCollector.message.ephemeral) {
+        await customCollector.message.edit({
+          components: [this.actionRow],
+        });
+      }
+    }.bind(this);
   }
 
   async send(options: MessageOptions) {
