@@ -18,10 +18,10 @@ export default async function minuteAutocomplete(
     }
   }
   await interaction.respond(
-    sortedUniq(options.sort((a, b) => a - b)).map((value) => {
+    sortedUniq(options.sort((a, b) => a - b)).map((num) => {
       return {
-        name: value.toString(),
-        value,
+        name: num.toString(),
+        value: num,
       };
     })
   );
