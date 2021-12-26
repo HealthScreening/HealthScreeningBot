@@ -161,7 +161,7 @@ export default class Paginator {
         });
       }
       // @ts-ignore: Ephemeral does not exist on normal messages so we want the undefined
-      else if (!customCollector.message.ephemeral){
+      else if (!customCollector.message.ephemeral) {
         await customCollector.message.edit({
           components: [this.actionRow],
         });
