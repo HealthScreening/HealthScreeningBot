@@ -14,4 +14,4 @@ Guides are markdown files that are part of the bot's repository. You can get a l
 
 Anyone is welcome to contribute their own guide. If you have an idea for a cool guide, [create a pull request in the bot's repository](https://github.com/HealthScreening/HealthScreeningBot).
 
-*If you want to read this message again, use the `/guide name:whats_new_version_2_3` command.*
+*If you want to read this message again, use the `/guide name:whats_new_version_2_4` command.*

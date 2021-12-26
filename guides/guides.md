@@ -4,4 +4,4 @@
 - **Post Set Auto**: `/guide name:post_set_auto`
 - **Contributing a Guide**: `/guide name:contributing_a_guide`
 - **What's New in Version 2.1**: `/guide name:whats_new_version_2_1`
-- **What's New in Version 2.3**: `/guide name:whats_new_version_2_3`
+- **What's New in Version 2.4**: `/guide name:whats_new_version_2_4`
