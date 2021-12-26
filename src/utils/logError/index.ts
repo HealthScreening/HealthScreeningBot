@@ -45,7 +45,10 @@ export default async function logError(
   const errorName: string = error.name;
   const errorMessage: string | null =
     error.message.length > 0 ? error.message : null;
-  const trueMetadata: object | null = Object.prototype.hasOwnProperty.call(supplementors, errorName)
+  const trueMetadata: object | null = Object.prototype.hasOwnProperty.call(
+    supplementors,
+    errorName
+  )
     ? supplementors[errorName](error, type, metadata)
     : metadata || null;
   const errorStack: string | null = error.stack || null;
