@@ -57,6 +57,7 @@ import messageComponentInteraction from "./interactions/messageComponentInteract
 import deleteButton from "../buttons/delete";
 import { getGuidePath } from "../utils/guides";
 import Guide from "../commands/guide";
+import goToDMButton from "../buttons/goToDM";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -103,6 +104,7 @@ export default class HealthScreeningBotClient extends Client {
   > = new Collection(
     Object.entries({
       delete: deleteButton,
+      go_to_dm: goToDMButton,
     })
   );
   /**
@@ -115,6 +117,10 @@ export default class HealthScreeningBotClient extends Client {
       rules: {
         title: "Rules",
         files: [getGuidePath("rules")],
+      },
+      quickstart: {
+        title: "Quickstart",
+        files: [getGuidePath("quickstart")],
       },
     })
   );

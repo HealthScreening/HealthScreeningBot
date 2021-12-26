@@ -21,6 +21,7 @@ import { HSBCommandInteraction } from "../../discordjs-overrides";
 import Paginator from "../../utils/paginator";
 import { AutocompleteInteraction, Collection } from "discord.js";
 import nameAutocomplete from "./autocomplete/name";
+import sendQuickstart from "../../utils/sendQuickstart";
 
 export default class Guide extends Command {
   public autocompleteFields: Collection<
@@ -65,6 +66,13 @@ export default class Guide extends Command {
       await interaction.reply({
         content: "The guide you requested does not exist. Please try again.",
         ephemeral: true,
+      });
+      return;
+    }
+    if (name === "quickstart") {
+      await sendQuickstart(interaction.client, {
+        itemType: ItemType.interaction,
+        item: interaction,
       });
       return;
     }
