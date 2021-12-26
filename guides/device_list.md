@@ -16,4 +16,4 @@
   'Nexus 6P',            'Nexus 7',           'Nokia Lumia 520',
   'Nokia N9',            'Pixel 2',           'Pixel 2 XL',
   'Pixel 3',             'Pixel 4'
-]```
+]
