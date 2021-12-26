@@ -160,7 +160,7 @@ export class CustomCollector {
             await this.onEnd(collected, reason, this);
           }
         } catch (e) {
-          logError(e, "CustomCollector::end::globalOnEnd", {
+          await logError(e, "CustomCollector::end::globalOnEnd", {
             name: this.name,
             reason: reason,
           });

@@ -1,4 +1,4 @@
-import { MessageActionRow, MessageEmbed, MessageButton } from "discord.js";
+import { MessageActionRow, MessageEmbed, MessageButton, Snowflake, MessageActionRowComponent, Collection } from "discord.js";
 import { CollectedComponent, CustomCollector } from "./customCollector";
 import { MessageOptions } from "./multiMessage";
 import logError from "./logError";
@@ -84,10 +84,14 @@ export default class Paginator {
     }
   }
 
-  private async disablePaginator(options: CollectedComponent<MessageButton>) {
+  private disableActionRow(){
     for (const component of this.actionRow.components) {
       component.setDisabled(true);
     }
+  }
+
+  private async disablePaginator(options: CollectedComponent<MessageButton>) {
+    this.disableActionRow();
     return await options.interaction.update({
       components: [this.actionRow],
     });
@@ -135,6 +139,16 @@ export default class Paginator {
       },
     ]);
     this.setButtonState();
+    this.collector.onEnd = (async function(
+      collected: Collection<Snowflake, MessageActionRowComponent>,
+      reason: string,
+      customCollector: CustomCollector
+    ) {
+      this.disableActionRow()
+      await customCollector.message.edit({
+        components: [this.actionRow],
+      });
+    }).bind(this)
   }
 
   async send(options: MessageOptions) {
