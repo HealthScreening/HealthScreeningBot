@@ -39,6 +39,14 @@ export default class ErrorPostCommand extends Subcommand {
           .setName("redact")
           .setDescription("Whether or not to redact the metadata.")
           .setRequired(false)
+      )
+      .addBooleanOption((option) =>
+        option
+          .setName("ephemeral")
+          .setDescription(
+            "Whether or not the contents are hidden to everyone else"
+          )
+          .setRequired(false)
       );
   }
   async execute(interaction: HSBCommandInteraction) {
@@ -55,7 +63,9 @@ export default class ErrorPostCommand extends Subcommand {
     if (!item) {
       return await interaction.reply("No error with that ID found.");
     }
-    await interaction.reply("Posting to GitHub...");
+    const ephemeral =
+      interaction.options.getBoolean("ephemeral", false) || true;
+    await interaction.reply({ content: "Posting to GitHub...", ephemeral });
     await interaction.client.githubQueue.enqueue(
       [
         `[${item.type}] ${item.errorName}: ${item.errorDescription}`.substring(
