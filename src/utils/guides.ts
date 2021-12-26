@@ -24,7 +24,7 @@ export async function loadAllGuides(client: HealthScreeningBotClient) {
       );
     }
     if (item.title) {
-      if (typeof item.title === "string"){
+      if (typeof item.title === "string") {
         item.embeds?.forEach((embed) => {
           embed.setTitle(item.title as string);
         });

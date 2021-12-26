@@ -138,10 +138,7 @@ export default class HealthScreeningBotClient extends Client {
         files: [getGuidePath("whats_new_version_2_4")],
       },
       _send_to_all_whats_new_2_1_and_2_4: {
-        title: [
-          "What's New in Version 2.1",
-          "What's New in Version 2.4",
-        ],
+        title: ["What's New in Version 2.1", "What's New in Version 2.4"],
         files: [
           getGuidePath("whats_new_version_2_1"),
           getGuidePath("whats_new_version_2_4"),
