@@ -12,6 +12,6 @@ __**Guides**__
 
 Guides are markdown files that are part of the bot's repository. You can get a list of guides by running `/guide name:guides`. 
 
-Anyone is welcome to contribute their own guide. If you have an idea for a cool guide, [create a pull request in the bot's repository](https://github.com/HealthScreening/HealthScreeningBot).
+Anyone is welcome to contribute their own guide. If you have an idea for a cool guide, check out the contributing guide (`/guide name:contributing_a_guide`) and then [create a pull request in the bot's repository](https://github.com/HealthScreening/HealthScreeningBot).
 
 *If you want to read this message again, use the `/guide name:whats_new_version_2_4` command.*
