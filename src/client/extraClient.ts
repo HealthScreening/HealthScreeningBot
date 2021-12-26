@@ -122,6 +122,10 @@ export default class HealthScreeningBotClient extends Client {
         title: "Quickstart",
         files: [getGuidePath("quickstart")],
       },
+      server_rules: {
+        title: "Server Rules",
+        files: [getGuidePath("server_rules")],
+      },
     })
   );
   constructor(options: ClientOptions) {
