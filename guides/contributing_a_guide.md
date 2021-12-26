@@ -7,8 +7,10 @@ If the guide you want to submit goes over this page limit, you can split it into
 Make sure to update the guides list at `guides.md` when adding a new guide in. The guide list format is as follows:
 
 ```md
-* **Guide Title**: `/guide name:<name>`, where `<name>` is the name of the guide in the guide Collection.
+* **Guide Title**: `/guide name:<name>`
 ```
+
+`<name>` is the name of the guide in the guide Collection.
 
 If you know how to code, you can add an entry for the guide by adding a new key and data to `src/client/extraClient.ts`. However, if you do not know how to code, just mention that and I will add the appropriate code entry in for you. When adding a new item to the object, it has to be of this form:
 
