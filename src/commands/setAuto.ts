@@ -23,7 +23,7 @@ import {
   AutoUserAttributes,
   AutoUserCreationAttributes,
 } from "../orm/autoUser";
-import { AutoDays } from "../orm/autoDays";
+import { AutoDays, AutoDaysAttributes, AutoDaysCreationAttributes } from "../orm/autoDays";
 import createOrUpdate from "../utils/createOrUpdate";
 import { Command } from "../client/command";
 
@@ -91,7 +91,7 @@ export default class SetAuto extends Command {
       },
       { userId: String(interaction.user.id) }
     );
-    await AutoDays.create({ userId: String(interaction.user.id) });
+    await createOrUpdate<AutoDays, AutoDaysAttributes, AutoDaysCreationAttributes>(AutoDays, { userId: String(interaction.user.id) }, { userId: String(interaction.user.id) })
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) || false;
     if (autoUserObj.emailOnly) {
