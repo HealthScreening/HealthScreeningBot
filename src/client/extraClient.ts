@@ -66,7 +66,10 @@ const GENERATE_AUTO_CHOICES = [
 ];
 
 export interface GuideData {
-  title?: string;
+  /**
+   * Either a string for all pages, or an array of strings for each page.
+   */
+  title?: string | string[];
   files?: string[];
   embeds?: MessageEmbed[];
 }
@@ -125,6 +128,33 @@ export default class HealthScreeningBotClient extends Client {
       server_rules: {
         title: "Server Rules",
         files: [getGuidePath("server_rules")],
+      },
+      post_set_auto: {
+        title: "Post Set Auto",
+        files: [getGuidePath("post_set_auto")],
+      },
+      whats_new_version_2_1: {
+        title: "What's New in Version 2.1",
+        files: [getGuidePath("whats_new_version_2_1")],
+      },
+      whats_new_version_2_4: {
+        title: "What's New in Version 2.3",
+        files: [getGuidePath("whats_new_version_2_4")],
+      },
+      _send_to_all_whats_new_2_1_and_2_4: {
+        title: ["What's New in Version 2.1", "What's New in Version 2.4"],
+        files: [
+          getGuidePath("whats_new_version_2_1"),
+          getGuidePath("whats_new_version_2_4"),
+        ],
+      },
+      guides: {
+        title: "Guide List",
+        files: [getGuidePath("guides")],
+      },
+      contributing_a_guide: {
+        title: "Contributing a Guide",
+        files: [getGuidePath("contributing_a_guide")],
       },
     })
   );
