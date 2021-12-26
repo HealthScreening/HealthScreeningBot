@@ -118,7 +118,7 @@ export default class HealthScreeningBotClient extends Client {
   public readonly guideData: Collection<string, GuideData> = new Collection(
     Object.entries({
       rules: {
-        title: "Rules",
+        title: "Bot Rules",
         files: [getGuidePath("rules")],
       },
       quickstart: {
