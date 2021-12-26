@@ -39,7 +39,8 @@ export default class ErrorPostCommand extends Subcommand {
           .setName("redact")
           .setDescription("Whether or not to redact the metadata.")
           .setRequired(false)
-      ).addBooleanOption((option) =>
+      )
+      .addBooleanOption((option) =>
         option
           .setName("ephemeral")
           .setDescription(
