@@ -64,7 +64,9 @@ export class ScreeningClient {
       };
       sendMessage(messageOptions);
     } else if (params.multiMessageParams.itemType === ItemType.interaction) {
-      await params.multiMessageParams.item.deferReply();
+      await params.multiMessageParams.item.deferReply({
+        ephemeral: params.multiMessageParams.ephemeral
+      });
     }
     const trueParams: ProcessParams = {
       ...params,
