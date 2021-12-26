@@ -3,6 +3,9 @@ import {
   MessageEmbed,
   MessageButton,
   MessageComponentInteraction,
+  Collection,
+  Snowflake,
+  MessageActionRowComponent,
 } from "discord.js";
 import { CollectedComponent, CustomCollector } from "./customCollector";
 import { MessageOptions } from "./multiMessage";
@@ -146,10 +149,20 @@ export default class Paginator {
       },
     ]);
     this.setButtonState();
-    this.collector.onEnd = async function () {
+    this.collector.onEnd = async function (
+      collected: Collection<Snowflake, MessageActionRowComponent>,
+      reason: string,
+      customCollector: CustomCollector
+    ) {
+      this.disableActionRow();
       if (this._lastInteraction !== null) {
-        this.disableActionRow();
-        await this._lastInteraction.update({
+        await this._lastInteraction.editReply({
+          components: [this.actionRow],
+        });
+      }
+      // @ts-ignore: Ephemeral does not exist on normal messages so we want the undefined
+      else if (!customCollector.message.ephemeral){
+        await customCollector.message.edit({
           components: [this.actionRow],
         });
       }
