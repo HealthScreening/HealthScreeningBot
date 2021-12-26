@@ -66,7 +66,10 @@ const GENERATE_AUTO_CHOICES = [
 ];
 
 export interface GuideData {
-  title?: string;
+  /**
+   * Either a string for all pages, or an array of strings for each page.
+   */
+  title?: string | string[];
   files?: string[];
   embeds?: MessageEmbed[];
 }
@@ -135,6 +138,10 @@ export default class HealthScreeningBotClient extends Client {
         files: [getGuidePath("whats_new_version_2_4")],
       },
       _send_to_all_whats_new_2_1_and_2_4: {
+        title: [
+          "What's New in Version 2.1",
+          "What's New in Version 2.4",
+        ],
         files: [
           getGuidePath("whats_new_version_2_1"),
           getGuidePath("whats_new_version_2_4"),

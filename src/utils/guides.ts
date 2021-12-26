@@ -24,9 +24,15 @@ export async function loadAllGuides(client: HealthScreeningBotClient) {
       );
     }
     if (item.title) {
-      item.embeds?.forEach((embed) => {
-        embed.setTitle(item.title!);
-      });
+      if (typeof item.title === "string"){
+        item.embeds?.forEach((embed) => {
+          embed.setTitle(item.title as string);
+        });
+      } else {
+        item.embeds?.forEach((embed, index) => {
+          embed.setTitle(item.title![index]);
+        });
+      }
     }
   }
 }
