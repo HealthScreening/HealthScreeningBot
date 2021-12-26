@@ -93,7 +93,7 @@ export default class SetAuto extends Command {
     );
     await AutoDays.create({ userId: String(interaction.user.id) });
     const ephemeral =
-      interaction.options.getBoolean("ephemeral", false) || false;
+      interaction.options.getBoolean("ephemeral", false) || true;
     if (autoUserObj.emailOnly) {
       return await interaction.reply({
         content:

@@ -35,7 +35,7 @@ export default class GenerateAuto extends Command {
     ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
     const ephemeral =
-      interaction.options.getBoolean("ephemeral", false) || false;
+      interaction.options.getBoolean("ephemeral", false) || true;
     await interaction.client.screeningClient.queueAutoCommand(
       interaction.user.id,
       {

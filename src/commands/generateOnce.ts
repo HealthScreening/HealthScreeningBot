@@ -85,7 +85,7 @@ export default class GenerateOnce extends Command {
       "G") as screeningTypeType;
     const deviceData = await getDeviceData({ userId: interaction.user.id });
     const ephemeral =
-      interaction.options.getBoolean("ephemeral", false) || false;
+      interaction.options.getBoolean("ephemeral", false) || true;
     await interaction.client.screeningClient.queueOnceCommand(
       interaction.user.id,
       {

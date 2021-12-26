@@ -74,7 +74,7 @@ Screening Sent on Saturday: **${autoDayData.onSaturday}**`;
     }
     embed.addField("Device Used for Screenings", deviceData.device);
     const ephemeral =
-      interaction.options.getBoolean("ephemeral", false) || false;
+      interaction.options.getBoolean("ephemeral", false) || true;
     await interaction.reply({ embeds: [embed], ephemeral });
   }
 }

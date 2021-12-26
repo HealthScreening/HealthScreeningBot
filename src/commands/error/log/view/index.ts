@@ -202,7 +202,7 @@ export default class ErrorLogViewCommand extends Subcommand {
       embeds.push(embed);
     }
     const ephemeral =
-      interaction.options.getBoolean("ephemeral", false) || false;
+      interaction.options.getBoolean("ephemeral", false) || true;
     await new Paginator(embeds).send({
       itemType: ItemType.interaction,
       item: interaction,
