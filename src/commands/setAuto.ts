@@ -16,18 +16,10 @@
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { HSBCommandInteraction } from "../discordjs-overrides";
-import { ItemType } from "../utils/multiMessage";
+import { ItemType, sendMessage } from "../utils/multiMessage";
 import { User } from "discord.js";
-import {
-  AutoUser,
-  AutoUserAttributes,
-  AutoUserCreationAttributes,
-} from "../orm/autoUser";
-import {
-  AutoDays,
-  AutoDaysAttributes,
-  AutoDaysCreationAttributes,
-} from "../orm/autoDays";
+import { AutoUser, AutoUserAttributes, AutoUserCreationAttributes } from "../orm/autoUser";
+import { AutoDays, AutoDaysAttributes, AutoDaysCreationAttributes } from "../orm/autoDays";
 import createOrUpdate from "../utils/createOrUpdate";
 import { Command } from "../client/command";
 
@@ -131,9 +123,11 @@ export default class SetAuto extends Command {
           ephemeral,
         }
       );
-      await interaction.followUp({
-        embeds: interaction.client.guideData.get("post_set_auto")!.embeds,
-      });
+      await sendMessage({
+        itemType: ItemType.user,
+        item: user,
+        embeds: interaction.client.guideData.get("post_set_auto")!.embeds
+      })
     } catch (e) {
       if (
         e.name === "DiscordAPIError" &&
