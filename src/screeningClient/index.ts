@@ -138,7 +138,7 @@ export class ScreeningClient {
     }))!;
     const deviceInfo = await getDeviceData({ userId: user.id });
     let content =
-      "If you enjoyed the bot, please share this server with your friends!: https://discord.gg/yJbvcD4QBP\n----\nHere is the screenshot that has been auto-generated for you:";
+      "Here is the screenshot that has been auto-generated for you:";
     if (auto.manual) {
       content =
         "**The auto health screening has been *manually triggered* by the bot owner, most likely for testing.**\n----\n" +

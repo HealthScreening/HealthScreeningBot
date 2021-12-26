@@ -122,6 +122,10 @@ export default class HealthScreeningBotClient extends Client {
         title: "Quickstart",
         files: [getGuidePath("quickstart")],
       },
+      post_set_auto: {
+        title: "Post Set Auto",
+        files: [getGuidePath("postSetAuto")],
+      },
     })
   );
   constructor(options: ClientOptions) {
