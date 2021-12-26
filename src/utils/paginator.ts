@@ -2,9 +2,7 @@ import {
   MessageActionRow,
   MessageEmbed,
   MessageButton,
-  Snowflake,
-  MessageActionRowComponent,
-  Collection,
+  MessageComponentInteraction,
 } from "discord.js";
 import { CollectedComponent, CustomCollector } from "./customCollector";
 import { MessageOptions } from "./multiMessage";
@@ -16,6 +14,7 @@ export default class Paginator {
   readonly timeout: number;
   private _currentPage: number;
   private readonly collector: CustomCollector = new CustomCollector();
+  private _lastInteraction: MessageComponentInteraction | null = null;
 
   private readonly toBeginningButton = new MessageButton()
     .setCustomId("tobeginning")
@@ -121,6 +120,7 @@ export default class Paginator {
     }
     this._currentPage = page;
     this.setButtonState();
+    this._lastInteraction = options.interaction;
     return await options.interaction.update({
       embeds: [this.pages[page]],
       components: [this.actionRow],
@@ -146,15 +146,13 @@ export default class Paginator {
       },
     ]);
     this.setButtonState();
-    this.collector.onEnd = async function (
-      collected: Collection<Snowflake, MessageActionRowComponent>,
-      reason: string,
-      customCollector: CustomCollector
-    ) {
-      this.disableActionRow();
-      await customCollector.message.edit({
-        components: [this.actionRow],
-      });
+    this.collector.onEnd = async function () {
+      if (this._lastInteraction !== null) {
+        this.disableActionRow();
+        await this._lastInteraction.update({
+          components: [this.actionRow],
+        });
+      }
     }.bind(this);
   }
 
