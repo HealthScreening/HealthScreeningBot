@@ -9,7 +9,7 @@ __Parameters__:
 - **last_name**: Your last name.
 - **email**: Your email. (If you do not want to get emails from the bot, just set it to a fake email.)
 - **vaccinated**: Whether or not you are vaccinated. This should be either __True__ or __False__.
-- ephemeral : Whether or not to hide the content from everyone else. This is optional and should be either __True__ or __False__
+- **ephemeral**: Whether or not to hide the content from everyone else. This is optional and should be either __True__ or __False__. This defaults to __True__.
 
 
 `generate_auto` : Generate an health screening using your information set with `set_auto`.
