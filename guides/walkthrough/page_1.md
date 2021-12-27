@@ -1,6 +1,6 @@
 **This is the complete walkthrough of the commands of the HealthScreening Bot.**
 This bot is fairly simple and self-explanatory, but this guide serves as an complete walkthrough of the commands.
-`highlighted text` is a command name
+`Highlighted text` is a command name
 - dashed text are command arguments!
 
 
