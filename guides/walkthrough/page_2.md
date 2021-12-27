@@ -21,5 +21,5 @@ __Parameters__:
 - **first_name**: Your first name.
 - **last_name**: Your last name.
 - **email**: Your email.
-- vaccinated : Whether or not you are vaccinated. This should be either __True__ or __False__
+- **vaccinated**: Whether or not you are vaccinated. This should be either __True__ or __False__.
 - ephemeral : Whether or not to hide the content from everyone else. This is optional and should be either __True__ or __False__
