@@ -7,7 +7,7 @@ __**Automated Health Screening Commands**__:
 __Parameters__:
 - **first_name**: Your first name.
 - **last_name**: Your last name.
-- email : Your email 
+- **email**: Your email. (If you do not want to get emails from the bot, just set it to a fake email.)
 - vaccinated : Whether or not you are vaccinated. This should be either __True__ or __False__
 - ephemeral : Whether or not to hide the content from everyone else. This is optional and should be either __True__ or __False__
 
