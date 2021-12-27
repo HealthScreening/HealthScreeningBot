@@ -34,6 +34,11 @@
     "files": ["changelog/2_4_1"],
     "shortTitle": "What's New in Version 2.4.1"
   },
+  "whats_new_version_2_5": {
+    "title": "What's New in Version 2.5",
+    "files": ["changelog/2_5"],
+    "shortTitle": "What's New in Version 2.5"
+  },
   "_send_to_all_whats_new_2_1_and_2_4": {
     "title": ["What's New in Version 2.1", "What's New in Version 2.4"],
     "files": ["changelog/2_1", "changelog/2_4"],
