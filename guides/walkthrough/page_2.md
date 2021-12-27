@@ -1,4 +1,5 @@
 __**Other Useful Screening-Related Commands**__:
+
 `/set`: Sets additional information for the automated health screening.
 Paremeters (All optional by the way):
 - **device**: The name of the device for the health screening to "use". To view the full device list, do `/guide name:device_list`. *Note*: The device is used with `/generate_once` as well, so deleting your auto information will not completely reset your device. The default device used is `iPhone 11`.
