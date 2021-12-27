@@ -16,7 +16,7 @@ export function getGuidePath(guideName: string): string {
 }
 
 export async function loadGuide(path: string): Promise<MessageEmbed> {
-  const data = await readFile(getGuidePath(path), "utf8");
+  const data = await readFile(path, "utf8");
   return new MessageEmbed().setDescription(data);
 }
 

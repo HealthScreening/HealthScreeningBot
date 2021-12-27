@@ -34,5 +34,9 @@
   "contributing_a_guide": {
     "title": "Contributing a Guide",
     "files": ["contributing_a_guide"]
+  },
+  "device_list": {
+    "title": "Device List",
+    "files": ["device_list"]
   }
 }
