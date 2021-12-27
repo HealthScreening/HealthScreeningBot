@@ -9,7 +9,13 @@ Together, the hour and minute should represent the time you get your health scre
 - **email_only**: Whether the health screening should be only emailed or emailed and screenshotted. If this is __True__, the bot will **not** automatically DM you the health screening on Discord. This should be either __True__ or __False__. The default is __False__. The `/generate_auto` command will produce a screenshot regardless of what this is set to.
 - **paused**: Whether to pause the auto health screenings. If this is True, you will **not** receive any automated screenings, including emails. This should be either __True__ or __False__. The default is __False__.
 *Note*: The following arguments represent whether to run the health screening on the specified day. This should be either __True__ or __False__. If __False__, you will **not** receive any automated screenings on that day.
-- sunday - monday - tuesday - wednesday - thursday - friday - saturday
+- **sunday**: Defaults to __False__.
+- **monday**: Defaults to __True__.
+- **tuesday**: Defaults to __True__.
+- **wednesday**: Defaults to __True__.
+- **thursday**: Defaults to __True__.
+- **friday**: Defaults to __True__.
+- **saturday**: Defaults to __False__.
 
 
 `generate_once` : Generate a singular health screening without using your information set with `set_auto`.
