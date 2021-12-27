@@ -1,7 +1,7 @@
 __**Other Useful Screening-Related Commands**__:
 `/set`: Sets additional information for the automated health screening.
 Paremeters (All optional by the way):
-- device: The name of the device for the health screening to "use". To view the full device list, do `/guide name:device_list`.
+- **device**: The name of the device for the health screening to "use". To view the full device list, do `/guide name:device_list`. *Note*: The device is used with `/generate_once` as well, so deleting your auto information will not completely reset your device. The default device used is `iPhone 11`.
 - hour : The hour to run the health screening at. Number should be in between 0 - 23.
 - minute : The minute to run the health screening at. Number  should be in between 0 - 59.
 *Note*: Together, the hour and time should represent the time you get your health screening at, such as 5:20, or 23:35 (or 11:35 PM)
