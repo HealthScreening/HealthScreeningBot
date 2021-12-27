@@ -10,11 +10,15 @@ on:
       - master
     paths:
       - '**.ts'
+      - package.json
+      - package-lock.json
   pull_request:
     branches:
       - master
     paths:
       - '**.ts'
+      - package.json
+      - package-lock.json
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:

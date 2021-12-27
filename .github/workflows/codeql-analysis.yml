@@ -17,12 +17,16 @@ on:
       - master
     paths:
       - '**.ts'
+      - package.json
+      - package-lock.json
   pull_request:
     # The branches below must be a subset of the branches above
     branches:
       - master
     paths:
       - '**.ts'
+      - package.json
+      - package-lock.json
   schedule:
     - cron: "29 12 * * 1"
 
