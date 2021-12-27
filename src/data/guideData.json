@@ -50,7 +50,11 @@
     "shortTitle": "Device List"
   },
   "walkthrough": {
-    "title": ["Automated Health Screening Commands", "Other Useful Screening-Related Commands", "Miscellaneous Commands"],
+    "title": [
+      "Automated Health Screening Commands",
+      "Other Useful Screening-Related Commands",
+      "Miscellaneous Commands"
+    ],
     "files": ["walkthrough/page_1", "walkthrough/page_2", "walkthrough/page_3"],
     "shortTitle": "Walkthrough"
   }

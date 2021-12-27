@@ -23,9 +23,18 @@ import { AutocompleteInteraction, Collection } from "discord.js";
 import nameAutocomplete from "./autocomplete/name";
 import sendQuickstart from "./custom/sendQuickstart";
 
-export const customGuides: Collection<string, (interaction: HSBCommandInteraction) => Promise<void>> = new Collection(Object.entries({
-  "quickstart": (interaction) => sendQuickstart(interaction.client, {itemType: ItemType.interaction, item: interaction}),
-}));
+export const customGuides: Collection<
+  string,
+  (interaction: HSBCommandInteraction) => Promise<void>
+> = new Collection(
+  Object.entries({
+    quickstart: (interaction) =>
+      sendQuickstart(interaction.client, {
+        itemType: ItemType.interaction,
+        item: interaction,
+      }),
+  })
+);
 
 export default class Guide extends Command {
   public autocompleteFields: Collection<
