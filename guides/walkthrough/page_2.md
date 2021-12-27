@@ -19,7 +19,7 @@ Together, the hour and minute should represent the time you get your health scre
 `/generate_once`: Generate a singular health screening without using your information set with `/set_auto`. If set, the device **will** be considered.
 __Parameters__:
 - **first_name**: Your first name.
-- last_name : Your last name
+- **last_name**: Your last name.
 - email : Your email 
 - vaccinated : Whether or not you are vaccinated. This should be either __True__ or __False__
 - ephemeral : Whether or not to hide the content from everyone else. This is optional and should be either __True__ or __False__
