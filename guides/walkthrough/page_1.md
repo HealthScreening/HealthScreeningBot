@@ -15,5 +15,5 @@ __Parameters__:
 - **ephemeral**: Whether or not to hide the content from everyone else. This is optional and should be either __True__ or __False__. This defaults to __True__.
 
 `/generate_auto`: Generate a health screening using the information set with `/set_auto`.
-__Paremeters__:
+__Parameters__:
 - **ephemeral**: Whether or not to hide the content from everyone else. This is optional and should be either __True__ or __False__. This defaults to __True__.
