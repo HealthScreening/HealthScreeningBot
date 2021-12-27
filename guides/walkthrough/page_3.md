@@ -1,4 +1,4 @@
-**Miscellaneous**
+__**Miscellaneous Commands**__:
 *Note* All commands in this category have an ephemeral argument, which hides the content sent from everyone else if True. This argument will not be listed in these parameters.
 `/guide`: Sends a guide from a list of approved guides. Guides can be contributed by anyone to the bot's GitHub repository.
 Paremeters: 
