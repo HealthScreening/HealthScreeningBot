@@ -9,14 +9,14 @@ on:
     branches:
       - master
     paths:
-      - '**.ts'
+      - "**.ts"
       - package.json
       - package-lock.json
   pull_request:
     branches:
       - master
     paths:
-      - '**.ts'
+      - "**.ts"
       - package.json
       - package-lock.json
 
