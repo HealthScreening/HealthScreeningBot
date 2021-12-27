@@ -18,6 +18,7 @@ Together, the hour and minute should represent the time you get your health scre
 - **thursday**: Defaults to __True__.
 - **friday**: Defaults to __True__.
 - **saturday**: Defaults to __False__.
+
 `/generate_once`: Generate a singular health screening without using your information set with `/set_auto`. If set, the device **will** be considered.
 __Parameters__:
 - **first_name**: Your first name.
