@@ -1,4 +1,4 @@
-**Here is a list of all the devices you can register when using the `/set` command:**
+Here is a list of all the devices you can register when using the `/set` command:
 
 **__Samsung Galaxy__**: `Galaxy Note II`, `Galaxy S III`, `Galaxy S5`, `Galaxy S8`, `Galaxy S9+`, `Galaxy Tab S4`
  
