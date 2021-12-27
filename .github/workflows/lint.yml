@@ -10,13 +10,13 @@ on:
       - master
     paths:
       - '!package-lock.json'
-      - '!guides'
+      - '!guides/**'
   pull_request:
     branches:
       - master
     paths:
       - '!package-lock.json'
-      - '!guides'
+      - '!guides/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
