@@ -9,4 +9,4 @@ __Parameters__:
 `/profile`: Shows an overview of all information stored for the user, including information submitted via `/set_auto` and `/set`.
 - **ephemeral**: Whether or not to hide the content from everyone else. This is optional and should be either __True__ or __False__. This defaults to __True__.
 
-`/stats` : Send bot stats. This does not have the ephemeral argument (why would it?)
+`/stats`: Send bot stats. This does not have the ephemeral argument (why would it?)
