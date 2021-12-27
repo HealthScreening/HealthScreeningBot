@@ -5,7 +5,7 @@ This bot is fairly simple and self-explanatory, but this guide serves as an comp
 __**Automated Health Screening Commands**__:
 `/set_auto`: Sets the information used for the automated health screening.
 __Parameters__:
-- first_name : Your first name
+- **first_name**: Your first name.
 - last_name : Your last name
 - email : Your email 
 - vaccinated : Whether or not you are vaccinated. This should be either __True__ or __False__
