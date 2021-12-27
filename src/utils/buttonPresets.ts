@@ -1,7 +1,7 @@
 // This module serves as presets for some common button types
 
 import { MessageButton, MessageButtonStyleResolvable } from "discord.js";
-import _buttonData from "../../buttonPresets.json";
+import _buttonData from "../data/buttonPresets.json";
 
 export interface PresetButton {
   customId: string;
