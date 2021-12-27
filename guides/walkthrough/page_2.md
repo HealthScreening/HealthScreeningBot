@@ -6,7 +6,7 @@ Paremeters (All optional by the way):
 - **minute**: The minute to run the health screening at. Should be a number between 0 - 59.
 Together, the hour and minute should represent the time you get your health screening at, such as 5:20, or 23:35 (11:35 PM)
 - **type**: The type of screening to generate. Available options are __guest__, __student__, or __employee__. The default is __guest__.
-- email_only : Whether the health screening should be emailed only or not. If this is True, the bot will **not** DM you the health screening on Discord. This should be either __True__ or __False__, but defaults to False.
+- **email_only**: Whether the health screening should be only emailed or emailed and screenshotted. If this is __True__, the bot will **not** automatically DM you the health screening on Discord. This should be either __True__ or __False__. The default is __False__. The `/generate_auto` command will produce a screenshot regardless of what this is set to.
 - paused : Whether to pause the auto health screenings. If this is True, you will **not** receive any automated screenings. This should be either __True__ or __False__, but defaults to False.
 *Note*: The following arguments represent whether to run the health screening on the specified day. This should be either __True__ or __False__. If False, you will **not** receive any automated screenings on that day.
 - sunday - monday - tuesday - wednesday - thursday - friday - saturday
