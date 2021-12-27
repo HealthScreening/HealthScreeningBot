@@ -9,6 +9,7 @@ export const guideRoot = resolve(__dirname, "../../guides/");
 export type GuideItem = {
   title: string | string[];
   files: string[];
+  shortTitle: string;
 }
 
 export function getGuidePath(guideName: string): string {

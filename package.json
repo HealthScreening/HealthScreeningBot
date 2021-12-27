@@ -84,7 +84,9 @@
     "clean-typescript": "find src -name '*.js' -exec rm -f {} +",
     "update": "git pull && npm run typescript",
     "build": "npm run clean-typescript && npm run typescript",
-    "git-rebuild": "git pull && npm run build"
+    "git-rebuild": "git pull && npm run build",
+    "update-auto-migrations": "node scripts/updateAutoMigration.js",
+    "generate-guides": "node scripts/generateGuides.js"
   },
   "type": "commonjs"
 }
