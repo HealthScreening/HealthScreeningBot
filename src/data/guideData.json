@@ -1,0 +1,38 @@
+{
+  "rules": {
+    "title": "Bot Rules",
+    "files": ["rules"]
+  },
+  "quickstart": {
+    "title": "Quickstart",
+    "files": ["quickstart"]
+  },
+  "server_rules": {
+    "title": "Server Rules",
+    "files": ["server_rules"]
+  },
+  "post_set_auto": {
+    "title": "Post Set Auto",
+    "files": ["post_set_auto"]
+  },
+  "whats_new_version_2_1": {
+    "title": "What's New in Version 2.1",
+    "files": ["whats_new_version_2_1"]
+  },
+  "whats_new_version_2_4": {
+    "title": "What's New in Version 2.4",
+    "files": ["whats_new_version_2_4"]
+  },
+  "_send_to_all_whats_new_2_1_and_2_4": {
+    "title": ["What's New in Version 2.1", "What's New in Version 2.4"],
+    "files": ["whats_new_version_2_1", "whats_new_version_2_4"]
+  },
+  "guides": {
+    "title": "Guide List",
+    "files": ["guides"]
+  },
+  "contributing_a_guide": {
+    "title": "Contributing a Guide",
+    "files": ["contributing_a_guide"]
+  }
+}

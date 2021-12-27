@@ -21,7 +21,11 @@ import { HSBCommandInteraction } from "../../discordjs-overrides";
 import Paginator from "../../utils/paginator";
 import { AutocompleteInteraction, Collection } from "discord.js";
 import nameAutocomplete from "./autocomplete/name";
-import sendQuickstart from "../../utils/sendQuickstart";
+import sendQuickstart from "./custom/sendQuickstart";
+
+export const customGuides: Collection<string, (interaction: HSBCommandInteraction) => Promise<void>> = new Collection(Object.entries({
+  "quickstart": (interaction) => sendQuickstart(interaction.client, {itemType: ItemType.interaction, item: interaction}),
+}));
 
 export default class Guide extends Command {
   public autocompleteFields: Collection<
@@ -69,23 +73,20 @@ export default class Guide extends Command {
       });
       return;
     }
-    if (name === "quickstart") {
-      await sendQuickstart(interaction.client, {
-        itemType: ItemType.interaction,
-        item: interaction,
-      });
+    if (customGuides.has(name)) {
+      await customGuides.get(name)!(interaction);
       return;
     }
     const guide = interaction.client.guideData.get(name)!;
     if (paginate) {
-      await new Paginator(guide.embeds!).send({
+      await new Paginator(guide).send({
         itemType: ItemType.interaction,
         item: interaction,
         ephemeral,
       });
     } else {
       await interaction.reply({
-        embeds: guide.embeds,
+        embeds: guide,
         ephemeral,
       });
     }

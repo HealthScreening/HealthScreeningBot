@@ -1,38 +1,32 @@
 import { resolve } from "path";
-import { MessageEmbed } from "discord.js";
+import { Collection, MessageEmbed } from "discord.js";
 import { readFile } from "fs/promises";
 import HealthScreeningBotClient from "../client/extraClient";
+import guideData from "../data/guideData.json";
 
 export const guideRoot = resolve(__dirname, "../../guides/");
+
+export type GuideItem = {
+  title: string | string[];
+  files: string[];
+}
 
 export function getGuidePath(guideName: string): string {
   return resolve(guideRoot, guideName + ".md");
 }
 
 export async function loadGuide(path: string): Promise<MessageEmbed> {
-  const data = await readFile(path, "utf8");
+  const data = await readFile(getGuidePath(path), "utf8");
   return new MessageEmbed().setDescription(data);
 }
 
 export async function loadAllGuides(client: HealthScreeningBotClient) {
-  for (const item of client.guideData.values()) {
-    if (item.files) {
-      item.embeds = await Promise.all(
-        item.files.map(async (file) => {
-          return await loadGuide(file);
-        })
-      );
-    }
-    if (item.title) {
-      if (typeof item.title === "string") {
-        item.embeds?.forEach((embed) => {
-          embed.setTitle(item.title as string);
-        });
-      } else {
-        item.embeds?.forEach((embed, index) => {
-          embed.setTitle(item.title![index]);
-        });
-      }
-    }
-  }
+  const collection = new Collection<string, MessageEmbed[]>();
+  await Promise.all(Object.entries(guideData as { [key: string]: GuideItem }).map(async ([key, value]) => {
+    collection.set(key, []);
+    await Promise.all(value.files.map(async (file) => {
+      collection.get(key)!.push(await loadGuide(getGuidePath(file)));
+    }))
+  }))
+  client.guideData = collection;
 }

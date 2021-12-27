@@ -15,12 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
-import {
-  AutocompleteInteraction,
-  Collection,
-  MessageEmbed,
-  User,
-} from "discord.js";
+import { AutocompleteInteraction, Collection, MessageEmbed, User } from "discord.js";
 import { AutoUser } from "../orm/autoUser";
 import getValidUserIDs from "../utils/getValidUserIDs";
 import logError from "../utils/logError";
@@ -87,8 +82,7 @@ export default class SendToAll extends Command {
           });
           return;
         } else {
-          const guide = interaction.client.guideData.get(guideName)!;
-          embeds = guide.embeds;
+          embeds = interaction.client.guideData.get(guideName)!;
         }
       }
       let user: User;
