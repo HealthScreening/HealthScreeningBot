@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { holidayData } from "../../holidays.json";
+import { holidayData } from "../data/holidays.json";
 
 export interface Date {
   year: number;

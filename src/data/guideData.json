@@ -1,0 +1,61 @@
+{
+  "rules": {
+    "title": "Bot Rules",
+    "files": ["rules"],
+    "shortTitle": "Bot Rules"
+  },
+  "quickstart": {
+    "title": "Quickstart",
+    "files": ["quickstart"],
+    "shortTitle": "Quickstart"
+  },
+  "server_rules": {
+    "title": "Server Rules",
+    "files": ["server_rules"],
+    "shortTitle": "Server Rules"
+  },
+  "post_set_auto": {
+    "title": "Post Set Auto",
+    "files": ["post_set_auto"],
+    "shortTitle": "Post Set Auto"
+  },
+  "whats_new_version_2_1": {
+    "title": "What's New in Version 2.1",
+    "files": ["whats_new_version_2_1"],
+    "shortTitle": "What's New in Version 2.1"
+  },
+  "whats_new_version_2_4": {
+    "title": "What's New in Version 2.4",
+    "files": ["whats_new_version_2_4"],
+    "shortTitle": "What's New in Version 2.4"
+  },
+  "_send_to_all_whats_new_2_1_and_2_4": {
+    "title": ["What's New in Version 2.1", "What's New in Version 2.4"],
+    "files": ["whats_new_version_2_1", "whats_new_version_2_4"],
+    "shortTitle": "What's New in Version 2.1 and 2.4"
+  },
+  "guides": {
+    "title": "Guide List",
+    "files": ["guides"],
+    "shortTitle": "Guide List"
+  },
+  "contributing_a_guide": {
+    "title": "Contributing a Guide",
+    "files": ["contributing_a_guide"],
+    "shortTitle": "Contributing a Guide"
+  },
+  "device_list": {
+    "title": "Device List",
+    "files": ["device_list"],
+    "shortTitle": "Device List"
+  },
+  "walkthrough": {
+    "title": [
+      "Automated Health Screening Commands",
+      "Other Useful Screening-Related Commands",
+      "Miscellaneous Commands"
+    ],
+    "files": ["walkthrough/page_1", "walkthrough/page_2", "walkthrough/page_3"],
+    "shortTitle": "Walkthrough"
+  }
+}

@@ -87,8 +87,7 @@ export default class SendToAll extends Command {
           });
           return;
         } else {
-          const guide = interaction.client.guideData.get(guideName)!;
-          embeds = guide.embeds;
+          embeds = interaction.client.guideData.get(guideName)!;
         }
       }
       let user: User;

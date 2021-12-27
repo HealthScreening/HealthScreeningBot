@@ -134,7 +134,7 @@ export default class SetAuto extends Command {
       await sendMessage({
         itemType: ItemType.user,
         item: user,
-        embeds: interaction.client.guideData.get("post_set_auto")!.embeds,
+        embeds: interaction.client.guideData.get("post_set_auto")!,
       });
     } catch (e) {
       if (
@@ -144,7 +144,7 @@ export default class SetAuto extends Command {
         await interaction.followUp({
           content:
             "I cannot send you a screening, possibly due to DMs being disabled from server members. Therefore, you will be set to email-only screenings. In order to disable email-only mode, please run `/toggle_email_only` after making sure your DMs are open again.",
-          embeds: interaction.client.guideData.get("post_set_auto")!.embeds,
+          embeds: interaction.client.guideData.get("post_set_auto")!,
         });
         autoUserObj.emailOnly = true;
         await autoUserObj.save();

@@ -55,7 +55,6 @@ import TestScreening from "../commands/testScreening";
 import TriggerAutoNow from "../commands/triggerAutoNow";
 import messageComponentInteraction from "./interactions/messageComponentInteraction";
 import deleteButton from "../buttons/delete";
-import { getGuidePath } from "../utils/guides";
 import Guide from "../commands/guide";
 import goToDMButton from "../buttons/goToDM";
 
@@ -115,49 +114,7 @@ export default class HealthScreeningBotClient extends Client {
    * If providing paths, they must be relative to the root of the guides folder at the
    * root of the project, not the root of the source.
    */
-  public readonly guideData: Collection<string, GuideData> = new Collection(
-    Object.entries({
-      rules: {
-        title: "Bot Rules",
-        files: [getGuidePath("rules")],
-      },
-      quickstart: {
-        title: "Quickstart",
-        files: [getGuidePath("quickstart")],
-      },
-      server_rules: {
-        title: "Server Rules",
-        files: [getGuidePath("server_rules")],
-      },
-      post_set_auto: {
-        title: "Post Set Auto",
-        files: [getGuidePath("post_set_auto")],
-      },
-      whats_new_version_2_1: {
-        title: "What's New in Version 2.1",
-        files: [getGuidePath("whats_new_version_2_1")],
-      },
-      whats_new_version_2_4: {
-        title: "What's New in Version 2.4",
-        files: [getGuidePath("whats_new_version_2_4")],
-      },
-      _send_to_all_whats_new_2_1_and_2_4: {
-        title: ["What's New in Version 2.1", "What's New in Version 2.4"],
-        files: [
-          getGuidePath("whats_new_version_2_1"),
-          getGuidePath("whats_new_version_2_4"),
-        ],
-      },
-      guides: {
-        title: "Guide List",
-        files: [getGuidePath("guides")],
-      },
-      contributing_a_guide: {
-        title: "Contributing a Guide",
-        files: [getGuidePath("contributing_a_guide")],
-      },
-    })
-  );
+  public guideData: Collection<string, MessageEmbed[]>;
   constructor(options: ClientOptions) {
     super(options);
     this.loadEventListeners();
