@@ -38,5 +38,9 @@
   "device_list": {
     "title": "Device List",
     "files": ["device_list"]
+  },
+  "walkthrough": {
+    "title": ["Automated Health Screening Commands", "Other Useful Screening-Related Commands", "Miscellaneous Commands"],
+    "files": ["walkthrough/page_1", "walkthrough/page_2", "walkthrough/page_3"]
   }
 }

@@ -23,10 +23,15 @@ export async function loadGuide(path: string): Promise<MessageEmbed> {
 export async function loadAllGuides(client: HealthScreeningBotClient) {
   const collection = new Collection<string, MessageEmbed[]>();
   await Promise.all(Object.entries(guideData as { [key: string]: GuideItem }).map(async ([key, value]) => {
-    collection.set(key, []);
-    await Promise.all(value.files.map(async (file) => {
-      collection.get(key)!.push(await loadGuide(getGuidePath(file)));
-    }))
+    collection.set(key, await Promise.all(value.files.map(async (file, index) => {
+      const guide = await loadGuide(getGuidePath(file))
+      if (typeof value.title === "string"){
+        guide.setTitle(value.title);
+      } else {
+        guide.setTitle(value.title[index]);
+      }
+      return guide;
+    })));
   }))
   client.guideData = collection;
 }

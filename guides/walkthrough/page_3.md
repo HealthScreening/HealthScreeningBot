@@ -1,5 +1,3 @@
-__**Miscellaneous Commands**__:
-
 `/guide`: Sends a guide from a list of approved guides. Guides can be contributed by anyone to the bot's GitHub repository.
 __Parameters__:
 - **name**: The name of the guide to send.
