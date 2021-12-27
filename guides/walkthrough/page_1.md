@@ -3,7 +3,7 @@ This bot is fairly simple and self-explanatory, but this guide serves as an comp
 `Highlighted text` is a command name
 - dashed text are command arguments.
 __**Automated Health Screening Commands**__:
-`set_auto` : Sets the information used for the automated health screening
+`/set_auto`: Sets the information used for the automated health screening.
 Paremeters:
 - first_name : Your first name
 - last_name : Your last name
