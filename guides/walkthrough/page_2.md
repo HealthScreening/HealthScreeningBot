@@ -1,4 +1,5 @@
-`set` : Sets additional information for the automated health screening.
+__**Other Useful Screening-Related Commands**__:
+`/set`: Sets additional information for the automated health screening.
 Paremeters (All optional by the way):
 - device: The name of the device for the health screening to "use". To view the full device list, do `/guide name:device_list`.
 - hour : The hour to run the health screening at. Number should be in between 0 - 23.
