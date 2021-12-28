@@ -31,7 +31,7 @@ export default async function commandNameStartsWithAutocomplete(
   const afterTime: number | null = interaction.options.getInteger("after_time");
   const userId: User | null = interaction.options.getUser("user_id");
   const whereQuery: { [k: string]: object } = {
-    type: where(fn("lower", col("type")), {
+    commandName: where(fn("lower", col("commandName")), {
       [Op.startsWith]: (response as string).toLowerCase(),
     }),
   };

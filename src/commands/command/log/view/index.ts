@@ -195,7 +195,7 @@ export default class CommandLogViewCommand extends Subcommand {
         where: whereQuery,
         order: [[col("createdAt"), isDesc ? "DESC" : "ASC"]],
         limit: limit || undefined,
-        group: unique ? ["type", "commandName", "userName"] : undefined,
+        group: unique ? ["commandName", "commandName", "userName"] : undefined,
       });
     } else {
       items = await CommandLog.findAll({
