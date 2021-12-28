@@ -28,7 +28,6 @@ import { ItemType } from "../utils/multiMessage";
 import assignAutoSchoolRole from "./autoAssignSchoolRole";
 import doAutoLoop from "./doAutoLoop";
 import logError from "../utils/logError";
-import { WorkerQueue } from "../utils/workerQueue";
 import postToGithub from "../utils/postToGithub";
 import sleep from "sleep-promise";
 import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
@@ -57,6 +56,7 @@ import messageComponentInteraction from "./interactions/messageComponentInteract
 import deleteButton from "../buttons/delete";
 import Guide from "../commands/guide";
 import goToDMButton from "../buttons/goToDM";
+import ConcurrentPriorityWorkerQueue from "concurrent-priority-worker-queue";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -92,14 +92,16 @@ export default class HealthScreeningBotClient extends Client {
     })
   );
   public readonly screeningClient: ScreeningClient = new ScreeningClient();
-  public readonly githubQueue: WorkerQueue<[string, string], void> =
-    new WorkerQueue({
-      worker: async (args) => {
-        await postToGithub(...args);
-        await sleep(10 * 1000);
-      },
-      limit: 1,
-    });
+  public readonly githubQueue: ConcurrentPriorityWorkerQueue<
+    [string, string],
+    void
+  > = new ConcurrentPriorityWorkerQueue({
+    worker: async (args) => {
+      await postToGithub(...args);
+      await sleep(10 * 1000);
+    },
+    limit: 1,
+  });
   public readonly globalButtons: Collection<
     string,
     (interaction: HSBMessageComponentInteraction) => Promise<void>

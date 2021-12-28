@@ -1,6 +1,6 @@
 {
   "name": "healthscreeningbot",
-  "version": "2.5.0",
+  "version": "2.5.0a",
   "author": {
     "email": "sarkaraoyan@gmail.com",
     "name": "Aoyan Sarkar"
@@ -46,6 +46,7 @@
     "@healthscreening/screening-types": "^1.0.0",
     "array-string-map": "^3.0.0",
     "axios": "^0.24.0",
+    "concurrent-priority-worker-queue": "^1.0.0",
     "discord-api-types": "^0.25.2",
     "discord.js": "^13.4.0",
     "lodash": "^4.17.21",
@@ -58,18 +59,18 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@healthscreening/sequelize-lazy-migrations": "^1.0.7",
     "@types/lodash": "^4.14.178",
     "@types/luxon": "^2.0.8",
     "@types/node": "^17.0.5",
+    "@types/uuid": "^8.3.3",
     "@typescript-eslint/eslint-plugin": "^5.8.0",
     "@typescript-eslint/parser": "^5.8.0",
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.3.0",
     "prettier": "2.5.1",
     "sequelize-cli": "^6.3.0",
-    "@healthscreening/sequelize-lazy-migrations": "^1.0.7",
-    "typescript": "^4.5.4",
-    "@types/uuid": "^8.3.3"
+    "typescript": "^4.5.4"
   },
   "scripts": {
     "start": "node src/client.js",
