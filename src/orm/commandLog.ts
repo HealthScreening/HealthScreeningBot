@@ -35,6 +35,8 @@ export class CommandLog
   userId!: string;
   userName!: string;
   commandName!: string;
+
+  readonly createdAt!: Date;
 }
 
 CommandLog.init(
@@ -64,7 +66,7 @@ CommandLog.init(
     updatedAt: false,
     indexes: [
       {
-        fields: ["userID"],
+        fields: ["userId"],
       },
       {
         fields: ["commandName"],

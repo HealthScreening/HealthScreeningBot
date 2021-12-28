@@ -203,7 +203,7 @@
       },
       "indexes": {
         "0d2878019cd6f247f7b61e84129764172185e6b2": {
-          "fields": ["userID"],
+          "fields": ["userId"],
           "name": "command_logs_user_i_d",
           "options": {
             "indexName": "command_logs_user_i_d",

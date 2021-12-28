@@ -55,7 +55,7 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
       updatedAt: false,
       indexes: [
         {
-          fields: ["userID"],
+          fields: ["userId"],
         },
         {
           fields: ["commandName"],

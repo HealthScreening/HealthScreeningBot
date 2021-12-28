@@ -58,6 +58,7 @@ import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
 import commandInteraction from "./interactions/commandInteraction";
 import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
 import messageComponentInteraction from "./interactions/messageComponentInteraction";
+import CommandCommand from "../commands/command";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -77,6 +78,7 @@ export interface GuideData {
 export default class HealthScreeningBotClient extends Client {
   public commands: Collection<string, Command> = new Collection(
     Object.entries({
+      command: new CommandCommand(),
       error: new ErrorCommand(),
       delete_auto: new DeleteAuto(),
       generate_auto: new GenerateAuto(),

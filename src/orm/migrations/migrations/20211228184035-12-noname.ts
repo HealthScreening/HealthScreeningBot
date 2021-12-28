@@ -69,7 +69,7 @@ let migrationCommands = [
     fn: "addIndex",
     params: [
       "CommandLogs",
-      ["userID"],
+      ["userId"],
       {
         indexName: "command_logs_user_i_d",
         name: "command_logs_user_i_d",

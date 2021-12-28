@@ -20,27 +20,26 @@ import {
   Collection,
   CommandInteraction,
   MessageEmbed,
+  User,
 } from "discord.js";
 import { DateTime } from "luxon";
-import { Op, col, fn, literal, where } from "sequelize";
+import { Op, col, fn, where } from "sequelize";
 
 import { Subcommand } from "../../../../client/command";
-import { ErrorLog } from "../../../../orm/errorLog";
-import { ItemType } from "../../../../utils/multiMessage";
-import Paginator from "../../../../utils/paginator";
-import afterAutocomplete from "./autocomplete/after";
-import afterTimeAutocomplete from "./autocomplete/afterTime";
-import beforeAutocomplete from "./autocomplete/before";
-import beforeTimeAutocomplete from "./autocomplete/beforeTime";
-import typeStartsWithAutocomplete from "./autocomplete/typeStartsWith";
+import { CommandLog } from "../../../../orm/commandLog";
+import afterAutocomplete from "../view/autocomplete/after";
+import afterTimeAutocomplete from "../view/autocomplete/afterTime";
+import beforeAutocomplete from "../view/autocomplete/before";
+import beforeTimeAutocomplete from "../view/autocomplete/beforeTime";
+import commandNameStartsWithAutocomplete from "../view/autocomplete/commandNameStartsWith";
 
-export default class ErrorLogViewCommand extends Subcommand {
+export default class CommandLogPruneCommand extends Subcommand {
   public readonly autocompleteFields: Collection<
     string,
     (interaction: AutocompleteInteraction) => Promise<void>
   > = new Collection(
     Object.entries({
-      type_starts_with: typeStartsWithAutocomplete,
+      command_name_starts_with: commandNameStartsWithAutocomplete,
       before: beforeAutocomplete,
       after: afterAutocomplete,
       after_time: afterTimeAutocomplete,
@@ -51,67 +50,55 @@ export default class ErrorLogViewCommand extends Subcommand {
     subcommand: SlashCommandSubcommandBuilder
   ): SlashCommandSubcommandBuilder {
     return subcommand
-      .setName("view")
-      .setDescription("View the error log.")
+      .setName("prune")
+      .setDescription("Prune the error log.")
       .addIntegerOption((option) =>
         option
           .setName("before")
-          .setDescription("Show the errors before this error #")
+          .setDescription("Prune the errors before this error #")
           .setRequired(false)
           .setAutocomplete(true)
       )
       .addIntegerOption((option) =>
         option
           .setName("after")
-          .setDescription("Show the errors after this error #")
+          .setDescription("Prune the errors after this error #")
           .setRequired(false)
           .setAutocomplete(true)
       )
       .addIntegerOption((option) =>
         option
           .setName("after_time")
-          .setDescription("Show errors after the given UNIX timestamp")
+          .setDescription("Prune errors after the given UNIX timestamp")
           .setRequired(false)
           .setAutocomplete(true)
       )
       .addIntegerOption((option) =>
         option
           .setName("before_time")
-          .setDescription("Show errors before the given UNIX timestamp")
+          .setDescription("Prune errors before the given UNIX timestamp")
           .setRequired(false)
           .setAutocomplete(true)
       )
-      .addBooleanOption((option) =>
-        option
-          .setName("desc")
-          .setDescription("Show the errors in descending order, default true")
-          .setRequired(false)
-      )
       .addStringOption((option) =>
         option
-          .setName("type_starts_with")
+          .setName("command_name_starts_with")
           .setDescription(
-            "Shows the errors with a type starting with the given string"
+            "Shows the commands with a name starting with the given string"
           )
           .setRequired(false)
           .setAutocomplete(true)
       )
+      .addUserOption((option) =>
+        option
+          .setName("user_id")
+          .setDescription("Shows the commands by the given user")
+          .setRequired(false)
+      )
       .addIntegerOption((option) =>
         option
           .setName("limit")
-          .setDescription("Limit the number of errors shown")
-          .setRequired(false)
-      )
-      .addBooleanOption((option) =>
-        option
-          .setName("paginate")
-          .setDescription("Enable pagination")
-          .setRequired(false)
-      )
-      .addBooleanOption((option) =>
-        option
-          .setName("unique")
-          .setDescription("Display unique errors only (hides duplicates).")
+          .setDescription("Limit the number of errors pruned")
           .setRequired(false)
       )
       .addBooleanOption((option) =>
@@ -124,7 +111,6 @@ export default class ErrorLogViewCommand extends Subcommand {
       );
   }
   async execute(interaction: CommandInteraction) {
-    const isDesc = interaction.options.getBoolean("desc", false) ?? true;
     const whereQuery: { [k: string]: object } = {};
     const before: number | null = interaction.options.getInteger("before");
     const after: number | null = interaction.options.getInteger("after");
@@ -132,11 +118,10 @@ export default class ErrorLogViewCommand extends Subcommand {
       interaction.options.getInteger("before_time");
     const afterTime: number | null =
       interaction.options.getInteger("after_time");
-    const typeStartsWith: string | null =
-      interaction.options.getString("type_starts_with");
+    const commandNameStartsWith: string | null =
+      interaction.options.getString("command_name_starts_with");
     const limit: number | null = interaction.options.getInteger("limit");
-    const unique: boolean =
-      interaction.options.getBoolean("unique", false) ?? false;
+    const userId: User | null = interaction.options.getUser("user_id");
     if (before) {
       if (!whereQuery.id) {
         whereQuery.id = {};
@@ -161,39 +146,26 @@ export default class ErrorLogViewCommand extends Subcommand {
       }
       whereQuery.createdAt[Op.gt] = new Date(afterTime * 1000);
     }
-    if (typeStartsWith) {
-      whereQuery.type = where(fn("lower", col("type")), {
-        [Op.startsWith]: typeStartsWith.toLowerCase(),
+    if (commandNameStartsWith) {
+      whereQuery.commandName = where(fn("lower", col("commandName")), {
+        [Op.startsWith]: commandNameStartsWith.toLowerCase(),
       });
     }
-    let items: ErrorLog[];
-    if (unique) {
-      items = await ErrorLog.findAll({
-        attributes: [
-          [literal('(array_agg("id" order by "id" DESC))[1]'), "id"],
-          "errorName",
-          "errorDescription",
-          [
-            literal('(array_agg("createdAt" order by "createdAt" DESC))[1]'),
-            "createdAt",
-          ],
-        ],
-        where: whereQuery,
-        order: [[col("createdAt"), isDesc ? "DESC" : "ASC"]],
-        limit: limit || undefined,
-        group: unique ? ["type", "errorName", "errorDescription"] : undefined,
-      });
-    } else {
-      items = await ErrorLog.findAll({
-        where: whereQuery,
-        order: [[col("createdAt"), isDesc ? "DESC" : "ASC"]],
-        limit: limit || undefined,
-      });
+    if (userId) {
+      if (!whereQuery.userId) {
+        whereQuery.userId = {};
+      }
+      whereQuery.userId[Op.eq] = userId.id;
     }
+    const deleted = await CommandLog.destroy({
+      where: whereQuery,
+      limit: limit || undefined,
+    });
     const embed = new MessageEmbed();
-    embed.setTitle("Error Log");
-    let fieldData: string =
-      "Direction: **" + (isDesc ? "Descending" : "Ascending") + "**";
+    embed.setTitle("Pruned Command Log");
+    embed.setDescription(`Items Deleted: **${deleted}**`);
+    embed.setColor(deleted > 0 ? "GREEN" : "RED");
+    let fieldData = "";
     if (before) {
       fieldData += `\nBefore: **#${before}**`;
     } else {
@@ -218,64 +190,27 @@ export default class ErrorLogViewCommand extends Subcommand {
     } else {
       fieldData += "\nAfter Time: **None**";
     }
-    if (typeStartsWith) {
-      fieldData += `\nType Starts With: **\`${typeStartsWith}\`**`;
+    if (commandNameStartsWith) {
+      fieldData += `\nCommand Name Starts With: **\`${commandNameStartsWith}\`**`;
     } else {
       fieldData += "\nType Starts With: **None**";
+    }
+    if (userId){
+      fieldData += `\nUser ID: **${userId.id}**`;
+    } else {
+      fieldData += "\nUser ID: **None**";
     }
     if (limit) {
       fieldData += `\nLimit: **${limit}**`;
     } else {
       fieldData += "\nLimit: **None**";
     }
-    embed.addField("Search Properties", fieldData);
-    const embeds: MessageEmbed[] = [];
-    if (items.length > 0) {
-      embed.setColor("GREEN");
-      let baseString = "";
-      let currentEmbed = new MessageEmbed(embed);
-      items
-        .map((item: ErrorLog) => {
-          return `#${item.id}. ${item.errorName}: ${item.errorDescription}`;
-        })
-        .forEach((item: string) => {
-          if (baseString.length + item.length > 4096) {
-            currentEmbed.setDescription(baseString.trimEnd());
-            embeds.push(currentEmbed);
-            currentEmbed = new MessageEmbed(embed);
-            baseString = "";
-          }
-          baseString += item + "\n";
-        });
-      if (baseString) {
-        currentEmbed.setDescription(baseString.trimEnd());
-        embeds.push(currentEmbed);
-      }
-    } else {
-      embed.setDescription("No errors found.");
-      embed.setColor("RED");
-      embeds.push(embed);
-    }
+    embed.addField("Search Properties", fieldData.trim());
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
-    const paginate = interaction.options.getBoolean("paginate", false) ?? true;
-    if (paginate) {
-      await new Paginator(embeds).send({
-        itemType: ItemType.interaction,
-        item: interaction,
-        ephemeral,
-      });
-    } else {
-      if (embeds.length > 10) {
-        return await interaction.reply({
-          content: "Too many embeds to display. Please use the paginator.",
-          ephemeral: true,
-        });
-      }
-      await interaction.reply({
-        embeds,
-        ephemeral,
-      });
-    }
+    await interaction.reply({
+      embeds: [embed],
+      ephemeral,
+    });
   }
 }
