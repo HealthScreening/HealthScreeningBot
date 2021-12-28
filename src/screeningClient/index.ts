@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { WorkerQueue } from "../utils/workerQueue";
 import { ItemType, MessageOptions, sendMessage } from "../utils/multiMessage";
 import { AutoBatchOptions, AutoInfo, ProcessParams } from "./interfaces";
 import { User } from "discord.js";
 import processScreening from "./processScreening";
 import getAutoData from "./getUserInfo/getAutoData";
 import getDeviceData from "./getUserInfo/getDeviceData";
+import ConcurrentPriorityWorkerQueue from "concurrent-priority-worker-queue";
 
 /**
  * The class that forms a bridge between the Discord component and the screening component of the bot.
@@ -28,10 +28,11 @@ import getDeviceData from "./getUserInfo/getDeviceData";
  * This class houses the queue and cooldowns so that it is not necessary to pass them as arguments.
  */
 export class ScreeningClient {
-  private readonly queue: WorkerQueue<ProcessParams, void> = new WorkerQueue({
-    worker: processScreening,
-    limit: 8,
-  });
+  private readonly queue: ConcurrentPriorityWorkerQueue<ProcessParams, void> =
+    new ConcurrentPriorityWorkerQueue({
+      worker: processScreening,
+      limit: 8,
+    });
   private readonly cooldowns: Set<string> = new Set();
 
   private processCooldowns(
