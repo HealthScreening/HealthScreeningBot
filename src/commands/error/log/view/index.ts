@@ -118,7 +118,8 @@ export default class ErrorLogViewCommand extends Subcommand {
     const typeStartsWith: string | null =
       interaction.options.getString("type_starts_with");
     const limit: number | null = interaction.options.getInteger("limit");
-    const unique: boolean = interaction.options.getBoolean("unique", false) ?? false;
+    const unique: boolean =
+      interaction.options.getBoolean("unique", false) ?? false;
     if (before) {
       if (!whereQuery.id) {
         whereQuery.id = {};
@@ -151,7 +152,15 @@ export default class ErrorLogViewCommand extends Subcommand {
     let items: ErrorLog[];
     if (unique) {
       items = await ErrorLog.findAll({
-        attributes: [[literal('(array_agg("id" order by "id" DESC))[1]'), "id"], "errorName", "errorDescription", [literal('(array_agg("createdAt" order by "createdAt" DESC))[1]'), "createdAt"]],
+        attributes: [
+          [literal('(array_agg("id" order by "id" DESC))[1]'), "id"],
+          "errorName",
+          "errorDescription",
+          [
+            literal('(array_agg("createdAt" order by "createdAt" DESC))[1]'),
+            "createdAt",
+          ],
+        ],
         where: whereQuery,
         order: [[col("createdAt"), isDesc ? "DESC" : "ASC"]],
         limit: limit || undefined,
@@ -234,9 +243,8 @@ export default class ErrorLogViewCommand extends Subcommand {
         item: interaction,
         ephemeral,
       });
-    }
-    else {
-      if (embeds.length > 10){
+    } else {
+      if (embeds.length > 10) {
         return await interaction.reply({
           content: "Too many embeds to display. Please use the paginator.",
           ephemeral: true,

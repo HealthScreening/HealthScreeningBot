@@ -54,7 +54,7 @@ export default async function logError(
     : metadata || null;
   const errorStack: string | null = error.stack || null;
   if (version.search(/[^\d.]/) !== -1) {
-    console.error(error)
+    console.error(error);
   }
   return await ErrorLog.create({
     errorName,
