@@ -149,10 +149,11 @@ export default class ErrorLogViewCommand extends Subcommand {
       });
     }
     const items: ErrorLog[] = await ErrorLog.findAll({
+      attributes: ["id", "errorName", "errorDescription"],
       where: whereQuery,
       order: [["createdAt", isDesc ? "DESC" : "ASC"]],
       limit: limit || undefined,
-      group: unique ? ["type", "errorName", "errorDescription"] : undefined,
+      group: unique ? ["id", "type", "errorName", "errorDescription"] : undefined,
     });
     const embed = new MessageEmbed();
     embed.setTitle("Error Log");
