@@ -149,11 +149,12 @@ export default class ErrorLogViewCommand extends Subcommand {
       });
     }
     const items: ErrorLog[] = await ErrorLog.findAll({
-      attributes: ["id", "errorName", "errorDescription"],
+      // We need the dummy count for postgres to shut up
+      attributes: ["id", "errorName", "errorDescription", [fn("COUNT", col("id")), "_dummy_count"]],
       where: whereQuery,
       order: [["createdAt", isDesc ? "DESC" : "ASC"]],
       limit: limit || undefined,
-      group: unique ? ["id", "type", "errorName", "errorDescription"] : undefined,
+      group: unique ? ["type", "errorName", "errorDescription"] : undefined,
     });
     const embed = new MessageEmbed();
     embed.setTitle("Error Log");
