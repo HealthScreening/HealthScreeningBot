@@ -32,7 +32,7 @@ import beforeAutocomplete from "../view/autocomplete/before";
 import beforeTimeAutocomplete from "../view/autocomplete/beforeTime";
 import typeStartsWithAutocomplete from "../view/autocomplete/typeStartsWith";
 
-export default class ErrorLogViewCommand extends Subcommand {
+export default class ErrorLogPruneCommand extends Subcommand {
   public readonly autocompleteFields: Collection<
     string,
     (interaction: AutocompleteInteraction) => Promise<void>

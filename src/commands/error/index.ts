@@ -55,6 +55,10 @@ export default class ErrorCommand extends Command {
       this.subcommands
         .get("post")!
         .registerSubcommand.bind(this.subcommands.get("post"))
+    ).addSubcommand(
+      this.subcommands
+        .get("delete")!
+        .registerSubcommand.bind(this.subcommands.get("delete"))
     ) as SlashCommandBuilder;
 
   async beforeExecute(interaction): Promise<boolean> {
