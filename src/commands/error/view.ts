@@ -80,7 +80,7 @@ export default class ErrorViewCommand extends Subcommand {
     if (!item) {
       return await interaction.reply({
         content: "No error with that ID found.",
-        ephemeral
+        ephemeral,
       });
     }
     const embed = new MessageEmbed();

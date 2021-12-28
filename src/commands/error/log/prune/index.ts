@@ -151,7 +151,7 @@ export default class ErrorLogPruneCommand extends Subcommand {
     embed.setTitle("Pruned Error Log");
     embed.setDescription(`Items Deleted: **${deleted}**`);
     embed.setColor(deleted > 0 ? "GREEN" : "RED");
-    let fieldData: string = ""
+    let fieldData: string = "";
     if (before) {
       fieldData += `\nBefore: **#${before}**`;
     } else {

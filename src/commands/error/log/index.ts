@@ -18,14 +18,14 @@ import { SlashCommandSubcommandGroupBuilder } from "@discordjs/builders";
 import { Collection } from "discord.js";
 
 import { Subcommand, SubcommandGroup } from "../../../client/command";
-import ErrorLogViewCommand from "./view";
 import ErrorLogPruneCommand from "./prune";
+import ErrorLogViewCommand from "./view";
 
 export default class ErrorLogCommand extends SubcommandGroup {
   public subcommands: Collection<string, Subcommand> = new Collection(
     Object.entries({
       view: new ErrorLogViewCommand(),
-      prune: new ErrorLogPruneCommand()
+      prune: new ErrorLogPruneCommand(),
     })
   );
   registerSubcommandGroup(subcommandGroup: SlashCommandSubcommandGroupBuilder) {
@@ -36,7 +36,8 @@ export default class ErrorLogCommand extends SubcommandGroup {
         this.subcommands
           .get("view")!
           .registerSubcommand.bind(this.subcommands.get("view"))
-      ).addSubcommand(
+      )
+      .addSubcommand(
         this.subcommands
           .get("prune")!
           .registerSubcommand.bind(this.subcommands.get("prune"))

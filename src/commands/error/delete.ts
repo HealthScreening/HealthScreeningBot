@@ -15,9 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
-import {
-  CommandInteraction,
-} from "discord.js";
+import { CommandInteraction } from "discord.js";
 import { Op } from "sequelize";
 
 import { Subcommand } from "../../client/command";
@@ -59,13 +57,13 @@ export default class ErrorDeleteCommand extends Subcommand {
     if (!item) {
       return await interaction.reply({
         content: "No error with that ID found.",
-        ephemeral
+        ephemeral,
       });
     }
-    await item.destroy()
+    await item.destroy();
     return await interaction.reply({
       content: "Deleted error with ID " + id + ".",
-      ephemeral
+      ephemeral,
     });
   }
 }

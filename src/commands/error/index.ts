@@ -20,10 +20,10 @@ import { Collection } from "discord.js";
 import { Command, Subcommand, SubcommandGroup } from "../../client/command";
 import checkOwner from "../../utils/checkOwner";
 import { ItemType } from "../../utils/multiMessage";
+import ErrorDeleteCommand from "./delete";
 import ErrorLogCommand from "./log";
 import ErrorPostCommand from "./post";
 import ErrorViewCommand from "./view";
-import ErrorDeleteCommand from "./delete";
 
 export default class ErrorCommand extends Command {
   public subcommandGroups: Collection<string, SubcommandGroup> = new Collection(
@@ -35,7 +35,7 @@ export default class ErrorCommand extends Command {
     Object.entries({
       post: new ErrorPostCommand(),
       view: new ErrorViewCommand(),
-      delete: new ErrorDeleteCommand()
+      delete: new ErrorDeleteCommand(),
     })
   );
   public readonly data = new SlashCommandBuilder()
@@ -55,7 +55,8 @@ export default class ErrorCommand extends Command {
       this.subcommands
         .get("post")!
         .registerSubcommand.bind(this.subcommands.get("post"))
-    ).addSubcommand(
+    )
+    .addSubcommand(
       this.subcommands
         .get("delete")!
         .registerSubcommand.bind(this.subcommands.get("delete"))
