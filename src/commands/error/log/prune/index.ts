@@ -151,7 +151,7 @@ export default class ErrorLogPruneCommand extends Subcommand {
     embed.setTitle("Pruned Error Log");
     embed.setDescription(`Items Deleted: **${deleted}**`);
     embed.setColor(deleted > 0 ? "GREEN" : "RED");
-    let fieldData: string = "";
+    let fieldData = "";
     if (before) {
       fieldData += `\nBefore: **#${before}**`;
     } else {
@@ -181,7 +181,7 @@ export default class ErrorLogPruneCommand extends Subcommand {
     } else {
       fieldData += "\nType Starts With: **None**";
     }
-    embed.addField("Search Properties", fieldData);
+    embed.addField("Search Properties", fieldData.trim());
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
     await interaction.reply({
