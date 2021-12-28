@@ -1,11 +1,11 @@
 /**
  * Automatically generates the guide directory
  */
+import { writeFile } from "fs/promises";
+import { resolve } from "path";
 
 import guideData from "../src/data/guideData.json";
-import { writeFile } from "fs/promises";
 import { GuideItem } from "../src/utils/guides";
-import { resolve } from "path";
 
 const text: string = (Object.entries(guideData) as [string, GuideItem][])
   .filter((item) => !item[0].startsWith("_"))

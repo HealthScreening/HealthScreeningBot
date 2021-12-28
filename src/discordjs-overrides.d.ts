@@ -19,6 +19,7 @@ import {
   CommandInteraction,
   MessageComponentInteraction,
 } from "discord.js";
+
 import HealthScreeningBotClient from "./client/extraClient";
 
 export declare class HSBCommandInteraction extends CommandInteraction {

@@ -1,4 +1,5 @@
-import { cast, col, Op, where } from "sequelize";
+import { Op, cast, col, where } from "sequelize";
+
 import { HSBAutocompleteInteraction } from "../../../../../discordjs-overrides";
 import { ErrorLog } from "../../../../../orm/errorLog";
 

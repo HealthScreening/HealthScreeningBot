@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import ConcurrentPriorityWorkerQueue from "concurrent-priority-worker-queue";
 import {
   Client,
   ClientOptions,
@@ -23,27 +24,15 @@ import {
   MessageEmbed,
   TextChannel,
 } from "discord.js";
-import { ScreeningClient } from "../screeningClient";
-import { ItemType } from "../utils/multiMessage";
-import assignAutoSchoolRole from "./autoAssignSchoolRole";
-import doAutoLoop from "./doAutoLoop";
-import logError from "../utils/logError";
-import postToGithub from "../utils/postToGithub";
 import sleep from "sleep-promise";
-import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
-import runFunctionAndLogError from "../utils/logError/runAndLog";
-import commandInteraction from "./interactions/commandInteraction";
-import {
-  HSBAutocompleteInteraction,
-  HSBCommandInteraction,
-  HSBMessageComponentInteraction,
-} from "../discordjs-overrides";
-import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
-import { Command } from "./command";
-import ErrorCommand from "../commands/error";
+
+import deleteButton from "../buttons/delete";
+import goToDMButton from "../buttons/goToDM";
 import DeleteAuto from "../commands/deleteAuto";
+import ErrorCommand from "../commands/error";
 import GenerateAuto from "../commands/generateAuto";
 import GenerateOnce from "../commands/generateOnce";
+import Guide from "../commands/guide";
 import Profile from "../commands/profile";
 import SendToAll from "../commands/sendToAll";
 import SetAuto from "../commands/setAuto";
@@ -52,11 +41,23 @@ import Stats from "../commands/stats";
 import StopBot from "../commands/stopBot";
 import TestScreening from "../commands/testScreening";
 import TriggerAutoNow from "../commands/triggerAutoNow";
+import {
+  HSBAutocompleteInteraction,
+  HSBCommandInteraction,
+  HSBMessageComponentInteraction,
+} from "../discordjs-overrides";
+import { ScreeningClient } from "../screeningClient";
+import logError from "../utils/logError";
+import runFunctionAndLogError from "../utils/logError/runAndLog";
+import { ItemType } from "../utils/multiMessage";
+import postToGithub from "../utils/postToGithub";
+import assignAutoSchoolRole from "./autoAssignSchoolRole";
+import { Command } from "./command";
+import doAutoLoop from "./doAutoLoop";
+import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
+import commandInteraction from "./interactions/commandInteraction";
+import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
 import messageComponentInteraction from "./interactions/messageComponentInteraction";
-import deleteButton from "../buttons/delete";
-import Guide from "../commands/guide";
-import goToDMButton from "../buttons/goToDM";
-import ConcurrentPriorityWorkerQueue from "concurrent-priority-worker-queue";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",

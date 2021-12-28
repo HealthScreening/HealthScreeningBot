@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
+import { Buffer } from "buffer";
 import {
   CommandInteraction,
   HTTPAttachmentData,
@@ -21,12 +23,11 @@ import {
 } from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
-import { ErrorLog } from "../../orm/errorLog";
+
 import { Subcommand } from "../../client/command";
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
-import Paginator from "../../utils/paginator";
+import { ErrorLog } from "../../orm/errorLog";
 import { ItemType } from "../../utils/multiMessage";
-import { Buffer } from "buffer";
+import Paginator from "../../utils/paginator";
 
 export default class ErrorViewCommand extends Subcommand {
   registerSubcommand(

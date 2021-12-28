@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { AutoDayInfo, UserInfoParams } from "../interfaces";
 import { AutoDays } from "../../orm/autoDays";
+import { AutoDayInfo, UserInfoParams } from "../interfaces";
 
 export default async function getAutoDayData(
   options: UserInfoParams

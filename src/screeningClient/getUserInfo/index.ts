@@ -14,11 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 import { UserInfo, UserInfoParams } from "../interfaces";
-import getDeviceData from "./getDeviceData";
 import getAutoData from "./getAutoData";
 import getAutoDayData from "./getAutoDayData";
+import getDeviceData from "./getDeviceData";
 
 export default async function getUserInfo(
   options: UserInfoParams

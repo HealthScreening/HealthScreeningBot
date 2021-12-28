@@ -15,11 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { ItemType } from "../../utils/multiMessage";
+import { AutocompleteInteraction, Collection } from "discord.js";
+
 import { Command } from "../../client/command";
 import { HSBCommandInteraction } from "../../discordjs-overrides";
+import { ItemType } from "../../utils/multiMessage";
 import Paginator from "../../utils/paginator";
-import { AutocompleteInteraction, Collection } from "discord.js";
 import nameAutocomplete from "./autocomplete/name";
 import sendQuickstart from "./custom/sendQuickstart";
 

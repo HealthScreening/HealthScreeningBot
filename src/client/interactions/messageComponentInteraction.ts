@@ -1,7 +1,7 @@
 import { HSBMessageComponentInteraction } from "../../discordjs-overrides";
 import logError from "../../utils/logError";
-import { ItemType, sendMessage } from "../../utils/multiMessage";
 import serializeMessageComponentInteraction from "../../utils/logError/serializeMessageComponentInteraction";
+import { ItemType, sendMessage } from "../../utils/multiMessage";
 
 export default async function messageComponentInteraction(
   interaction: HSBMessageComponentInteraction

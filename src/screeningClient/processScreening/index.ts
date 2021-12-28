@@ -14,13 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { ProcessParams } from "../interfaces";
+import sendRequest from "@healthscreening/complete-screening";
+
+import logError from "../../utils/logError";
 import timeMethod from "../../utils/timeMethod";
+import { ProcessParams } from "../interfaces";
 import generateAndSendScreenshot from "./generateAndSendScreenshot";
 import logSuccess from "./logSuccess";
 import processCooldown from "./processCooldown";
-import sendRequest from "@healthscreening/complete-screening";
-import logError from "../../utils/logError";
 
 /**
  * Actually processes a screening request.

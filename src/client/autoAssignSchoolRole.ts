@@ -15,9 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { GuildMember } from "discord.js";
-import HealthScreeningBotClient from "./extraClient";
+
 import { AutoUser } from "../orm/autoUser";
 import logError from "../utils/logError";
+import HealthScreeningBotClient from "./extraClient";
 
 export default async function assignAutoSchoolRole(
   client: HealthScreeningBotClient

@@ -17,8 +17,9 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, MessageEmbed } from "discord.js";
 import { DateTime } from "luxon";
-import { AutoUser } from "../orm/autoUser";
+
 import { Command } from "../client/command";
+import { AutoUser } from "../orm/autoUser";
 
 export default class Stats extends Command {
   public readonly data = new SlashCommandBuilder()

@@ -1,17 +1,18 @@
 import {
   Collection,
-  MessageComponentInteraction,
+  InteractionCollector,
   Message,
   MessageActionRow,
   MessageActionRowComponent,
+  MessageComponentInteraction,
   MessageSelectMenu,
   Snowflake,
-  InteractionCollector,
 } from "discord.js";
-import { MessageOptions, sendMessage } from "./multiMessage";
 import { v4 } from "uuid";
+
 import logError from "./logError";
 import serializeMessageComponentInteraction from "./logError/serializeMessageComponentInteraction";
+import { MessageOptions, sendMessage } from "./multiMessage";
 
 export interface CollectedComponent<T extends MessageActionRowComponent> {
   component: T;

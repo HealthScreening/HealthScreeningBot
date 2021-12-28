@@ -1,4 +1,5 @@
 import { DateTime } from "luxon";
+
 import { ErrorLog } from "../orm/errorLog";
 
 export default function formatErrorLogEntry(

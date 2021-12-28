@@ -15,15 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { Intents } from "discord.js";
-import { init } from "./orm";
-import HealthScreeningBotClient from "./client/extraClient";
+
 import {
   closeBrowser,
   startupBrowser,
 } from "@healthscreening/generate-screenshot";
+
 import { discord } from "../config";
-import logError from "./utils/logError";
+import HealthScreeningBotClient from "./client/extraClient";
+import { init } from "./orm";
 import { loadAllGuides } from "./utils/guides";
+import logError from "./utils/logError";
 
 const myIntents = new Intents();
 myIntents.add(Intents.FLAGS.GUILDS);

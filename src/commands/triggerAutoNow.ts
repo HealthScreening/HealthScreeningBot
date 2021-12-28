@@ -15,17 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { TextChannel } from "discord.js";
-import getValidUserIDs from "../utils/getValidUserIDs";
-import getUsersForDayOfWeek from "../utils/getUsersForDayOfWeek";
-import { AutoUser } from "../orm/autoUser";
-import logError from "../utils/logError";
-import { DateTime } from "luxon";
 import ArrayStringMap from "array-string-map";
+import { TextChannel } from "discord.js";
+import { DateTime } from "luxon";
 import { Op } from "sequelize";
-import { HSBCommandInteraction } from "../discordjs-overrides";
+
 import { Command } from "../client/command";
+import { HSBCommandInteraction } from "../discordjs-overrides";
+import { AutoUser } from "../orm/autoUser";
 import checkOwner from "../utils/checkOwner";
+import getUsersForDayOfWeek from "../utils/getUsersForDayOfWeek";
+import getValidUserIDs from "../utils/getValidUserIDs";
+import logError from "../utils/logError";
 import { ItemType } from "../utils/multiMessage";
 
 export default class TriggerAutoNow extends Command {

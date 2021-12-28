@@ -14,10 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
-import { Sequelize } from "sequelize";
-import { database } from "../../config";
 import { exit } from "process";
+import { Sequelize } from "sequelize";
+
+import { database } from "../../config";
+
 export const sequelize: Sequelize = new Sequelize({
   logging: false,
   ...database,

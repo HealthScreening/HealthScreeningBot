@@ -15,21 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { HSBCommandInteraction } from "../discordjs-overrides";
-import { ItemType, sendMessage } from "../utils/multiMessage";
 import { User } from "discord.js";
-import {
-  AutoUser,
-  AutoUserAttributes,
-  AutoUserCreationAttributes,
-} from "../orm/autoUser";
+
+import { Command } from "../client/command";
+import { HSBCommandInteraction } from "../discordjs-overrides";
 import {
   AutoDays,
   AutoDaysAttributes,
   AutoDaysCreationAttributes,
 } from "../orm/autoDays";
+import {
+  AutoUser,
+  AutoUserAttributes,
+  AutoUserCreationAttributes,
+} from "../orm/autoUser";
 import createOrUpdate from "../utils/createOrUpdate";
-import { Command } from "../client/command";
+import { ItemType, sendMessage } from "../utils/multiMessage";
 
 export default class SetAuto extends Command {
   public readonly data = new SlashCommandBuilder()

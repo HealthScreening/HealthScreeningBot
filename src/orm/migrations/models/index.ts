@@ -18,8 +18,9 @@ import { readdirSync } from "fs";
 import * as path from "path";
 import { DataTypes, Sequelize } from "sequelize";
 
-const basename = path.basename(__filename);
 import { database as config } from "../../../../config";
+
+const basename = path.basename(__filename);
 
 export interface DB {
   sequelize?: Sequelize;

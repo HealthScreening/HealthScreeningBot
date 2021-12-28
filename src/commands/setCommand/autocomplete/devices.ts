@@ -1,4 +1,5 @@
 import { devices } from "puppeteer";
+
 import { HSBAutocompleteInteraction } from "../../../discordjs-overrides";
 
 export default async function devicesAutocomplete(

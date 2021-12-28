@@ -14,15 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { CommandInteraction } from "discord.js";
+
 import {
   HSBAutocompleteInteraction,
   HSBCommandInteraction,
 } from "../discordjs-overrides";
+import handleCommandError from "../utils/handleCommandError";
 import logError from "../utils/logError";
 import serializeInteraction from "../utils/logError/serializeInteraction";
-import handleCommandError from "../utils/handleCommandError";
 import { ItemType } from "../utils/multiMessage";
-import { CommandInteraction } from "discord.js";
 import { BaseCommand, PreCommandChecks } from "./command";
 
 export class CommandData {
