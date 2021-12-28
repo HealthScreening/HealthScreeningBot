@@ -14,12 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { CommandInteraction, MessageEmbed } from "discord.js";
+import {
+  CommandInteraction,
+  HTTPAttachmentData,
+  MessageEmbed,
+} from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
 import { ErrorLog } from "../../orm/errorLog";
 import { Subcommand } from "../../client/command";
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
+import Paginator from "../../utils/paginator";
+import { ItemType } from "../../utils/multiMessage";
+import { Buffer } from "buffer";
 
 export default class ErrorViewCommand extends Subcommand {
   registerSubcommand(
@@ -36,6 +43,20 @@ export default class ErrorViewCommand extends Subcommand {
       )
       .addBooleanOption((option) =>
         option
+          .setName("paginate")
+          .setDescription("Enable pagination")
+          .setRequired(false)
+      )
+      .addBooleanOption((option) =>
+        option
+          .setName("attach")
+          .setDescription(
+            "Send stack trace and metadata as attachments (will do so anyways if >4096 characters each)."
+          )
+          .setRequired(false)
+      )
+      .addBooleanOption((option) =>
+        option
           .setName("ephemeral")
           .setDescription(
             "Whether or not the contents are hidden to everyone else"
@@ -45,6 +66,7 @@ export default class ErrorViewCommand extends Subcommand {
   }
   async execute(interaction: CommandInteraction) {
     const id: number = interaction.options.getInteger("id", true);
+    const attach = interaction.options.getBoolean("attach", false) ?? false;
     const item: ErrorLog | null = await ErrorLog.findOne({
       where: {
         id: {
@@ -56,7 +78,8 @@ export default class ErrorViewCommand extends Subcommand {
       return await interaction.reply("No error with that ID found.");
     }
     const embed = new MessageEmbed();
-    const embeds = [embed];
+    const embeds: MessageEmbed[] = [embed];
+    const attachments: HTTPAttachmentData[] = [];
     embed.setTitle("Error #" + item.id);
     embed.addFields([
       {
@@ -80,10 +103,20 @@ export default class ErrorViewCommand extends Subcommand {
       embed.addField("Description", "None", false);
     }
     if (item.errorStack) {
-      const stackEmbed = new MessageEmbed();
-      stackEmbed.setTitle("Stack Trace for Error #" + item.id);
-      stackEmbed.setDescription("```\n" + item.errorStack + "\n```");
-      embeds.push(stackEmbed);
+      if (attach || item.errorStack.length > 4096) {
+        const stackBuffer = Buffer.from(item.errorStack, "utf8");
+        const stackAttachment: HTTPAttachmentData = {
+          attachment: stackBuffer,
+          name: "stack.txt",
+          file: stackBuffer,
+        };
+        attachments.push(stackAttachment);
+      } else {
+        const stackEmbed = new MessageEmbed();
+        stackEmbed.setTitle("Stack Trace for Error #" + item.id);
+        stackEmbed.setDescription("```\n" + item.errorStack + "\n```");
+        embeds.push(stackEmbed);
+      }
     } else {
       embed.addField("Stack Trace", "None", false);
     }
@@ -95,17 +128,41 @@ export default class ErrorViewCommand extends Subcommand {
       false
     );
     if (item.metadata) {
-      const metadataEmbed = new MessageEmbed();
-      metadataEmbed.setTitle("Metadata for Error #" + item.id);
-      metadataEmbed.setDescription(
-        "```json\n" + JSON.stringify(item.metadata, null, 4) + "\n```"
-      );
-      embeds.push(metadataEmbed);
+      const metadataStrUnformatted = JSON.stringify(item.metadata, null, 4);
+      const metadataStr = "```json\n" + metadataStrUnformatted + "\n```";
+      if (attach || metadataStr.length > 4096) {
+        const metadataBuffer = Buffer.from(metadataStrUnformatted, "utf8");
+        const metadataAttachment: HTTPAttachmentData = {
+          attachment: metadataBuffer,
+          name: "metadata.json",
+          file: metadataBuffer,
+        };
+        attachments.push(metadataAttachment);
+      } else {
+        const metadataEmbed = new MessageEmbed();
+        metadataEmbed.setTitle("Metadata for Error #" + item.id);
+        metadataEmbed.setDescription(metadataStr);
+        embeds.push(metadataEmbed);
+      }
     } else {
       embed.addField("Metadata", "None", false);
     }
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
-    return await interaction.reply({ embeds: embeds, ephemeral });
+    const paginate = interaction.options.getBoolean("paginate", false) ?? true;
+    if (paginate) {
+      await new Paginator(embeds).send({
+        itemType: ItemType.interaction,
+        item: interaction,
+        ephemeral,
+        files: attachments,
+      });
+    } else {
+      return await interaction.reply({
+        embeds: embeds,
+        ephemeral,
+        files: attachments,
+      });
+    }
   }
 }
