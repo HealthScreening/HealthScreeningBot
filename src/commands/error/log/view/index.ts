@@ -87,6 +87,18 @@ export default class ErrorLogViewCommand extends Subcommand {
       )
       .addBooleanOption((option) =>
         option
+          .setName("paginate")
+          .setDescription("Enable pagination")
+          .setRequired(false)
+      )
+      .addBooleanOption((option) =>
+        option
+          .setName("unique")
+          .setDescription("Display unique errors only (hides duplicates).")
+          .setRequired(false)
+      )
+      .addBooleanOption((option) =>
+        option
           .setName("ephemeral")
           .setDescription(
             "Whether or not the contents are hidden to everyone else"
@@ -106,6 +118,7 @@ export default class ErrorLogViewCommand extends Subcommand {
     const typeStartsWith: string | null =
       interaction.options.getString("type_starts_with");
     const limit: number | null = interaction.options.getInteger("limit");
+    const unique: boolean = interaction.options.getBoolean("unique", false) || false;
     if (before) {
       if (!whereQuery.id) {
         whereQuery.id = {};
@@ -139,6 +152,7 @@ export default class ErrorLogViewCommand extends Subcommand {
       where: whereQuery,
       order: [["createdAt", isDesc ? "DESC" : "ASC"]],
       limit: limit || undefined,
+      group: unique ? ["type", "errorName", "errorMessage"] : undefined,
     });
     const embed = new MessageEmbed();
     embed.setTitle("Error Log");
@@ -203,11 +217,25 @@ export default class ErrorLogViewCommand extends Subcommand {
     }
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) || true;
-    await new Paginator(embeds).send({
-      itemType: ItemType.interaction,
-      item: interaction,
-      ephemeral,
-    });
-    return;
+    const paginate = interaction.options.getBoolean("paginate", false) || true;
+    if (paginate) {
+      await new Paginator(embeds).send({
+        itemType: ItemType.interaction,
+        item: interaction,
+        ephemeral,
+      });
+    }
+    else {
+      if (embeds.length > 10){
+        return await interaction.reply({
+          content: "Too many embeds to display. Please use the paginator.",
+          ephemeral: true,
+        });
+      }
+      await interaction.reply({
+        embeds,
+        ephemeral,
+      });
+    }
   }
 }
