@@ -147,6 +147,9 @@ export default class HealthScreeningBotClient extends Client {
             message.content.toLowerCase().replace(/\s+/g, "")
           )
         ) {
+          await message.reply(
+            "This command is deprecated and may be removed in a future version of the bot. Please use `/generate_auto` instead."
+          );
           await this.screeningClient.queueAutoCommand(message.author.id, {
             itemType: ItemType.message,
             item: message,
