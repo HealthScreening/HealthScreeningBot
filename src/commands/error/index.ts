@@ -23,6 +23,7 @@ import { ItemType } from "../../utils/multiMessage";
 import ErrorLogCommand from "./log";
 import ErrorPostCommand from "./post";
 import ErrorViewCommand from "./view";
+import ErrorDeleteCommand from "./delete";
 
 export default class ErrorCommand extends Command {
   public subcommandGroups: Collection<string, SubcommandGroup> = new Collection(
@@ -34,6 +35,7 @@ export default class ErrorCommand extends Command {
     Object.entries({
       post: new ErrorPostCommand(),
       view: new ErrorViewCommand(),
+      delete: new ErrorDeleteCommand()
     })
   );
   public readonly data = new SlashCommandBuilder()

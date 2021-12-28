@@ -68,6 +68,8 @@ export default class ErrorViewCommand extends Subcommand {
   async execute(interaction: CommandInteraction) {
     const id: number = interaction.options.getInteger("id", true);
     const attach = interaction.options.getBoolean("attach", false) ?? false;
+    const ephemeral =
+      interaction.options.getBoolean("ephemeral", false) ?? true;
     const item: ErrorLog | null = await ErrorLog.findOne({
       where: {
         id: {
@@ -76,7 +78,10 @@ export default class ErrorViewCommand extends Subcommand {
       },
     });
     if (!item) {
-      return await interaction.reply("No error with that ID found.");
+      return await interaction.reply({
+        content: "No error with that ID found.",
+        ephemeral
+      });
     }
     const embed = new MessageEmbed();
     const embeds: MessageEmbed[] = [embed];
@@ -148,8 +153,6 @@ export default class ErrorViewCommand extends Subcommand {
     } else {
       embed.addField("Metadata", "None", false);
     }
-    const ephemeral =
-      interaction.options.getBoolean("ephemeral", false) ?? true;
     const paginate = interaction.options.getBoolean("paginate", false) ?? true;
     if (paginate) {
       await new Paginator(embeds).send({
