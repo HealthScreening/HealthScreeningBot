@@ -28,6 +28,7 @@ import sleep from "sleep-promise";
 
 import deleteButton from "../buttons/delete";
 import goToDMButton from "../buttons/goToDM";
+import CommandCommand from "../commands/command";
 import DeleteAuto from "../commands/deleteAuto";
 import ErrorCommand from "../commands/error";
 import GenerateAuto from "../commands/generateAuto";
@@ -58,7 +59,6 @@ import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
 import commandInteraction from "./interactions/commandInteraction";
 import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
 import messageComponentInteraction from "./interactions/messageComponentInteraction";
-import CommandCommand from "../commands/command";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",

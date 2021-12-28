@@ -15,12 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { HSBCommandInteraction } from "../../discordjs-overrides";
+import { CommandLog } from "../../orm/commandLog";
 import handleCommandError from "../../utils/handleCommandError";
 import logError from "../../utils/logError";
 import serializeInteraction from "../../utils/logError/serializeInteraction";
 import { ItemType } from "../../utils/multiMessage";
 import { getTrueCommand } from "../resolve";
-import { CommandLog } from "../../orm/commandLog";
 
 export default async function commandInteraction(
   interaction: HSBCommandInteraction
@@ -29,8 +29,14 @@ export default async function commandInteraction(
     await CommandLog.create({
       userId: interaction.user.id,
       userName: `${interaction.user.username}#${interaction.user.discriminator}`,
-      commandName: [interaction.commandName, interaction.options.getSubcommandGroup(false), interaction.options.getSubcommand(false)].filter(Boolean).join(" "),
-    })
+      commandName: [
+        interaction.commandName,
+        interaction.options.getSubcommandGroup(false),
+        interaction.options.getSubcommand(false),
+      ]
+        .filter(Boolean)
+        .join(" "),
+    });
 
     const command = await getTrueCommand(interaction);
     if (!command) {

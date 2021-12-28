@@ -31,7 +31,9 @@ export default class CommandLogCommand extends SubcommandGroup {
   registerSubcommandGroup(subcommandGroup: SlashCommandSubcommandGroupBuilder) {
     return subcommandGroup
       .setName("log")
-      .setDescription("Interact with multiple command log entries from the command log")
+      .setDescription(
+        "Interact with multiple command log entries from the command log"
+      )
       .addSubcommand(
         this.subcommands
           .get("view")!

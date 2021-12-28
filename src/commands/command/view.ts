@@ -15,10 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
-import {
-  CommandInteraction,
-  MessageEmbed,
-} from "discord.js";
+import { CommandInteraction, MessageEmbed } from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
 

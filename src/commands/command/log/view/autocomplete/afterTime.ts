@@ -29,8 +29,9 @@ export default async function afterTimeAutocomplete(
   const after: number | null = interaction.options.getInteger("after");
   const beforeTime: number | null =
     interaction.options.getInteger("before_time");
-  const commandNameStartsWith: string | null =
-    interaction.options.getString("command_name_starts_with");
+  const commandNameStartsWith: string | null = interaction.options.getString(
+    "command_name_starts_with"
+  );
   const userId: User | null = interaction.options.getUser("user_id");
   const whereQuery: { [k: string]: object } = {
     createdAt: {

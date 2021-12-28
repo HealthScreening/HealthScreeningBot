@@ -139,8 +139,9 @@ export default class CommandLogViewCommand extends Subcommand {
       interaction.options.getInteger("before_time");
     const afterTime: number | null =
       interaction.options.getInteger("after_time");
-    const commandNameStartsWith: string | null =
-      interaction.options.getString("command_name_starts_with");
+    const commandNameStartsWith: string | null = interaction.options.getString(
+      "command_name_starts_with"
+    );
     const limit: number | null = interaction.options.getInteger("limit");
     const userId: User | null = interaction.options.getUser("user_id");
     const unique: boolean =
@@ -237,7 +238,7 @@ export default class CommandLogViewCommand extends Subcommand {
     } else {
       fieldData += "\nType Starts With: **None**";
     }
-    if (userId){
+    if (userId) {
       fieldData += `\nUser ID: **${userId.id}**`;
     } else {
       fieldData += "\nUser ID: **None**";

@@ -55,28 +55,36 @@ export default class CommandLogPruneCommand extends Subcommand {
       .addIntegerOption((option) =>
         option
           .setName("before")
-          .setDescription("Prune the command log entries before this command log entry #")
+          .setDescription(
+            "Prune the command log entries before this command log entry #"
+          )
           .setRequired(false)
           .setAutocomplete(true)
       )
       .addIntegerOption((option) =>
         option
           .setName("after")
-          .setDescription("Prune the command log entries after this command log entry #")
+          .setDescription(
+            "Prune the command log entries after this command log entry #"
+          )
           .setRequired(false)
           .setAutocomplete(true)
       )
       .addIntegerOption((option) =>
         option
           .setName("after_time")
-          .setDescription("Prune command log entries after the given UNIX timestamp")
+          .setDescription(
+            "Prune command log entries after the given UNIX timestamp"
+          )
           .setRequired(false)
           .setAutocomplete(true)
       )
       .addIntegerOption((option) =>
         option
           .setName("before_time")
-          .setDescription("Prune command log entries before the given UNIX timestamp")
+          .setDescription(
+            "Prune command log entries before the given UNIX timestamp"
+          )
           .setRequired(false)
           .setAutocomplete(true)
       )
@@ -118,8 +126,9 @@ export default class CommandLogPruneCommand extends Subcommand {
       interaction.options.getInteger("before_time");
     const afterTime: number | null =
       interaction.options.getInteger("after_time");
-    const commandNameStartsWith: string | null =
-      interaction.options.getString("command_name_starts_with");
+    const commandNameStartsWith: string | null = interaction.options.getString(
+      "command_name_starts_with"
+    );
     const limit: number | null = interaction.options.getInteger("limit");
     const userId: User | null = interaction.options.getUser("user_id");
     if (before) {
@@ -195,7 +204,7 @@ export default class CommandLogPruneCommand extends Subcommand {
     } else {
       fieldData += "\nType Starts With: **None**";
     }
-    if (userId){
+    if (userId) {
       fieldData += `\nUser ID: **${userId.id}**`;
     } else {
       fieldData += "\nUser ID: **None**";
