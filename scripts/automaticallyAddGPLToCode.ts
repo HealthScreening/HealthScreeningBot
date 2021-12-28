@@ -22,7 +22,7 @@ const gplString = `/**
 
 async function processFile(path: string){
   const text = await readFile(path, "utf8")
-  if (!text.trim().startsWith(text)){
+  if (!text.trim().startsWith(gplString)){
     await writeFile(path, gplString + "\n" + text, "utf8")
   }
 }
