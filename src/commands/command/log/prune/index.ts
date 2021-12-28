@@ -51,32 +51,32 @@ export default class CommandLogPruneCommand extends Subcommand {
   ): SlashCommandSubcommandBuilder {
     return subcommand
       .setName("prune")
-      .setDescription("Prune the error log.")
+      .setDescription("Prune the command log.")
       .addIntegerOption((option) =>
         option
           .setName("before")
-          .setDescription("Prune the errors before this error #")
+          .setDescription("Prune the command log entries before this command log entry #")
           .setRequired(false)
           .setAutocomplete(true)
       )
       .addIntegerOption((option) =>
         option
           .setName("after")
-          .setDescription("Prune the errors after this error #")
+          .setDescription("Prune the command log entries after this command log entry #")
           .setRequired(false)
           .setAutocomplete(true)
       )
       .addIntegerOption((option) =>
         option
           .setName("after_time")
-          .setDescription("Prune errors after the given UNIX timestamp")
+          .setDescription("Prune command log entries after the given UNIX timestamp")
           .setRequired(false)
           .setAutocomplete(true)
       )
       .addIntegerOption((option) =>
         option
           .setName("before_time")
-          .setDescription("Prune errors before the given UNIX timestamp")
+          .setDescription("Prune command log entries before the given UNIX timestamp")
           .setRequired(false)
           .setAutocomplete(true)
       )
@@ -98,7 +98,7 @@ export default class CommandLogPruneCommand extends Subcommand {
       .addIntegerOption((option) =>
         option
           .setName("limit")
-          .setDescription("Limit the number of errors pruned")
+          .setDescription("Limit the number of command log entries pruned")
           .setRequired(false)
       )
       .addBooleanOption((option) =>
