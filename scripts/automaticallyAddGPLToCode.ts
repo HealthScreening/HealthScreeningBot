@@ -1,3 +1,6 @@
+import { readFile, writeFile } from "fs/promises";
+import { resolve } from "path";
+
 /**
  * Copyright (C) 2021 PythonCoderAS
  *
@@ -14,9 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import pathsGenerator = require("walk-asyncgen")
-import { readFile, writeFile } from "fs/promises"
-import { resolve } from "path"
+import pathsGenerator = require("walk-asyncgen");
 
 // language=ts
 const gplString = `/**
@@ -34,27 +35,27 @@ const gplString = `/**
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */`
+ */`;
 
-async function processFile(path: string){
-  const text = await readFile(path, "utf8")
-  if (!text.trim().startsWith(gplString)){
-    await writeFile(path, gplString + "\n" + text, "utf8")
+async function processFile(path: string) {
+  const text = await readFile(path, "utf8");
+  if (!text.trim().startsWith(gplString)) {
+    await writeFile(path, gplString + "\n" + text, "utf8");
   }
 }
 
-async function main(){
+async function main() {
   const promises: Promise<void>[] = [];
   for await (const path of pathsGenerator(resolve(__dirname, ".."), {
-    excludeDirs: /(node_modules|\.git)\/?.*/
+    excludeDirs: /(node_modules|\.git)\/?.*/,
   })) {
-    if (path.endsWith(".ts")){
-      promises.push(processFile(path))
+    if (path.endsWith(".ts")) {
+      promises.push(processFile(path));
     }
   }
-  await Promise.all(promises)
+  await Promise.all(promises);
 }
 
 main().then(() => {
-  console.log("Done")
-})
+  console.log("Done");
+});
