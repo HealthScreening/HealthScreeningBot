@@ -171,6 +171,50 @@
         }
       }
     },
+    "CommandLogs": {
+      "tableName": "CommandLogs",
+      "schema": {
+        "id": {
+          "autoIncrement": true,
+          "primaryKey": true,
+          "field": "id",
+          "seqType": "Sequelize.INTEGER"
+        },
+        "userId": {
+          "allowNull": false,
+          "field": "userId",
+          "seqType": "Sequelize.STRING"
+        },
+        "commandName": {
+          "allowNull": false,
+          "field": "commandName",
+          "seqType": "Sequelize.STRING"
+        },
+        "createdAt": {
+          "allowNull": false,
+          "field": "createdAt",
+          "seqType": "Sequelize.DATE"
+        }
+      },
+      "indexes": {
+        "0d2878019cd6f247f7b61e84129764172185e6b2": {
+          "fields": ["userID"],
+          "name": "command_logs_user_i_d",
+          "options": {
+            "indexName": "command_logs_user_i_d",
+            "name": "command_logs_user_i_d"
+          }
+        },
+        "a0b47c3fefdde0877c39ccc0afd258454acdf1bd": {
+          "fields": ["commandName"],
+          "name": "command_logs_command_name",
+          "options": {
+            "indexName": "command_logs_command_name",
+            "name": "command_logs_command_name"
+          }
+        }
+      }
+    },
     "Devices": {
       "tableName": "Devices",
       "schema": {
@@ -250,5 +294,5 @@
       }
     }
   },
-  "revision": 11
+  "revision": 12
 }

@@ -185,6 +185,11 @@
           "field": "userId",
           "seqType": "Sequelize.STRING"
         },
+        "userName": {
+          "allowNull": false,
+          "field": "userName",
+          "seqType": "Sequelize.STRING"
+        },
         "commandName": {
           "allowNull": false,
           "field": "commandName",
@@ -294,5 +299,5 @@
       }
     }
   },
-  "revision": 12
+  "revision": 13
 }

@@ -39,6 +39,10 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      userName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       commandName: {
         type: DataTypes.STRING,
         allowNull: false,

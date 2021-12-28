@@ -21,6 +21,7 @@ import { sequelize } from ".";
 export interface CommandLogAttributes {
   id: number;
   userId: string;
+  userName: string;
   commandName: string;
 }
 
@@ -32,6 +33,7 @@ export class CommandLog
 {
   id!: number;
   userId!: string;
+  userName!: string;
   commandName!: string;
 }
 
@@ -43,6 +45,10 @@ CommandLog.init(
       primaryKey: true,
     },
     userId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    userName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
