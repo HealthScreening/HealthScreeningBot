@@ -1,16 +1,17 @@
 import {
+  Collection,
   MessageActionRow,
-  MessageEmbed,
+  MessageActionRowComponent,
   MessageButton,
   MessageComponentInteraction,
-  Collection,
+  MessageEmbed,
   Snowflake,
-  MessageActionRowComponent,
 } from "discord.js";
+
 import { CollectedComponent, CustomCollector } from "./customCollector";
-import { MessageOptions } from "./multiMessage";
 import logError from "./logError";
 import serializeMessageComponentInteraction from "./logError/serializeMessageComponentInteraction";
+import { MessageOptions } from "./multiMessage";
 
 export default class Paginator {
   readonly pages: MessageEmbed[];

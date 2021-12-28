@@ -15,10 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { ValidationError } from "sequelize";
+
+import { version } from "../../../package.json";
 import { ErrorLog } from "../../orm/errorLog";
 import ignoreError from "./ignoreError";
 import sequelizeValidationError from "./supplementors/sequelizeValidationError";
-import { version } from "../../../package.json";
 
 export type SupplementorFunction<E extends Error = Error> = (
   error: E,

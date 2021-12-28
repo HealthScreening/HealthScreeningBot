@@ -16,13 +16,14 @@
  */
 import * as Buffer from "buffer";
 import { DateTime } from "luxon";
+
 import completeScreening, {
   SendRequestParams,
 } from "@healthscreening/complete-screening";
-import screeningTypes from "@healthscreening/screening-types";
 import generateScreenshot, {
   GetScreenshotParams,
 } from "@healthscreening/generate-screenshot";
+import screeningTypes from "@healthscreening/screening-types";
 
 export interface GenerateScreenshotParams extends SendRequestParams {
   device: string;

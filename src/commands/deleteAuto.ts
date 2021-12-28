@@ -16,9 +16,10 @@
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
-import { AutoUser } from "../orm/autoUser";
-import { AutoDays } from "../orm/autoDays";
+
 import { Command } from "../client/command";
+import { AutoDays } from "../orm/autoDays";
+import { AutoUser } from "../orm/autoUser";
 
 export default class DeleteAuto extends Command {
   readonly data = new SlashCommandBuilder()

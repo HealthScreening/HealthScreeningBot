@@ -1,4 +1,5 @@
 import { TextChannel } from "discord.js";
+
 import { HSBMessageComponentInteraction } from "../discordjs-overrides";
 
 async function deleteMessage(interaction: HSBMessageComponentInteraction) {

@@ -14,12 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { Op } from "sequelize";
-import { ErrorLog } from "../../orm/errorLog";
-import { HSBCommandInteraction } from "../../discordjs-overrides";
-import formatErrorLogEntry from "../../utils/formatErrorLogEntry";
-import { Subcommand } from "../../client/command";
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
+import { Op } from "sequelize";
+
+import { Subcommand } from "../../client/command";
+import { HSBCommandInteraction } from "../../discordjs-overrides";
+import { ErrorLog } from "../../orm/errorLog";
+import formatErrorLogEntry from "../../utils/formatErrorLogEntry";
 
 export default class ErrorPostCommand extends Subcommand {
   registerSubcommand(

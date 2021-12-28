@@ -14,16 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import HealthScreeningBotClient from "./extraClient";
+import ArrayStringMap from "array-string-map";
 import { TextChannel } from "discord.js";
-import { AutoUser } from "../orm/autoUser";
 import { DateTime } from "luxon";
+import { Op } from "sequelize";
+
+import { AutoUser } from "../orm/autoUser";
+import dayIsHoliday from "../utils/getHolidays";
 import getUsersForDayOfWeek from "../utils/getUsersForDayOfWeek";
 import getValidUserIDs from "../utils/getValidUserIDs";
-import { Op } from "sequelize";
 import logError from "../utils/logError";
-import ArrayStringMap from "array-string-map";
-import dayIsHoliday from "../utils/getHolidays";
+import HealthScreeningBotClient from "./extraClient";
 
 export default async function doAutoLoop(
   client: HealthScreeningBotClient,

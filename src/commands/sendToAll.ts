@@ -21,15 +21,16 @@ import {
   MessageEmbed,
   User,
 } from "discord.js";
+import sleep from "sleep-promise";
+
+import { Command } from "../client/command";
+import { HSBCommandInteraction } from "../discordjs-overrides";
 import { AutoUser } from "../orm/autoUser";
+import checkOwner from "../utils/checkOwner";
 import getValidUserIDs from "../utils/getValidUserIDs";
 import logError from "../utils/logError";
-import sleep from "sleep-promise";
-import checkOwner from "../utils/checkOwner";
 import { ItemType } from "../utils/multiMessage";
-import { Command } from "../client/command";
 import nameAutocomplete from "./guide/autocomplete/name";
-import { HSBCommandInteraction } from "../discordjs-overrides";
 
 export default class SendToAll extends Command {
   public autocompleteFields: Collection<

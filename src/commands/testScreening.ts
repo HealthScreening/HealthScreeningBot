@@ -17,10 +17,11 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, MessageEmbed } from "discord.js";
 import { DateTime } from "luxon";
+
+import { Command } from "../client/command";
 import getAutoData from "../screeningClient/getUserInfo/getAutoData";
 import getAutoDayData from "../screeningClient/getUserInfo/getAutoDayData";
 import dayIsHoliday from "../utils/getHolidays";
-import { Command } from "../client/command";
 
 export default class TestScreening extends Command {
   public readonly data = new SlashCommandBuilder()

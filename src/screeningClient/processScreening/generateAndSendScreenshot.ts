@@ -14,18 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { ProcessParams, serializeProcessParams } from "../interfaces";
-import { sendRequestAndGenerateScreenshot } from "../../utils/produceScreenshot";
+import { MessageActionRow } from "discord.js";
+
+import { AutoUser } from "../../orm/autoUser";
+import getPresetButton from "../../utils/buttonPresets";
+import logError from "../../utils/logError";
 import {
-  getUserID,
   MessageOptions,
+  getUserID,
   sendMessage,
   serializeMessageOptions,
 } from "../../utils/multiMessage";
-import logError from "../../utils/logError";
-import { AutoUser } from "../../orm/autoUser";
-import { MessageActionRow } from "discord.js";
-import getPresetButton from "../../utils/buttonPresets";
+import { sendRequestAndGenerateScreenshot } from "../../utils/produceScreenshot";
+import { ProcessParams, serializeProcessParams } from "../interfaces";
 
 export default async function generateAndSendScreenshot(params: ProcessParams) {
   try {

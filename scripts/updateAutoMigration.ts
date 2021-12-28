@@ -1,4 +1,4 @@
-import { readdir, readFile, rename, writeFile } from "fs/promises";
+import { readFile, readdir, rename, writeFile } from "fs/promises";
 import { resolve } from "path";
 
 const migrationPath = resolve(

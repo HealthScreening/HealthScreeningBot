@@ -15,13 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
-import screeningTypes from "@healthscreening/screening-types";
 import { CommandInteraction, MessageEmbed } from "discord.js";
 import { DateTime } from "luxon";
+
+import screeningTypes from "@healthscreening/screening-types";
+
+import { Command } from "../client/command";
 import getAutoData from "../screeningClient/getUserInfo/getAutoData";
 import getAutoDayData from "../screeningClient/getUserInfo/getAutoDayData";
 import getDeviceData from "../screeningClient/getUserInfo/getDeviceData";
-import { Command } from "../client/command";
 
 export default class Profile extends Command {
   public readonly data = new SlashCommandBuilder()

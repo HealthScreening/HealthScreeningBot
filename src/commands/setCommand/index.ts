@@ -15,19 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
+import { AutocompleteInteraction, Collection, User } from "discord.js";
+import { devices } from "puppeteer";
+
 import screeningTypes, {
   screeningTypeType,
 } from "@healthscreening/screening-types";
-import { AutocompleteInteraction, Collection, User } from "discord.js";
-import { devices } from "puppeteer";
-import createOrUpdate from "../../utils/createOrUpdate";
-import { Devices, DevicesAttributes } from "../../orm/devices";
-import { AutoUser } from "../../orm/autoUser";
-import { ItemType } from "../../utils/multiMessage";
+
+import { Command } from "../../client/command";
 import { HSBCommandInteraction } from "../../discordjs-overrides";
 import { AutoDays } from "../../orm/autoDays";
-import { Command } from "../../client/command";
+import { AutoUser } from "../../orm/autoUser";
+import { Devices, DevicesAttributes } from "../../orm/devices";
+import createOrUpdate from "../../utils/createOrUpdate";
 import generateNumberChoicesInRange from "../../utils/generateNumberChoicesInRange";
+import { ItemType } from "../../utils/multiMessage";
 import devicesAutocomplete from "./autocomplete/devices";
 import minuteAutocomplete from "./autocomplete/minute";
 

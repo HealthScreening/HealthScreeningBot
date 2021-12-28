@@ -1,3 +1,4 @@
+import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import {
   AutocompleteInteraction,
   Collection,
@@ -5,17 +6,17 @@ import {
   MessageEmbed,
 } from "discord.js";
 import { DateTime } from "luxon";
-import { col, fn, literal, Op, where } from "sequelize";
-import { ErrorLog } from "../../../../orm/errorLog";
-import Paginator from "../../../../utils/paginator";
-import { ItemType } from "../../../../utils/multiMessage";
+import { Op, col, fn, literal, where } from "sequelize";
+
 import { Subcommand } from "../../../../client/command";
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
-import typeStartsWithAutocomplete from "./autocomplete/typeStartsWith";
-import beforeAutocomplete from "./autocomplete/before";
+import { ErrorLog } from "../../../../orm/errorLog";
+import { ItemType } from "../../../../utils/multiMessage";
+import Paginator from "../../../../utils/paginator";
 import afterAutocomplete from "./autocomplete/after";
 import afterTimeAutocomplete from "./autocomplete/afterTime";
+import beforeAutocomplete from "./autocomplete/before";
 import beforeTimeAutocomplete from "./autocomplete/beforeTime";
+import typeStartsWithAutocomplete from "./autocomplete/typeStartsWith";
 
 export default class ErrorLogViewCommand extends Subcommand {
   public readonly autocompleteFields: Collection<

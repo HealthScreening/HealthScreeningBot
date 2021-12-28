@@ -16,11 +16,13 @@
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
+import { exit } from "process";
+
+import { closeBrowser } from "@healthscreening/generate-screenshot";
+
 import { Command } from "../client/command";
 import checkOwner from "../utils/checkOwner";
 import { ItemType } from "../utils/multiMessage";
-import { closeBrowser } from "@healthscreening/generate-screenshot";
-import { exit } from "process";
 
 export default class StopBot extends Command {
   public readonly data = new SlashCommandBuilder()

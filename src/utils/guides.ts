@@ -1,6 +1,7 @@
-import { resolve } from "path";
 import { Collection, MessageEmbed } from "discord.js";
 import { readFile } from "fs/promises";
+import { resolve } from "path";
+
 import HealthScreeningBotClient from "../client/extraClient";
 import guideData from "../data/guideData.json";
 

@@ -1,6 +1,7 @@
-import HealthScreeningBotClient from "./extraClient";
-import logError from "../utils/logError";
 import sleep from "sleep-promise";
+
+import logError from "../utils/logError";
+import HealthScreeningBotClient from "./extraClient";
 
 export default async function doGuildMemberCacheUpdate(
   client: HealthScreeningBotClient

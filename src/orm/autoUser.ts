@@ -14,12 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 import { DataTypes, Model, Optional } from "sequelize";
-import { sequelize } from ".";
+
 import screeningTypes, {
   screeningTypeType,
 } from "@healthscreening/screening-types";
+
+import { sequelize } from ".";
 
 export interface AutoUserAttributes {
   userId: string;

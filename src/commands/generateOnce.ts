@@ -15,13 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { ItemType } from "../utils/multiMessage";
-import { HSBCommandInteraction } from "../discordjs-overrides";
+
 import screeningTypes, {
   screeningTypeType,
 } from "@healthscreening/screening-types";
-import getDeviceData from "../screeningClient/getUserInfo/getDeviceData";
+
 import { Command } from "../client/command";
+import { HSBCommandInteraction } from "../discordjs-overrides";
+import getDeviceData from "../screeningClient/getUserInfo/getDeviceData";
+import { ItemType } from "../utils/multiMessage";
 
 export default class GenerateOnce extends Command {
   public readonly data = new SlashCommandBuilder()

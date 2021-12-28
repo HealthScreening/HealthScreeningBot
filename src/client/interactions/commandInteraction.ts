@@ -1,9 +1,9 @@
+import { HSBCommandInteraction } from "../../discordjs-overrides";
+import handleCommandError from "../../utils/handleCommandError";
 import logError from "../../utils/logError";
 import serializeInteraction from "../../utils/logError/serializeInteraction";
 import { ItemType } from "../../utils/multiMessage";
-import { HSBCommandInteraction } from "../../discordjs-overrides";
 import { getTrueCommand } from "../resolve";
-import handleCommandError from "../../utils/handleCommandError";
 
 export default async function commandInteraction(
   interaction: HSBCommandInteraction

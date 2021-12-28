@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { Model, Sequelize, DataTypes as DT } from "sequelize";
+import { DataTypes as DT, Model, Sequelize } from "sequelize";
 
 module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
   class Devices extends Model {

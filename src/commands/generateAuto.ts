@@ -15,9 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
+
+import { Command } from "../client/command";
 import { HSBCommandInteraction } from "../discordjs-overrides";
 import { ItemType } from "../utils/multiMessage";
-import { Command } from "../client/command";
 
 export default class GenerateAuto extends Command {
   public readonly data = new SlashCommandBuilder()

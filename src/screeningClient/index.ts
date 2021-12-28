@@ -14,13 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { ItemType, MessageOptions, sendMessage } from "../utils/multiMessage";
-import { AutoBatchOptions, AutoInfo, ProcessParams } from "./interfaces";
+import ConcurrentPriorityWorkerQueue from "concurrent-priority-worker-queue";
 import { User } from "discord.js";
-import processScreening from "./processScreening";
+
+import { ItemType, MessageOptions, sendMessage } from "../utils/multiMessage";
 import getAutoData from "./getUserInfo/getAutoData";
 import getDeviceData from "./getUserInfo/getDeviceData";
-import ConcurrentPriorityWorkerQueue from "concurrent-priority-worker-queue";
+import { AutoBatchOptions, AutoInfo, ProcessParams } from "./interfaces";
+import processScreening from "./processScreening";
 
 /**
  * The class that forms a bridge between the Discord component and the screening component of the bot.
