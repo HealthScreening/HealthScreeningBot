@@ -10,8 +10,8 @@ export default async function messageComponentInteraction(
     const customId = interaction.customId;
     if (
       customId.length > 33 &&
-      customId.at(33) === "_" &&
-      !customId.slice(0, 33).includes("_")
+      customId.at(32) === "_" &&
+      !customId.slice(0, 32).includes("_")
     ) {
       // This is a UUID-prefixed custom ID, which is used by the custom component collectors.
       // Since this is not a global button, we can safely ignore it.
