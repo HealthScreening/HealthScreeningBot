@@ -35,6 +35,7 @@ export default async function checkOwner(
     await sendMessage({
       content:
         "You are not the owner of the bot, so you cannot run this command!",
+      ephemeral: true,
       ...params,
     });
   }
