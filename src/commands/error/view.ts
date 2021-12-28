@@ -14,7 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { CommandInteraction, HTTPAttachmentData, MessageEmbed } from "discord.js";
+import {
+  CommandInteraction,
+  HTTPAttachmentData,
+  MessageEmbed,
+} from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
 import { ErrorLog } from "../../orm/errorLog";
@@ -46,7 +50,9 @@ export default class ErrorViewCommand extends Subcommand {
       .addBooleanOption((option) =>
         option
           .setName("attach")
-          .setDescription("Send stack trace and metadata as attachments (will do so anyways if >4096 characters each).")
+          .setDescription(
+            "Send stack trace and metadata as attachments (will do so anyways if >4096 characters each)."
+          )
           .setRequired(false)
       )
       .addBooleanOption((option) =>
@@ -97,13 +103,13 @@ export default class ErrorViewCommand extends Subcommand {
       embed.addField("Description", "None", false);
     }
     if (item.errorStack) {
-      if (attach || item.errorStack.length > 4096){
+      if (attach || item.errorStack.length > 4096) {
         const stackBuffer = Buffer.from(item.errorStack, "utf8");
         const stackAttachment: HTTPAttachmentData = {
           attachment: stackBuffer,
           name: "stack.txt",
-          file: stackBuffer
-        }
+          file: stackBuffer,
+        };
         attachments.push(stackAttachment);
       } else {
         const stackEmbed = new MessageEmbed();
@@ -122,22 +128,20 @@ export default class ErrorViewCommand extends Subcommand {
       false
     );
     if (item.metadata) {
-      const metadataStrUnformatted = JSON.stringify(item.metadata, null, 4)
+      const metadataStrUnformatted = JSON.stringify(item.metadata, null, 4);
       const metadataStr = "```json\n" + metadataStrUnformatted + "\n```";
-      if (attach || metadataStr.length > 4096){
+      if (attach || metadataStr.length > 4096) {
         const metadataBuffer = Buffer.from(metadataStrUnformatted, "utf8");
         const metadataAttachment: HTTPAttachmentData = {
           attachment: metadataBuffer,
           name: "metadata.json",
-          file: metadataBuffer
-        }
+          file: metadataBuffer,
+        };
         attachments.push(metadataAttachment);
       } else {
         const metadataEmbed = new MessageEmbed();
         metadataEmbed.setTitle("Metadata for Error #" + item.id);
-        metadataEmbed.setDescription(
-          metadataStr
-        );
+        metadataEmbed.setDescription(metadataStr);
         embeds.push(metadataEmbed);
       }
     } else {
@@ -146,16 +150,19 @@ export default class ErrorViewCommand extends Subcommand {
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
     const paginate = interaction.options.getBoolean("paginate", false) ?? true;
-    if (paginate){
+    if (paginate) {
       await new Paginator(embeds).send({
         itemType: ItemType.interaction,
         item: interaction,
         ephemeral,
-        files: attachments
+        files: attachments,
       });
-    }
-    else {
-      return await interaction.reply({ embeds: embeds, ephemeral, files: attachments });
+    } else {
+      return await interaction.reply({
+        embeds: embeds,
+        ephemeral,
+        files: attachments,
+      });
     }
   }
 }
