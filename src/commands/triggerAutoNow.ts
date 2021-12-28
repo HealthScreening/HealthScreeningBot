@@ -63,12 +63,12 @@ export default class TriggerAutoNow extends Command {
       return;
     }
     const skipPaused =
-      interaction.options.getBoolean("skip_paused", false) || false;
-    const skipDay = interaction.options.getBoolean("skip_day", false) || false;
+      interaction.options.getBoolean("skip_paused", false) ?? false;
+    const skipDay = interaction.options.getBoolean("skip_day", false) ?? false;
     const skipEmailOnly =
-      interaction.options.getBoolean("skip_email_only", false) || false;
+      interaction.options.getBoolean("skip_email_only", false) ?? false;
     const skipMutualGuild =
-      interaction.options.getBoolean("skip_mutual_guild", false) || false;
+      interaction.options.getBoolean("skip_mutual_guild", false) ?? false;
     await interaction.reply("Starting auto session...");
     const logChannel: TextChannel = (await (
       await interaction.client.guilds.fetch("889983763994521610")

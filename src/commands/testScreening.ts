@@ -70,7 +70,7 @@ export default class TestScreening extends Command {
     const month = interaction.options.getInteger("month") || currentTime.month;
     const day = interaction.options.getInteger("day") || currentTime.day;
     const ephemeral =
-      interaction.options.getBoolean("ephemeral", false) || true;
+      interaction.options.getBoolean("ephemeral", false) ?? true;
     const embed = new MessageEmbed()
       .setTitle(`Screening Logic for ${month}/${day}/${year}`)
       .setAuthor(

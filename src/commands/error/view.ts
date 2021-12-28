@@ -105,7 +105,7 @@ export default class ErrorViewCommand extends Subcommand {
       embed.addField("Metadata", "None", false);
     }
     const ephemeral =
-      interaction.options.getBoolean("ephemeral", false) || true;
+      interaction.options.getBoolean("ephemeral", false) ?? true;
     return await interaction.reply({ embeds: embeds, ephemeral });
   }
 }

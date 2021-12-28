@@ -5,7 +5,7 @@ import {
   MessageEmbed,
 } from "discord.js";
 import { DateTime } from "luxon";
-import { col, fn, Op, where } from "sequelize";
+import { col, fn, literal, Op, where } from "sequelize";
 import { ErrorLog } from "../../../../orm/errorLog";
 import Paginator from "../../../../utils/paginator";
 import { ItemType } from "../../../../utils/multiMessage";
@@ -87,6 +87,18 @@ export default class ErrorLogViewCommand extends Subcommand {
       )
       .addBooleanOption((option) =>
         option
+          .setName("paginate")
+          .setDescription("Enable pagination")
+          .setRequired(false)
+      )
+      .addBooleanOption((option) =>
+        option
+          .setName("unique")
+          .setDescription("Display unique errors only (hides duplicates).")
+          .setRequired(false)
+      )
+      .addBooleanOption((option) =>
+        option
           .setName("ephemeral")
           .setDescription(
             "Whether or not the contents are hidden to everyone else"
@@ -95,7 +107,7 @@ export default class ErrorLogViewCommand extends Subcommand {
       );
   }
   async execute(interaction: CommandInteraction) {
-    const isDesc = interaction.options.getBoolean("desc", false) || true;
+    const isDesc = interaction.options.getBoolean("desc", false) ?? true;
     const whereQuery: { [k: string]: object } = {};
     const before: number | null = interaction.options.getInteger("before");
     const after: number | null = interaction.options.getInteger("after");
@@ -106,6 +118,8 @@ export default class ErrorLogViewCommand extends Subcommand {
     const typeStartsWith: string | null =
       interaction.options.getString("type_starts_with");
     const limit: number | null = interaction.options.getInteger("limit");
+    const unique: boolean =
+      interaction.options.getBoolean("unique", false) ?? false;
     if (before) {
       if (!whereQuery.id) {
         whereQuery.id = {};
@@ -135,11 +149,30 @@ export default class ErrorLogViewCommand extends Subcommand {
         [Op.startsWith]: typeStartsWith.toLowerCase(),
       });
     }
-    const items: ErrorLog[] = await ErrorLog.findAll({
-      where: whereQuery,
-      order: [["createdAt", isDesc ? "DESC" : "ASC"]],
-      limit: limit || undefined,
-    });
+    let items: ErrorLog[];
+    if (unique) {
+      items = await ErrorLog.findAll({
+        attributes: [
+          [literal('(array_agg("id" order by "id" DESC))[1]'), "id"],
+          "errorName",
+          "errorDescription",
+          [
+            literal('(array_agg("createdAt" order by "createdAt" DESC))[1]'),
+            "createdAt",
+          ],
+        ],
+        where: whereQuery,
+        order: [[col("createdAt"), isDesc ? "DESC" : "ASC"]],
+        limit: limit || undefined,
+        group: unique ? ["type", "errorName", "errorDescription"] : undefined,
+      });
+    } else {
+      items = await ErrorLog.findAll({
+        where: whereQuery,
+        order: [[col("createdAt"), isDesc ? "DESC" : "ASC"]],
+        limit: limit || undefined,
+      });
+    }
     const embed = new MessageEmbed();
     embed.setTitle("Error Log");
     let fieldData: string =
@@ -202,12 +235,25 @@ export default class ErrorLogViewCommand extends Subcommand {
       embeds.push(embed);
     }
     const ephemeral =
-      interaction.options.getBoolean("ephemeral", false) || true;
-    await new Paginator(embeds).send({
-      itemType: ItemType.interaction,
-      item: interaction,
-      ephemeral,
-    });
-    return;
+      interaction.options.getBoolean("ephemeral", false) ?? true;
+    const paginate = interaction.options.getBoolean("paginate", false) ?? true;
+    if (paginate) {
+      await new Paginator(embeds).send({
+        itemType: ItemType.interaction,
+        item: interaction,
+        ephemeral,
+      });
+    } else {
+      if (embeds.length > 10) {
+        return await interaction.reply({
+          content: "Too many embeds to display. Please use the paginator.",
+          ephemeral: true,
+        });
+      }
+      await interaction.reply({
+        embeds,
+        ephemeral,
+      });
+    }
   }
 }
