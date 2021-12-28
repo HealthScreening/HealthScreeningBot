@@ -151,6 +151,7 @@ export default class ErrorViewCommand extends Subcommand {
         itemType: ItemType.interaction,
         item: interaction,
         ephemeral,
+        files: attachments
       });
     }
     else {
