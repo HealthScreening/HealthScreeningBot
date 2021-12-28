@@ -46,6 +46,8 @@ export default class Paginator {
 
   private readonly actionRow: MessageActionRow;
 
+  private _disableButtons: boolean = true;
+
   constructor(pages: MessageEmbed[], timeout = 120000) {
     if (pages.length === 0) {
       throw new Error("No pages provided");
@@ -159,11 +161,7 @@ export default class Paginator {
         await this._lastInteraction.editReply({
           components: [this.actionRow],
         });
-      }
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore: Ephemeral does not exist on normal messages,
-      // so it'll become undefined, which is boolean false.
-      else if (!customCollector.message.ephemeral) {
+      } else if (this._disableButtons) {
         await customCollector.message.edit({
           components: [this.actionRow],
         });
@@ -172,6 +170,9 @@ export default class Paginator {
   }
 
   async send(options: MessageOptions) {
+    if (options.ephemeral) {
+      this._disableButtons = false;
+    }
     return await this.collector.send(
       {
         embeds: [this.pages[this._currentPage]],
