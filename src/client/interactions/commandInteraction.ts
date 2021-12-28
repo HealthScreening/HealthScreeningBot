@@ -20,17 +20,17 @@ import logError from "../../utils/logError";
 import serializeInteraction from "../../utils/logError/serializeInteraction";
 import { ItemType } from "../../utils/multiMessage";
 import { getTrueCommand } from "../resolve";
+import { CommandLog } from "../../orm/commandLog";
 
 export default async function commandInteraction(
   interaction: HSBCommandInteraction
 ) {
   try {
-    console.debug(
-      "%s%s ran %s",
-      interaction.user.username,
-      interaction.user.discriminator,
-      interaction.commandName
-    );
+    await CommandLog.create({
+      userId: interaction.user.id,
+      userName: `${interaction.user.username}#${interaction.user.discriminator}`,
+      commandName: [interaction.commandName, interaction.options.getSubcommandGroup(false), interaction.options.getSubcommand(false)].filter(Boolean).join(" "),
+    })
 
     const command = await getTrueCommand(interaction);
     if (!command) {
