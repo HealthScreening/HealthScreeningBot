@@ -46,7 +46,7 @@ export default class Paginator {
 
   private readonly actionRow: MessageActionRow;
 
-  private _disableButtons: boolean = true;
+  private _disableButtons = true;
 
   constructor(pages: MessageEmbed[], timeout = 120000) {
     if (pages.length === 0) {
