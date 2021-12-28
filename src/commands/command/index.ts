@@ -51,11 +51,6 @@ export default class CommandCommand extends Command {
     )
     .addSubcommand(
       this.subcommands
-        .get("post")!
-        .registerSubcommand.bind(this.subcommands.get("post"))
-    )
-    .addSubcommand(
-      this.subcommands
         .get("delete")!
         .registerSubcommand.bind(this.subcommands.get("delete"))
     ) as SlashCommandBuilder;
