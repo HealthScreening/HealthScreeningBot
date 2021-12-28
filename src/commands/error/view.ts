@@ -20,6 +20,8 @@ import { Op } from "sequelize";
 import { ErrorLog } from "../../orm/errorLog";
 import { Subcommand } from "../../client/command";
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
+import Paginator from "../../utils/paginator";
+import { ItemType } from "../../utils/multiMessage";
 
 export default class ErrorViewCommand extends Subcommand {
   registerSubcommand(
@@ -33,6 +35,12 @@ export default class ErrorViewCommand extends Subcommand {
           .setName("id")
           .setDescription("The ID of the error to view.")
           .setRequired(true)
+      )
+      .addBooleanOption((option) =>
+        option
+          .setName("paginate")
+          .setDescription("Enable pagination")
+          .setRequired(false)
       )
       .addBooleanOption((option) =>
         option
@@ -106,6 +114,16 @@ export default class ErrorViewCommand extends Subcommand {
     }
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
-    return await interaction.reply({ embeds: embeds, ephemeral });
+    const paginate = interaction.options.getBoolean("paginate", false) ?? true;
+    if (paginate){
+      await new Paginator(embeds).send({
+        itemType: ItemType.interaction,
+        item: interaction,
+        ephemeral,
+      });
+    }
+    else {
+      return await interaction.reply({ embeds: embeds, ephemeral });
+    }
   }
 }
