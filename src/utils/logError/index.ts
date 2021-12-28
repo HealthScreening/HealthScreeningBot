@@ -18,6 +18,7 @@ import { ValidationError } from "sequelize";
 import { ErrorLog } from "../../orm/errorLog";
 import ignoreError from "./ignoreError";
 import sequelizeValidationError from "./supplementors/sequelizeValidationError";
+import { version } from "../../../package.json";
 
 export type SupplementorFunction<E extends Error = Error> = (
   error: E,
@@ -52,6 +53,9 @@ export default async function logError(
     ? supplementors[errorName](error, type, metadata)
     : metadata || null;
   const errorStack: string | null = error.stack || null;
+  if (version.search(/[^\d.]/) !== -1) {
+    console.error(error)
+  }
   return await ErrorLog.create({
     errorName,
     errorDescription: errorMessage,

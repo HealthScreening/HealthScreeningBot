@@ -164,7 +164,7 @@ export default class SetCommand extends Command {
     const friday = interaction.options.getBoolean("friday");
     const saturday = interaction.options.getBoolean("saturday");
     const ephemeral =
-      interaction.options.getBoolean("ephemeral", false) || true;
+      interaction.options.getBoolean("ephemeral", false) ?? true;
     let foundDeviceName: string | undefined;
     if (deviceName) {
       foundDeviceName = validDevices.find(

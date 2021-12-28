@@ -52,7 +52,7 @@ export default class ErrorPostCommand extends Subcommand {
   async execute(interaction: HSBCommandInteraction) {
     const id: number = interaction.options.getInteger("id", true);
     const redact: boolean =
-      interaction.options.getBoolean("redact", false) || false;
+      interaction.options.getBoolean("redact", false) ?? false;
     const item: ErrorLog | null = await ErrorLog.findOne({
       where: {
         id: {
@@ -64,7 +64,7 @@ export default class ErrorPostCommand extends Subcommand {
       return await interaction.reply("No error with that ID found.");
     }
     const ephemeral =
-      interaction.options.getBoolean("ephemeral", false) || true;
+      interaction.options.getBoolean("ephemeral", false) ?? true;
     await interaction.reply({ content: "Posting to GitHub...", ephemeral });
     await interaction.client.githubQueue.enqueue(
       [
