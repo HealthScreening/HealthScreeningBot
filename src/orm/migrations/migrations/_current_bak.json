@@ -122,6 +122,22 @@
           "field": "type",
           "seqType": "Sequelize.ENUM('G', 'S', 'E')"
         },
+        "emailOnly": {
+          "allowNull": false,
+          "defaultValue": {
+            "value": false
+          },
+          "field": "emailOnly",
+          "seqType": "Sequelize.BOOLEAN"
+        },
+        "paused": {
+          "allowNull": false,
+          "defaultValue": {
+            "value": false
+          },
+          "field": "paused",
+          "seqType": "Sequelize.BOOLEAN"
+        },
         "createdAt": {
           "allowNull": false,
           "field": "createdAt",
@@ -143,6 +159,58 @@
           "options": {
             "indexName": "auto_users_hour_minute",
             "name": "auto_users_hour_minute"
+          }
+        },
+        "44573e4ae41a46a7124c7cde847c560154133473": {
+          "fields": ["paused"],
+          "name": "auto_users_paused",
+          "options": {
+            "indexName": "auto_users_paused",
+            "name": "auto_users_paused"
+          }
+        }
+      }
+    },
+    "CommandLogs": {
+      "tableName": "CommandLogs",
+      "schema": {
+        "id": {
+          "autoIncrement": true,
+          "primaryKey": true,
+          "field": "id",
+          "seqType": "Sequelize.INTEGER"
+        },
+        "userId": {
+          "allowNull": false,
+          "field": "userId",
+          "seqType": "Sequelize.STRING"
+        },
+        "commandName": {
+          "allowNull": false,
+          "field": "commandName",
+          "seqType": "Sequelize.STRING"
+        },
+        "createdAt": {
+          "allowNull": false,
+          "field": "createdAt",
+          "seqType": "Sequelize.DATE"
+        }
+      },
+      "indexes": {
+        "0d2878019cd6f247f7b61e84129764172185e6b2": {
+          "fields": ["userId"],
+          "name": "command_logs_user_i_d",
+          "options": {
+            "indexName": "command_logs_user_i_d",
+            "name": "command_logs_user_i_d"
+          }
+        },
+        "a0b47c3fefdde0877c39ccc0afd258454acdf1bd": {
+          "fields": ["commandName"],
+          "name": "command_logs_command_name",
+          "options": {
+            "indexName": "command_logs_command_name",
+            "name": "command_logs_command_name"
           }
         }
       }
@@ -226,5 +294,5 @@
       }
     }
   },
-  "revision": 10
+  "revision": 12
 }

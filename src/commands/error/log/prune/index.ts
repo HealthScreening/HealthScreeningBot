@@ -181,6 +181,11 @@ export default class ErrorLogPruneCommand extends Subcommand {
     } else {
       fieldData += "\nType Starts With: **None**";
     }
+    if (limit) {
+      fieldData += `\nLimit: **${limit}**`;
+    } else {
+      fieldData += "\nLimit: **None**";
+    }
     embed.addField("Search Properties", fieldData.trim());
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;

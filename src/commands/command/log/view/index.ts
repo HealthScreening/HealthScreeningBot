@@ -20,27 +20,28 @@ import {
   Collection,
   CommandInteraction,
   MessageEmbed,
+  User,
 } from "discord.js";
 import { DateTime } from "luxon";
 import { Op, col, fn, literal, where } from "sequelize";
 
 import { Subcommand } from "../../../../client/command";
-import { ErrorLog } from "../../../../orm/errorLog";
+import { CommandLog } from "../../../../orm/commandLog";
 import { ItemType } from "../../../../utils/multiMessage";
 import Paginator from "../../../../utils/paginator";
 import afterAutocomplete from "./autocomplete/after";
 import afterTimeAutocomplete from "./autocomplete/afterTime";
 import beforeAutocomplete from "./autocomplete/before";
 import beforeTimeAutocomplete from "./autocomplete/beforeTime";
-import typeStartsWithAutocomplete from "./autocomplete/typeStartsWith";
+import commandNameStartsWithAutocomplete from "./autocomplete/commandNameStartsWith";
 
-export default class ErrorLogViewCommand extends Subcommand {
+export default class CommandLogViewCommand extends Subcommand {
   public readonly autocompleteFields: Collection<
     string,
     (interaction: AutocompleteInteraction) => Promise<void>
   > = new Collection(
     Object.entries({
-      type_starts_with: typeStartsWithAutocomplete,
+      command_name_starts_with: commandNameStartsWithAutocomplete,
       before: beforeAutocomplete,
       after: afterAutocomplete,
       after_time: afterTimeAutocomplete,
@@ -52,54 +53,60 @@ export default class ErrorLogViewCommand extends Subcommand {
   ): SlashCommandSubcommandBuilder {
     return subcommand
       .setName("view")
-      .setDescription("View the error log.")
+      .setDescription("View the command log.")
       .addIntegerOption((option) =>
         option
           .setName("before")
-          .setDescription("Show the errors before this error #")
+          .setDescription("Show the commands before this command #")
           .setRequired(false)
           .setAutocomplete(true)
       )
       .addIntegerOption((option) =>
         option
           .setName("after")
-          .setDescription("Show the errors after this error #")
+          .setDescription("Show the commands after this command #")
           .setRequired(false)
           .setAutocomplete(true)
       )
       .addIntegerOption((option) =>
         option
           .setName("after_time")
-          .setDescription("Show errors after the given UNIX timestamp")
+          .setDescription("Show commands after the given UNIX timestamp")
           .setRequired(false)
           .setAutocomplete(true)
       )
       .addIntegerOption((option) =>
         option
           .setName("before_time")
-          .setDescription("Show errors before the given UNIX timestamp")
+          .setDescription("Show commands before the given UNIX timestamp")
           .setRequired(false)
           .setAutocomplete(true)
       )
       .addBooleanOption((option) =>
         option
           .setName("desc")
-          .setDescription("Show the errors in descending order, default true")
+          .setDescription("Show the commands in descending order, default true")
           .setRequired(false)
       )
       .addStringOption((option) =>
         option
-          .setName("type_starts_with")
+          .setName("command_name_starts_with")
           .setDescription(
-            "Shows the errors with a type starting with the given string"
+            "Shows the commands with a name starting with the given string"
           )
           .setRequired(false)
           .setAutocomplete(true)
       )
+      .addUserOption((option) =>
+        option
+          .setName("user_id")
+          .setDescription("Shows the commands by the given user")
+          .setRequired(false)
+      )
       .addIntegerOption((option) =>
         option
           .setName("limit")
-          .setDescription("Limit the number of errors shown")
+          .setDescription("Limit the number of commands shown")
           .setRequired(false)
       )
       .addBooleanOption((option) =>
@@ -111,7 +118,7 @@ export default class ErrorLogViewCommand extends Subcommand {
       .addBooleanOption((option) =>
         option
           .setName("unique")
-          .setDescription("Display unique errors only (hides duplicates).")
+          .setDescription("Display unique commands only (hides duplicates).")
           .setRequired(false)
       )
       .addBooleanOption((option) =>
@@ -132,9 +139,11 @@ export default class ErrorLogViewCommand extends Subcommand {
       interaction.options.getInteger("before_time");
     const afterTime: number | null =
       interaction.options.getInteger("after_time");
-    const typeStartsWith: string | null =
-      interaction.options.getString("type_starts_with");
+    const commandNameStartsWith: string | null = interaction.options.getString(
+      "command_name_starts_with"
+    );
     const limit: number | null = interaction.options.getInteger("limit");
+    const userId: User | null = interaction.options.getUser("user_id");
     const unique: boolean =
       interaction.options.getBoolean("unique", false) ?? false;
     if (before) {
@@ -161,18 +170,24 @@ export default class ErrorLogViewCommand extends Subcommand {
       }
       whereQuery.createdAt[Op.gt] = new Date(afterTime * 1000);
     }
-    if (typeStartsWith) {
-      whereQuery.type = where(fn("lower", col("type")), {
-        [Op.startsWith]: typeStartsWith.toLowerCase(),
+    if (commandNameStartsWith) {
+      whereQuery.commandName = where(fn("lower", col("commandName")), {
+        [Op.startsWith]: commandNameStartsWith.toLowerCase(),
       });
     }
-    let items: ErrorLog[];
+    if (userId) {
+      if (!whereQuery.userId) {
+        whereQuery.userId = {};
+      }
+      whereQuery.userId[Op.eq] = userId.id;
+    }
+    let items: CommandLog[];
     if (unique) {
-      items = await ErrorLog.findAll({
+      items = await CommandLog.findAll({
         attributes: [
           [literal('(array_agg("id" order by "id" DESC))[1]'), "id"],
-          "errorName",
-          "errorDescription",
+          "commandName",
+          "userName",
           [
             literal('(array_agg("createdAt" order by "createdAt" DESC))[1]'),
             "createdAt",
@@ -181,17 +196,17 @@ export default class ErrorLogViewCommand extends Subcommand {
         where: whereQuery,
         order: [[col("createdAt"), isDesc ? "DESC" : "ASC"]],
         limit: limit || undefined,
-        group: unique ? ["type", "errorName", "errorDescription"] : undefined,
+        group: unique ? ["commandName", "commandName", "userName"] : undefined,
       });
     } else {
-      items = await ErrorLog.findAll({
+      items = await CommandLog.findAll({
         where: whereQuery,
         order: [[col("createdAt"), isDesc ? "DESC" : "ASC"]],
         limit: limit || undefined,
       });
     }
     const embed = new MessageEmbed();
-    embed.setTitle("Error Log");
+    embed.setTitle("Command Log");
     let fieldData: string =
       "Direction: **" + (isDesc ? "Descending" : "Ascending") + "**";
     if (before) {
@@ -218,10 +233,15 @@ export default class ErrorLogViewCommand extends Subcommand {
     } else {
       fieldData += "\nAfter Time: **None**";
     }
-    if (typeStartsWith) {
-      fieldData += `\nType Starts With: **\`${typeStartsWith}\`**`;
+    if (commandNameStartsWith) {
+      fieldData += `\nCommand Name Starts With: **\`${commandNameStartsWith}\`**`;
     } else {
       fieldData += "\nType Starts With: **None**";
+    }
+    if (userId) {
+      fieldData += `\nUser ID: **${userId.id}**`;
+    } else {
+      fieldData += "\nUser ID: **None**";
     }
     if (limit) {
       fieldData += `\nLimit: **${limit}**`;
@@ -235,8 +255,8 @@ export default class ErrorLogViewCommand extends Subcommand {
       let baseString = "";
       let currentEmbed = new MessageEmbed(embed);
       items
-        .map((item: ErrorLog) => {
-          return `#${item.id}. ${item.errorName}: ${item.errorDescription}`;
+        .map((item: CommandLog) => {
+          return `#${item.id}. ${item.userName} (<@${item.userId}>) ran ${item.commandName}`;
         })
         .forEach((item: string) => {
           if (baseString.length + item.length > 4096) {
@@ -252,7 +272,7 @@ export default class ErrorLogViewCommand extends Subcommand {
         embeds.push(currentEmbed);
       }
     } else {
-      embed.setDescription("No errors found.");
+      embed.setDescription("No commands found.");
       embed.setColor("RED");
       embeds.push(embed);
     }

@@ -28,6 +28,7 @@ import sleep from "sleep-promise";
 
 import deleteButton from "../buttons/delete";
 import goToDMButton from "../buttons/goToDM";
+import CommandCommand from "../commands/command";
 import DeleteAuto from "../commands/deleteAuto";
 import ErrorCommand from "../commands/error";
 import GenerateAuto from "../commands/generateAuto";
@@ -77,6 +78,7 @@ export interface GuideData {
 export default class HealthScreeningBotClient extends Client {
   public commands: Collection<string, Command> = new Collection(
     Object.entries({
+      command: new CommandCommand(),
       error: new ErrorCommand(),
       delete_auto: new DeleteAuto(),
       generate_auto: new GenerateAuto(),
