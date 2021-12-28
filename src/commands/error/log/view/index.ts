@@ -225,7 +225,7 @@ export default class ErrorLogViewCommand extends Subcommand {
     }
     embed.addField("Search Properties", fieldData);
     const embeds: MessageEmbed[] = [];
-    if (items) {
+    if (items.length > 0) {
       embed.setColor("GREEN");
       let baseString = "";
       let currentEmbed = new MessageEmbed(embed);
