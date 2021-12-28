@@ -15,7 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { DataTypes as DT, Model, Sequelize } from "sequelize";
-import { CommandLog } from "../../commandLog";
 
 module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
   class CommandLog extends Model {
@@ -56,7 +55,7 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
         },
         {
           fields: ["commandName"],
-        }
+        },
       ],
     }
   );

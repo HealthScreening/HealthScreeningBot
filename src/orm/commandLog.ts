@@ -24,10 +24,7 @@ export interface CommandLogAttributes {
   commandName: string;
 }
 
-export type CommandLogCreationAttributes = Optional<
-  CommandLogAttributes,
-  "id"
->;
+export type CommandLogCreationAttributes = Optional<CommandLogAttributes, "id">;
 
 export class CommandLog
   extends Model<CommandLogAttributes, CommandLogCreationAttributes>
@@ -65,7 +62,7 @@ CommandLog.init(
       },
       {
         fields: ["commandName"],
-      }
+      },
     ],
   }
 );
