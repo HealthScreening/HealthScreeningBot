@@ -174,7 +174,7 @@ export default class SetMenu {
         e.message === "Cannot send messages to this user"
       ) {
         this.autoUserModel!.emailOnly = true;
-        await Promise.all([this.update(interaction), this.autoUserModel!.save(), await interaction.followUp({
+        await Promise.all([this.update(interaction), this.autoUserModel!.save(), interaction.followUp({
           content:
             "I cannot send you a screening, possibly due to DMs being disabled from server members. Therefore, you will be set to email-only screenings. In order to disable email-only mode, please rerun `/set` after making sure your DMs are open again.",
           ephemeral: true,
