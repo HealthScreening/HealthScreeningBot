@@ -35,7 +35,7 @@ export default class SetMenu {
 
 
   /* Used in multiple rows */
-  private readonly dudButton = new MessageButton().setDisabled(true).setLabel("\u200b");
+  private readonly dudButton = new MessageButton().setDisabled(true).setLabel("\u200b").setStyle("PRIMARY");
 
   /* Row #1 */
   private readonly deviceSelect = new MessageSelectMenu().setCustomId("deviceSelect").setPlaceholder("Device to Use").setMinValues(1).setMaxValues(1).addOptions(
@@ -96,10 +96,10 @@ export default class SetMenu {
   );
 
   /* Row #5 */
-  private readonly increment1Hour = new MessageButton().setCustomId("increment1Hour").setLabel("+1 Hour")
-  private readonly decrement1Hour = new MessageButton().setCustomId("decrement1Hour").setLabel("-1 Hour")
-  private readonly increment5Minutes = new MessageButton().setCustomId("increment5Minutes").setLabel("+5 Minutes")
-  private readonly decrement5Minutes = new MessageButton().setCustomId("decrement5Minutes").setLabel("-5 Minutes")
+  private readonly increment1Hour = new MessageButton().setCustomId("increment1Hour").setLabel("+1 Hour").setStyle("PRIMARY")
+  private readonly decrement1Hour = new MessageButton().setCustomId("decrement1Hour").setLabel("-1 Hour").setStyle("PRIMARY")
+  private readonly increment5Minutes = new MessageButton().setCustomId("increment5Minutes").setLabel("+5 Minutes").setStyle("PRIMARY")
+  private readonly decrement5Minutes = new MessageButton().setCustomId("decrement5Minutes").setLabel("-5 Minutes").setStyle("PRIMARY")
   private readonly timeActionRow = new MessageActionRow().addComponents(
     this.increment1Hour,
     this.decrement1Hour,
