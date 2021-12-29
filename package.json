@@ -46,7 +46,7 @@
     "@healthscreening/screening-types": "^1.0.0",
     "array-string-map": "^3.0.0",
     "axios": "^0.24.0",
-    "concurrent-priority-worker-queue": "^1.0.0",
+    "concurrent-priority-worker-queue": "^2.0.0",
     "discord-api-types": "^0.25.2",
     "discord.js": "^13.4.0",
     "lodash": "^4.17.21",
