@@ -24,7 +24,6 @@ import {
   MessageEmbed,
   TextChannel,
 } from "discord.js";
-import sleep from "sleep-promise";
 
 import deleteButton from "../buttons/delete";
 import goToDMButton from "../buttons/goToDM";
@@ -60,6 +59,7 @@ import commandInteraction from "./interactions/commandInteraction";
 import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
 import messageComponentInteraction from "./interactions/messageComponentInteraction";
 import issueSets from "../data/githubIssueSets.json";
+import ReportBug from "../commands/reportBug";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -77,6 +77,7 @@ export default class HealthScreeningBotClient extends Client {
       generate_once: new GenerateOnce(),
       guide: new Guide(),
       profile: new Profile(),
+      report_bug: new ReportBug(),
       send_to_all: new SendToAll(),
       set_auto: new SetAuto(),
       set: new SetCommand(),
@@ -89,11 +90,10 @@ export default class HealthScreeningBotClient extends Client {
   public readonly screeningClient: ScreeningClient = new ScreeningClient();
   public readonly githubQueue: ConcurrentPriorityWorkerQueue<
     [string, string, keyof typeof issueSets],
-    void
+    number | null
   > = new ConcurrentPriorityWorkerQueue({
     worker: async (args) => {
-      await postToGithub(...args);
-      await sleep(10 * 1000);
+      return await postToGithub(...args);
     },
     limit: 1,
   });
