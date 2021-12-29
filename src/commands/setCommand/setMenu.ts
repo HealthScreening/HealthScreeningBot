@@ -253,11 +253,11 @@ export default class SetMenu {
       this.disableAll();
       if (this._lastInteraction !== null) {
         await this._lastInteraction.editReply({
-          components: [this.actionRow],
+          components: customCollector.rows,
         });
       } else if (this._disableButtons) {
         await customCollector.message.edit({
-          components: [this.actionRow],
+          components: customCollector.rows,
         });
       }
     }.bind(this);
