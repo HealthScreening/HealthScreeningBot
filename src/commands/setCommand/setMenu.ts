@@ -122,6 +122,13 @@ export default class SetMenu {
     })
   }
 
+  private async editReply(interaction: HSBMessageComponentInteraction){
+    this._lastInteraction = interaction;
+    await interaction.editReply({
+      embeds: [await this.generateEmbed()]
+    })
+  }
+
   private async onDeviceSelect(interaction: HSBSelectMenuInteraction){
     const device = interaction.values[0]
     this.devicesModel = await createOrUpdate<Devices, DevicesAttributes, DevicesAttributes>(Devices, {
@@ -174,7 +181,7 @@ export default class SetMenu {
         e.message === "Cannot send messages to this user"
       ) {
         this.autoUserModel!.emailOnly = true;
-        await Promise.all([this.update(interaction), this.autoUserModel!.save(), interaction.followUp({
+        await Promise.all([this.editReply(interaction), this.autoUserModel!.save(), interaction.followUp({
           content:
             "I cannot send you a screening, possibly due to DMs being disabled from server members. Therefore, you will be set to email-only screenings. In order to disable email-only mode, please rerun `/set` after making sure your DMs are open again.",
           ephemeral: true,
