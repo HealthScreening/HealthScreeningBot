@@ -22,13 +22,13 @@ import {
   MessageActionRowComponent,
   MessageComponentInteraction,
   MessageSelectMenu,
-  Snowflake,
+  Snowflake
 } from "discord.js";
 import { v4 } from "uuid";
 
 import logError from "./logError";
 import serializeMessageComponentInteraction from "./logError/serializeMessageComponentInteraction";
-import { MessageOptions, sendMessage } from "./multiMessage";
+import { ItemType, MessageOptions, sendMessage } from "./multiMessage";
 
 export interface CollectedComponent<T extends MessageActionRowComponent> {
   component: T;
@@ -161,9 +161,11 @@ export class CustomCollector {
             collector: this,
           });
         } catch (e) {
-          await interaction.reply(
-            "An error occurred while running this button action. The error has been logged."
-          );
+          await sendMessage({
+            itemType: ItemType.interaction,
+            item: interaction,
+            content: "An error occurred while running this button action. The error has been logged."
+          })
           await logError(e, "CustomCollector::collect::componentCollect", {
             name: this.name,
             interaction: serializeMessageComponentInteraction(interaction),
