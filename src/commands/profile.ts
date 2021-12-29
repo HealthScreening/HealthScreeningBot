@@ -36,8 +36,10 @@ export async function generateProfileEmbed(user: User, autoUser?: AutoUser, auto
     .setColor("GREEN")
     .setTitle("Profile")
     .setAuthor(
-      user.username,
-      user.displayAvatarURL({ format: "jpg" })
+      {
+        name: user.username,
+        iconURL: user.displayAvatarURL({ format: "jpg" })
+      }
     )
     .setTimestamp(DateTime.local().toUTC().toMillis());
   if (autoData) {
