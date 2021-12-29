@@ -1,4 +1,4 @@
-`/set`: Sets additional information for the automated health screening.
+`/set`: Sets additional information for the automated health screening. If parameters are omitted, the interactive set menu will be sent instead. The interactive menu is a little more limited than the `/set`  command but should handle most cases.
 __Parameters__ (All optional by the way):
 - **device**: The name of the device for the health screening to "use". To view the full device list, do `/guide name:device_list`. *Note*: The device is used with `/generate_once` as well, so deleting your auto information will not completely reset your device. The default device used is `iPhone 11`.
 - **hour**: The hour to run the health screening at. Should be a number in the range of 0-23. *Note*: Changing the hour does not set the minute to zero. The default hour is 5.
