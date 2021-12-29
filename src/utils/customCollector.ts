@@ -91,6 +91,7 @@ export class CustomCollector {
       component,
       collector: onCollect,
     });
+    this._currentRow.push(component);
     return this;
   }
 
