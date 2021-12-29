@@ -102,6 +102,9 @@ export class CustomCollector {
       data: CollectedComponent<MessageActionRowComponent>
     ) => Promise<void>)[]
   ): this {
+    if (this._currentRow.length === 5 || (this._currentRow.length > 0 && this._currentRow[0] instanceof MessageSelectMenu)){
+      this.compactIntoMessageActionRow();
+    }
     const customCollectorComponents = row.components.map((value, index) => {
       this.manipulateComponent(value);
       return {
