@@ -43,7 +43,7 @@ export default class SetMenu {
   );
 
   /* Row #2 */
-  private readonly typeSelect = new MessageSelectMenu().setCustomId("typeSelect").setPlaceholder("Type of Screening to Generate").setMinValues(1).setMaxValues(1).addOptions(Object.entries(screeningTypes).map(([label, value]) => {
+  private readonly typeSelect = new MessageSelectMenu().setCustomId("typeSelect").setPlaceholder("Type of Screening to Generate").setMinValues(1).setMaxValues(1).addOptions(Object.entries(screeningTypes).map(([value, label]) => {
     return {
       label,
       value
