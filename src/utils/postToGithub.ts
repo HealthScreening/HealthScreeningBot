@@ -18,16 +18,19 @@ import axios, { AxiosResponse } from "axios";
 
 import { github } from "../../config";
 import logError from "./logError";
+import issueSets from "../data/githubIssueSets.json"
 
 export default async function postToGithub(
   title: string,
-  body: string
+  body: string,
+  issueSet: keyof typeof issueSets,
 ): Promise<number | null> {
+  const {labels, projectColumn} = issueSets[issueSet];
   const postData = {
     title: title,
     body: body,
     assignees: ["PythonCoderAS"],
-    labels: ["bug"],
+    labels: labels,
   };
   let response: AxiosResponse;
   try {
@@ -70,7 +73,7 @@ export default async function postToGithub(
   let response2: AxiosResponse;
   try {
     response2 = await axios.post(
-      `https://api.github.com/projects/columns/17203991/cards`,
+      `https://api.github.com/projects/columns/${projectColumn}/cards`,
       postResponse2,
       {
         headers: {

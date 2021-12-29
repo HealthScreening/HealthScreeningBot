@@ -59,21 +59,13 @@ import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
 import commandInteraction from "./interactions/commandInteraction";
 import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
 import messageComponentInteraction from "./interactions/messageComponentInteraction";
+import issueSets from "../data/githubIssueSets.json";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
   "hsb/generate-auto",
   "hsb/generate_auto",
 ];
-
-export interface GuideData {
-  /**
-   * Either a string for all pages, or an array of strings for each page.
-   */
-  title?: string | string[];
-  files?: string[];
-  embeds?: MessageEmbed[];
-}
 
 export default class HealthScreeningBotClient extends Client {
   public commands: Collection<string, Command> = new Collection(
@@ -96,7 +88,7 @@ export default class HealthScreeningBotClient extends Client {
   );
   public readonly screeningClient: ScreeningClient = new ScreeningClient();
   public readonly githubQueue: ConcurrentPriorityWorkerQueue<
-    [string, string],
+    [string, string, keyof typeof issueSets],
     void
   > = new ConcurrentPriorityWorkerQueue({
     worker: async (args) => {

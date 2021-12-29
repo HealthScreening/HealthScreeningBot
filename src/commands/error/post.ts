@@ -74,8 +74,9 @@ export default class ErrorPostCommand extends Subcommand {
           256
         ),
         formatErrorLogEntry(item, redact),
+        "errorLog"
       ],
-      0
+      2,
     );
   }
 }
