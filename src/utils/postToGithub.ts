@@ -22,7 +22,7 @@ import logError from "./logError";
 export default async function postToGithub(
   title: string,
   body: string
-): Promise<void> {
+): Promise<number | null> {
   const postData = {
     title: title,
     body: body,
@@ -51,16 +51,17 @@ export default async function postToGithub(
           respData: response.data,
         }
       );
-      return;
+      return null;
     }
   } catch (e) {
     await logError(e, "github::postIssue", {
       reqData: postData,
     });
-    return;
+    return null;
   }
   const data = response.data;
   const id = data.id;
+  const number = data.number;
   const postResponse2 = {
     note: null,
     content_id: id,
@@ -88,13 +89,13 @@ export default async function postToGithub(
           respData: response2.data,
         }
       );
-      return;
+      return null;
     }
   } catch (e) {
     await logError(e, "github::assignIssueToProject", {
       reqData: postResponse2,
     });
-    return;
+    return null;
   }
-  return;
+  return number;
 }
