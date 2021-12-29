@@ -90,7 +90,7 @@ export default class SetMenu {
   private readonly booleanActionRow = new MessageActionRow().addComponents(
     this.enableEmailOnly,
     this.disableEmailOnly,
-    this.dudButton,
+    new MessageButton(this.dudButton.setCustomId("dud1")),
     this.enablePaused,
     this.disablePaused
   );
@@ -103,7 +103,7 @@ export default class SetMenu {
   private readonly timeActionRow = new MessageActionRow().addComponents(
     this.increment1Hour,
     this.decrement1Hour,
-    this.dudButton,
+    new MessageButton(this.dudButton.setCustomId("dud2")),
     this.increment5Minutes,
     this.decrement5Minutes
   );
