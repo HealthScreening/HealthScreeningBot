@@ -202,6 +202,7 @@ export default class SetCommand extends Command {
         item: interaction,
         ephemeral
       })
+      return;
     }
     if (
       (!userOptions && (hour || minute || type || emailOnly || paused)) ||
