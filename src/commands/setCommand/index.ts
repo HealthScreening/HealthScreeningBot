@@ -18,9 +18,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { AutocompleteInteraction, Collection, User } from "discord.js";
 import { devices } from "puppeteer";
 
-import screeningTypes, {
-  screeningTypeType,
-} from "@healthscreening/screening-types";
+import screeningTypes, { screeningTypeType } from "@healthscreening/screening-types";
 
 import { Command } from "../../client/command";
 import { HSBCommandInteraction } from "../../discordjs-overrides";
@@ -32,6 +30,7 @@ import generateNumberChoicesInRange from "../../utils/generateNumberChoicesInRan
 import { ItemType } from "../../utils/multiMessage";
 import devicesAutocomplete from "./autocomplete/devices";
 import minuteAutocomplete from "./autocomplete/minute";
+import SetMenu from "./setMenu";
 
 export default class SetCommand extends Command {
   public autocompleteFields: Collection<
@@ -190,6 +189,20 @@ export default class SetCommand extends Command {
         userId: interaction.user.id,
       },
     });
+    if (!(deviceName || hour || minute || type || emailOnly || paused || sunday || monday || tuesday || wednesday || thursday || friday || saturday)) {
+      // Send menu
+      const menu = new SetMenu(interaction.user, userOptions, dayOptions, null);
+      if (!userOptions){
+        menu.enableDeviceRowOnly();
+      } else {
+        menu.loadAll();
+      }
+      await menu.send({
+        itemType: ItemType.interaction,
+        item: interaction,
+        ephemeral
+      })
+    }
     if (
       (!userOptions && (hour || minute || type || emailOnly || paused)) ||
       (!dayOptions &&

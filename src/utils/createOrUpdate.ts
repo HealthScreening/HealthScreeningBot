@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { Model } from "sequelize";
+import { WhereOptions, Model } from "sequelize";
 
 export default async function createOrUpdate<M extends Model<MT, MCT>, MT, MCT>(
   model,
   newValues: MCT,
-  condition: object
+  condition: WhereOptions<MCT>
 ): Promise<M> {
   const record = await model.findOne({ where: condition });
   if (record) {

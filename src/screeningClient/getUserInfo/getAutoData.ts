@@ -19,9 +19,9 @@ import { AutoInfo, UserInfoParams } from "../interfaces";
 import errorOnInvalid from "./errorOnInvalid";
 
 export default async function getAutoData(
-  options: UserInfoParams
+  options: UserInfoParams, model?: AutoUser
 ): Promise<AutoInfo | null> {
-  const autoUserItem = await AutoUser.findOne({
+  const autoUserItem = model ?? await AutoUser.findOne({
     where: { userId: options.userId },
   });
   if (autoUserItem === null) {

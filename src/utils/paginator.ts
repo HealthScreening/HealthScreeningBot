@@ -34,7 +34,9 @@ export default class Paginator {
   readonly timeout: number;
   private _currentPage: number;
   private readonly collector: CustomCollector = new CustomCollector();
+
   private _lastInteraction: MessageComponentInteraction | null = null;
+  private _disableButtons = true;
 
   private readonly toBeginningButton = new MessageButton()
     .setCustomId("tobeginning")
@@ -63,8 +65,6 @@ export default class Paginator {
 
   private readonly actionRow: MessageActionRow;
 
-  private _disableButtons = true;
-
   constructor(pages: MessageEmbed[], timeout = 120000) {
     if (pages.length === 0) {
       throw new Error("No pages provided");
@@ -81,13 +81,6 @@ export default class Paginator {
       this.toEndButton,
       this.discardButton
     );
-    [
-      this.toBeginningButton,
-      this.lastButton,
-      this.nextButton,
-      this.toEndButton,
-      this.discardButton,
-    ] = this.actionRow.components as MessageButton[];
     this.loadButtons();
   }
 
