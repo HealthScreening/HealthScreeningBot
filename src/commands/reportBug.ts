@@ -24,9 +24,9 @@ import { github } from "../../config";
 
 export default class ReportBug extends Command {
   public readonly data = new SlashCommandBuilder()
-    .setName("test_screening")
+    .setName("report_bug")
     .setDescription(
-      "See whether or not a screening will occur on the given date."
+      "Report a bug with the bot."
     )
     .addStringOption((option) => option.setName("message").setDescription("The message for the bug report.").setRequired(true))
     .addBooleanOption((option) =>
