@@ -74,10 +74,10 @@ export default class TestScreening extends Command {
       interaction.options.getBoolean("ephemeral", false) ?? true;
     const embed = new MessageEmbed()
       .setTitle(`Screening Logic for ${month}/${day}/${year}`)
-      .setAuthor(
-        interaction.user.username,
-        interaction.user.displayAvatarURL({ format: "jpg" })
-      )
+      .setAuthor({
+        name: interaction.user.username,
+        iconURL: interaction.user.displayAvatarURL({ format: "jpg" }),
+      })
       .setTimestamp(DateTime.local().toUTC().toMillis());
     // Step 1, check the holidays
     const holiday = dayIsHoliday({ year, month, day });
@@ -149,10 +149,10 @@ export default class TestScreening extends Command {
     embed.setDescription(action);
     const embed2 = new MessageEmbed()
       .setTitle("Screenshot Logic")
-      .setAuthor(
-        interaction.user.username,
-        interaction.user.displayAvatarURL({ format: "jpg" })
-      )
+      .setAuthor({
+        name: interaction.user.username,
+        iconURL: interaction.user.displayAvatarURL({ format: "jpg" }),
+      })
       .setTimestamp(DateTime.local().toUTC().toMillis());
     // Step 1, check if they share a mutual server.
     // Obviously, if they're running this command then they do in fact share
