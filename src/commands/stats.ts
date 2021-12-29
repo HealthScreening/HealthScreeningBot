@@ -33,12 +33,13 @@ export default class Stats extends Command {
     });
     const registeredPeople = await AutoUser.count();
     const embed = new MessageEmbed()
-      .setColor("#00FF00")
+      .setColor("GREEN")
       .setTitle("Bot Stats")
-      .setAuthor(
-        "Auto Health Screening",
-        "https://cdn.discordapp.com/icons/889983763994521610/43fc775c6dbce5cf84b76f54e8bf5729.webp"
-      )
+      .setAuthor({
+        name: "Auto Health Screening",
+        iconURL:
+          "https://cdn.discordapp.com/icons/889983763994521610/43fc775c6dbce5cf84b76f54e8bf5729.webp",
+      })
       .addField("Servers", String(guildSize), true)
       .addField("Total Members in All Servers", String(members), true)
       .addField(
