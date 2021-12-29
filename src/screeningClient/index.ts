@@ -78,7 +78,12 @@ export class ScreeningClient {
         id: userId,
       },
     };
-    await this.queue.enqueue(trueParams, 1);
+    try {
+      await this.queue.enqueue(trueParams, 1);
+    } catch (e) {
+      this.cooldowns.delete(userId);
+      throw e;
+    }
   }
 
   public async queueAutoCommand(
