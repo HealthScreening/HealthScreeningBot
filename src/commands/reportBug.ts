@@ -53,7 +53,7 @@ ${message.split("\n").map((line) => "> " + line).join("\n")}
 Bug Reported By: **${interaction.user.username}#${interaction.user.discriminator}** (\`${interaction.user.id}\`)
 Bug Reported At: **${DateTime.local()
         .setZone("America/New_York")
-        .toLocaleString(DateTime.DATETIME_HUGE_WITH_SECONDS)}
+        .toLocaleString(DateTime.DATETIME_HUGE_WITH_SECONDS)}**
 `,
       "manualBug"
     ], 1)
