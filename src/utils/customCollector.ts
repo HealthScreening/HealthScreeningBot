@@ -68,9 +68,10 @@ export class CustomCollector {
   }
 
   private manipulateComponent(component: MessageActionRowComponent) {
-    if (component.customId !== null) {
-      component.setCustomId(this.randomCustomIdPrefix + "_" + component.customId);
+    if (component.customId === null) {
+      component.setCustomId(v4().replace(/-/g, "").toLowerCase());
     }
+    component.setCustomId(this.randomCustomIdPrefix + "_" + component.customId);
   }
 
   addComponent(
