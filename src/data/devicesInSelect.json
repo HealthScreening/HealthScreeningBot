@@ -1,0 +1,58 @@
+[
+  {
+    "label": "iPhone 6",
+    "value": "iPhone 6"
+  },
+  {
+    "label": "iPhone 8",
+    "value": "iPhone 8"
+  },
+  {
+    "label": "iPhone 8 Plus",
+    "value": "iPhone 8 Plus"
+  },
+  {
+    "label": "iPhone SE",
+    "value": "iPhone SE"
+  },
+  {
+    "label": "iPhone X",
+    "value": "iPhone X"
+  },
+  {
+    "label": "iPhone XR",
+    "value": "iPhone XR"
+  },
+  {
+    "label": "iPhone 11",
+    "value": "iPhone 11"
+  },
+  {
+    "label": "iPhone 11 Pro",
+    "value": "iPhone 11 Pro"
+  },
+  {
+    "label": "Galaxy S8",
+    "value": "Galaxy S8"
+  },
+  {
+    "label": "Galaxy S9+",
+    "value": "Galaxy S9+"
+  },
+  {
+    "label": "Pixel 2",
+    "value": "Pixel 2"
+  },
+  {
+    "label": "Pixel 2 XL",
+    "value": "Pixel 2 XL"
+  },
+  {
+    "label": "Pixel 3",
+    "value": "Pixel 3"
+  },
+  {
+    "label": "Pixel 4",
+    "value": "Pixel 4"
+  }
+]

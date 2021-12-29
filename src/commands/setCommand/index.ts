@@ -32,6 +32,7 @@ import generateNumberChoicesInRange from "../../utils/generateNumberChoicesInRan
 import { ItemType } from "../../utils/multiMessage";
 import devicesAutocomplete from "./autocomplete/devices";
 import minuteAutocomplete from "./autocomplete/minute";
+import SetMenu from "./setMenu";
 
 export default class SetCommand extends Command {
   public autocompleteFields: Collection<
@@ -190,6 +191,37 @@ export default class SetCommand extends Command {
         userId: interaction.user.id,
       },
     });
+    if (
+      !(
+        deviceName !== null ||
+        hour !== null ||
+        minute !== null ||
+        type !== null ||
+        emailOnly !== null ||
+        paused !== null ||
+        sunday !== null ||
+        monday !== null ||
+        tuesday !== null ||
+        wednesday !== null ||
+        thursday !== null ||
+        friday !== null ||
+        saturday !== null
+      )
+    ) {
+      // Send menu
+      const menu = new SetMenu(interaction.user, userOptions, dayOptions, null);
+      if (!userOptions) {
+        menu.enableDeviceRowOnly();
+      } else {
+        menu.loadAll();
+      }
+      await menu.send({
+        itemType: ItemType.interaction,
+        item: interaction,
+        ephemeral,
+      });
+      return;
+    }
     if (
       (!userOptions && (hour || minute || type || emailOnly || paused)) ||
       (!dayOptions &&

@@ -36,10 +36,10 @@ export class ScreeningClient {
     });
   private readonly cooldowns: Set<string> = new Set();
 
-  private processCooldowns(
+  private async processCooldowns(
     userId: string,
     sendMessageOptions: MessageOptions
-  ): boolean {
+  ): Promise<boolean> {
     if (this.cooldowns.has(userId)) {
       const messageOptions = {
         content:
@@ -47,7 +47,7 @@ export class ScreeningClient {
         ephemeral: true,
         ...sendMessageOptions,
       };
-      sendMessage(messageOptions);
+      await sendMessage(messageOptions);
       return false;
     } else {
       this.cooldowns.add(userId);
@@ -77,7 +77,12 @@ export class ScreeningClient {
         id: userId,
       },
     };
-    await this.queue.enqueue(trueParams, 1);
+    try {
+      await this.queue.enqueue(trueParams, 1);
+    } catch (e) {
+      this.cooldowns.delete(userId);
+      throw e;
+    }
   }
 
   public async queueAutoCommand(
@@ -92,7 +97,7 @@ export class ScreeningClient {
     if (autoInfo === null) {
       return;
     }
-    if (!this.processCooldowns(userId, multiMessageParams)) {
+    if (!(await this.processCooldowns(userId, multiMessageParams))) {
       return;
     }
     const processParams: ProcessParams = {
@@ -116,7 +121,7 @@ export class ScreeningClient {
     userId: string,
     params: ProcessParams
   ): Promise<void> {
-    if (!this.processCooldowns(userId, params.multiMessageParams)) {
+    if (!(await this.processCooldowns(userId, params.multiMessageParams))) {
       return;
     }
     const deviceInfo = await getDeviceData({ userId: userId });

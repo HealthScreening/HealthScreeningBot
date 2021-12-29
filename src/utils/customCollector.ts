@@ -28,7 +28,7 @@ import { v4 } from "uuid";
 
 import logError from "./logError";
 import serializeMessageComponentInteraction from "./logError/serializeMessageComponentInteraction";
-import { MessageOptions, sendMessage } from "./multiMessage";
+import { ItemType, MessageOptions, sendMessage } from "./multiMessage";
 
 export interface CollectedComponent<T extends MessageActionRowComponent> {
   component: T;
@@ -63,7 +63,7 @@ export class CustomCollector {
   }
 
   private compactIntoMessageActionRow() {
-    this.rows.push(new MessageActionRow().addComponents(this._currentRow));
+    this.rows.push(new MessageActionRow().addComponents(...this._currentRow));
     this._currentRow = [];
   }
 
@@ -81,8 +81,10 @@ export class CustomCollector {
     ) => Promise<void>
   ): this {
     if (
-      this.components.length === 5 ||
-      component instanceof MessageSelectMenu
+      this._currentRow.length === 5 ||
+      (component instanceof MessageSelectMenu && this._currentRow.length > 0) ||
+      (this._currentRow.length > 0 &&
+        this._currentRow[0] instanceof MessageSelectMenu)
     ) {
       this.compactIntoMessageActionRow();
     }
@@ -91,6 +93,7 @@ export class CustomCollector {
       component,
       collector: onCollect,
     });
+    this._currentRow.push(component);
     return this;
   }
 
@@ -100,6 +103,13 @@ export class CustomCollector {
       data: CollectedComponent<MessageActionRowComponent>
     ) => Promise<void>)[]
   ): this {
+    if (
+      this._currentRow.length === 5 ||
+      (this._currentRow.length > 0 &&
+        this._currentRow[0] instanceof MessageSelectMenu)
+    ) {
+      this.compactIntoMessageActionRow();
+    }
     const customCollectorComponents = row.components.map((value, index) => {
       this.manipulateComponent(value);
       return {
@@ -156,9 +166,12 @@ export class CustomCollector {
             collector: this,
           });
         } catch (e) {
-          await interaction.reply(
-            "An error occurred while running this button action. The error has been logged."
-          );
+          await sendMessage({
+            itemType: ItemType.interaction,
+            item: interaction,
+            content:
+              "An error occurred while running this button action. The error has been logged.",
+          });
           await logError(e, "CustomCollector::collect::componentCollect", {
             name: this.name,
             interaction: serializeMessageComponentInteraction(interaction),
