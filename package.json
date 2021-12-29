@@ -39,7 +39,7 @@
     "nyc"
   ],
   "dependencies": {
-    "@discordjs/builders": "^0.10.0",
+    "@discordjs/builders": "^0.11.0",
     "@discordjs/rest": "^0.2.0-canary.0",
     "@healthscreening/complete-screening": "^1.0.1",
     "@healthscreening/generate-screenshot": "^1.1.0",
@@ -47,8 +47,8 @@
     "array-string-map": "^3.0.0",
     "axios": "^0.24.0",
     "concurrent-priority-worker-queue": "^2.0.0",
-    "discord-api-types": "^0.25.2",
-    "discord.js": "^13.4.0",
+    "discord-api-types": "^0.26.0",
+    "discord.js": "^13.5.0",
     "lodash": "^4.17.21",
     "luxon": "^2.2.0",
     "pg": "^8.7.1",
