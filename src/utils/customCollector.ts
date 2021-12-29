@@ -63,7 +63,7 @@ export class CustomCollector {
   }
 
   private compactIntoMessageActionRow() {
-    this.rows.push(new MessageActionRow().addComponents(this._currentRow));
+    this.rows.push(new MessageActionRow().addComponents(...this._currentRow));
     this._currentRow = [];
   }
 
