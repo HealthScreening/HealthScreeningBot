@@ -173,13 +173,12 @@ export default class SetMenu {
         e.name === "DiscordAPIError" &&
         e.message === "Cannot send messages to this user"
       ) {
-        await interaction.followUp({
+        this.autoUserModel!.emailOnly = true;
+        await Promise.all([this.update(interaction), this.autoUserModel!.save(), await interaction.followUp({
           content:
             "I cannot send you a screening, possibly due to DMs being disabled from server members. Therefore, you will be set to email-only screenings. In order to disable email-only mode, please rerun `/set` after making sure your DMs are open again.",
           ephemeral: true,
-        });
-        this.autoUserModel!.emailOnly = true;
-        await Promise.all([this.update(interaction), this.autoUserModel!.save()])
+        })])
       } else {
         throw e;
       }
