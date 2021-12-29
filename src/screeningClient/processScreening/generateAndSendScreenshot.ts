@@ -65,8 +65,10 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
         e.name === "DiscordAPIError" &&
         e.message === "Cannot send messages to this user"
       ) {
+        // We want to catch the error
         if (!params.auto) {
-          throw e; // We want to catch the error
+          // If it's not auto, then pass the error along to the caller
+          throw e;
         }
         // Set to email only
         const userId = getUserID(messageParams);
@@ -87,8 +89,9 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
     }
     return true;
   } catch (e) {
+    // If it's not auto, then pass the error along to the caller
     if (!params.auto) {
-      throw e; // We want to catch the error
+      throw e;
     }
     await logError(
       e,
