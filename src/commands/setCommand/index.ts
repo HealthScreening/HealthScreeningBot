@@ -189,7 +189,7 @@ export default class SetCommand extends Command {
         userId: interaction.user.id,
       },
     });
-    if (!(deviceName || hour || minute || type || emailOnly || paused || sunday || monday || tuesday || wednesday || thursday || friday || saturday)) {
+    if (!(deviceName !== null || hour !== null || minute !== null || type !== null || emailOnly !== null || paused !== null || sunday !== null || monday !== null || tuesday !== null || wednesday !== null || thursday !== null || friday !== null || saturday !== null)) {
       // Send menu
       const menu = new SetMenu(interaction.user, userOptions, dayOptions, null);
       if (!userOptions){
