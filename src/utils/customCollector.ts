@@ -82,7 +82,8 @@ export class CustomCollector {
   ): this {
     if (
       this._currentRow.length === 5 ||
-      (component instanceof MessageSelectMenu && this._currentRow.length > 0)
+      (component instanceof MessageSelectMenu && this._currentRow.length > 0) ||
+      (this._currentRow.length > 0 && this._currentRow[0] instanceof MessageSelectMenu)
     ) {
       this.compactIntoMessageActionRow();
     }
