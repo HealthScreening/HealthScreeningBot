@@ -18,7 +18,9 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { AutocompleteInteraction, Collection, User } from "discord.js";
 import { devices } from "puppeteer";
 
-import screeningTypes, { screeningTypeType } from "@healthscreening/screening-types";
+import screeningTypes, {
+  screeningTypeType,
+} from "@healthscreening/screening-types";
 
 import { Command } from "../../client/command";
 import { HSBCommandInteraction } from "../../discordjs-overrides";
@@ -189,10 +191,26 @@ export default class SetCommand extends Command {
         userId: interaction.user.id,
       },
     });
-    if (!(deviceName !== null || hour !== null || minute !== null || type !== null || emailOnly !== null || paused !== null || sunday !== null || monday !== null || tuesday !== null || wednesday !== null || thursday !== null || friday !== null || saturday !== null)) {
+    if (
+      !(
+        deviceName !== null ||
+        hour !== null ||
+        minute !== null ||
+        type !== null ||
+        emailOnly !== null ||
+        paused !== null ||
+        sunday !== null ||
+        monday !== null ||
+        tuesday !== null ||
+        wednesday !== null ||
+        thursday !== null ||
+        friday !== null ||
+        saturday !== null
+      )
+    ) {
       // Send menu
       const menu = new SetMenu(interaction.user, userOptions, dayOptions, null);
-      if (!userOptions){
+      if (!userOptions) {
         menu.enableDeviceRowOnly();
       } else {
         menu.loadAll();
@@ -200,8 +218,8 @@ export default class SetCommand extends Command {
       await menu.send({
         itemType: ItemType.interaction,
         item: interaction,
-        ephemeral
-      })
+        ephemeral,
+      });
       return;
     }
     if (

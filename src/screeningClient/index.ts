@@ -49,8 +49,7 @@ export class ScreeningClient {
       };
       await sendMessage(messageOptions);
       return false;
-    }
-    else {
+    } else {
       this.cooldowns.add(userId);
       return true;
     }
@@ -98,7 +97,7 @@ export class ScreeningClient {
     if (autoInfo === null) {
       return;
     }
-    if (!await this.processCooldowns(userId, multiMessageParams)) {
+    if (!(await this.processCooldowns(userId, multiMessageParams))) {
       return;
     }
     const processParams: ProcessParams = {
@@ -122,7 +121,7 @@ export class ScreeningClient {
     userId: string,
     params: ProcessParams
   ): Promise<void> {
-    if (!await this.processCooldowns(userId, params.multiMessageParams)) {
+    if (!(await this.processCooldowns(userId, params.multiMessageParams))) {
       return;
     }
     const deviceInfo = await getDeviceData({ userId: userId });

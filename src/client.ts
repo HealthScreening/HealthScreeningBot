@@ -41,7 +41,7 @@ const client: HealthScreeningBotClient = new HealthScreeningBotClient({
 async function startup() {
   try {
     await init();
-    process.on("warning", (warning => logError(warning, "warning")));
+    process.on("warning", (warning) => logError(warning, "warning"));
     await startupBrowser();
     await loadAllGuides(client);
     await client.login(discord.token);

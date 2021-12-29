@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { WhereOptions, Model } from "sequelize";
+import { Model, WhereOptions } from "sequelize";
 
 export default async function createOrUpdate<M extends Model<MT, MCT>, MT, MCT>(
   model,

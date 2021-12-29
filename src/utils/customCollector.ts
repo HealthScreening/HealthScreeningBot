@@ -22,7 +22,7 @@ import {
   MessageActionRowComponent,
   MessageComponentInteraction,
   MessageSelectMenu,
-  Snowflake
+  Snowflake,
 } from "discord.js";
 import { v4 } from "uuid";
 
@@ -83,7 +83,8 @@ export class CustomCollector {
     if (
       this._currentRow.length === 5 ||
       (component instanceof MessageSelectMenu && this._currentRow.length > 0) ||
-      (this._currentRow.length > 0 && this._currentRow[0] instanceof MessageSelectMenu)
+      (this._currentRow.length > 0 &&
+        this._currentRow[0] instanceof MessageSelectMenu)
     ) {
       this.compactIntoMessageActionRow();
     }
@@ -102,7 +103,11 @@ export class CustomCollector {
       data: CollectedComponent<MessageActionRowComponent>
     ) => Promise<void>)[]
   ): this {
-    if (this._currentRow.length === 5 || (this._currentRow.length > 0 && this._currentRow[0] instanceof MessageSelectMenu)){
+    if (
+      this._currentRow.length === 5 ||
+      (this._currentRow.length > 0 &&
+        this._currentRow[0] instanceof MessageSelectMenu)
+    ) {
       this.compactIntoMessageActionRow();
     }
     const customCollectorComponents = row.components.map((value, index) => {
@@ -164,8 +169,9 @@ export class CustomCollector {
           await sendMessage({
             itemType: ItemType.interaction,
             item: interaction,
-            content: "An error occurred while running this button action. The error has been logged."
-          })
+            content:
+              "An error occurred while running this button action. The error has been logged.",
+          });
           await logError(e, "CustomCollector::collect::componentCollect", {
             name: this.name,
             interaction: serializeMessageComponentInteraction(interaction),

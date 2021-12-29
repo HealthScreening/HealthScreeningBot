@@ -21,26 +21,29 @@ import { DateTime } from "luxon";
 import screeningTypes from "@healthscreening/screening-types";
 
 import { Command } from "../client/command";
+import { AutoDays } from "../orm/autoDays";
+import { AutoUser } from "../orm/autoUser";
+import { Devices } from "../orm/devices";
 import getAutoData from "../screeningClient/getUserInfo/getAutoData";
 import getAutoDayData from "../screeningClient/getUserInfo/getAutoDayData";
 import getDeviceData from "../screeningClient/getUserInfo/getDeviceData";
-import { AutoUser } from "../orm/autoUser";
-import { AutoDays } from "../orm/autoDays";
-import { Devices } from "../orm/devices";
 
-export async function generateProfileEmbed(user: User, autoUser?: AutoUser, autoDays?: AutoDays, devices?: Devices){
+export async function generateProfileEmbed(
+  user: User,
+  autoUser?: AutoUser,
+  autoDays?: AutoDays,
+  devices?: Devices
+) {
   const autoData = await getAutoData({ userId: user.id }, autoUser);
   const autoDayData = await getAutoDayData({ userId: user.id }, autoDays);
   const deviceData = await getDeviceData({ userId: user.id }, devices);
   const embed = new MessageEmbed()
     .setColor("GREEN")
     .setTitle("Profile")
-    .setAuthor(
-      {
-        name: user.username,
-        iconURL: user.displayAvatarURL({ format: "jpg" })
-      }
-    )
+    .setAuthor({
+      name: user.username,
+      iconURL: user.displayAvatarURL({ format: "jpg" }),
+    })
     .setTimestamp(DateTime.local().toUTC().toMillis());
   if (autoData) {
     const autoDataString = `First Name: **${autoData.firstName}**
@@ -84,7 +87,7 @@ export default class Profile extends Command {
         .setRequired(false)
     ) as SlashCommandBuilder;
   async execute(interaction: CommandInteraction) {
-    const embed = await generateProfileEmbed(interaction.user)
+    const embed = await generateProfileEmbed(interaction.user);
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
     await interaction.reply({ embeds: [embed], ephemeral });
