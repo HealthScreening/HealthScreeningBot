@@ -8,3 +8,7 @@
 **Walkthrough**: `/guide name:walkthrough`
 **What's New in Version 2.1**: `/guide name:whats_new_version_2_1`
 **What's New in Version 2.4**: `/guide name:whats_new_version_2_4`
+**What's New in Version 2.4.1**: `/guide name:whats_new_version_2_4_1`
+**What's New in Version 2.5**: `/guide name:whats_new_version_2_5`
+**What's New in Version 2.6**: `/guide name:whats_new_version_2_6`
+**What's New in Version 2.7**: `/guide name:whats_new_version_2_7`
