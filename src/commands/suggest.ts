@@ -24,7 +24,7 @@ import formatUserIssue from "../utils/formatUserIssue";
 
 export default class Suggest extends Command {
   public readonly data = new SlashCommandBuilder()
-    .setName("suggestion")
+    .setName("suggest")
     .setDescription(
       "Make a suggestion for the bot or the bot's server."
     )
