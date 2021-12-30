@@ -65,6 +65,10 @@ export default class Paginator {
 
   private readonly actionRow: MessageActionRow;
 
+  singlePage(): boolean {
+    return this.pages.length === 1;
+  }
+
   constructor(pages: MessageEmbed[], timeout = 120000) {
     if (pages.length === 0) {
       throw new Error("No pages provided");
@@ -166,6 +170,9 @@ export default class Paginator {
       reason: string,
       customCollector: CustomCollector
     ) {
+      if (this.singlePage()) {
+        return;
+      }
       this.disableActionRow();
       if (this._lastInteraction !== null) {
         await this._lastInteraction.editReply({
@@ -186,7 +193,7 @@ export default class Paginator {
     return await this.collector.send(
       {
         embeds: [this.pages[this._currentPage]],
-        components: this.pages.length === 1 ? [] : [this.actionRow],
+        components: this.singlePage() ? [] : [this.actionRow],
         ...options,
       },
       this.timeout
