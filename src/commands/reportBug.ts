@@ -41,7 +41,7 @@ export default class ReportBug extends Command {
     const message = interaction.options.getString("message", true);
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
-    await interaction.deferReply()
+    await interaction.deferReply({ ephemeral });
     const item: number | null = await interaction.client.githubQueue.enqueue([
       "Bug Report",
       `
