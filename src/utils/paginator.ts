@@ -70,7 +70,7 @@ export default class Paginator {
       throw new Error("No pages provided");
     }
     this.pages = pages.map((page, index) =>
-      page.setFooter(`Page ${index + 1}/${pages.length}`)
+      page.setFooter({ text: `Page ${index + 1}/${pages.length}` })
     );
     this.timeout = timeout;
     this._currentPage = 0;
