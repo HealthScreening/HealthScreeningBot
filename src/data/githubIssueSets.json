@@ -1,0 +1,18 @@
+{
+  "errorLog": {
+    "labels": ["bug", "error log bug"],
+    "projectColumn": 17203991
+  },
+  "manualBug": {
+    "labels": ["bug", "reported bug via bot"],
+    "projectColumn": 17203991
+  },
+  "botFeature": {
+    "labels": ["enhancement", "bot suggestion"],
+    "projectColumn": 17335314
+  },
+  "serverFeature": {
+    "labels": ["enhancement", "server suggestion"],
+    "projectColumn": 17335314
+  }
+}

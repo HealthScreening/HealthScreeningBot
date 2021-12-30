@@ -16,15 +16,21 @@
  */
 import { SlashCommandBuilder } from "@discordjs/builders";
 
+import { github } from "../../config";
 import { Command } from "../client/command";
 import { HSBCommandInteraction } from "../discordjs-overrides";
-import { ItemType } from "../utils/multiMessage";
+import formatUserIssue from "../utils/formatUserIssue";
+import { ItemType, sendMessage } from "../utils/multiMessage";
 
-export default class GenerateAuto extends Command {
+export default class ReportBug extends Command {
   public readonly data = new SlashCommandBuilder()
-    .setName("generate_auto")
-    .setDescription(
-      "Generate a singular health screening using your auto information."
+    .setName("report_bug")
+    .setDescription("Report a bug with the bot.")
+    .addStringOption((option) =>
+      option
+        .setName("message")
+        .setDescription("The message for the bug report.")
+        .setRequired(true)
     )
     .addBooleanOption((option) =>
       option
@@ -33,15 +39,34 @@ export default class GenerateAuto extends Command {
         .setRequired(false)
     ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
+    const message = interaction.options.getString("message", true);
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
-    await interaction.client.screeningClient.queueAutoCommand(
-      interaction.user.id,
-      {
+    await interaction.deferReply({ ephemeral });
+    const item: number | null = await interaction.client.githubQueue.enqueue(
+      [
+        "Bug Report",
+        formatUserIssue(message, interaction.user, "Report"),
+        "manualBug",
+      ],
+      1
+    );
+    if (item === null) {
+      await sendMessage({
         itemType: ItemType.interaction,
         item: interaction,
+        content:
+          "There was an error while trying to report the bug. Please try again later.",
         ephemeral,
-      }
-    );
+      });
+      return;
+    } else {
+      await sendMessage({
+        itemType: ItemType.interaction,
+        item: interaction,
+        content: `Your bug report has been submitted. You can find it here: https://github.com/${github.owner}/${github.repo}/issues/${item}.`,
+        ephemeral,
+      });
+    }
   }
 }

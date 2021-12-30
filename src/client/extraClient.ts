@@ -24,7 +24,6 @@ import {
   MessageEmbed,
   TextChannel,
 } from "discord.js";
-import sleep from "sleep-promise";
 
 import deleteButton from "../buttons/delete";
 import goToDMButton from "../buttons/goToDM";
@@ -35,13 +34,16 @@ import GenerateAuto from "../commands/generateAuto";
 import GenerateOnce from "../commands/generateOnce";
 import Guide from "../commands/guide";
 import Profile from "../commands/profile";
+import ReportBug from "../commands/reportBug";
 import SendToAll from "../commands/sendToAll";
 import SetAuto from "../commands/setAuto";
 import SetCommand from "../commands/setCommand";
 import Stats from "../commands/stats";
 import StopBot from "../commands/stopBot";
+import Suggest from "../commands/suggest";
 import TestScreening from "../commands/testScreening";
 import TriggerAutoNow from "../commands/triggerAutoNow";
+import issueSets from "../data/githubIssueSets.json";
 import {
   HSBAutocompleteInteraction,
   HSBCommandInteraction,
@@ -66,15 +68,6 @@ const GENERATE_AUTO_CHOICES = [
   "hsb/generate_auto",
 ];
 
-export interface GuideData {
-  /**
-   * Either a string for all pages, or an array of strings for each page.
-   */
-  title?: string | string[];
-  files?: string[];
-  embeds?: MessageEmbed[];
-}
-
 export default class HealthScreeningBotClient extends Client {
   public commands: Collection<string, Command> = new Collection(
     Object.entries({
@@ -85,23 +78,24 @@ export default class HealthScreeningBotClient extends Client {
       generate_once: new GenerateOnce(),
       guide: new Guide(),
       profile: new Profile(),
+      report_bug: new ReportBug(),
       send_to_all: new SendToAll(),
       set_auto: new SetAuto(),
       set: new SetCommand(),
       stats: new Stats(),
       stop: new StopBot(),
+      suggest: new Suggest(),
       test_screening: new TestScreening(),
       trigger_auto: new TriggerAutoNow(),
     })
   );
   public readonly screeningClient: ScreeningClient = new ScreeningClient();
   public readonly githubQueue: ConcurrentPriorityWorkerQueue<
-    [string, string],
-    void
+    [string, string, keyof typeof issueSets],
+    number | null
   > = new ConcurrentPriorityWorkerQueue({
     worker: async (args) => {
-      await postToGithub(...args);
-      await sleep(10 * 1000);
+      return await postToGithub(...args);
     },
     limit: 1,
   });

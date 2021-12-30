@@ -52,8 +52,8 @@ export function serializeCooldown(cooldown: Cooldown) {
 /**
  * This consists of three parts: <ul>
  *  <li>auto: The auto parameters. This consists of two parts: <ul>
- *      <li>isAuto: Whether or not the bot is in auto mode.</li>
- *      <li>isManualAuto: Whether or not the bot is in manual auto mode.</li></ul></li>
+ *      <li>isAuto: Whether the bot is in auto mode.</li>
+ *      <li>isManualAuto: Whether the bot is in manual auto mode.</li></ul></li>
  *  <li>generateScreenshotParams: The parameters required for generating a screenshot.</li>
  *  <li>multiMessageParams: The parameters required for sending a message.</li></ul>
  */

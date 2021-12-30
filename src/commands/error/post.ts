@@ -38,15 +38,13 @@ export default class ErrorPostCommand extends Subcommand {
       .addBooleanOption((option) =>
         option
           .setName("redact")
-          .setDescription("Whether or not to redact the metadata.")
+          .setDescription("Whether to redact the metadata.")
           .setRequired(false)
       )
       .addBooleanOption((option) =>
         option
           .setName("ephemeral")
-          .setDescription(
-            "Whether or not the contents are hidden to everyone else"
-          )
+          .setDescription("Whether the contents are hidden to everyone else")
           .setRequired(false)
       );
   }
@@ -74,8 +72,9 @@ export default class ErrorPostCommand extends Subcommand {
           256
         ),
         formatErrorLogEntry(item, redact),
+        "errorLog",
       ],
-      0
+      2
     );
   }
 }

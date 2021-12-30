@@ -56,7 +56,7 @@ interface BaseMessageOptions {
   files?: HTTPAttachmentData[];
   replyMessage?: Message;
   /**
-   * Whether or not to send the message if the message being replied to is deleted.
+   * Whether to send the message if the message being replied to is deleted.
    *
    * If {@link BaseMessageOptions.replyMessage} is not provided, this will be ignored.
    */

@@ -17,17 +17,20 @@
 import axios, { AxiosResponse } from "axios";
 
 import { github } from "../../config";
+import issueSets from "../data/githubIssueSets.json";
 import logError from "./logError";
 
 export default async function postToGithub(
   title: string,
-  body: string
-): Promise<void> {
+  body: string,
+  issueSet: keyof typeof issueSets
+): Promise<number | null> {
+  const { labels, projectColumn } = issueSets[issueSet];
   const postData = {
     title: title,
     body: body,
     assignees: ["PythonCoderAS"],
-    labels: ["bug"],
+    labels: labels,
   };
   let response: AxiosResponse;
   try {
@@ -51,16 +54,17 @@ export default async function postToGithub(
           respData: response.data,
         }
       );
-      return;
+      return null;
     }
   } catch (e) {
     await logError(e, "github::postIssue", {
       reqData: postData,
     });
-    return;
+    return null;
   }
   const data = response.data;
   const id = data.id;
+  const number = data.number;
   const postResponse2 = {
     note: null,
     content_id: id,
@@ -69,7 +73,7 @@ export default async function postToGithub(
   let response2: AxiosResponse;
   try {
     response2 = await axios.post(
-      `https://api.github.com/projects/columns/17203991/cards`,
+      `https://api.github.com/projects/columns/${projectColumn}/cards`,
       postResponse2,
       {
         headers: {
@@ -88,13 +92,13 @@ export default async function postToGithub(
           respData: response2.data,
         }
       );
-      return;
+      return null;
     }
   } catch (e) {
     await logError(e, "github::assignIssueToProject", {
       reqData: postResponse2,
     });
-    return;
+    return null;
   }
-  return;
+  return number;
 }
