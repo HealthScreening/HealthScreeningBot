@@ -304,8 +304,10 @@ export default class SetMenu {
     this.autoUserModel!.minute += 5;
     if (this.autoUserModel!.minute > 59) {
       this.autoUserModel!.minute = this.autoUserModel!.minute - 60;
+      await this.onIncrement1Hour(interaction);
+    } else {
+      await Promise.all([this.update(interaction), this.autoUserModel!.save()]);
     }
-    await Promise.all([this.update(interaction), this.autoUserModel!.save()]);
   }
 
   private async onDecrement5Minutes(
@@ -314,8 +316,10 @@ export default class SetMenu {
     this.autoUserModel!.minute -= 5;
     if (this.autoUserModel!.minute < 0) {
       this.autoUserModel!.minute = this.autoUserModel!.minute + 60;
+      await this.onDecrement1Hour(interaction);
+    } else {
+      await Promise.all([this.update(interaction), this.autoUserModel!.save()]);
     }
-    await Promise.all([this.update(interaction), this.autoUserModel!.save()]);
   }
 
   private disableAll() {

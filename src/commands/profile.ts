@@ -46,11 +46,16 @@ export async function generateProfileEmbed(
     })
     .setTimestamp(DateTime.local().toUTC().toMillis());
   if (autoData) {
+    const hour12 = autoData.time.hour % 12 || 12;
+    const isPM = autoData.time.hour >= 12;
+    const minutePadded = String(autoData.time.minute).padStart(2, "0");
     const autoDataString = `First Name: **${autoData.firstName}**
 Last Name: **${autoData.lastName}**
 Email: **${autoData.email}**
 Vaccinated: **${autoData.vaccinated}**
-Screening Time: **${autoData.time.hour}:${autoData.time.minute}**
+Screening Time: **${
+      autoData.time.hour
+    }:${minutePadded}** (**${hour12}:${minutePadded} ${isPM ? "PM" : "AM"}**)
 Screening Type: **${screeningTypes[autoData.type]}**
 Email Only: **${autoData.emailOnly}**
 Screenings Paused: **${autoData.paused}**`;
