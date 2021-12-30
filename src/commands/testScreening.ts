@@ -22,6 +22,8 @@ import { Command } from "../client/command";
 import getAutoData from "../screeningClient/getUserInfo/getAutoData";
 import getAutoDayData from "../screeningClient/getUserInfo/getAutoDayData";
 import dayIsHoliday from "../utils/getHolidays";
+import { ItemType } from "../utils/multiMessage";
+import Paginator from "../utils/paginator";
 
 export default class TestScreening extends Command {
   public readonly data = new SlashCommandBuilder()
@@ -45,6 +47,12 @@ export default class TestScreening extends Command {
       option
         .setName("day")
         .setDescription("The day of the month you intend to get the screening.")
+        .setRequired(false)
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("paginate")
+        .setDescription("Enable pagination")
         .setRequired(false)
     )
     .addBooleanOption((option) =>
@@ -176,6 +184,19 @@ export default class TestScreening extends Command {
       action2 += ".";
     }
     embed2.setDescription(action2);
-    await interaction.reply({ embeds: [embed, embed2], ephemeral });
+    const paginate = interaction.options.getBoolean("paginate", false) ?? true;
+    const embeds = [embed, embed2];
+    if (paginate) {
+      await new Paginator(embeds).send({
+        itemType: ItemType.interaction,
+        item: interaction,
+        ephemeral,
+      });
+    } else {
+      return await interaction.reply({
+        embeds: embeds,
+        ephemeral,
+      });
+    }
   }
 }
