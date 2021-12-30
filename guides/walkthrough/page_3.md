@@ -1,22 +1,16 @@
-`/guide`: Sends a guide from a list of approved guides. Guides can be contributed by anyone to the bot's GitHub repository.
+`/generate_once`: Generate a singular health screening without using your information set with `/set_auto`. If set, the device **will** be considered.
 __Parameters__:
-- **name**: The name of the guide to send.
-- **paginate**: Whether to paginate the guide. This is an optional argument and should be either __True__ or __False__. The default is __True__. Note: One-page guides will not have any paginator buttons regardless of the value provided to this argument.
+- **first_name**: Your first name.
+- **last_name**: Your last name.
+- **email**: Your email.
+- **vaccinated**: Whether you are vaccinated. This should be either __True__ or __False__.
 - **ephemeral**: Whether to hide the content from everyone else. This is optional and should be either __True__ or __False__. This defaults to __True__.
 
-`/profile`: Shows an overview of all information stored for the user, including information submitted via `/set_auto` and `/set`.
-__Parameters__:
-- **ephemeral**: Whether to hide the content from everyone else. This is optional and should be either __True__ or __False__. This defaults to __True__.
+`/delete_auto`: Deletes all stored auto information, excluding the device.
 
-`/report_bug`: Reports a bug to the bot's GitHub repository.
+`/test_screening`: Shows whether you will be receiving a health screening and whether you will be getting it via email only or an email and a screenshot on a given day. If used with no arguments, it will default to the day it is run. If a screening will not be delivered, or a screenshot will not be sent, it will state the reason why.
 __Parameters__:
-- **message**: The bug report message.
-- **ephemeral**: Whether to hide the content from everyone else. This is optional and should be either __True__ or __False__. This defaults to __True__.
-
-`/stats`: Send bot stats. This does not have the ephemeral argument (why would it?)
-
-`/suggest`: Suggests a feature to the bot's GitHub repository.
-__Parameters__:
-- **message**: The suggestion message.
-- **server**: Whether the suggestion is a server suggestion (__True__) or a bot suggestion (__False__). This is optional and should be either __True__ or __False__. This defaults to __False__.
+- **year**: The year of the date to check. Optional, and defaults to the year the command is run.
+- **month**: The month of the date to check. Optional, and defaults to the month the command is run.
+- **day**: The day of the date to check. Optional, and defaults to the day the command is run.
 - **ephemeral**: Whether to hide the content from everyone else. This is optional and should be either __True__ or __False__. This defaults to __True__.

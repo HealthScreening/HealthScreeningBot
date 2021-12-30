@@ -29,7 +29,7 @@ export default class TestScreening extends Command {
   public readonly data = new SlashCommandBuilder()
     .setName("test_screening")
     .setDescription(
-      "See whether or not a screening will occur on the given date."
+      "See whether a screening will occur on the given date."
     )
     .addIntegerOption((option) =>
       option
