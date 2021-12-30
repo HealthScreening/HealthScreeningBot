@@ -17,12 +17,12 @@
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import { Op } from "sequelize";
 
+import { github } from "../../../config";
 import { Subcommand } from "../../client/command";
 import { HSBCommandInteraction } from "../../discordjs-overrides";
 import { ErrorLog } from "../../orm/errorLog";
 import formatErrorLogEntry from "../../utils/formatErrorLogEntry";
 import { ItemType, sendMessage } from "../../utils/multiMessage";
-import { github } from "../../../config";
 
 export default class ErrorPostCommand extends Subcommand {
   registerSubcommand(
