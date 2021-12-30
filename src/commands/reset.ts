@@ -30,7 +30,13 @@ export default class Reset extends Command {
     .setName("reset")
     .setDescription(
       "Resets all optional information back to defaults, keeping names and email."
-    );
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("ephemeral")
+        .setDescription("Whether the contents are hidden to everyone else.")
+        .setRequired(false)
+    ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
     const autoUser = await AutoUser.findOne({
       where: { userId: interaction.user.id },
@@ -68,10 +74,16 @@ export default class Reset extends Command {
     autoUser.emailOnly = false;
     autoUser.paused = false;
     await autoUser.save();
+    const ephemeral =
+      interaction.options.getBoolean("ephemeral", false) ?? true;
+    await interaction.reply({
+      content: "Reset successful!",
+      ephemeral,
+    });
     await interaction.followUp({
       content:
         "To make sure email only can be off, I need to check if your DMs are open to the bot.",
-      ephemeral: true,
+      ephemeral,
     });
     try {
       const user: User = interaction.user;
@@ -91,6 +103,7 @@ export default class Reset extends Command {
         await interaction.followUp({
           content:
             "I cannot send you a screening, possibly due to DMs being disabled from server members. Therefore, you will be set to email-only screenings. In order to disable email-only mode, please run `/toggle_email_only` after making sure your DMs are open again.",
+          ephemeral,
         });
         autoUser.emailOnly = true;
         await autoUser.save();

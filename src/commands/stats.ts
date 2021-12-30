@@ -31,7 +31,15 @@ export default class Stats extends Command {
     interaction.client.guilds.cache.forEach((value) => {
       members += value.memberCount;
     });
-    const registeredPeople = await AutoUser.count();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: Sequelize provides incorrect types to us
+    const timeCounts: { hour: number; minute: number; count: number }[] =
+      await AutoUser.count({
+        group: ["hour", "minute"],
+      });
+    const registeredPeople = timeCounts
+      .map((value) => value.count)
+      .reduce((a, b) => a + b, 0);
     const embed = new MessageEmbed()
       .setColor("GREEN")
       .setTitle("Bot Stats")
@@ -45,6 +53,23 @@ export default class Stats extends Command {
       .addField(
         "People Registered for Auto Screenings",
         String(registeredPeople)
+      )
+      .addField("Unique Screening Times", String(timeCounts.length), true)
+      .addField(
+        "People Per Screening Time",
+        timeCounts
+          .map((value) => {
+            const hour12 = value.hour % 12 || 12;
+            const isPM = value.hour >= 12;
+            const minutePadded = String(value.minute).padStart(2, "0");
+            return `**${
+              value.hour
+            }:${minutePadded}** (**${hour12}:${minutePadded} ${
+              isPM ? "PM" : "AM"
+            }**): ${value.count}`;
+          })
+          .join("\n"),
+        false
       )
       .setTimestamp(DateTime.local().toUTC().toMillis());
     await interaction.reply({ embeds: [embed] });

@@ -49,6 +49,11 @@
     "files": ["changelog/2_7"],
     "shortTitle": "What's New in Version 2.7"
   },
+  "whats_new_version_2_8": {
+    "title": "What's New in Version 2.8",
+    "files": ["changelog/2_8"],
+    "shortTitle": "What's New in Version 2.8"
+  },
   "_send_to_all_whats_new_2_1_and_2_4": {
     "title": ["What's New in Version 2.1", "What's New in Version 2.4"],
     "files": ["changelog/2_1", "changelog/2_4"],
@@ -72,10 +77,16 @@
   "walkthrough": {
     "title": [
       "Automated Health Screening Commands",
+      "Configuring Optional Screening Data",
       "Other Useful Screening-Related Commands",
       "Miscellaneous Commands"
     ],
-    "files": ["walkthrough/page_1", "walkthrough/page_2", "walkthrough/page_3"],
+    "files": [
+      "walkthrough/page_1",
+      "walkthrough/page_2",
+      "walkthrough/page_3",
+      "walkthrough/page_4"
+    ],
     "shortTitle": "Walkthrough"
   }
 }

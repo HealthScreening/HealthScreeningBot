@@ -17,10 +17,12 @@
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import { Op } from "sequelize";
 
+import { github } from "../../../config";
 import { Subcommand } from "../../client/command";
 import { HSBCommandInteraction } from "../../discordjs-overrides";
 import { ErrorLog } from "../../orm/errorLog";
 import formatErrorLogEntry from "../../utils/formatErrorLogEntry";
+import { ItemType, sendMessage } from "../../utils/multiMessage";
 
 export default class ErrorPostCommand extends Subcommand {
   registerSubcommand(
@@ -64,8 +66,8 @@ export default class ErrorPostCommand extends Subcommand {
     }
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
-    await interaction.reply({ content: "Posting to GitHub...", ephemeral });
-    await interaction.client.githubQueue.enqueue(
+    await interaction.deferReply({ ephemeral });
+    const bugItem: number | null = await interaction.client.githubQueue.enqueue(
       [
         `[${item.type}] ${item.errorName}: ${item.errorDescription}`.substring(
           0,
@@ -76,5 +78,22 @@ export default class ErrorPostCommand extends Subcommand {
       ],
       2
     );
+    if (bugItem === null) {
+      await sendMessage({
+        itemType: ItemType.interaction,
+        item: interaction,
+        content:
+          "There was an error while trying to post the error. Please try again later.",
+        ephemeral,
+      });
+      return;
+    } else {
+      await sendMessage({
+        itemType: ItemType.interaction,
+        item: interaction,
+        content: `The error log report has been submitted. You can find it here: https://github.com/${github.owner}/${github.repo}/issues/${bugItem}.`,
+        ephemeral,
+      });
+    }
   }
 }
