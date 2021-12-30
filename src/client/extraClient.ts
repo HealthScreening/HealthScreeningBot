@@ -35,6 +35,7 @@ import GenerateOnce from "../commands/generateOnce";
 import Guide from "../commands/guide";
 import Profile from "../commands/profile";
 import ReportBug from "../commands/reportBug";
+import Reset from "../commands/reset";
 import SendToAll from "../commands/sendToAll";
 import SetAuto from "../commands/setAuto";
 import SetCommand from "../commands/setCommand";
@@ -77,6 +78,7 @@ export default class HealthScreeningBotClient extends Client {
       guide: new Guide(),
       profile: new Profile(),
       report_bug: new ReportBug(),
+      reset: new Reset(),
       send_to_all: new SendToAll(),
       set_auto: new SetAuto(),
       set: new SetCommand(),
