@@ -25,7 +25,6 @@ import { HSBCommandInteraction } from "../discordjs-overrides";
 import { AutoUser } from "../orm/autoUser";
 import checkOwner from "../utils/checkOwner";
 import getUsersForDayOfWeek from "../utils/getUsersForDayOfWeek";
-import getValidUserIDs from "../utils/getValidUserIDs";
 import logError from "../utils/logError";
 import { ItemType } from "../utils/multiMessage";
 
@@ -50,12 +49,6 @@ export default class TriggerAutoNow extends Command {
         .setName("skip_email_only")
         .setDescription("Skip the email-only check.")
         .setRequired(false)
-    )
-    .addBooleanOption((option) =>
-      option
-        .setName("skip_mutual_guild")
-        .setDescription("Skip the mutual guild check.")
-        .setRequired(false)
     ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
     if (
@@ -68,15 +61,12 @@ export default class TriggerAutoNow extends Command {
     const skipDay = interaction.options.getBoolean("skip_day", false) ?? false;
     const skipEmailOnly =
       interaction.options.getBoolean("skip_email_only", false) ?? false;
-    const skipMutualGuild =
-      interaction.options.getBoolean("skip_mutual_guild", false) ?? false;
     await interaction.reply("Starting auto session...");
     const logChannel: TextChannel = (await (
       await interaction.client.guilds.fetch("889983763994521610")
     ).channels.fetch("902375187150934037")) as TextChannel;
     const currentTime = DateTime.now().setZone("America/New_York");
     try {
-      const validUserIDs: Set<string> = getValidUserIDs(interaction.client);
       const batchTimes: ArrayStringMap<[number, number], number> =
         new ArrayStringMap();
       const validDayOfWeekUsers = new Set(
@@ -97,11 +87,7 @@ export default class TriggerAutoNow extends Command {
         where: whereData,
         order: [["createdAt", "ASC"]],
       })) {
-        const dmScreenshot = skipEmailOnly
-          ? true
-          : skipMutualGuild
-          ? true
-          : validUserIDs.has(autoItem.userId);
+        const dmScreenshot = skipEmailOnly;
         batchTimes.set(
           [currentTime.hour, currentTime.minute],
           (batchTimes.get([currentTime.hour, currentTime.minute]) || 0) + 1
