@@ -19,6 +19,8 @@ import sleep from "sleep-promise";
 import logError from "../utils/logError";
 import HealthScreeningBotClient from "./extraClient";
 
+import { setTimeout } from "timers";
+
 export default async function doGuildMemberCacheUpdate(
   client: HealthScreeningBotClient
 ): Promise<void> {
