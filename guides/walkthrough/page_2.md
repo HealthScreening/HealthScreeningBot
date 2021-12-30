@@ -17,6 +17,8 @@ Together, the hour and minute should represent the time you get your health scre
 - **friday**: Defaults to __True__.
 - **saturday**: Defaults to __False__.
 
+`/reset`: Resets anything changed with `/set` back to the defaults, **including the device**.
+
 `/generate_once`: Generate a singular health screening without using your information set with `/set_auto`. If set, the device **will** be considered.
 __Parameters__:
 - **first_name**: Your first name.
@@ -27,7 +29,7 @@ __Parameters__:
 
 `/delete_auto`: Deletes all stored auto information, excluding the device. 
 
-`/test_screening`: Shows whether or not you will be receiving a health screening and whether or not you will be getting it via email only or an email and a screenshot on a given day. If used with no arguments, it will default to the day it is run. If a screening will not be delivered, or a screenshot will not be sent, it will state the reason why.
+`/test_screening`: Shows whether you will be receiving a health screening and whether or not you will be getting it via email only or an email and a screenshot on a given day. If used with no arguments, it will default to the day it is run. If a screening will not be delivered, or a screenshot will not be sent, it will state the reason why.
 __Parameters__:
 - **year**: The year of the date to check. Optional, and defaults to the year the command is run.
 - **month**: The month of the date to check. Optional, and defaults to the month the command is run.
