@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { Intents } from "discord.js";
+import * as process from "process";
 
 import {
   closeBrowser,
@@ -23,7 +24,7 @@ import {
 
 import { discord } from "../config";
 import HealthScreeningBotClient from "./client/extraClient";
-import { init } from "./orm";
+import { init, sequelize } from "./orm";
 import { loadAllGuides } from "./utils/guides";
 import logError from "./utils/logError";
 
@@ -38,6 +39,20 @@ const client: HealthScreeningBotClient = new HealthScreeningBotClient({
   partials: ["CHANNEL"],
 });
 
+async function shutdown(errcode = 1) {
+  await closeBrowser();
+  await sequelize.close();
+  process.exit(errcode);
+}
+
+process.on("SIGINT", async () => {
+  await shutdown(0);
+});
+
+process.on("SIGTERM", async () => {
+  await shutdown(0);
+});
+
 async function startup() {
   try {
     await init();
@@ -48,7 +63,7 @@ async function startup() {
   } catch (e) {
     await logError(e, "root");
     console.error(e);
-    await closeBrowser();
+    await shutdown();
   }
 }
 
