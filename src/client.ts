@@ -42,15 +42,16 @@ const client: HealthScreeningBotClient = new HealthScreeningBotClient({
 async function shutdown(errcode = 1) {
   await closeBrowser();
   await sequelize.close();
+  client.destroy();
   process.exit(errcode);
 }
 
 process.on("SIGINT", async () => {
-  await shutdown(0);
+  await shutdown();
 });
 
 process.on("SIGTERM", async () => {
-  await shutdown(0);
+  await shutdown();
 });
 
 async function startup() {
