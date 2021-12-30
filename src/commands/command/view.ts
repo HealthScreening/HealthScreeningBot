@@ -38,9 +38,7 @@ export default class CommandViewCommand extends Subcommand {
       .addBooleanOption((option) =>
         option
           .setName("ephemeral")
-          .setDescription(
-            "Whether or not the contents are hidden to everyone else"
-          )
+          .setDescription("Whether the contents are hidden to everyone else")
           .setRequired(false)
       );
   }

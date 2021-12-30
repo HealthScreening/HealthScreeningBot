@@ -17,15 +17,15 @@
 import axios, { AxiosResponse } from "axios";
 
 import { github } from "../../config";
+import issueSets from "../data/githubIssueSets.json";
 import logError from "./logError";
-import issueSets from "../data/githubIssueSets.json"
 
 export default async function postToGithub(
   title: string,
   body: string,
-  issueSet: keyof typeof issueSets,
+  issueSet: keyof typeof issueSets
 ): Promise<number | null> {
-  const {labels, projectColumn} = issueSets[issueSet];
+  const { labels, projectColumn } = issueSets[issueSet];
   const postData = {
     title: title,
     body: body,

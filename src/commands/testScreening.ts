@@ -50,9 +50,7 @@ export default class TestScreening extends Command {
     .addBooleanOption((option) =>
       option
         .setName("ephemeral")
-        .setDescription(
-          "Whether or not the contents are hidden to everyone else."
-        )
+        .setDescription("Whether the contents are hidden to everyone else.")
         .setRequired(false)
     ) as SlashCommandBuilder;
   async execute(interaction: CommandInteraction) {

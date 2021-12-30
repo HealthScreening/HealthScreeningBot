@@ -7,7 +7,7 @@ Together, the hour and minute should represent the time you get your health scre
 - **type**: The type of screening to generate. Available options are __guest__, __student__, or __employee__. The default is __guest__.
 - **email_only**: Whether the health screening should be only emailed or emailed and screenshotted. If this is __True__, the bot will **not** automatically DM you the health screening on Discord. This should be either __True__ or __False__. The default is __False__. The `/generate_auto` command will produce a screenshot regardless of what this is set to.
 - **paused**: Whether to pause the auto health screenings. If this is True, you will **not** receive any automated screenings, including emails. This should be either __True__ or __False__. The default is __False__.
-- **ephemeral**: Whether or not to hide the content from everyone else. This is optional and should be either __True__ or __False__. This defaults to __True__.
+- **ephemeral**: Whether to hide the content from everyone else. This is optional and should be either __True__ or __False__. This defaults to __True__.
 *Note*: The following arguments represent whether to run the health screening on the specified day. This should be either __True__ or __False__. If __False__, you will **not** receive any automated screenings on that day.
 - **sunday**: Defaults to __False__.
 - **monday**: Defaults to __True__.
@@ -22,8 +22,8 @@ __Parameters__:
 - **first_name**: Your first name.
 - **last_name**: Your last name.
 - **email**: Your email.
-- **vaccinated**: Whether or not you are vaccinated. This should be either __True__ or __False__.
-- **ephemeral**: Whether or not to hide the content from everyone else. This is optional and should be either __True__ or __False__. This defaults to __True__.
+- **vaccinated**: Whether you are vaccinated. This should be either __True__ or __False__.
+- **ephemeral**: Whether to hide the content from everyone else. This is optional and should be either __True__ or __False__. This defaults to __True__.
 
 `/delete_auto`: Deletes all stored auto information, excluding the device. 
 
@@ -32,4 +32,4 @@ __Parameters__:
 - **year**: The year of the date to check. Optional, and defaults to the year the command is run.
 - **month**: The month of the date to check. Optional, and defaults to the month the command is run.
 - **day**: The day of the date to check. Optional, and defaults to the day the command is run.
-- **ephemeral**: Whether or not to hide the content from everyone else. This is optional and should be either __True__ or __False__. This defaults to __True__.
+- **ephemeral**: Whether to hide the content from everyone else. This is optional and should be either __True__ or __False__. This defaults to __True__.

@@ -50,7 +50,7 @@ export default class GenerateOnce extends Command {
     .addBooleanOption((option) =>
       option
         .setName("vaccinated")
-        .setDescription("Whether or not you are vaccinated.")
+        .setDescription("Whether you are vaccinated.")
         .setRequired(true)
     )
     .addStringOption((option) =>
@@ -65,9 +65,7 @@ export default class GenerateOnce extends Command {
     .addBooleanOption((option) =>
       option
         .setName("ephemeral")
-        .setDescription(
-          "Whether or not the contents are hidden to everyone else."
-        )
+        .setDescription("Whether the contents are hidden to everyone else.")
         .setRequired(false)
     ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {

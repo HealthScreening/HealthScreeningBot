@@ -34,13 +34,16 @@ import GenerateAuto from "../commands/generateAuto";
 import GenerateOnce from "../commands/generateOnce";
 import Guide from "../commands/guide";
 import Profile from "../commands/profile";
+import ReportBug from "../commands/reportBug";
 import SendToAll from "../commands/sendToAll";
 import SetAuto from "../commands/setAuto";
 import SetCommand from "../commands/setCommand";
 import Stats from "../commands/stats";
 import StopBot from "../commands/stopBot";
+import Suggest from "../commands/suggest";
 import TestScreening from "../commands/testScreening";
 import TriggerAutoNow from "../commands/triggerAutoNow";
+import issueSets from "../data/githubIssueSets.json";
 import {
   HSBAutocompleteInteraction,
   HSBCommandInteraction,
@@ -58,9 +61,6 @@ import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
 import commandInteraction from "./interactions/commandInteraction";
 import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
 import messageComponentInteraction from "./interactions/messageComponentInteraction";
-import issueSets from "../data/githubIssueSets.json";
-import ReportBug from "../commands/reportBug";
-import Suggest from "../commands/suggest";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
