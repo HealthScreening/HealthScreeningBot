@@ -57,7 +57,6 @@ import postToGithub from "../utils/postToGithub";
 import assignAutoSchoolRole from "./autoAssignSchoolRole";
 import { Command } from "./command";
 import doAutoLoop from "./doAutoLoop";
-import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
 import commandInteraction from "./interactions/commandInteraction";
 import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
 import messageComponentInteraction from "./interactions/messageComponentInteraction";
@@ -206,10 +205,6 @@ export default class HealthScreeningBotClient extends Client {
       runFunctionAndLogError(
         () => doAutoLoop(this, logChannel),
         "onReady::doAutoLoop"
-      ),
-      runFunctionAndLogError(
-        () => doGuildMemberCacheUpdate(this),
-        "onReady::doGuildMemberCacheUpdate"
       ),
     ]);
   }
