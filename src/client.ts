@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { Intents } from "discord.js";
-import * as process from "process";
+import process from "process";
 
 import {
   closeBrowser,

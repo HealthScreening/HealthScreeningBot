@@ -18,6 +18,7 @@ import ArrayStringMap from "array-string-map";
 import { TextChannel } from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
+import { setTimeout } from "timers";
 
 import { AutoUser } from "../orm/autoUser";
 import dayIsHoliday from "../utils/getHolidays";

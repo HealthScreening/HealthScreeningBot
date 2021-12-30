@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import sleep from "sleep-promise";
+import { setTimeout } from "timers";
 
 import logError from "../utils/logError";
 import HealthScreeningBotClient from "./extraClient";
