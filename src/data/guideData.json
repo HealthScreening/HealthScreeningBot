@@ -81,7 +81,12 @@
       "Other Useful Screening-Related Commands",
       "Miscellaneous Commands"
     ],
-    "files": ["walkthrough/page_1", "walkthrough/page_2", "walkthrough/page_3", "walkthrough/page_4"],
+    "files": [
+      "walkthrough/page_1",
+      "walkthrough/page_2",
+      "walkthrough/page_3",
+      "walkthrough/page_4"
+    ],
     "shortTitle": "Walkthrough"
   }
 }
