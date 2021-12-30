@@ -160,26 +160,18 @@ export default class TestScreening extends Command {
         iconURL: interaction.user.displayAvatarURL({ format: "jpg" }),
       })
       .setTimestamp(DateTime.local().toUTC().toMillis());
-    // Step 1, check if they share a mutual server.
-    // Obviously, if they're running this command then they do in fact share
-    // a server with the bot.
-    // TODO: Allow arbitrary user IDs to be passed in (owner only), and then this should actually be implemented.
-    const mutualServer = true;
-    // Step 2, check if email only mode is on.
+    // Step 1, check if email only mode is on.
     const emailOnly = autoData.emailOnly;
-    const willEmail = mutualServer && !emailOnly;
+    const willEmail = !emailOnly;
     let action2 = (willEmail ? "Will" : "Will not") + ` DM a screenshot`;
     if (willEmail) {
       embed2.setColor("GREEN");
     } else {
       embed2.setColor("RED");
     }
-    embed2.addField("Mutual Server", mutualServer ? "Yes" : "No", true);
     embed2.addField("Email Only", emailOnly ? "Yes" : "No", true);
     if (emailOnly) {
       action2 += " because you have **email only** mode on.";
-    } else if (!mutualServer) {
-      action2 += " because you do not share a mutual server with the bot.";
     } else {
       action2 += ".";
     }

@@ -23,7 +23,6 @@ import { setTimeout } from "timers";
 import { AutoUser } from "../orm/autoUser";
 import dayIsHoliday from "../utils/getHolidays";
 import getUsersForDayOfWeek from "../utils/getUsersForDayOfWeek";
-import getValidUserIDs from "../utils/getValidUserIDs";
 import logError from "../utils/logError";
 import HealthScreeningBotClient from "./extraClient";
 
@@ -37,7 +36,6 @@ export default async function doAutoLoop(
     return;
   }
   try {
-    const validUserIDs: Set<string> = getValidUserIDs(client);
     const batchTimes: ArrayStringMap<[number, number], number> =
       new ArrayStringMap();
     const validDayOfWeekUsers = new Set(
@@ -60,7 +58,6 @@ export default async function doAutoLoop(
       },
       order: [["createdAt", "ASC"]],
     })) {
-      const dmScreenshot = validUserIDs.has(autoItem.userId);
       batchTimes.set(
         [autoItem.hour, autoItem.minute],
         (batchTimes.get([autoItem.hour, autoItem.minute]) || 0) + 1
@@ -71,7 +68,6 @@ export default async function doAutoLoop(
           batchTime: [autoItem.hour, autoItem.minute],
           itemNumber: batchTimes.get([autoItem.hour, autoItem.minute]) || 1,
           logChannel,
-          dmScreenshot,
         }
       );
     }

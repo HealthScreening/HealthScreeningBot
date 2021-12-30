@@ -27,7 +27,6 @@ import { Command } from "../client/command";
 import { HSBCommandInteraction } from "../discordjs-overrides";
 import { AutoUser } from "../orm/autoUser";
 import checkOwner from "../utils/checkOwner";
-import getValidUserIDs from "../utils/getValidUserIDs";
 import logError from "../utils/logError";
 import { ItemType } from "../utils/multiMessage";
 import nameAutocomplete from "./guide/autocomplete/name";
@@ -71,7 +70,6 @@ export default class SendToAll extends Command {
     ) {
       const timeToSleep = interaction.options.getInteger("time") || 0;
       await interaction.reply("Sending to all...");
-      const validUserIDs: Set<string> = getValidUserIDs(interaction.client);
       const items = await AutoUser.findAll();
       const guideName = interaction.options.getString("guide_name");
       const message: string =
@@ -95,9 +93,6 @@ export default class SendToAll extends Command {
       if (timeToSleep === 0) {
         let batchData: Promise<void>[] = [];
         for (const item of items) {
-          if (!validUserIDs.has(item.userId)) {
-            continue;
-          }
           batchData.push(
             (async () => {
               try {
@@ -122,9 +117,6 @@ export default class SendToAll extends Command {
       } else {
         for (const item of items) {
           try {
-            if (!validUserIDs.has(item.userId)) {
-              continue;
-            }
             user = await interaction.client.users.fetch(item.userId);
             await user.send({
               content: message,

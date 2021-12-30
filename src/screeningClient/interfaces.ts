@@ -25,7 +25,7 @@ export interface AutoBatchOptions {
   batchTime: [number, number];
   itemNumber: number;
   logChannel: TextChannel;
-  dmScreenshot: boolean;
+  dmScreenshot?: boolean;
 }
 
 export function serializeAutoBatchOptions(options: AutoBatchOptions) {

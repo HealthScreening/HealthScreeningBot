@@ -54,10 +54,8 @@ import logError from "../utils/logError";
 import runFunctionAndLogError from "../utils/logError/runAndLog";
 import { ItemType } from "../utils/multiMessage";
 import postToGithub from "../utils/postToGithub";
-import assignAutoSchoolRole from "./autoAssignSchoolRole";
 import { Command } from "./command";
 import doAutoLoop from "./doAutoLoop";
-import doGuildMemberCacheUpdate from "./doGuildMemberCacheUpdate";
 import commandInteraction from "./interactions/commandInteraction";
 import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
 import messageComponentInteraction from "./interactions/messageComponentInteraction";
@@ -200,16 +198,8 @@ export default class HealthScreeningBotClient extends Client {
     ).channels.fetch("902375187150934037")) as TextChannel;
     await Promise.all([
       runFunctionAndLogError(
-        () => assignAutoSchoolRole(this),
-        "onReady::assignAutoSchoolRole"
-      ),
-      runFunctionAndLogError(
         () => doAutoLoop(this, logChannel),
         "onReady::doAutoLoop"
-      ),
-      runFunctionAndLogError(
-        () => doGuildMemberCacheUpdate(this),
-        "onReady::doGuildMemberCacheUpdate"
       ),
     ]);
   }
