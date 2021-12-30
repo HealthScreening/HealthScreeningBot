@@ -262,13 +262,13 @@ export default class SetCommand extends Command {
       );
     }
     if (userOptions) {
-      if (hour) {
+      if (hour !== null) {
         userOptions.hour = hour;
       }
-      if (minute) {
+      if (minute !== null) {
         userOptions.minute = minute;
       }
-      if (type) {
+      if (type !== null) {
         userOptions.type = type as screeningTypeType;
       }
       if (emailOnly !== null) {
