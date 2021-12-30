@@ -66,7 +66,7 @@ export default class Stats extends Command {
               value.hour
             }:${minutePadded}** (**${hour12}:${minutePadded} ${
               isPM ? "PM" : "AM"
-            }**: ${value.count}`;
+            }**): ${value.count}`;
           })
           .join("\n"),
         false
