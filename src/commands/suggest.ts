@@ -22,13 +22,14 @@ import { ItemType, sendMessage } from "../utils/multiMessage";
 import { github } from "../../config";
 import formatUserIssue from "../utils/formatUserIssue";
 
-export default class ReportBug extends Command {
+export default class Suggest extends Command {
   public readonly data = new SlashCommandBuilder()
-    .setName("report_bug")
+    .setName("suggestion")
     .setDescription(
-      "Report a bug with the bot."
+      "Make a suggestion for the bot or the bot's server."
     )
-    .addStringOption((option) => option.setName("message").setDescription("The message for the bug report.").setRequired(true))
+    .addStringOption((option) => option.setName("message").setDescription("The message for the suggestion.").setRequired(true))
+    .addBooleanOption((option) => option.setName("server").setDescription("Whether the suggestion should be for the server.").setRequired(false))
     .addBooleanOption((option) =>
       option
         .setName("ephemeral")
@@ -39,19 +40,20 @@ export default class ReportBug extends Command {
     ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
     const message = interaction.options.getString("message", true);
+    const isServer = interaction.options.getBoolean("server", false) ?? false;
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
     await interaction.deferReply({ ephemeral });
     const item: number | null = await interaction.client.githubQueue.enqueue([
-      "Bug Report",
-      formatUserIssue(message, interaction.user, "Report"),
-      "manualBug"
-    ], 1)
+      (isServer ? "Server" : "Bot") + " Suggestion",
+      formatUserIssue(message, interaction.user),
+      isServer ? "serverFeature" : "botFeature",
+    ], 0)
     if (item === null) {
       await sendMessage({
         itemType: ItemType.interaction,
         item: interaction,
-        content: "There was an error while trying to report the bug. Please try again later.",
+        content: "There was an error while trying to file the suggestion. Please try again later.",
         ephemeral
       })
       return;
@@ -59,7 +61,7 @@ export default class ReportBug extends Command {
       await sendMessage({
         itemType: ItemType.interaction,
         item: interaction,
-        content: `Your bug report has been submitted. You can find it here: https://github.com/${github.owner}/${github.repo}/issues/${item}.`,
+        content: `Your suggestion has been submitted. You can find it here: https://github.com/${github.owner}/${github.repo}/issues/${item}.`,
         ephemeral
       })
     }

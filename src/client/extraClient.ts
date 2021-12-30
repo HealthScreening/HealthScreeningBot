@@ -60,6 +60,7 @@ import commandInteractionAutocomplete from "./interactions/commandInteractionAut
 import messageComponentInteraction from "./interactions/messageComponentInteraction";
 import issueSets from "../data/githubIssueSets.json";
 import ReportBug from "../commands/reportBug";
+import Suggest from "../commands/suggest";
 
 const GENERATE_AUTO_CHOICES = [
   "hsb/generateauto",
@@ -83,6 +84,7 @@ export default class HealthScreeningBotClient extends Client {
       set: new SetCommand(),
       stats: new Stats(),
       stop: new StopBot(),
+      suggest: new Suggest(),
       test_screening: new TestScreening(),
       trigger_auto: new TriggerAutoNow(),
     })
