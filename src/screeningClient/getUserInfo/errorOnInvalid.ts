@@ -16,6 +16,8 @@
  */
 import { MessageOptions, sendMessage } from "../../utils/multiMessage";
 
+
+// Silently replies to the use to input info 
 export default async function errorOnInvalid(
   params: MessageOptions
 ): Promise<void> {
