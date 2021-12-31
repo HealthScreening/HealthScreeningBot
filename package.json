@@ -41,7 +41,7 @@
   "dependencies": {
     "@discordjs/builders": "^0.11.0",
     "@discordjs/rest": "^0.2.0-canary.0",
-    "@healthscreening/complete-screening": "^1.0.1",
+    "@healthscreening/complete-screening": "^1.0.2",
     "@healthscreening/generate-screenshot": "^1.1.0",
     "@healthscreening/screening-types": "^1.0.0",
     "array-string-map": "^3.0.0",
