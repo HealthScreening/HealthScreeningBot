@@ -19,12 +19,7 @@ import { MessageActionRow } from "discord.js";
 import { AutoUser } from "../../orm/autoUser";
 import getPresetButton from "../../utils/buttonPresets";
 import logError from "../../utils/logError";
-import {
-  MessageOptions,
-  getUserID,
-  sendMessage,
-  serializeMessageOptions,
-} from "../../utils/multiMessage";
+import { getUserID, ItemType, MessageOptions, sendMessage, serializeMessageOptions } from "../../utils/multiMessage";
 import { sendRequestAndGenerateScreenshot } from "../../utils/produceScreenshot";
 import { ProcessParams, serializeProcessParams } from "../interfaces";
 
@@ -53,7 +48,7 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
       ],
       ...params.multiMessageParams,
     };
-    if (!messageParams.ephemeral) {
+    if (messageParams.itemType === ItemType.user) {
       messageParams.components = [
         new MessageActionRow().addComponents(getPresetButton("delete")),
       ];
