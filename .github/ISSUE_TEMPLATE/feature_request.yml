@@ -1,5 +1,5 @@
 name: Feature Request
-description: template for missing feature
+description: Template for suggesting new features or other improvements
 title: "[Feature Request]: "
 labels:
   - enhancement
