@@ -20,6 +20,7 @@ import { AutoUser } from "../../orm/autoUser";
 import getPresetButton from "../../utils/buttonPresets";
 import logError from "../../utils/logError";
 import {
+  ItemType,
   MessageOptions,
   getUserID,
   sendMessage,
@@ -53,7 +54,7 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
       ],
       ...params.multiMessageParams,
     };
-    if (!messageParams.ephemeral) {
+    if (messageParams.itemType === ItemType.user) {
       messageParams.components = [
         new MessageActionRow().addComponents(getPresetButton("delete")),
       ];
