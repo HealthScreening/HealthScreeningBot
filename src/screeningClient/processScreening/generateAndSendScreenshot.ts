@@ -19,7 +19,13 @@ import { MessageActionRow } from "discord.js";
 import { AutoUser } from "../../orm/autoUser";
 import getPresetButton from "../../utils/buttonPresets";
 import logError from "../../utils/logError";
-import { getUserID, ItemType, MessageOptions, sendMessage, serializeMessageOptions } from "../../utils/multiMessage";
+import {
+  ItemType,
+  MessageOptions,
+  getUserID,
+  sendMessage,
+  serializeMessageOptions,
+} from "../../utils/multiMessage";
 import { sendRequestAndGenerateScreenshot } from "../../utils/produceScreenshot";
 import { ProcessParams, serializeProcessParams } from "../interfaces";
 
