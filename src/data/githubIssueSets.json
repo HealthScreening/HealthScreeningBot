@@ -8,11 +8,15 @@
     "projectColumn": 17203991
   },
   "botFeature": {
-    "labels": ["enhancement", "bot suggestion"],
+    "labels": ["enhancement", "bot suggestion", "reported suggestion via bot"],
     "projectColumn": 17335314
   },
   "serverFeature": {
-    "labels": ["enhancement", "server suggestion"],
+    "labels": [
+      "enhancement",
+      "server suggestion",
+      "reported suggestion via bot"
+    ],
     "projectColumn": 17335314
   }
 }
