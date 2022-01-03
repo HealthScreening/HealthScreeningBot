@@ -1,6 +1,3 @@
-import { readFile, writeFile } from "fs/promises";
-import { resolve } from "path";
-
 /**
  * Copyright (C) 2021 PythonCoderAS
  *
@@ -17,7 +14,9 @@ import { resolve } from "path";
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import pathsGenerator = require("walk-asyncgen");
+import { readFile, writeFile } from "fs/promises";
+import { resolve } from "path";
+import pathsGenerator from "walk-asyncgen";
 
 // language=ts
 const gplString = `/**
