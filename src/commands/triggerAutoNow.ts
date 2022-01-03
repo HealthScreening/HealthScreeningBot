@@ -87,7 +87,7 @@ export default class TriggerAutoNow extends Command {
         where: whereData,
         order: [["createdAt", "ASC"]],
       })) {
-        const dmScreenshot = skipEmailOnly;
+        const dmScreenshot = skipEmailOnly ? true : undefined;
         batchTimes.set(
           [currentTime.hour, currentTime.minute],
           (batchTimes.get([currentTime.hour, currentTime.minute]) || 0) + 1
