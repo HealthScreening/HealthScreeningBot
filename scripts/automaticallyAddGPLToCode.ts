@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021 PythonCoderAS
+ * Copyright (C) 2021-2022 PythonCoderAS
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ import pathsGenerator from "walk-asyncgen";
 
 // language=ts
 const gplString = `/**
- * Copyright (C) 2021 PythonCoderAS
+ * Copyright (C) 2021-2022 PythonCoderAS
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
