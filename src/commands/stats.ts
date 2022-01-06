@@ -40,7 +40,7 @@ export default class Stats extends Command {
       members += value.memberCount;
     });
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore: Sequelize provides incorrect types to us
+    // @ts-ignore: Sequelize provides incorrect types to us.
     const timeCounts: { hour: number; minute: number; count: number }[] =
       await AutoUser.count({
         group: ["hour", "minute"],
@@ -75,6 +75,11 @@ export default class Stats extends Command {
       })
       .setDescription(
         timeCounts
+          .sort((a, b) => {
+            const aTotalMinutes = a.hour * 60 + a.minute;
+            const bTotalMinutes = b.hour * 60 + b.minute;
+            return aTotalMinutes - bTotalMinutes;
+          })
           .map((value) => {
             const hour12 = value.hour % 12 || 12;
             const isPM = value.hour >= 12;
