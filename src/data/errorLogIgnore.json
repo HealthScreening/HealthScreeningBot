@@ -24,6 +24,11 @@
       "type": "interaction::commandInteraction::errorReply",
       "name": "DiscordAPIError",
       "message": "Unknown interaction"
+    },
+    {
+      "type": "interaction::commandInteraction",
+      "name": "DiscordAPIError",
+      "message": "Unknown interaction"
     }
   ]
 }
