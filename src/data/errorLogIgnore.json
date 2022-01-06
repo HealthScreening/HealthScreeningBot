@@ -19,6 +19,16 @@
       "type": "doGuildMemberCacheUpdate",
       "name": "Error [GUILD_MEMBERS_TIMEOUT]",
       "message": "Members didn't arrive in time."
+    },
+    {
+      "type": "interaction::commandInteraction::errorReply",
+      "name": "DiscordAPIError",
+      "message": "Unknown interaction"
+    },
+    {
+      "type": "interaction::commandInteraction",
+      "name": "DiscordAPIError",
+      "message": "Unknown interaction"
     }
   ]
 }
