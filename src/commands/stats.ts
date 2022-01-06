@@ -20,11 +20,19 @@ import { DateTime } from "luxon";
 
 import { Command } from "../client/command";
 import { AutoUser } from "../orm/autoUser";
+import { ItemType } from "../utils/multiMessage";
+import Paginator from "../utils/paginator";
 
 export default class Stats extends Command {
   public readonly data = new SlashCommandBuilder()
     .setName("stats")
-    .setDescription("Get bot stats.");
+    .setDescription("Get bot stats.")
+    .addBooleanOption((option) =>
+      option
+        .setName("paginate")
+        .setDescription("Enable pagination")
+        .setRequired(false)
+    ) as SlashCommandBuilder;
   async execute(interaction: CommandInteraction) {
     const guildSize = interaction.client.guilds.cache.size;
     let members = 0;
@@ -40,6 +48,7 @@ export default class Stats extends Command {
     const registeredPeople = timeCounts
       .map((value) => value.count)
       .reduce((a, b) => a + b, 0);
+    const curTimeMillis = DateTime.local().toUTC().toMillis();
     const embed = new MessageEmbed()
       .setColor("GREEN")
       .setTitle("Bot Stats")
@@ -55,8 +64,16 @@ export default class Stats extends Command {
         String(registeredPeople)
       )
       .addField("Unique Screening Times", String(timeCounts.length), true)
-      .addField(
-        "People Per Screening Time",
+      .setTimestamp(curTimeMillis);
+    const detailedEmbed = new MessageEmbed()
+      .setColor("GREEN")
+      .setTitle("Stats: Auto Screening Times")
+      .setAuthor({
+        name: "Auto Health Screening",
+        iconURL:
+          "https://cdn.discordapp.com/icons/889983763994521610/43fc775c6dbce5cf84b76f54e8bf5729.webp",
+      })
+      .setDescription(
         timeCounts
           .map((value) => {
             const hour12 = value.hour % 12 || 12;
@@ -68,10 +85,20 @@ export default class Stats extends Command {
               isPM ? "PM" : "AM"
             }**): ${value.count}`;
           })
-          .join("\n"),
-        false
+          .join("\n")
       )
-      .setTimestamp(DateTime.local().toUTC().toMillis());
-    await interaction.reply({ embeds: [embed] });
+      .setTimestamp(curTimeMillis);
+    const embeds = [embed, detailedEmbed];
+    const paginate = interaction.options.getBoolean("paginate", false) ?? true;
+    if (paginate) {
+      await new Paginator(embeds).send({
+        itemType: ItemType.interaction,
+        item: interaction,
+      });
+    } else {
+      await interaction.reply({
+        embeds,
+      });
+    }
   }
 }
