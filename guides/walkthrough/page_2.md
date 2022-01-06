@@ -18,4 +18,5 @@ Together, the hour and minute should represent the time you get your health scre
 - **saturday**: Defaults to __False__.
 
 `/reset`: Resets anything changed with `/set` back to the defaults, **including the device**.
+__Parameters__:
 - **ephemeral**: Whether to hide the content from everyone else. This is optional and should be either __True__ or __False__. This defaults to __True__.
