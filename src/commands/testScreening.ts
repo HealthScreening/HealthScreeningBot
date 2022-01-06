@@ -95,31 +95,31 @@ export default class TestScreening extends Command {
       }
     ).weekday;
     let willRunForWeekday = false;
-    let weekdayName = "sunday";
+    let weekdayName = "Sunday";
     switch (weekday) {
       case 1:
         willRunForWeekday = autoDayData.onMonday;
-        weekdayName = "monday";
+        weekdayName = "Monday";
         break;
       case 2:
         willRunForWeekday = autoDayData.onTuesday;
-        weekdayName = "tuesday";
+        weekdayName = "Tuesday";
         break;
       case 3:
         willRunForWeekday = autoDayData.onWednesday;
-        weekdayName = "wednesday";
+        weekdayName = "Wednesday";
         break;
       case 4:
         willRunForWeekday = autoDayData.onThursday;
-        weekdayName = "thursday";
+        weekdayName = "Thursday";
         break;
       case 5:
         willRunForWeekday = autoDayData.onFriday;
-        weekdayName = "friday";
+        weekdayName = "Friday";
         break;
       case 6:
         willRunForWeekday = autoDayData.onSaturday;
-        weekdayName = "saturday";
+        weekdayName = "Saturday";
         break;
       case 7:
         willRunForWeekday = autoDayData.onSunday;
