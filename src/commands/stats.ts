@@ -30,7 +30,7 @@ export default class Stats extends Command {
     .addBooleanOption((option) =>
       option
         .setName("paginate")
-        .setDescription("Enable pagination")
+        .setDescription("Enable pagination.")
         .setRequired(false)
     ) as SlashCommandBuilder;
   async execute(interaction: CommandInteraction) {

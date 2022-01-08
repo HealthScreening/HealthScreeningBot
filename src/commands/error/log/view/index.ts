@@ -105,7 +105,7 @@ export default class ErrorLogViewCommand extends Subcommand {
       .addBooleanOption((option) =>
         option
           .setName("paginate")
-          .setDescription("Enable pagination")
+          .setDescription("Enable pagination.")
           .setRequired(false)
       )
       .addBooleanOption((option) =>
