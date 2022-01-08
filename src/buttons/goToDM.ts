@@ -26,6 +26,23 @@ export default async function goToDMButton(
 ) {
   const user = await interaction.client.users.fetch(interaction.user.id);
   const dmChannel = await user.createDM();
+  try {
+    await dmChannel.send(
+      "If you're seeing this as a notification, tap on me to go to bot DMs."
+    );
+  } catch (e) {
+    if (
+      e.name === "DiscordAPIError" &&
+      e.message === "Cannot send messages to this user"
+    ) {
+      await interaction.reply({
+        content:
+          "Your DMs are not open. Please open your DMs first, and then try again.",
+        ephemeral: true,
+      });
+      return;
+    }
+  }
   await interaction.reply({
     content:
       "Click the button below to go to your direct message channel with the bot.",
