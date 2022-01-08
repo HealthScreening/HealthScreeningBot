@@ -112,7 +112,7 @@ export default class CommandLogViewCommand extends Subcommand {
       .addBooleanOption((option) =>
         option
           .setName("paginate")
-          .setDescription("Enable pagination")
+          .setDescription("Enable pagination.")
           .setRequired(false)
       )
       .addBooleanOption((option) =>

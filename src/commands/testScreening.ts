@@ -50,7 +50,7 @@ export default class TestScreening extends Command {
     .addBooleanOption((option) =>
       option
         .setName("paginate")
-        .setDescription("Enable pagination")
+        .setDescription("Enable pagination.")
         .setRequired(false)
     )
     .addBooleanOption((option) =>
