@@ -29,6 +29,7 @@ export default function formatErrorLogEntry(
     };
   }
   return `# Error Details
+- Error ID: **${item.id}**
 - Error Type: **${item.type}**
 - Error Name: **${item.errorName}**
 - Error Message: **${item.errorDescription || "None"}**
