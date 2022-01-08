@@ -18,6 +18,9 @@ import { MessageActionRow, MessageButton } from "discord.js";
 
 import { HSBMessageComponentInteraction } from "../discordjs-overrides";
 
+/**
+ * Provides a shortcut to go to DMs with the bot.
+ */
 export default async function goToDMButton(
   interaction: HSBMessageComponentInteraction
 ) {
