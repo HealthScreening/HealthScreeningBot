@@ -31,7 +31,6 @@ import createOrUpdate from "../../utils/createOrUpdate";
 import generateNumberChoicesInRange from "../../utils/generateNumberChoicesInRange";
 import { ItemType } from "../../utils/multiMessage";
 import devicesAutocomplete from "./autocomplete/devices";
-import minuteAutocomplete from "./autocomplete/minute";
 import SetMenu from "./setMenu";
 
 export default class SetCommand extends Command {
@@ -41,7 +40,6 @@ export default class SetCommand extends Command {
   > = new Collection(
     Object.entries({
       device: devicesAutocomplete,
-      minute: minuteAutocomplete,
     })
   );
   public readonly data = new SlashCommandBuilder()
@@ -72,7 +70,6 @@ export default class SetCommand extends Command {
           "The minute to run the screening at. Must a number in the range 0-59."
         )
         .setRequired(false)
-        .setAutocomplete(true)
         .setMinValue(0)
         .setMaxValue(59)
     )
