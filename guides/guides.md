@@ -14,3 +14,4 @@
 **What's New in Version 2.7**: `/guide name:whats_new_version_2_7`
 **What's New in Version 2.8**: `/guide name:whats_new_version_2_8`
 **What's New in Version 2.8.4**: `/guide name:whats_new_version_2_8_4`
+**What's New in Version 2.9**: `/guide name:whats_new_version_2_9`
