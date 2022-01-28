@@ -42,5 +42,5 @@ export default async function doAutoChangePresence(
   await client.user.setPresence(presences[Math.floor(Math.random() * presences.length)]);
   
   setTimeout(
-    () => doAutoChangePresence(client), 600000)
+    () => doAutoChangePresence(client), 60000)
 }
