@@ -21,7 +21,7 @@ export default async function doAutoChangePresence(
 ): Promise<void> {
 
   const guildSize = client.guilds.cache.size;
-  const registeredPeople = timeCounts
+  const registeredPeople = await AutoUser.count()
       .map((value) => value.count)
       .reduce((a, b) => a + b, 0);
       
