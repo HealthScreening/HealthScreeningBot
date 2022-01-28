@@ -35,7 +35,7 @@ export default async function doAutoChangePresence(
   "Use /set to set optional configuration info!",
   "can i put ma balls on ya jaws",
   "Run /stats for cool stats about the bot!",
-  "Check out your profile with /profile !",
+  "Check out your profile with /profile!",
   "Have an idea? Suggest it with /suggest !",
   "Join the Discord server at: discord.gg/"
 ];
