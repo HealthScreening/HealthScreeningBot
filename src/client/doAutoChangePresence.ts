@@ -37,7 +37,6 @@ export default async function doAutoChangePresence(
   "Run /stats for cool stats about the bot!",
   "Check out your profile with /profile!",
   "Have an idea? Suggest it with /suggest!",
-  "Join the Discord server at: discord.gg/"
 ];
 
   await client.user.setPresence(presences[Math.floor(Math.random() * presences.length)]);
