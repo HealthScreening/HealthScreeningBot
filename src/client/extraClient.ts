@@ -56,6 +56,7 @@ import runFunctionAndLogError from "../utils/logError/runAndLog";
 import { ItemType } from "../utils/multiMessage";
 import postToGithub from "../utils/postToGithub";
 import { Command } from "./command";
+import doAutoChangePresence from "./doAutoChangePresence";
 import doAutoLoop from "./doAutoLoop";
 import commandInteraction from "./interactions/commandInteraction";
 import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
@@ -202,6 +203,10 @@ export default class HealthScreeningBotClient extends Client {
       runFunctionAndLogError(
         () => doAutoLoop(this, logChannel),
         "onReady::doAutoLoop"
+      ),
+      runFunctionAndLogError(
+        () => doAutoChangePresence(this),
+        "onReady::doAutoChangePresence"
       ),
     ]);
   }
