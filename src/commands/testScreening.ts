@@ -49,12 +49,6 @@ export default class TestScreening extends Command {
     )
     .addBooleanOption((option) =>
       option
-        .setName("paginate")
-        .setDescription("Enable pagination.")
-        .setRequired(false)
-    )
-    .addBooleanOption((option) =>
-      option
         .setName("ephemeral")
         .setDescription("Whether the contents are hidden to everyone else.")
         .setRequired(false)
@@ -174,19 +168,11 @@ export default class TestScreening extends Command {
       action2 += ".";
     }
     embed2.setDescription(action2);
-    const paginate = interaction.options.getBoolean("paginate", false) ?? true;
     const embeds = [embed, embed2];
-    if (paginate) {
-      await new Paginator(embeds).send({
-        itemType: ItemType.interaction,
-        item: interaction,
-        ephemeral,
-      });
-    } else {
-      return await interaction.reply({
-        embeds: embeds,
-        ephemeral,
-      });
-    }
+    await new Paginator(embeds).send({
+      itemType: ItemType.interaction,
+      item: interaction,
+      ephemeral,
+    });
   }
 }

@@ -44,12 +44,6 @@ export default class ErrorViewCommand extends Subcommand {
       )
       .addBooleanOption((option) =>
         option
-          .setName("paginate")
-          .setDescription("Enable pagination.")
-          .setRequired(false)
-      )
-      .addBooleanOption((option) =>
-        option
           .setName("attach")
           .setDescription(
             "Send stack trace and metadata as attachments (will do so anyways if >4096 characters each)."
@@ -151,20 +145,11 @@ export default class ErrorViewCommand extends Subcommand {
     } else {
       embed.addField("Metadata", "None", false);
     }
-    const paginate = interaction.options.getBoolean("paginate", false) ?? true;
-    if (paginate) {
-      await new Paginator(embeds).send({
-        itemType: ItemType.interaction,
-        item: interaction,
-        ephemeral,
-        files: attachments,
-      });
-    } else {
-      return await interaction.reply({
-        embeds: embeds,
-        ephemeral,
-        files: attachments,
-      });
-    }
+    await new Paginator(embeds).send({
+      itemType: ItemType.interaction,
+      item: interaction,
+      ephemeral,
+      files: attachments,
+    });
   }
 }
