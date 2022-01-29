@@ -28,7 +28,7 @@ export default async function doAutoChangePresence(
   const presences: string[] = 
 [
   "Generating Health Screenings",
-  "In ${guildSize} servers",
+  `In ${guildSize} servers`,
   "Generating for ${registeredPeople} people!",
   "/generate name:walkthrough for walkthrough of commands!",
   "Report a bug with /report_bug!",
