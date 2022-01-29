@@ -39,6 +39,11 @@
       "type": "dailyAutoScreening",
       "name": "AbortError",
       "message": "The user aborted a request."
+    },
+    {
+      "type": "generateAndSendScreenshot",
+      "name": "SequelizeConnectionAcquireTimeoutError",
+      "message": "Operation timeout"
     }
   ]
 }
