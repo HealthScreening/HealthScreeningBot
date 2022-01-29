@@ -37,7 +37,7 @@ export default async function doAutoChangePresence(
     "Check out your profile with /profile!",
     "Have an idea? Suggest it with /suggest!",
   ];
-  
+
   // We only need to set the name.
   await client.user!.setPresence({ activities: [{ name: sample(presences) }] });
 
