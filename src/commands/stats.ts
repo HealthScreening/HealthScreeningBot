@@ -26,13 +26,7 @@ import Paginator from "../utils/paginator";
 export default class Stats extends Command {
   public readonly data = new SlashCommandBuilder()
     .setName("stats")
-    .setDescription("Get bot stats.")
-    .addBooleanOption((option) =>
-      option
-        .setName("paginate")
-        .setDescription("Enable pagination.")
-        .setRequired(false)
-    ) as SlashCommandBuilder;
+    .setDescription("Get bot stats.");
   async execute(interaction: CommandInteraction) {
     const guildSize = interaction.client.guilds.cache.size;
     let members = 0;
@@ -94,16 +88,9 @@ export default class Stats extends Command {
       )
       .setTimestamp(curTimeMillis);
     const embeds = [embed, detailedEmbed];
-    const paginate = interaction.options.getBoolean("paginate", false) ?? true;
-    if (paginate) {
-      await new Paginator(embeds).send({
-        itemType: ItemType.interaction,
-        item: interaction,
-      });
-    } else {
-      await interaction.reply({
-        embeds,
-      });
-    }
+    await new Paginator(embeds).send({
+      itemType: ItemType.interaction,
+      item: interaction,
+    });
   }
 }

@@ -58,22 +58,14 @@ export default class Guide extends Command {
     )
     .addBooleanOption((option) =>
       option
-        .setName("paginate")
-        .setDescription(
-          "Whether to send the guide as a paginator or as a flat list of embeds"
-        )
-        .setRequired(false)
-    )
-    .addBooleanOption((option) =>
-      option
         .setName("ephemeral")
         .setDescription("Whether the contents are hidden to everyone else.")
         .setRequired(false)
     ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
     const name = interaction.options.getString("name", true);
-    const paginate = interaction.options.getBoolean("paginate") ?? true;
-    const ephemeral = interaction.options.getBoolean("ephemeral") ?? false;
+    const ephemeral =
+      interaction.options.getBoolean("ephemeral", false) ?? false;
     if (!interaction.client.guideData.has(name)) {
       await interaction.reply({
         content: "The guide you requested does not exist. Please try again.",
@@ -86,17 +78,10 @@ export default class Guide extends Command {
       return;
     }
     const guide = interaction.client.guideData.get(name)!;
-    if (paginate) {
-      await new Paginator(guide).send({
-        itemType: ItemType.interaction,
-        item: interaction,
-        ephemeral,
-      });
-    } else {
-      await interaction.reply({
-        embeds: guide,
-        ephemeral,
-      });
-    }
+    await new Paginator(guide).send({
+      itemType: ItemType.interaction,
+      item: interaction,
+      ephemeral,
+    });
   }
 }

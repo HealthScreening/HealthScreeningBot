@@ -104,12 +104,6 @@ export default class ErrorLogViewCommand extends Subcommand {
       )
       .addBooleanOption((option) =>
         option
-          .setName("paginate")
-          .setDescription("Enable pagination.")
-          .setRequired(false)
-      )
-      .addBooleanOption((option) =>
-        option
           .setName("unique")
           .setDescription("Display unique errors only (hides duplicates).")
           .setRequired(false)
@@ -256,24 +250,10 @@ export default class ErrorLogViewCommand extends Subcommand {
     }
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
-    const paginate = interaction.options.getBoolean("paginate", false) ?? true;
-    if (paginate) {
-      await new Paginator(embeds).send({
-        itemType: ItemType.interaction,
-        item: interaction,
-        ephemeral,
-      });
-    } else {
-      if (embeds.length > 10) {
-        return await interaction.reply({
-          content: "Too many embeds to display. Please use the paginator.",
-          ephemeral: true,
-        });
-      }
-      await interaction.reply({
-        embeds,
-        ephemeral,
-      });
-    }
+    await new Paginator(embeds).send({
+      itemType: ItemType.interaction,
+      item: interaction,
+      ephemeral,
+    });
   }
 }
