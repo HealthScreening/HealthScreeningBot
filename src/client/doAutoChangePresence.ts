@@ -14,22 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { AutoUser } from "../orm/autoUser";
 import HealthScreeningBotClient from "./extraClient";
+import {sample} from "lodash";
 
 export default async function doAutoChangePresence(
   client: HealthScreeningBotClient,
 ): Promise<void> {
 
   const guildSize = client.guilds.cache.size;
-  const registeredPeople = await AutoUser.count()
-      .map((value) => value.count)
-      .reduce((a, b) => a + b, 0);
-      
-  const presences: string[] = 
+  const registeredPeople = await AutoUser.count();
+
+  const presences: string[] =
 [
   "Generating Health Screenings",
-  "In ${guildSize} servers",
-  "Generating for ${registeredPeople} people!",
+  `In ${guildSize} servers`,
+  `Generating for ${registeredPeople} people!`,
   "/generate name:walkthrough for walkthrough of commands!",
   "Report a bug with /report_bug!",
   "Use /set to set optional configuration info!",
@@ -39,8 +39,8 @@ export default async function doAutoChangePresence(
   "Have an idea? Suggest it with /suggest!",
 ];
 
-  await client.user.setPresence(presences[Math.floor(Math.random() * presences.length)]);
-  
+  await client.user!.setPresence({ activities: [{ name: sample(presences) }] });
+
   setTimeout(
     () => doAutoChangePresence(client), 300000)
 }

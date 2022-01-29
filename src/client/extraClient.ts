@@ -56,6 +56,7 @@ import runFunctionAndLogError from "../utils/logError/runAndLog";
 import { ItemType } from "../utils/multiMessage";
 import postToGithub from "../utils/postToGithub";
 import { Command } from "./command";
+import doAutoChangePresence from "./doAutoChangePresence";
 import doAutoLoop from "./doAutoLoop";
 import commandInteraction from "./interactions/commandInteraction";
 import commandInteractionAutocomplete from "./interactions/commandInteractionAutocomplete";
