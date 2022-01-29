@@ -19,6 +19,7 @@ import { CommandInteraction, MessageEmbed } from "discord.js";
 import { DateTime } from "luxon";
 
 import { Command } from "../client/command";
+import { AutoDays } from "../orm/autoDays";
 import { AutoUser } from "../orm/autoUser";
 import { ItemType } from "../utils/multiMessage";
 import Paginator from "../utils/paginator";
@@ -87,7 +88,31 @@ export default class Stats extends Command {
           .join("\n")
       )
       .setTimestamp(curTimeMillis);
-    const embeds = [embed, detailedEmbed];
+    const autoDays = await AutoDays.findAll();
+    const onSunday = autoDays.filter((value) => value.onSunday).length;
+    const onMonday = autoDays.filter((value) => value.onMonday).length;
+    const onTuesday = autoDays.filter((value) => value.onTuesday).length;
+    const onWednesday = autoDays.filter((value) => value.onWednesday).length;
+    const onThursday = autoDays.filter((value) => value.onThursday).length;
+    const onFriday = autoDays.filter((value) => value.onFriday).length;
+    const onSaturday = autoDays.filter((value) => value.onSaturday).length;
+    const daysEmbed = new MessageEmbed()
+      .setColor("GREEN")
+      .setTitle("Stats: Auto Screening Days")
+      .setAuthor({
+        name: "Auto Health Screening",
+        iconURL:
+          "https://cdn.discordapp.com/icons/889983763994521610/43fc775c6dbce5cf84b76f54e8bf5729.webp",
+      })
+      .addField("Sunday", String(onSunday), true)
+      .addField("Monday", String(onMonday), true)
+      .addField("Tuesday", String(onTuesday), true)
+      .addField("Wednesday", String(onWednesday), true)
+      .addField("Thursday", String(onThursday), true)
+      .addField("Friday", String(onFriday), true)
+      .addField("Saturday", String(onSaturday), true)
+      .setTimestamp(curTimeMillis);
+    const embeds = [embed, detailedEmbed, daysEmbed];
     await new Paginator(embeds).send({
       itemType: ItemType.interaction,
       item: interaction,
