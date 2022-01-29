@@ -44,6 +44,11 @@
       "type": "generateAndSendScreenshot",
       "name": "SequelizeConnectionAcquireTimeoutError",
       "message": "Operation timeout"
+    },
+    {
+      "type": "generateAndSendScreenshot::sendMessage",
+      "name": "TypeError [REQ_RESOURCE_TYPE]",
+      "message": "The resource must be a string, Buffer or a valid file stream."
     }
   ]
 }
