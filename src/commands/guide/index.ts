@@ -64,7 +64,7 @@ export default class Guide extends Command {
     ) as SlashCommandBuilder;
   async execute(interaction: HSBCommandInteraction) {
     const name = interaction.options.getString("name", true);
-    const ephemeral = interaction.options.getBoolean("ephemeral") ?? false;
+    const ephemeral = interaction.options.getBoolean("ephemeral", false) ?? false;
     if (!interaction.client.guideData.has(name)) {
       await interaction.reply({
         content: "The guide you requested does not exist. Please try again.",
