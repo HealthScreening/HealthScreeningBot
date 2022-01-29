@@ -29,6 +29,11 @@
       "type": "interaction::commandInteraction",
       "name": "DiscordAPIError",
       "message": "Unknown interaction"
+    },
+    {
+      "type": "dailyAutoScreening",
+      "name": "Response",
+      "message": "Internal Server Error"
     }
   ]
 }
