@@ -14,33 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { sample } from "lodash";
+
+import { AutoUser } from "../orm/autoUser";
 import HealthScreeningBotClient from "./extraClient";
 
 export default async function doAutoChangePresence(
-  client: HealthScreeningBotClient,
+  client: HealthScreeningBotClient
 ): Promise<void> {
-
   const guildSize = client.guilds.cache.size;
-  const registeredPeople = await AutoUser.count()
-      .map((value) => value.count)
-      .reduce((a, b) => a + b, 0);
-      
-  const presences: string[] = 
-[
-  "Generating Health Screenings",
-  `In ${guildSize} servers`,
-  `Generating for ${registeredPeople} people!`,
-  "/generate name:walkthrough for walkthrough of commands!",
-  "Report a bug with /report_bug!",
-  "Use /set to set optional configuration info!",
-  "can i put ma balls on ya jaws",
-  "Run /stats for cool stats about the bot!",
-  "Check out your profile with /profile!",
-  "Have an idea? Suggest it with /suggest!",
-];
+  const registeredPeople = await AutoUser.count();
 
-  await client.user.setPresence(presences[Math.floor(Math.random() * presences.length)]);
-  
-  setTimeout(
-    () => doAutoChangePresence(client), 300000)
+  const presences: string[] = [
+    "Generating Health Screenings",
+    `In ${guildSize} servers`,
+    `Generating for ${registeredPeople} people!`,
+    "/generate name:walkthrough for walkthrough of commands!",
+    "Report a bug with /report_bug!",
+    "Use /set to set optional configuration info!",
+    "can i put ma balls on ya jaws",
+    "Run /stats for cool stats about the bot!",
+    "Check out your profile with /profile!",
+    "Have an idea? Suggest it with /suggest!",
+  ];
+
+  await client.user!.setPresence({ activities: [{ name: sample(presences) }] });
+
+  setTimeout(() => doAutoChangePresence(client), 300000);
 }
