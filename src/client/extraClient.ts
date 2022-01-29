@@ -204,7 +204,7 @@ export default class HealthScreeningBotClient extends Client {
         () => doAutoLoop(this, logChannel),
         "onReady::doAutoLoop"
       ),
-        runFunctionAndLogError(
+      runFunctionAndLogError(
         () => doAutoChangePresence(this),
         "onReady::doAutoChangePresence"
       ),
