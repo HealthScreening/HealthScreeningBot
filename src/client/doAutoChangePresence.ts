@@ -29,7 +29,7 @@ export default async function doAutoChangePresence(
 [
   "Generating Health Screenings",
   `In ${guildSize} servers`,
-  "Generating for ${registeredPeople} people!",
+  `Generating for ${registeredPeople} people!`,
   "/generate name:walkthrough for walkthrough of commands!",
   "Report a bug with /report_bug!",
   "Use /set to set optional configuration info!",
