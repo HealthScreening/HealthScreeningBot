@@ -41,7 +41,7 @@
   "dependencies": {
     "@discordjs/builders": "0.12.0",
     "@discordjs/rest": "0.3.0",
-    "@healthscreening/complete-screening": "1.0.3",
+    "@healthscreening/complete-screening": "1.0.5",
     "@healthscreening/generate-screenshot": "1.1.1",
     "@healthscreening/screening-types": "1.0.0",
     "array-string-map": "3.0.0",
