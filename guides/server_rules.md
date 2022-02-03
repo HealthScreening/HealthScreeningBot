@@ -40,3 +40,7 @@ __**No Spam**__
 - Do not spam the reaction roles.
 
 **Use Commands in Correct Places**: Use commands inside the trial zone only, unless you want support with the bot. In the case that your screening is not working correctly, please contact the moderators.
+
+__**Do Not Send Invites Without Mod/Admin Approval**__
+
+Sending an invite to a server without a mod or admin first will not work. All invites will be deleted and warnings will be issued. If you have a legitimate reason to send an invite, a mod or admin will vet your request and then send it on your behalf.
