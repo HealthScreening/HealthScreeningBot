@@ -1,4 +1,3 @@
-
 /**
  * Automatically generates the guide directory
  */
