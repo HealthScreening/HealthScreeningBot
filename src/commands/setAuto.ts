@@ -126,8 +126,9 @@ export default class SetAuto extends Command {
       ) {
         await interaction.followUp({
           content:
-            "I cannot send you a screening, possibly due to DMs being disabled from server members. Therefore, you will be set to email-only screenings. In order to disable email-only mode, please run `/toggle_email_only` after making sure your DMs are open again.",
+            "I cannot send you a screening, possibly due to DMs being disabled from server members. Therefore, you will be set to email-only screenings. In order to disable email-only mode, please run `/set` after making sure your DMs are open again.",
           embeds: interaction.client.guideData.get("post_set_auto")!,
+          ephemeral,
         });
         autoUserObj.emailOnly = true;
         await autoUserObj.save();
