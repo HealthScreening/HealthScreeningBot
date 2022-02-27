@@ -4,9 +4,9 @@ Here is a list of all the devices you can register when using the `/set` command
  
 **__Blackberry__**: `Blackberry PlayBook`, `BlackBerry Z30`
  
-**__Apple__**: `iPad`, `iPad Mini`, `iPad Pro`, `iPhone 4`, `iPhone 5`, `iPhone 6`, `iPhone 6 Plus`, `iPhone 7`, `iPhone 7 Plus`, `iPhone 8`, `iPhone 8 Plus`, `iPhone SE`, `iPhone X`, `iPhone XR`, `iPhone 11`, `iPhone 11 Pro`, `iPhone 11 Pro Max`
+**__Apple__**: `iPad`, `iPad (gen 6)`, `iPad (gen 7)`, `iPad Mini`, `iPad Pro`, `iPad Pro 11`, `iPhone 4`, `iPhone 5`, `iPhone 6`, `iPhone 6 Plus`, `iPhone 7`, `iPhone 7 Plus`, `iPhone 8`, `iPhone 8 Plus`, `iPhone SE`, `iPhone X`, `iPhone XR`, `iPhone 11`, `iPhone 11 Pro`, `iPhone 11 Pro Max`, `iPhone 12`, `iPhone 12 Mini`, `iPhone 12 Pro`, `iPhone 12 Pro Max`, `iPhone 13`, `iPhone 13 Mini`, `iPhone 13 Pro`, `iPhone 13 Pro Max` 
  
-**__Pixel__**: `Pixel 2`, `Pixel 2 XL`, `Pixel 3`, `Pixel 4`
+**__Pixel__**: `Pixel 2`, `Pixel 2 XL`, `Pixel 3`, `Pixel 4`, `Pixel 4a (5G)`, `Pixel 5`
  
 **__Microsoft__**: `Microsoft Lumia 550`, `Microsoft Lumia 950`
 
