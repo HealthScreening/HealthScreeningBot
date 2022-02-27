@@ -64,6 +64,11 @@
       "type": "generateAndSendScreenshot::sendMessage",
       "name": "Response",
       "message": "Internal Server Error"
+    },
+    {
+      "type": "interaction::globalButton::errorReply",
+      "name": "DiscordAPIError",
+      "message": "Unknown interaction"
     }
   ]
 }
