@@ -54,6 +54,11 @@
       "type": "dailyAutoScreening",
       "name": "Error",
       "message": "getaddrinfo EAI_AGAIN healthscreening.schools.nyc"
+    },
+    {
+      "type": "github::postIssue",
+      "name": "Error",
+      "message": "Request failed with status code 502"
     }
   ]
 }
