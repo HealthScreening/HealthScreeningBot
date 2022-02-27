@@ -66,7 +66,7 @@ Screening Sent on Saturday: **${autoDayData.onSaturday}**`;
 export default class Profile extends Command {
   public readonly data = new SlashCommandBuilder()
     .setName("profile")
-    .setDescription("Saw profile.")
+    .setDescription("View a summary of auto health screening data.")
     .addBooleanOption((option) =>
       option
         .setName("ephemeral")
