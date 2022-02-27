@@ -59,6 +59,11 @@
       "type": "github::postIssue",
       "name": "Error",
       "message": "Request failed with status code 502"
+    },
+    {
+      "type": "generateAndSendScreenshot::sendMessage",
+      "name": "Response",
+      "message": "Internal Server Error"
     }
   ]
 }
