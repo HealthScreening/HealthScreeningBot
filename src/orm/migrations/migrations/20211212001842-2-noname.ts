@@ -1,4 +1,3 @@
-
 // @ts-nocheck We don't want to check this file because it's an auto generated
 // migration file.
 const Sequelize = require("sequelize");

@@ -1,4 +1,3 @@
-
 export function objectToWrapper(input: {
   // Skipped because no better way to do this
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
