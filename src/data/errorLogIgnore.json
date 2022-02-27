@@ -54,6 +54,21 @@
       "type": "dailyAutoScreening",
       "name": "Error",
       "message": "getaddrinfo EAI_AGAIN healthscreening.schools.nyc"
+    },
+    {
+      "type": "github::postIssue",
+      "name": "Error",
+      "message": "Request failed with status code 502"
+    },
+    {
+      "type": "generateAndSendScreenshot::sendMessage",
+      "name": "Response",
+      "message": "Internal Server Error"
+    },
+    {
+      "type": "interaction::globalButton::errorReply",
+      "name": "DiscordAPIError",
+      "message": "Unknown interaction"
     }
   ]
 }
