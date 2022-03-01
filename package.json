@@ -53,7 +53,7 @@
     "luxon": "2.3.1",
     "pg": "8.7.3",
     "pg-hstore": "2.3.4",
-    "puppeteer": "13.4.0",
+    "puppeteer": "13.4.1",
     "sequelize": "6.17.0",
     "sleep-promise": "9.1.0",
     "uuid": "8.3.2"
