@@ -62,7 +62,7 @@
     "@healthscreening/sequelize-lazy-migrations": "1.0.12",
     "@trivago/prettier-plugin-sort-imports": "3.2.0",
     "@types/lodash": "4.14.180",
-    "@types/luxon": "2.3.0",
+    "@types/luxon": "2.3.1",
     "@types/node": "17.0.21",
     "@types/uuid": "8.3.4",
     "@types/walk-asyncgen": "0.0.0",
