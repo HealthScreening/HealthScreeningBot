@@ -56,10 +56,10 @@ export class ScreeningClient {
     }
     const trueParams: ProcessParams = {
       ...params,
-      cooldown: {
+      /*cooldown: {
         container: this.cooldowns,
         id: userId,
-      },
+      },*/
     };
     try {
       await this.queue.enqueue(trueParams, 1);
