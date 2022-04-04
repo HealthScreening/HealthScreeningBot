@@ -18,28 +18,8 @@ export class ScreeningClient {
       worker: processScreening,
       limit: 8,
     });
-  private readonly cooldowns: Set<string> = new Set();
 
-  private async processCooldowns(
-    userId: string,
-    sendMessageOptions: MessageOptions
-  ): Promise<boolean> {
-    if (this.cooldowns.has(userId)) {
-      const messageOptions = {
-        content:
-          "You are on cooldown! Please wait a minute before using this command again.",
-        ephemeral: true,
-        ...sendMessageOptions,
-      };
-      await sendMessage(messageOptions);
-      return false;
-    } else {
-      this.cooldowns.add(userId);
-      return true;
-    }
-  }
-
-  private async dealWithQueue(params: ProcessParams, userId: string) {
+  private async dealWithQueue(params: ProcessParams) {
     if (this.queue.willQueue()) {
       const messageOptions: MessageOptions = {
         content:
@@ -56,17 +36,8 @@ export class ScreeningClient {
     }
     const trueParams: ProcessParams = {
       ...params,
-      /*cooldown: {
-        container: this.cooldowns,
-        id: userId,
-      },*/
     };
-    try {
-      await this.queue.enqueue(trueParams, 1);
-    } catch (e) {
-      this.cooldowns.delete(userId);
-      throw e;
-    }
+    await this.queue.enqueue(trueParams, 1);
   }
 
   public async queueAutoCommand(
@@ -79,9 +50,6 @@ export class ScreeningClient {
     });
     const deviceInfo = await getDeviceData({ userId: userId });
     if (autoInfo === null) {
-      return;
-    }
-    if (!(await this.processCooldowns(userId, multiMessageParams))) {
       return;
     }
     const processParams: ProcessParams = {
@@ -98,16 +66,13 @@ export class ScreeningClient {
         content: `<@${userId}>, here is the screenshot that you requested:`,
       },
     };
-    await this.dealWithQueue(processParams, userId);
+    await this.dealWithQueue(processParams);
   }
 
   public async queueOnceCommand(
     userId: string,
     params: ProcessParams
   ): Promise<void> {
-    if (!(await this.processCooldowns(userId, params.multiMessageParams))) {
-      return;
-    }
     const deviceInfo = await getDeviceData({ userId: userId });
     const processParams: ProcessParams = {
       generateScreenshotParams: {
@@ -119,7 +84,7 @@ export class ScreeningClient {
         content: `<@${userId}>, here is the screenshot that you requested:`,
       },
     };
-    await this.dealWithQueue(processParams, userId);
+    await this.dealWithQueue(processParams);
   }
 
   public async queueDailyAuto(
