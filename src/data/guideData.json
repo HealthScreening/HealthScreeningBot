@@ -108,5 +108,10 @@
       "walkthrough/page_4"
     ],
     "shortTitle": "Walkthrough"
+  },
+  "_shutdown": {
+    "title": "Bot Pausing and Future Plans",
+    "files": ["shutdown"],
+    "shortTitle": "Bot Pausing and Future Plans"
   }
 }
