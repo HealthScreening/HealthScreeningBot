@@ -16,54 +16,53 @@ export default async function doAutoLoop(
 ): Promise<void> {
   const currentTime = DateTime.now().setZone("America/New_York");
   const holiday = dayIsHoliday(currentTime);
-  if (holiday) {
-    return;
-  }
-  try {
-    const batchTimes: ArrayStringMap<[number, number], number> =
-      new ArrayStringMap();
-    const validDayOfWeekUsers = new Set(
-      await getUsersForDayOfWeek(currentTime.weekday)
-    );
-    for (const autoItem of await AutoUser.findAll({
-      where: {
-        userId: {
-          [Op.in]: Array.from(validDayOfWeekUsers),
-        },
-        hour: {
-          [Op.eq]: currentTime.hour,
-        },
-        minute: {
-          [Op.eq]: currentTime.minute,
-        },
-        paused: {
-          [Op.eq]: false,
-        },
-      },
-      order: [["createdAt", "ASC"]],
-    })) {
-      batchTimes.set(
-        [autoItem.hour, autoItem.minute],
-        (batchTimes.get([autoItem.hour, autoItem.minute]) || 0) + 1
+  if (!holiday) {
+    try {
+      const batchTimes: ArrayStringMap<[number, number], number> =
+        new ArrayStringMap();
+      const validDayOfWeekUsers = new Set(
+        await getUsersForDayOfWeek(currentTime.weekday)
       );
-      await client.screeningClient.queueDailyAuto(
-        await client.users.fetch(autoItem.userId),
-        {
-          batchTime: [autoItem.hour, autoItem.minute],
-          itemNumber: batchTimes.get([autoItem.hour, autoItem.minute]) || 1,
-          logChannel,
-        }
-      );
+      for (const autoItem of await AutoUser.findAll({
+        where: {
+          userId: {
+            [Op.in]: Array.from(validDayOfWeekUsers),
+          },
+          hour: {
+            [Op.eq]: currentTime.hour,
+          },
+          minute: {
+            [Op.eq]: currentTime.minute,
+          },
+          paused: {
+            [Op.eq]: false,
+          },
+        },
+        order: [["createdAt", "ASC"]],
+      })) {
+        batchTimes.set(
+          [autoItem.hour, autoItem.minute],
+          (batchTimes.get([autoItem.hour, autoItem.minute]) || 0) + 1
+        );
+        await client.screeningClient.queueDailyAuto(
+          await client.users.fetch(autoItem.userId),
+          {
+            batchTime: [autoItem.hour, autoItem.minute],
+            itemNumber: batchTimes.get([autoItem.hour, autoItem.minute]) || 1,
+            logChannel,
+          }
+        );
+      }
+    } catch (e) {
+      await logError(e, "doAutoLoop", {
+        time: {
+          hour: currentTime.hour,
+          minute: currentTime.minute,
+          weekday: currentTime.weekday,
+        },
+        logChannel: logChannel.id,
+      });
     }
-  } catch (e) {
-    await logError(e, "doAutoLoop", {
-      time: {
-        hour: currentTime.hour,
-        minute: currentTime.minute,
-        weekday: currentTime.weekday,
-      },
-      logChannel: logChannel.id,
-    });
   }
   setTimeout(
     () => doAutoLoop(client, logChannel),
