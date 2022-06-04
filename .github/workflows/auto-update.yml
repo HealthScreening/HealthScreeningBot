@@ -1,0 +1,31 @@
+name: Auto NPM Update
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *" # Runs every day at midnight
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3.2.0
+        with:
+          node-version: 18
+      - name: Update dependencies
+        run: npm upgrade
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          title: "Auto NPM Update"
+          body: "This PR was created automatically by the Auto NPM Update workflow."
+          signoff: true
+          commit-message: "Update dependencies via `npm upgrade`."
+          branch: "create-pull-request/auto-npm-update"
+          branch-suffix: "timestamp"
+          labels: "auto-npm-update,dependencies,javascript"
+          delete-branch: true

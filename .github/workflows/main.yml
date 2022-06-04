@@ -32,7 +32,7 @@ jobs:
 
     strategy:
       matrix:
-        node: ["17"]
+        node: ["17", "18"]
 
     name: Node ${{ matrix.node }} build
     # Steps represent a sequence of tasks that will be executed as part of the job

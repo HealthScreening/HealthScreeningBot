@@ -30,7 +30,7 @@ jobs:
 
     strategy:
       matrix:
-        node: ["17"]
+        node: ["17", "18"]
 
     name: Node ${{ matrix.node }} lint
 
