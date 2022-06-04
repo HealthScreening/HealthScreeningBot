@@ -29,4 +29,3 @@ jobs:
           branch-suffix: "timestamp"
           labels: "auto-npm-update,dependencies,javascript"
           delete-branch: true
-
