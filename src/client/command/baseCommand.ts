@@ -6,6 +6,7 @@ import {
 
 import { PreCommandChecks } from "./preCommandChecks";
 
+// eslint-disable-next-line import/prefer-default-export -- Some nasty export errors occur when making this a default.
 export abstract class BaseCommand implements PreCommandChecks {
   /**
    * The function that will run whenever this command is used as a slash command.
