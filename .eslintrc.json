@@ -1,3 +1,6 @@
 {
-  "extends": ["pythoncoderas-typescript", "pythoncoderas"]
+  "extends": ["pythoncoderas-typescript", "pythoncoderas"],
+  "rules": {
+    "import/no-cycle": "off"
+  }
 }
