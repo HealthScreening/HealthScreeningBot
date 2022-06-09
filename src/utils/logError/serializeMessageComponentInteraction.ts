@@ -7,7 +7,7 @@ import {
 export default function serializeMessageComponentInteraction(
   interaction: MessageComponentInteraction
 ) {
-  let componentData: object;
+  let componentData: object = {};
   let component: MessageButton | MessageSelectMenu;
   switch (interaction.componentType) {
     case "BUTTON":
