@@ -74,16 +74,19 @@ export default class HealthScreeningBotClient extends Client {
       trigger_auto: new TriggerAutoNow(),
     })
   );
+
   public readonly screeningClient: ScreeningClient = new ScreeningClient();
+
   public readonly githubQueue: ConcurrentPriorityWorkerQueue<
     [string, string, keyof typeof issueSets],
     number | null
   > = new ConcurrentPriorityWorkerQueue({
-    worker: async (args) => {
-      return await postToGithub(...args);
+    async worker(args) {
+      return postToGithub(...args);
     },
     limit: 1,
   });
+
   public readonly globalButtons: Collection<
     string,
     (interaction: HSBMessageComponentInteraction) => Promise<void>
@@ -93,12 +96,14 @@ export default class HealthScreeningBotClient extends Client {
       go_to_dm: goToDMButton,
     })
   );
+
   /**
    * Guides can either be an array of message embeds *or* an array of paths to check for the pages.
    * If providing paths, they must be relative to the root of the guides folder at the
    * root of the project, not the root of the source.
    */
   public guideData: Collection<string, MessageEmbed[]>;
+
   constructor(options: ClientOptions) {
     super(options);
     this.loadEventListeners();
@@ -112,6 +117,7 @@ export default class HealthScreeningBotClient extends Client {
         this.on(memberName.substring(2), this[memberName].bind(this));
       }
     }
+
     this.once("ready", this.doOnReady.bind(this));
   }
 

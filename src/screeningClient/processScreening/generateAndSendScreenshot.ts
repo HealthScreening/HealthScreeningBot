@@ -27,6 +27,7 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
         serializeProcessParams(params)
       );
     }
+
     const messageParams: MessageOptions = {
       content: "Here is the screenshot that you requested:",
       files: [
@@ -43,6 +44,7 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
         new MessageActionRow().addComponents(getPresetButton("delete")),
       ];
     }
+
     try {
       await sendMessage(messageParams);
     } catch (e) {
@@ -55,12 +57,14 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
           // If it's not auto, then pass the error along to the caller
           throw e;
         }
+
         // Set to email only
         const userId = getUserID(messageParams);
         const autoUserObj = await AutoUser.findOne({ where: { userId } });
         if (autoUserObj === null) {
           return false;
         }
+
         autoUserObj.emailOnly = true;
         await autoUserObj.save();
       } else {
@@ -72,12 +76,14 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
         return false;
       }
     }
+
     return true;
   } catch (e) {
     // If it's not auto, then pass the error along to the caller
     if (!params.auto) {
       throw e;
     }
+
     await logError(
       e,
       "generateAndSendScreenshot",

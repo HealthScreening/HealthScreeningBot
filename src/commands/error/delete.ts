@@ -25,6 +25,7 @@ export default class ErrorDeleteCommand extends Subcommand {
           .setRequired(false)
       );
   }
+
   async execute(interaction: CommandInteraction) {
     const id: number = interaction.options.getInteger("id", true);
     const ephemeral =
@@ -37,14 +38,15 @@ export default class ErrorDeleteCommand extends Subcommand {
       },
     });
     if (!item) {
-      return await interaction.reply({
+      return interaction.reply({
         content: "No error with that ID found.",
         ephemeral,
       });
     }
+
     await item.destroy();
-    return await interaction.reply({
-      content: "Deleted error with ID " + id + ".",
+    return interaction.reply({
+      content: `Deleted error with ID ${id}.`,
       ephemeral,
     });
   }

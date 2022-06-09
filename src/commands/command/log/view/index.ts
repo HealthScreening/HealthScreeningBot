@@ -32,6 +32,7 @@ export default class CommandLogViewCommand extends Subcommand {
       before_time: beforeTimeAutocomplete,
     })
   );
+
   registerSubcommand(
     subcommand: SlashCommandSubcommandBuilder
   ): SlashCommandSubcommandBuilder {
@@ -106,6 +107,7 @@ export default class CommandLogViewCommand extends Subcommand {
           .setRequired(false)
       );
   }
+
   async execute(interaction: CommandInteraction) {
     const isDesc = interaction.options.getBoolean("desc", false) ?? true;
     const whereQuery: { [k: string]: object } = {};
@@ -126,37 +128,48 @@ export default class CommandLogViewCommand extends Subcommand {
       if (!whereQuery.id) {
         whereQuery.id = {};
       }
+
       whereQuery.id[Op.lt] = before;
     }
+
     if (after) {
       if (!whereQuery.id) {
         whereQuery.id = {};
       }
+
       whereQuery.id[Op.gt] = after;
     }
+
     if (beforeTime) {
       if (!whereQuery.createdAt) {
         whereQuery.createdAt = {};
       }
+
       whereQuery.createdAt[Op.lt] = new Date(beforeTime * 1000);
     }
+
     if (afterTime) {
       if (!whereQuery.createdAt) {
         whereQuery.createdAt = {};
       }
+
       whereQuery.createdAt[Op.gt] = new Date(afterTime * 1000);
     }
+
     if (commandNameStartsWith) {
       whereQuery.commandName = where(fn("lower", col("commandName")), {
         [Op.startsWith]: commandNameStartsWith.toLowerCase(),
       });
     }
+
     if (userId) {
       if (!whereQuery.userId) {
         whereQuery.userId = {};
       }
+
       whereQuery.userId[Op.eq] = userId.id;
     }
+
     let items: CommandLog[];
     if (unique) {
       items = await CommandLog.findAll({
@@ -181,20 +194,22 @@ export default class CommandLogViewCommand extends Subcommand {
         limit: limit || undefined,
       });
     }
+
     const embed = new MessageEmbed();
     embed.setTitle("Command Log");
-    let fieldData: string =
-      "Direction: **" + (isDesc ? "Descending" : "Ascending") + "**";
+    let fieldData = `Direction: **${isDesc ? "Descending" : "Ascending"}**`;
     if (before) {
       fieldData += `\nBefore: **#${before}**`;
     } else {
       fieldData += "\nBefore: **None**";
     }
+
     if (after) {
       fieldData += `\nAfter: **#${after}**`;
     } else {
       fieldData += "\nAfter: **None**";
     }
+
     if (beforeTime) {
       fieldData += `\nBefore Time: **${DateTime.fromMillis(
         beforeTime * 1000
@@ -202,6 +217,7 @@ export default class CommandLogViewCommand extends Subcommand {
     } else {
       fieldData += "\nBefore Time: **None**";
     }
+
     if (afterTime) {
       fieldData += `\nAfter Time: **${DateTime.fromMillis(
         afterTime * 1000
@@ -209,21 +225,25 @@ export default class CommandLogViewCommand extends Subcommand {
     } else {
       fieldData += "\nAfter Time: **None**";
     }
+
     if (commandNameStartsWith) {
       fieldData += `\nCommand Name Starts With: **\`${commandNameStartsWith}\`**`;
     } else {
       fieldData += "\nType Starts With: **None**";
     }
+
     if (userId) {
       fieldData += `\nUser ID: **${userId.id}**`;
     } else {
       fieldData += "\nUser ID: **None**";
     }
+
     if (limit) {
       fieldData += `\nLimit: **${limit}**`;
     } else {
       fieldData += "\nLimit: **None**";
     }
+
     embed.addField("Search Properties", fieldData);
     const embeds: MessageEmbed[] = [];
     if (items.length > 0) {
@@ -231,9 +251,10 @@ export default class CommandLogViewCommand extends Subcommand {
       let baseString = "";
       let currentEmbed = new MessageEmbed(embed);
       items
-        .map((item: CommandLog) => {
-          return `#${item.id}. ${item.userName} (<@${item.userId}>) ran ${item.commandName}`;
-        })
+        .map(
+          (item: CommandLog) =>
+            `#${item.id}. ${item.userName} (<@${item.userId}>) ran ${item.commandName}`
+        )
         .forEach((item: string) => {
           if (baseString.length + item.length > 4096) {
             currentEmbed.setDescription(baseString.trimEnd());
@@ -241,7 +262,8 @@ export default class CommandLogViewCommand extends Subcommand {
             currentEmbed = new MessageEmbed(embed);
             baseString = "";
           }
-          baseString += item + "\n";
+
+          baseString += `${item}\n`;
         });
       if (baseString) {
         currentEmbed.setDescription(baseString.trimEnd());
@@ -252,6 +274,7 @@ export default class CommandLogViewCommand extends Subcommand {
       embed.setColor("RED");
       embeds.push(embed);
     }
+
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
     await new Paginator(embeds).send({

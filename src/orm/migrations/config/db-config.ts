@@ -1,5 +1,5 @@
 import { database } from "../../../../config";
 
-export const development = database,
-  testing = database,
-  production = database;
+export const development = database;
+export const testing = database;
+export const production = database;

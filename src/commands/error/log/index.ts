@@ -12,6 +12,7 @@ export default class ErrorLogCommand extends SubcommandGroup {
       prune: new ErrorLogPruneCommand(),
     })
   );
+
   registerSubcommandGroup(subcommandGroup: SlashCommandSubcommandGroupBuilder) {
     return subcommandGroup
       .setName("log")

@@ -14,7 +14,8 @@ import processCooldown from "./processCooldown";
  */
 export default async function processScreening(params: ProcessParams) {
   try {
-    let success: boolean, finish: number;
+    let success: boolean;
+    let finish: number;
     if (
       (params.emailOnly && (params.auto || params.isSetAuto)) ||
       params.auto?.dmScreenshot === false
@@ -27,6 +28,7 @@ export default async function processScreening(params: ProcessParams) {
         generateAndSendScreenshot(params)
       );
     }
+
     await logSuccess(params, success, finish);
     processCooldown(params);
   } catch (e) {

@@ -1,5 +1,4 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { User } from "discord.js";
 
 import { Command } from "../client/command";
 import { HSBCommandInteraction } from "../discordjs-overrides";
@@ -21,6 +20,7 @@ export default class Reset extends Command {
         .setDescription("Whether the contents are hidden to everyone else.")
         .setRequired(false)
     ) as SlashCommandBuilder;
+
   async execute(interaction: HSBCommandInteraction) {
     const autoUser = await AutoUser.findOne({
       where: { userId: interaction.user.id },
@@ -33,6 +33,7 @@ export default class Reset extends Command {
       });
       return;
     }
+
     const autoDays = (await AutoDays.findOne({
       where: { userId: interaction.user.id },
     }))!;
@@ -70,7 +71,7 @@ export default class Reset extends Command {
       ephemeral,
     });
     try {
-      const user: User = interaction.user;
+      const { user } = interaction;
       await (await user.createDM()).sendTyping();
       await interaction.client.screeningClient.queueAutoCommand(
         interaction.user.id,

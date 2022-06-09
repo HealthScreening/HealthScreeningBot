@@ -1,5 +1,4 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { User } from "discord.js";
 
 import { Command } from "../client/command";
 import { HSBCommandInteraction } from "../discordjs-overrides";
@@ -50,6 +49,7 @@ export default class SetAuto extends Command {
         .setDescription("Whether the contents are hidden to everyone else.")
         .setRequired(false)
     ) as SlashCommandBuilder;
+
   async execute(interaction: HSBCommandInteraction) {
     const firstName = interaction.options.getString("first_name")!;
     const lastName = interaction.options.getString("last_name")!;
@@ -57,11 +57,12 @@ export default class SetAuto extends Command {
     if (
       !email.match(/^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/)
     ) {
-      return await interaction.reply({
+      return interaction.reply({
         content: "Invalid email! Please enter a valid email.",
         ephemeral: true,
       });
     }
+
     const isVaxxed = interaction.options.getBoolean("vaccinated")!;
     const autoUserObj = await createOrUpdate<
       AutoUser,
@@ -90,12 +91,13 @@ export default class SetAuto extends Command {
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
     if (autoUserObj.emailOnly) {
-      return await interaction.reply({
+      return interaction.reply({
         content:
           "Updated! As a reminder, you have email-only screenings on, and to disable that run `/toggle_email_only`.",
         ephemeral,
       });
     }
+
     await interaction.reply({
       content: "Updated! Check your DMs for the confirmation screening.",
       ephemeral,
@@ -104,7 +106,7 @@ export default class SetAuto extends Command {
       await interaction.user.send(
         "In order to make sure you entered the correct information, a sample screening will be generated for you. If you find any errors, use `/set_auto` again."
       );
-      const user: User = interaction.user;
+      const { user } = interaction;
       await (await user.createDM()).sendTyping();
       await interaction.client.screeningClient.queueAutoCommand(
         interaction.user.id,

@@ -12,6 +12,7 @@ export default function formatErrorLogEntry(
       redacted: true,
     };
   }
+
   return `# Error Details
 - Error ID: **${item.id}**
 - Error Type: **${item.type}**

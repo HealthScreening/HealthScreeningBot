@@ -23,26 +23,34 @@ export default async function afterTimeAutocomplete(
     if (!whereQuery.id) {
       whereQuery.id = {};
     }
+
     whereQuery.id[Op.lt] = before;
   }
+
   if (after) {
     if (!whereQuery.id) {
       whereQuery.id = {};
     }
+
     whereQuery.id[Op.gt] = after;
   }
+
   if (beforeTime) {
     if (!whereQuery.createdAt) {
       whereQuery.createdAt = {};
     }
+
     whereQuery.createdAt[Op.lt] = new Date(beforeTime * 1000);
   }
+
   if (typeStartsWith) {
     if (!whereQuery.type) {
       whereQuery.type = {};
     }
+
     whereQuery.type[Op.startsWith] = typeStartsWith;
   }
+
   await interaction.respond(
     (
       await ErrorLog.findAll({
@@ -56,7 +64,7 @@ export default async function afterTimeAutocomplete(
       const value = Math.round(dt.toSeconds()) - 1;
       return {
         name: String(value),
-        value: value,
+        value,
       };
     })
   );

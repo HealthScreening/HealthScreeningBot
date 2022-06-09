@@ -16,14 +16,13 @@ export default async function devicesAutocomplete(
   if (deviceNames.length > 25) {
     deviceNames = deviceNames.slice(0, 25);
   } else if (deviceNames.length <= 24 && deviceNames.includes(input)) {
-    deviceNames.splice(1, 0, input + " landscape");
+    deviceNames.splice(1, 0, `${input} landscape`);
   }
+
   await interaction.respond(
-    deviceNames.map((value) => {
-      return {
-        name: value,
-        value,
-      };
-    })
+    deviceNames.map((value) => ({
+      name: value,
+      value,
+    }))
   );
 }

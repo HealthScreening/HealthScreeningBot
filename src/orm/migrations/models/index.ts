@@ -15,11 +15,10 @@ const db: DB = {};
 const sequelize: Sequelize = new Sequelize(config);
 
 readdirSync(__dirname)
-  .filter((file) => {
-    return (
+  .filter(
+    (file) =>
       file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
-    );
-  })
+  )
   .forEach((file) => {
     /* eslint-disable @typescript-eslint/no-var-requires -- Disabled because
       we dynamically require, which is impossible with typescript's import system. */

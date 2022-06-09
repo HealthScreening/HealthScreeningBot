@@ -21,11 +21,12 @@ export async function sendRequestAndGenerateScreenshot(
   if (!successful) {
     throw new Error("Failed to send the request.");
   }
+
   const pageParamObj: GetScreenshotParams = {
     type: screeningTypes[options.type || "G"],
-    name: options.firstName + " " + options.lastName,
+    name: `${options.firstName} ${options.lastName}`,
     date: DateTime.now().setZone("America/New_York").toFormat("DDDD t"),
     device: options.device,
   };
-  return await generateScreenshot(pageParamObj);
+  return generateScreenshot(pageParamObj);
 }

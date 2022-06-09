@@ -9,7 +9,7 @@ export default async function createOrUpdate<M extends Model<MT, MCT>, MT, MCT>(
   if (record) {
     await record.update(newValues);
     return record;
-  } else {
-    return model.create(newValues);
   }
+
+  return model.create(newValues);
 }

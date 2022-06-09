@@ -11,10 +11,10 @@ export default async function postToGithub(
 ): Promise<number | null> {
   const { labels, projectColumn } = issueSets[issueSet];
   const postData = {
-    title: title,
-    body: body,
+    title,
+    body,
     assignees: ["PythonCoderAS"],
-    labels: labels,
+    labels,
   };
   let response: AxiosResponse;
   try {
@@ -46,9 +46,10 @@ export default async function postToGithub(
     });
     return null;
   }
-  const data = response.data;
-  const id = data.id;
-  const number = data.number;
+
+  const { data } = response;
+  const { id } = data;
+  const { number } = data;
   const postResponse2 = {
     note: null,
     content_id: id,
@@ -84,5 +85,6 @@ export default async function postToGithub(
     });
     return null;
   }
+
   return number;
 }

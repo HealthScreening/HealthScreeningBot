@@ -33,6 +33,7 @@ export default function serializeInteraction(
             value = item.value;
             break;
         }
+
         return {
           name: item.name,
           type: item.type,

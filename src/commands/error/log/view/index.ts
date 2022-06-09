@@ -31,6 +31,7 @@ export default class ErrorLogViewCommand extends Subcommand {
       before_time: beforeTimeAutocomplete,
     })
   );
+
   registerSubcommand(
     subcommand: SlashCommandSubcommandBuilder
   ): SlashCommandSubcommandBuilder {
@@ -99,6 +100,7 @@ export default class ErrorLogViewCommand extends Subcommand {
           .setRequired(false)
       );
   }
+
   async execute(interaction: CommandInteraction) {
     const isDesc = interaction.options.getBoolean("desc", false) ?? true;
     const whereQuery: { [k: string]: object } = {};
@@ -117,31 +119,40 @@ export default class ErrorLogViewCommand extends Subcommand {
       if (!whereQuery.id) {
         whereQuery.id = {};
       }
+
       whereQuery.id[Op.lt] = before;
     }
+
     if (after) {
       if (!whereQuery.id) {
         whereQuery.id = {};
       }
+
       whereQuery.id[Op.gt] = after;
     }
+
     if (beforeTime) {
       if (!whereQuery.createdAt) {
         whereQuery.createdAt = {};
       }
+
       whereQuery.createdAt[Op.lt] = new Date(beforeTime * 1000);
     }
+
     if (afterTime) {
       if (!whereQuery.createdAt) {
         whereQuery.createdAt = {};
       }
+
       whereQuery.createdAt[Op.gt] = new Date(afterTime * 1000);
     }
+
     if (typeStartsWith) {
       whereQuery.type = where(fn("lower", col("type")), {
         [Op.startsWith]: typeStartsWith.toLowerCase(),
       });
     }
+
     let items: ErrorLog[];
     if (unique) {
       items = await ErrorLog.findAll({
@@ -166,20 +177,22 @@ export default class ErrorLogViewCommand extends Subcommand {
         limit: limit || undefined,
       });
     }
+
     const embed = new MessageEmbed();
     embed.setTitle("Error Log");
-    let fieldData: string =
-      "Direction: **" + (isDesc ? "Descending" : "Ascending") + "**";
+    let fieldData = `Direction: **${isDesc ? "Descending" : "Ascending"}**`;
     if (before) {
       fieldData += `\nBefore: **#${before}**`;
     } else {
       fieldData += "\nBefore: **None**";
     }
+
     if (after) {
       fieldData += `\nAfter: **#${after}**`;
     } else {
       fieldData += "\nAfter: **None**";
     }
+
     if (beforeTime) {
       fieldData += `\nBefore Time: **${DateTime.fromMillis(
         beforeTime * 1000
@@ -187,6 +200,7 @@ export default class ErrorLogViewCommand extends Subcommand {
     } else {
       fieldData += "\nBefore Time: **None**";
     }
+
     if (afterTime) {
       fieldData += `\nAfter Time: **${DateTime.fromMillis(
         afterTime * 1000
@@ -194,16 +208,19 @@ export default class ErrorLogViewCommand extends Subcommand {
     } else {
       fieldData += "\nAfter Time: **None**";
     }
+
     if (typeStartsWith) {
       fieldData += `\nType Starts With: **\`${typeStartsWith}\`**`;
     } else {
       fieldData += "\nType Starts With: **None**";
     }
+
     if (limit) {
       fieldData += `\nLimit: **${limit}**`;
     } else {
       fieldData += "\nLimit: **None**";
     }
+
     embed.addField("Search Properties", fieldData);
     const embeds: MessageEmbed[] = [];
     if (items.length > 0) {
@@ -211,9 +228,10 @@ export default class ErrorLogViewCommand extends Subcommand {
       let baseString = "";
       let currentEmbed = new MessageEmbed(embed);
       items
-        .map((item: ErrorLog) => {
-          return `#${item.id}. ${item.errorName}: ${item.errorDescription}`;
-        })
+        .map(
+          (item: ErrorLog) =>
+            `#${item.id}. ${item.errorName}: ${item.errorDescription}`
+        )
         .forEach((item: string) => {
           if (baseString.length + item.length > 4096) {
             currentEmbed.setDescription(baseString.trimEnd());
@@ -221,7 +239,8 @@ export default class ErrorLogViewCommand extends Subcommand {
             currentEmbed = new MessageEmbed(embed);
             baseString = "";
           }
-          baseString += item + "\n";
+
+          baseString += `${item}\n`;
         });
       if (baseString) {
         currentEmbed.setDescription(baseString.trimEnd());
@@ -232,6 +251,7 @@ export default class ErrorLogViewCommand extends Subcommand {
       embed.setColor("RED");
       embeds.push(embed);
     }
+
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
     await new Paginator(embeds).send({

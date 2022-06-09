@@ -35,20 +35,20 @@ export default async function commandInteractionAutocomplete(
         }
       );
       return await interaction.respond([]);
-    } else {
-      try {
-        // We confirmed earlier if it exists
-        await command.resolved.autocompleteFields.get(autocompleteField)!(
-          interaction
-        );
-      } catch (error) {
-        await logError(
-          error,
-          "interaction::commandInteractionAutocomplete",
-          serializeInteraction(interaction)
-        );
-        return await interaction.respond([]);
-      }
+    }
+
+    try {
+      // We confirmed earlier if it exists
+      await command.resolved.autocompleteFields.get(autocompleteField)!(
+        interaction
+      );
+    } catch (error) {
+      await logError(
+        error,
+        "interaction::commandInteractionAutocomplete",
+        serializeInteraction(interaction)
+      );
+      return await interaction.respond([]);
     }
   } catch (e) {
     await logError(

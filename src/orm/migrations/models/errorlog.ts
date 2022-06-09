@@ -8,7 +8,7 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
      * The `models/index` file will call this method automatically.
      */
     static associate() {
-      // define association here
+      // Define association here
     }
   }
 

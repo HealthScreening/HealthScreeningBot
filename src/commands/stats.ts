@@ -12,6 +12,7 @@ export default class Stats extends Command {
   public readonly data = new SlashCommandBuilder()
     .setName("stats")
     .setDescription("Get bot stats.");
+
   async execute(interaction: CommandInteraction) {
     const guildSize = interaction.client.guilds.cache.size;
     let members = 0;

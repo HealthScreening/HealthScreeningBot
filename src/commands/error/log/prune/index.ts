@@ -29,6 +29,7 @@ export default class ErrorLogPruneCommand extends Subcommand {
       before_time: beforeTimeAutocomplete,
     })
   );
+
   registerSubcommand(
     subcommand: SlashCommandSubcommandBuilder
   ): SlashCommandSubcommandBuilder {
@@ -85,6 +86,7 @@ export default class ErrorLogPruneCommand extends Subcommand {
           .setRequired(false)
       );
   }
+
   async execute(interaction: CommandInteraction) {
     const whereQuery: { [k: string]: object } = {};
     const before: number | null = interaction.options.getInteger("before");
@@ -100,31 +102,40 @@ export default class ErrorLogPruneCommand extends Subcommand {
       if (!whereQuery.id) {
         whereQuery.id = {};
       }
+
       whereQuery.id[Op.lt] = before;
     }
+
     if (after) {
       if (!whereQuery.id) {
         whereQuery.id = {};
       }
+
       whereQuery.id[Op.gt] = after;
     }
+
     if (beforeTime) {
       if (!whereQuery.createdAt) {
         whereQuery.createdAt = {};
       }
+
       whereQuery.createdAt[Op.lt] = new Date(beforeTime * 1000);
     }
+
     if (afterTime) {
       if (!whereQuery.createdAt) {
         whereQuery.createdAt = {};
       }
+
       whereQuery.createdAt[Op.gt] = new Date(afterTime * 1000);
     }
+
     if (typeStartsWith) {
       whereQuery.type = where(fn("lower", col("type")), {
         [Op.startsWith]: typeStartsWith.toLowerCase(),
       });
     }
+
     const deleted = await ErrorLog.destroy({
       where: whereQuery,
       limit: limit || undefined,
@@ -139,11 +150,13 @@ export default class ErrorLogPruneCommand extends Subcommand {
     } else {
       fieldData += "\nBefore: **None**";
     }
+
     if (after) {
       fieldData += `\nAfter: **#${after}**`;
     } else {
       fieldData += "\nAfter: **None**";
     }
+
     if (beforeTime) {
       fieldData += `\nBefore Time: **${DateTime.fromMillis(
         beforeTime * 1000
@@ -151,6 +164,7 @@ export default class ErrorLogPruneCommand extends Subcommand {
     } else {
       fieldData += "\nBefore Time: **None**";
     }
+
     if (afterTime) {
       fieldData += `\nAfter Time: **${DateTime.fromMillis(
         afterTime * 1000
@@ -158,16 +172,19 @@ export default class ErrorLogPruneCommand extends Subcommand {
     } else {
       fieldData += "\nAfter Time: **None**";
     }
+
     if (typeStartsWith) {
       fieldData += `\nType Starts With: **\`${typeStartsWith}\`**`;
     } else {
       fieldData += "\nType Starts With: **None**";
     }
+
     if (limit) {
       fieldData += `\nLimit: **${limit}**`;
     } else {
       fieldData += "\nLimit: **None**";
     }
+
     embed.addField("Search Properties", fieldData.trim());
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;

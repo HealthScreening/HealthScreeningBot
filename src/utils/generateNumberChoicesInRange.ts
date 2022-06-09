@@ -7,5 +7,6 @@ export default function generateNumberChoicesInRange(
   for (let i = start; i <= end; i += step) {
     choices.push({ name: i.toString(), value: i });
   }
+
   return choices;
 }

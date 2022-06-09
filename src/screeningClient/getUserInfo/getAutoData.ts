@@ -15,21 +15,22 @@ export default async function getAutoData(
     if (options.errorOnInvalid) {
       await errorOnInvalid(options.errorOnInvalid);
     }
+
     return null;
-  } else {
-    return {
-      userId: autoUserItem.userId,
-      firstName: autoUserItem.firstName,
-      lastName: autoUserItem.lastName,
-      email: autoUserItem.email,
-      vaccinated: autoUserItem.vaccinated,
-      time: {
-        hour: autoUserItem.hour,
-        minute: autoUserItem.minute,
-      },
-      type: autoUserItem.type,
-      emailOnly: autoUserItem.emailOnly,
-      paused: autoUserItem.paused,
-    };
   }
+
+  return {
+    userId: autoUserItem.userId,
+    firstName: autoUserItem.firstName,
+    lastName: autoUserItem.lastName,
+    email: autoUserItem.email,
+    vaccinated: autoUserItem.vaccinated,
+    time: {
+      hour: autoUserItem.hour,
+      minute: autoUserItem.minute,
+    },
+    type: autoUserItem.type,
+    emailOnly: autoUserItem.emailOnly,
+    paused: autoUserItem.paused,
+  };
 }

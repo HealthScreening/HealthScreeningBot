@@ -12,5 +12,6 @@ export function objectToWrapper(input: {
           : String(input[key]);
     }
   }
+
   return obj;
 }

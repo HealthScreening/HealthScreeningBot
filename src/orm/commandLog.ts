@@ -16,8 +16,11 @@ export class CommandLog
   implements CommandLogAttributes
 {
   id!: number;
+
   userId!: string;
+
   userName!: string;
+
   commandName!: string;
 
   readonly createdAt!: Date;

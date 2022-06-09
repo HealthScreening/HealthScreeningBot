@@ -27,6 +27,7 @@ export default async function getUsersForDayOfWeek(
       whereData.onSunday = true;
       break;
   }
+
   return (
     await AutoDays.findAll({
       where: whereData,

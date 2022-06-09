@@ -28,9 +28,13 @@ import { generateProfileEmbed } from "../profile";
 
 export default class SetMenu {
   private readonly user: User;
+
   private readonly collector: CustomCollector = new CustomCollector("setMenu");
+
   private readonly autoUserModel: AutoUser | null;
+
   private readonly autoDaysModel: AutoDays | null;
+
   private devicesModel: Devices | null;
 
   public constructor(
@@ -66,12 +70,10 @@ export default class SetMenu {
     .setMinValues(1)
     .setMaxValues(1)
     .addOptions(
-      Object.entries(screeningTypes).map(([value, label]) => {
-        return {
-          label,
-          value,
-        };
-      })
+      Object.entries(screeningTypes).map(([value, label]) => ({
+        label,
+        value,
+      }))
     );
 
   /* Row #3 */
@@ -116,18 +118,22 @@ export default class SetMenu {
     .setCustomId("enableEmailOnly")
     .setLabel("Enable Email Only")
     .setStyle("SUCCESS");
+
   private readonly disableEmailOnly = new MessageButton()
     .setCustomId("disableEmailOnly")
     .setLabel("Disable Email Only")
     .setStyle("DANGER");
+
   private readonly enablePaused = new MessageButton()
     .setCustomId("enablePaused")
     .setLabel("Pause Health Screenings")
     .setStyle("DANGER");
+
   private readonly disablePaused = new MessageButton()
     .setCustomId("disablePaused")
     .setLabel("Resume Health Screenings")
     .setStyle("SUCCESS");
+
   private readonly booleanActionRow = new MessageActionRow().addComponents(
     this.enableEmailOnly,
     this.disableEmailOnly,
@@ -141,18 +147,22 @@ export default class SetMenu {
     .setCustomId("increment1Hour")
     .setLabel("+1 Hour")
     .setStyle("PRIMARY");
+
   private readonly decrement1Hour = new MessageButton()
     .setCustomId("decrement1Hour")
     .setLabel("-1 Hour")
     .setStyle("PRIMARY");
+
   private readonly increment5Minutes = new MessageButton()
     .setCustomId("increment5Minutes")
     .setLabel("+5 Minutes")
     .setStyle("PRIMARY");
+
   private readonly decrement5Minutes = new MessageButton()
     .setCustomId("decrement5Minutes")
     .setLabel("-5 Minutes")
     .setStyle("PRIMARY");
+
   private readonly timeActionRow = new MessageActionRow().addComponents(
     this.increment1Hour,
     this.decrement1Hour,
@@ -162,10 +172,11 @@ export default class SetMenu {
   );
 
   private _lastInteraction: MessageComponentInteraction | null = null;
+
   private _disableButtons = true;
 
   private async generateEmbed() {
-    return await generateProfileEmbed(
+    return generateProfileEmbed(
       this.user,
       this.autoUserModel || undefined,
       this.autoDaysModel || undefined,
@@ -197,7 +208,7 @@ export default class SetMenu {
       Devices,
       {
         userId: this.user.id,
-        device: device,
+        device,
       },
       { userId: this.user.id }
     );
@@ -220,7 +231,7 @@ export default class SetMenu {
       this.autoDaysModel!.onSaturday =
         false;
     interaction.values.forEach((day) => {
-      this.autoDaysModel!["on" + day] = true;
+      this.autoDaysModel![`on${day}`] = true;
     });
     await Promise.all([this.update(interaction), this.autoDaysModel!.save()]);
   }
@@ -241,7 +252,7 @@ export default class SetMenu {
       ephemeral: true,
     });
     try {
-      const user: User = interaction.user;
+      const { user } = interaction;
       await (await user.createDM()).sendTyping();
       await interaction.client.screeningClient.queueAutoCommand(
         interaction.user.id,
@@ -287,6 +298,7 @@ export default class SetMenu {
     if (this.autoUserModel!.hour > 23) {
       this.autoUserModel!.hour = 0;
     }
+
     await Promise.all([this.update(interaction), this.autoUserModel!.save()]);
   }
 
@@ -295,6 +307,7 @@ export default class SetMenu {
     if (this.autoUserModel!.hour < 0) {
       this.autoUserModel!.hour = 23;
     }
+
     await Promise.all([this.update(interaction), this.autoUserModel!.save()]);
   }
 
@@ -410,7 +423,8 @@ export default class SetMenu {
     if (options.ephemeral) {
       this._disableButtons = false;
     }
-    return await this.collector.send(
+
+    return this.collector.send(
       {
         embeds: [await this.generateEmbed()],
         ...options,

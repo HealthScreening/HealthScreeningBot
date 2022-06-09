@@ -12,6 +12,7 @@ export default class CommandLogCommand extends SubcommandGroup {
       prune: new CommandLogPruneCommand(),
     })
   );
+
   registerSubcommandGroup(subcommandGroup: SlashCommandSubcommandGroupBuilder) {
     return subcommandGroup
       .setName("log")

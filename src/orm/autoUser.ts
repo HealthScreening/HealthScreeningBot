@@ -29,15 +29,25 @@ export class AutoUser
   implements AutoUserAttributes
 {
   userId!: string;
+
   firstName!: string;
+
   lastName!: string;
+
   email!: string;
+
   vaccinated!: boolean;
+
   hour!: number;
+
   minute!: number;
+
   createdAt!: Date;
+
   type!: screeningTypeType;
+
   emailOnly!: boolean;
+
   paused!: boolean;
 }
 

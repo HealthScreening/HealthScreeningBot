@@ -12,8 +12,11 @@ import { BaseCommand, PreCommandChecks } from "./command";
 
 export class CommandData {
   public readonly resolved: BaseCommand;
+
   public readonly parts: PreCommandChecks[];
+
   public readonly names: string[];
+
   public constructor(
     resolved: BaseCommand,
     parts: PreCommandChecks[],
@@ -23,6 +26,7 @@ export class CommandData {
     this.parts = parts;
     this.names = names;
   }
+
   public get fullName(): string {
     return this.names.join(" ");
   }
@@ -55,6 +59,7 @@ export async function getTrueCommand(
         interaction.commandName
       );
     }
+
     return null;
   }
 
@@ -74,34 +79,38 @@ export async function getTrueCommand(
           interaction.commandName
         );
       }
+
       return null;
-    } else {
-      // If subcommand group exists, subcommand exists
-      const foundSubcommand = foundSubcommandGroup.subcommands.get(subcommand!);
-      if (!foundSubcommand) {
-        await logError(
-          new Error(
-            `Subcommand ${subcommand} not found for command ${baseCommand} in subcommand group ${subcommandGroup}`
-          ),
-          "interaction::resolveCommand::subCommandNotFound",
-          serializeInteraction(interaction)
-        );
-        if (interaction instanceof CommandInteraction) {
-          await handleCommandError(
-            { itemType: ItemType.interaction, item: interaction },
-            interaction.commandName
-          );
-        }
-        return null;
-      } else {
-        return new CommandData(
-          foundSubcommand,
-          [command, foundSubcommandGroup, foundSubcommand],
-          [baseCommand, subcommandGroup, subcommand!]
+    }
+
+    // If subcommand group exists, subcommand exists
+    const foundSubcommand = foundSubcommandGroup.subcommands.get(subcommand!);
+    if (!foundSubcommand) {
+      await logError(
+        new Error(
+          `Subcommand ${subcommand} not found for command ${baseCommand} in subcommand group ${subcommandGroup}`
+        ),
+        "interaction::resolveCommand::subCommandNotFound",
+        serializeInteraction(interaction)
+      );
+      if (interaction instanceof CommandInteraction) {
+        await handleCommandError(
+          { itemType: ItemType.interaction, item: interaction },
+          interaction.commandName
         );
       }
+
+      return null;
     }
-  } else if (subcommand) {
+
+    return new CommandData(
+      foundSubcommand,
+      [command, foundSubcommandGroup, foundSubcommand],
+      [baseCommand, subcommandGroup, subcommand!]
+    );
+  }
+
+  if (subcommand) {
     const foundSubcommand = command.subcommands.get(subcommand);
     if (!foundSubcommand) {
       await logError(
@@ -117,15 +126,16 @@ export async function getTrueCommand(
           interaction.commandName
         );
       }
+
       return null;
-    } else {
-      return new CommandData(
-        foundSubcommand,
-        [command, foundSubcommand],
-        [baseCommand, subcommand]
-      );
     }
-  } else {
-    return new CommandData(command, [command], [baseCommand]);
+
+    return new CommandData(
+      foundSubcommand,
+      [command, foundSubcommand],
+      [baseCommand, subcommand]
+    );
   }
+
+  return new CommandData(command, [command], [baseCommand]);
 }

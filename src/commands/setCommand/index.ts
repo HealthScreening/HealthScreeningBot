@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { AutocompleteInteraction, Collection, User } from "discord.js";
+import { AutocompleteInteraction, Collection } from "discord.js";
 import { devices } from "puppeteer";
 
 import screeningTypes, {
@@ -26,6 +26,7 @@ export default class SetCommand extends Command {
       device: devicesAutocomplete,
     })
   );
+
   public readonly data = new SlashCommandBuilder()
     .setName("set")
     .setDescription("Set optional health screening data")
@@ -65,9 +66,10 @@ export default class SetCommand extends Command {
         )
         .setRequired(false)
         .addChoices(
-          ...Object.entries(screeningTypes).map(([key, value]) => {
-            return { value, name: key };
-          })
+          ...Object.entries(screeningTypes).map(([key, value]) => ({
+            value,
+            name: key,
+          }))
         )
     )
     .addBooleanOption((option) =>
@@ -132,6 +134,7 @@ export default class SetCommand extends Command {
         .setDescription("Whether the contents are hidden to everyone else.")
         .setRequired(false)
     ) as SlashCommandBuilder;
+
   async execute(interaction: HSBCommandInteraction) {
     const validDevices = Object.keys(devices);
     const deviceName = interaction.options.getString("device");
@@ -155,13 +158,14 @@ export default class SetCommand extends Command {
         (device) => device.toLowerCase() == deviceName.toLowerCase()
       );
       if (!foundDeviceName) {
-        return await interaction.reply({
+        return interaction.reply({
           content:
             "Invalid device name! Please enter a valid device name. Use the autocomplete options to find a valid device name.",
           ephemeral: true,
         });
       }
     }
+
     const userOptions = await AutoUser.findOne({
       where: {
         userId: interaction.user.id,
@@ -196,6 +200,7 @@ export default class SetCommand extends Command {
       } else {
         menu.loadAll();
       }
+
       await menu.send({
         itemType: ItemType.interaction,
         item: interaction,
@@ -203,6 +208,7 @@ export default class SetCommand extends Command {
       });
       return;
     }
+
     if (
       (!userOptions && (hour || minute || type || emailOnly || paused)) ||
       (!dayOptions &&
@@ -214,26 +220,29 @@ export default class SetCommand extends Command {
           friday ||
           saturday))
     ) {
-      return await interaction.reply({
+      return interaction.reply({
         content:
           "You must first auto information using the `/set_auto` command.",
         ephemeral: true,
       });
     }
+
     if (hour && (hour < 0 || hour > 23)) {
-      return await interaction.reply({
+      return interaction.reply({
         content:
           "Invalid hour! Please enter a valid hour in the range [0, 23].",
         ephemeral: true,
       });
     }
+
     if (minute && (minute < 0 || minute > 59)) {
-      return await interaction.reply({
+      return interaction.reply({
         content:
           "Invalid minute! Please enter a valid minute in the range [0, 59].",
         ephemeral: true,
       });
     }
+
     if (foundDeviceName) {
       await createOrUpdate<Devices, DevicesAttributes, DevicesAttributes>(
         Devices,
@@ -244,48 +253,63 @@ export default class SetCommand extends Command {
         { userId: interaction.user.id }
       );
     }
+
     if (userOptions) {
       if (hour !== null) {
         userOptions.hour = hour;
       }
+
       if (minute !== null) {
         userOptions.minute = minute;
       }
+
       if (type !== null) {
         userOptions.type = type as screeningTypeType;
       }
+
       if (emailOnly !== null) {
         userOptions.emailOnly = emailOnly;
       }
+
       if (paused !== null) {
         userOptions.paused = paused;
       }
+
       await userOptions.save();
     }
+
     if (dayOptions) {
       if (sunday !== null) {
         dayOptions.onSunday = sunday;
       }
+
       if (monday !== null) {
         dayOptions.onMonday = monday;
       }
+
       if (tuesday !== null) {
         dayOptions.onTuesday = tuesday;
       }
+
       if (wednesday !== null) {
         dayOptions.onWednesday = wednesday;
       }
+
       if (thursday !== null) {
         dayOptions.onThursday = thursday;
       }
+
       if (friday !== null) {
         dayOptions.onFriday = friday;
       }
+
       if (saturday !== null) {
         dayOptions.onSaturday = saturday;
       }
+
       await dayOptions.save();
     }
+
     await interaction.reply({
       content: "Successfully set new information!",
       ephemeral,
@@ -297,7 +321,7 @@ export default class SetCommand extends Command {
         ephemeral,
       });
       try {
-        const user: User = interaction.user;
+        const { user } = interaction;
         await (await user.createDM()).sendTyping();
         await interaction.client.screeningClient.queueAutoCommand(
           interaction.user.id,

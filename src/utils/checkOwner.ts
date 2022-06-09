@@ -15,6 +15,7 @@ export default async function checkOwner(
       isOwner = params.item.id === "199605025914224641";
       break;
   }
+
   if (!isOwner) {
     await sendMessage({
       content:
@@ -23,5 +24,6 @@ export default async function checkOwner(
       ...params,
     });
   }
+
   return isOwner;
 }

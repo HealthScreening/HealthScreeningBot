@@ -14,12 +14,14 @@ export default class CommandCommand extends Command {
       log: new CommandLogCommand(),
     })
   );
+
   public subcommands: Collection<string, Subcommand> = new Collection(
     Object.entries({
       view: new CommandViewCommand(),
       delete: new CommandDeleteCommand(),
     })
   );
+
   public readonly data = new SlashCommandBuilder()
     .setName("command")
     .setDescription("Interact with the bot's command log.")
@@ -40,7 +42,7 @@ export default class CommandCommand extends Command {
     ) as SlashCommandBuilder;
 
   async beforeExecute(interaction): Promise<boolean> {
-    return await checkOwner({
+    return checkOwner({
       itemType: ItemType.interaction,
       item: interaction,
     });

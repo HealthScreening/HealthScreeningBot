@@ -33,6 +33,7 @@ export default function serializeMessageComponentInteraction(
       };
       break;
   }
+
   return {
     channel: interaction.channelId,
     component: {

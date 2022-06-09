@@ -7,13 +7,13 @@ async function deleteMessage(interaction: HSBMessageComponentInteraction) {
     interaction.channelId
   )) as TextChannel;
   const message = await channel.messages.fetch(interaction.message.id);
-  return await message.delete();
+  return message.delete();
 }
 
 export default async function deleteButton(
   interaction: HSBMessageComponentInteraction
 ) {
-  const message = interaction.message;
+  const { message } = interaction;
   const callerUserId = message.interaction?.user.id;
   if (callerUserId) {
     if (interaction.user.id !== callerUserId) {
@@ -21,7 +21,6 @@ export default async function deleteButton(
         content: "This is not your interaction!",
         ephemeral: true,
       });
-      return;
     } else {
       await deleteMessage(interaction);
     }

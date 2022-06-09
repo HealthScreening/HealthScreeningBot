@@ -100,6 +100,7 @@ export function serializeMessageOptions(options: MessageOptions): object {
       itemOptions = ["message", options.item.id];
       break;
   }
+
   return {
     item: {
       type: itemOptions[0],
@@ -174,15 +175,15 @@ export function sendMessage(
           files: trueOptions.files,
           components: trueOptions.components,
         });
-      } else {
-        return trueOptions.item.reply({
-          content: trueOptions.content,
-          embeds: trueOptions.embeds,
-          ephemeral: trueOptions.ephemeral,
-          files: trueOptions.files,
-          components: trueOptions.components,
-          fetchReply: true,
-        });
       }
+
+      return trueOptions.item.reply({
+        content: trueOptions.content,
+        embeds: trueOptions.embeds,
+        ephemeral: trueOptions.ephemeral,
+        files: trueOptions.files,
+        components: trueOptions.components,
+        fetchReply: true,
+      });
   }
 }

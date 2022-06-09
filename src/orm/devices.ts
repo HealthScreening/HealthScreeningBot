@@ -12,6 +12,7 @@ export class Devices
   implements DevicesAttributes
 {
   userId!: string;
+
   device!: string;
 }
 

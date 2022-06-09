@@ -12,12 +12,14 @@ export default class StopBot extends Command {
   public readonly data = new SlashCommandBuilder()
     .setName("stop")
     .setDescription("Stop the bot safely.");
+
   async execute(interaction: CommandInteraction) {
     if (
       !(await checkOwner({ itemType: ItemType.interaction, item: interaction }))
     ) {
       return;
     }
+
     await interaction.reply("Stopping...");
     await closeBrowser();
     await interaction.client.destroy();

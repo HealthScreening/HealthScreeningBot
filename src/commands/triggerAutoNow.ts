@@ -34,12 +34,14 @@ export default class TriggerAutoNow extends Command {
         .setDescription("Skip the email-only check.")
         .setRequired(false)
     ) as SlashCommandBuilder;
+
   async execute(interaction: HSBCommandInteraction) {
     if (
       !(await checkOwner({ itemType: ItemType.interaction, item: interaction }))
     ) {
       return;
     }
+
     const skipPaused =
       interaction.options.getBoolean("skip_paused", false) ?? false;
     const skipDay = interaction.options.getBoolean("skip_day", false) ?? false;
@@ -62,11 +64,13 @@ export default class TriggerAutoNow extends Command {
           [Op.in]: Array.from(validDayOfWeekUsers),
         };
       }
+
       if (!skipPaused) {
         whereData.paused = {
           [Op.eq]: false,
         };
       }
+
       for (const autoItem of await AutoUser.findAll({
         where: whereData,
         order: [["createdAt", "ASC"]],
