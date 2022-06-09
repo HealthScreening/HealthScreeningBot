@@ -65,8 +65,9 @@ export default class SetCommand extends Command {
         )
         .setRequired(false)
         .addChoices(
-          ...(Object.entries(screeningTypes).map(
-            ([key, value]) => {return {value, name: key}}))
+          ...Object.entries(screeningTypes).map(([key, value]) => {
+            return { value, name: key };
+          })
         )
     )
     .addBooleanOption((option) =>

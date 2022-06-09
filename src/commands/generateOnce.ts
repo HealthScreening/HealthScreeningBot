@@ -43,8 +43,9 @@ export default class GenerateOnce extends Command {
         .setDescription("The type of screening to generate.")
         .setRequired(false)
         .addChoices(
-        ...(Object.entries(screeningTypes).map(
-            ([key, value]) => {return {value, name: key}}))
+          ...Object.entries(screeningTypes).map(([key, value]) => {
+            return { value, name: key };
+          })
         )
     )
     .addBooleanOption((option) =>
