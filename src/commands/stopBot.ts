@@ -13,7 +13,7 @@ export default class StopBot extends Command {
     .setName("stop")
     .setDescription("Stop the bot safely.");
 
-  async execute(interaction: CommandInteraction) {
+  async execute(interaction: CommandInteraction): Promise<void> {
     if (
       !(await checkOwner({ itemType: ItemType.interaction, item: interaction }))
     ) {

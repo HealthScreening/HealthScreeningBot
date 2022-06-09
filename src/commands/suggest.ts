@@ -29,7 +29,7 @@ export default class Suggest extends Command {
         .setRequired(false)
     ) as SlashCommandBuilder;
 
-  async execute(interaction: HSBCommandInteraction) {
+  async execute(interaction: HSBCommandInteraction): Promise<void> {
     const message = interaction.options.getString("message", true);
     const isServer = interaction.options.getBoolean("server", false) ?? false;
     const ephemeral =

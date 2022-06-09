@@ -48,7 +48,7 @@ export default class Guide extends Command {
         .setRequired(false)
     ) as SlashCommandBuilder;
 
-  async execute(interaction: HSBCommandInteraction) {
+  async execute(interaction: HSBCommandInteraction): Promise<void> {
     const name = interaction.options.getString("name", true);
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? false;

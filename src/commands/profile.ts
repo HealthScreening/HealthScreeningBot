@@ -76,7 +76,7 @@ export default class Profile extends Command {
         .setRequired(false)
     ) as SlashCommandBuilder;
 
-  async execute(interaction: CommandInteraction) {
+  async execute(interaction: CommandInteraction): Promise<void> {
     const embed = await generateProfileEmbed(interaction.user);
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;

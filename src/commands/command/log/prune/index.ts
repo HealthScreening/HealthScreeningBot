@@ -102,7 +102,7 @@ export default class CommandLogPruneCommand extends Subcommand {
       );
   }
 
-  async execute(interaction: CommandInteraction) {
+  async execute(interaction: CommandInteraction): Promise<void> {
     const whereQuery: { [k: string]: object } = {};
     const before: number | null = interaction.options.getInteger("before");
     const after: number | null = interaction.options.getInteger("after");

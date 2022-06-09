@@ -35,7 +35,7 @@ export default class ErrorPostCommand extends Subcommand {
       );
   }
 
-  async execute(interaction: HSBCommandInteraction) {
+  async execute(interaction: HSBCommandInteraction): Promise<void> {
     const id: number = interaction.options.getInteger("id", true);
     const redact: boolean =
       interaction.options.getBoolean("redact", false) ?? false;

@@ -1,6 +1,11 @@
 {
-  "extends": ["pythoncoderas-typescript", "pythoncoderas"],
+  "extends": ["pythoncoderas-combo"],
   "rules": {
-    "import/no-cycle": "off"
+    "import/no-cycle": "off",
+    "camelcase": "off",
+    "no-restricted-syntax": "off",
+    "class-methods-use-this": "off",
+    "no-await-in-loop": "off",
+    "complexity": "off"
   }
 }

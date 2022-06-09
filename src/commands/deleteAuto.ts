@@ -10,7 +10,7 @@ export default class DeleteAuto extends Command {
     .setName("delete_auto")
     .setDescription("Delete any stored auto information.");
 
-  async execute(interaction: CommandInteraction) {
+  async execute(interaction: CommandInteraction): Promise<void> {
     const item = await AutoUser.findOne({
       where: { userId: interaction.user.id },
     });

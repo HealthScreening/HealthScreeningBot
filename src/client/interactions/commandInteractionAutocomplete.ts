@@ -17,7 +17,8 @@ export default async function commandInteractionAutocomplete(
     const toRun = command.parts.filter((item) => item.beforeAutocomplete);
     for (const checkToRun of toRun) {
       if (!(await checkToRun.beforeAutocomplete!(interaction))) {
-        return await interaction.respond([]);
+        await interaction.respond([]);
+        return;
       }
     }
 
@@ -34,7 +35,8 @@ export default async function commandInteractionAutocomplete(
           ),
         }
       );
-      return await interaction.respond([]);
+      await interaction.respond([]);
+      return;
     }
 
     try {
@@ -48,7 +50,8 @@ export default async function commandInteractionAutocomplete(
         "interaction::commandInteractionAutocomplete",
         serializeInteraction(interaction)
       );
-      return await interaction.respond([]);
+      await interaction.respond([]);
+      return;
     }
   } catch (e) {
     await logError(

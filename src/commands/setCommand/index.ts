@@ -135,7 +135,7 @@ export default class SetCommand extends Command {
         .setRequired(false)
     ) as SlashCommandBuilder;
 
-  async execute(interaction: HSBCommandInteraction) {
+  async execute(interaction: HSBCommandInteraction): Promise<void> {
     const validDevices = Object.keys(devices);
     const deviceName = interaction.options.getString("device");
     const hour = interaction.options.getInteger("hour");
@@ -155,7 +155,7 @@ export default class SetCommand extends Command {
     let foundDeviceName: string | undefined;
     if (deviceName) {
       foundDeviceName = validDevices.find(
-        (device) => device.toLowerCase() == deviceName.toLowerCase()
+        (device) => device.toLowerCase() === deviceName.toLowerCase()
       );
       if (!foundDeviceName) {
         return interaction.reply({

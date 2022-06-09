@@ -13,7 +13,7 @@ export default class Stats extends Command {
     .setName("stats")
     .setDescription("Get bot stats.");
 
-  async execute(interaction: CommandInteraction) {
+  async execute(interaction: CommandInteraction): Promise<void> {
     const guildSize = interaction.client.guilds.cache.size;
     let members = 0;
     interaction.client.guilds.cache.forEach((value) => {

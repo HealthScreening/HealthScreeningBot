@@ -42,7 +42,7 @@ export default class ErrorViewCommand extends Subcommand {
       );
   }
 
-  async execute(interaction: CommandInteraction) {
+  async execute(interaction: CommandInteraction): Promise<void> {
     const id: number = interaction.options.getInteger("id", true);
     const attach = interaction.options.getBoolean("attach", false) ?? false;
     const ephemeral =

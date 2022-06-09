@@ -161,7 +161,7 @@ export default class HealthScreeningBotClient extends Client {
     }
   }
 
-  private async oninteractionCreate(interaction: Interaction) {
+  private async oninteractionCreate(interaction: Interaction): Promise<void> {
     try {
       switch (interaction.type) {
         case "APPLICATION_COMMAND":
@@ -174,6 +174,8 @@ export default class HealthScreeningBotClient extends Client {
           return await messageComponentInteraction(
             interaction as HSBMessageComponentInteraction
           );
+        default:
+          throw new Error(`Unknown interaction type: ${interaction.type}`);
       }
     } catch (e) {
       await logError(e, "interaction");

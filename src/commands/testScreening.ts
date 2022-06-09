@@ -38,7 +38,7 @@ export default class TestScreening extends Command {
         .setRequired(false)
     ) as SlashCommandBuilder;
 
-  async execute(interaction: CommandInteraction) {
+  async execute(interaction: CommandInteraction): Promise<void> {
     const autoData = await getAutoData({ userId: interaction.user.id });
     if (!autoData) {
       await interaction.reply({

@@ -26,7 +26,7 @@ export default class CommandDeleteCommand extends Subcommand {
       );
   }
 
-  async execute(interaction: CommandInteraction) {
+  async execute(interaction: CommandInteraction): Promise<void> {
     const id: number = interaction.options.getInteger("id", true);
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;

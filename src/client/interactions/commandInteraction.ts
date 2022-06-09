@@ -40,10 +40,11 @@ export default async function commandInteraction(
         "interaction::commandInteractionAutocomplete::commandDoesNotSupportExecution",
         serializeInteraction(interaction)
       );
-      return await handleCommandError(
+      await handleCommandError(
         { itemType: ItemType.interaction, item: interaction },
         interaction.commandName
       );
+      return;
     }
 
     try {

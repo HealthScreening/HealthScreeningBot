@@ -50,7 +50,7 @@ export default class SetAuto extends Command {
         .setRequired(false)
     ) as SlashCommandBuilder;
 
-  async execute(interaction: HSBCommandInteraction) {
+  async execute(interaction: HSBCommandInteraction): Promise<void> {
     const firstName = interaction.options.getString("first_name")!;
     const lastName = interaction.options.getString("last_name")!;
     const email = interaction.options.getString("email")!;
