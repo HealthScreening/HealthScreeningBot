@@ -1,5 +1,4 @@
-import { Embed } from "@discordjs/builders";
-import { APIMessage } from "discord-api-types";
+import { APIMessage } from "discord-api-types/v9";
 import {
   CommandInteraction,
   HTTPAttachmentData,
@@ -36,7 +35,7 @@ interface BaseMessageOptions {
   /**
    * The embeds to send.
    */
-  embeds?: (Embed | MessageEmbed)[];
+  embeds?: MessageEmbed[];
   files?: HTTPAttachmentData[];
   replyMessage?: Message;
   /**

@@ -45,7 +45,7 @@ export default class SetCommand extends Command {
         .setRequired(false)
         .setMinValue(0)
         .setMaxValue(23)
-        .addChoices(generateNumberChoicesInRange(0, 23))
+        .addChoices(...generateNumberChoicesInRange(0, 23))
     )
     .addIntegerOption((option) =>
       option
@@ -65,7 +65,9 @@ export default class SetCommand extends Command {
         )
         .setRequired(false)
         .addChoices(
-          Object.entries(screeningTypes).map(([key, value]) => [value, key])
+          ...Object.entries(screeningTypes).map(([key, value]) => {
+            return { value, name: key };
+          })
         )
     )
     .addBooleanOption((option) =>
