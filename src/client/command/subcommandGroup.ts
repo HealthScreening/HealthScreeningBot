@@ -5,7 +5,7 @@ import {
   CommandInteraction,
 } from "discord.js";
 
-import { Subcommand } from "../command";
+import { Subcommand } from ".";
 import { PreCommandChecks } from "./preCommandChecks";
 import { SubcommandContainer } from "./subcommandContainer";
 

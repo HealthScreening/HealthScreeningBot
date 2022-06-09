@@ -1,5 +1,8 @@
-import { AutocompleteInteraction, Collection } from "discord.js";
-import { CommandInteraction } from "discord.js";
+import {
+  AutocompleteInteraction,
+  Collection,
+  CommandInteraction,
+} from "discord.js";
 
 import { PreCommandChecks } from "./preCommandChecks";
 
