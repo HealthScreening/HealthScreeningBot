@@ -10,6 +10,7 @@ export default async function nameAutocomplete(
   if (!input.startsWith("_")) {
     options = options.filter((name) => !name.startsWith("_"));
   }
+
   await interaction.respond(
     options.slice(0, 25).map((name) => ({
       name,

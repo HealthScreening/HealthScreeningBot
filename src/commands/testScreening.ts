@@ -37,7 +37,8 @@ export default class TestScreening extends Command {
         .setDescription("Whether the contents are hidden to everyone else.")
         .setRequired(false)
     ) as SlashCommandBuilder;
-  async execute(interaction: CommandInteraction) {
+
+  async execute(interaction: CommandInteraction): Promise<void> {
     const autoData = await getAutoData({ userId: interaction.user.id });
     if (!autoData) {
       await interaction.reply({
@@ -47,6 +48,7 @@ export default class TestScreening extends Command {
       });
       return;
     }
+
     const autoDayData = await getAutoDayData({ userId: interaction.user.id });
     const currentTime = DateTime.local().setZone("America/New_York");
     const year = interaction.options.getInteger("year") || currentTime.year;
@@ -64,14 +66,14 @@ export default class TestScreening extends Command {
     // Step 1, check the holidays
     const holiday = dayIsHoliday({ year, month, day });
     // Step 2, check if paused
-    const paused = autoData.paused;
+    const { paused } = autoData;
     // Step 3, check the day
-    const weekday = DateTime.fromObject(
+    const { weekday } = DateTime.fromObject(
       { year, month, day },
       {
         zone: "America/New_York",
       }
-    ).weekday;
+    );
     let willRunForWeekday = false;
     let weekdayName = "Sunday";
     switch (weekday) {
@@ -102,16 +104,20 @@ export default class TestScreening extends Command {
       case 7:
         willRunForWeekday = autoDayData.onSunday;
         break;
+      default:
+        throw new Error(`Invalid weekday: ${weekday}`);
     }
+
     const willRun = !paused && !holiday && willRunForWeekday;
-    let action =
-      (willRun ? "Will" : "Will not") +
-      ` run auto screening for ${month}/${day}/${year}`;
+    let action = `${
+      willRun ? "Will" : "Will not"
+    } run auto screening for ${month}/${day}/${year}`;
     if (willRun) {
       embed.setColor("GREEN");
     } else {
       embed.setColor("RED");
     }
+
     embed.addField("Holiday", holiday ? "Yes" : "No", true);
     embed.addField("Paused", paused ? "Yes" : "No", true);
     embed.addField(
@@ -128,6 +134,7 @@ export default class TestScreening extends Command {
     } else {
       action += ".";
     }
+
     embed.setDescription(action);
     const embed2 = new MessageEmbed()
       .setTitle("Screenshot Logic")
@@ -137,20 +144,22 @@ export default class TestScreening extends Command {
       })
       .setTimestamp(DateTime.local().toUTC().toMillis());
     // Step 1, check if email only mode is on.
-    const emailOnly = autoData.emailOnly;
+    const { emailOnly } = autoData;
     const willEmail = !emailOnly;
-    let action2 = (willEmail ? "Will" : "Will not") + ` DM a screenshot`;
+    let action2 = `${willEmail ? "Will" : "Will not"} DM a screenshot`;
     if (willEmail) {
       embed2.setColor("GREEN");
     } else {
       embed2.setColor("RED");
     }
+
     embed2.addField("Email Only", emailOnly ? "Yes" : "No", true);
     if (emailOnly) {
       action2 += " because you have **email only** mode on.";
     } else {
       action2 += ".";
     }
+
     embed2.setDescription(action2);
     const embeds = [embed, embed2];
     await new Paginator(embeds).send({

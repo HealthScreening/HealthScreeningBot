@@ -26,32 +26,42 @@ export default async function afterTimeAutocomplete(
     if (!whereQuery.id) {
       whereQuery.id = {};
     }
+
     whereQuery.id[Op.lt] = before;
   }
+
   if (after) {
     if (!whereQuery.id) {
       whereQuery.id = {};
     }
+
     whereQuery.id[Op.gt] = after;
   }
+
   if (beforeTime) {
     if (!whereQuery.createdAt) {
       whereQuery.createdAt = {};
     }
+
     whereQuery.createdAt[Op.lt] = new Date(beforeTime * 1000);
   }
+
   if (commandNameStartsWith) {
     if (!whereQuery.commandName) {
       whereQuery.commandName = {};
     }
+
     whereQuery.commandName[Op.startsWith] = commandNameStartsWith;
   }
+
   if (userId) {
     if (!whereQuery.userId) {
       whereQuery.userId = {};
     }
+
     whereQuery.userId[Op.eq] = userId.id;
   }
+
   await interaction.respond(
     (
       await CommandLog.findAll({
@@ -65,7 +75,7 @@ export default async function afterTimeAutocomplete(
       const value = Math.round(dt.toSeconds()) - 1;
       return {
         name: String(value),
-        value: value,
+        value,
       };
     })
   );

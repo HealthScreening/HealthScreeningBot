@@ -26,7 +26,8 @@ export default class CommandViewCommand extends Subcommand {
           .setRequired(false)
       );
   }
-  async execute(interaction: CommandInteraction) {
+
+  async execute(interaction: CommandInteraction): Promise<void> {
     const id: number = interaction.options.getInteger("id", true);
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
@@ -38,13 +39,15 @@ export default class CommandViewCommand extends Subcommand {
       },
     });
     if (!item) {
-      return await interaction.reply({
+      await interaction.reply({
         content: "No command log entry with that ID found.",
         ephemeral,
       });
+      return;
     }
+
     const embed = new MessageEmbed();
-    embed.setTitle("Command Log Entry #" + item.id);
+    embed.setTitle(`Command Log Entry #${item.id}`);
     embed.addFields([
       {
         name: "Command Name",
@@ -64,7 +67,7 @@ export default class CommandViewCommand extends Subcommand {
       ),
       false
     );
-    return await interaction.reply({
+    await interaction.reply({
       embeds: [embed],
       ephemeral,
     });

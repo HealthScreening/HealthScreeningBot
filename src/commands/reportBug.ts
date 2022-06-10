@@ -22,7 +22,8 @@ export default class ReportBug extends Command {
         .setDescription("Whether the contents are hidden to everyone else.")
         .setRequired(false)
     ) as SlashCommandBuilder;
-  async execute(interaction: HSBCommandInteraction) {
+
+  async execute(interaction: HSBCommandInteraction): Promise<void> {
     const message = interaction.options.getString("message", true);
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
@@ -43,7 +44,6 @@ export default class ReportBug extends Command {
           "There was an error while trying to report the bug. Please try again later.",
         ephemeral,
       });
-      return;
     } else {
       await sendMessage({
         itemType: ItemType.interaction,

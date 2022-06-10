@@ -29,12 +29,19 @@ export class AutoDays
   implements AutoDaysAttributes
 {
   userId!: string;
+
   onSunday!: boolean;
+
   onMonday!: boolean;
+
   onTuesday!: boolean;
+
   onWednesday!: boolean;
+
   onThursday!: boolean;
+
   onFriday!: boolean;
+
   onSaturday!: boolean;
 }
 

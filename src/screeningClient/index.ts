@@ -12,7 +12,7 @@ import processScreening from "./processScreening";
  *
  * This class houses the queue and cooldowns so that it is not necessary to pass them as arguments.
  */
-export class ScreeningClient {
+export default class ScreeningClient {
   private readonly queue: ConcurrentPriorityWorkerQueue<ProcessParams, void> =
     new ConcurrentPriorityWorkerQueue({
       worker: processScreening,
@@ -22,10 +22,9 @@ export class ScreeningClient {
   private async dealWithQueue(params: ProcessParams) {
     if (this.queue.willQueue()) {
       const messageOptions: MessageOptions = {
-        content:
-          "Your request has been queued! You will be notified when the screening is ready. You are currently at position " +
-          this.queue.determineNextPosition(1) +
-          " in the queue.",
+        content: `Your request has been queued! You will be notified when the screening is ready. You are currently at position ${this.queue.determineNextPosition(
+          1
+        )} in the queue.`,
         ...params.multiMessageParams,
       };
       sendMessage(messageOptions);
@@ -34,6 +33,7 @@ export class ScreeningClient {
         ephemeral: params.multiMessageParams.ephemeral,
       });
     }
+
     const trueParams: ProcessParams = {
       ...params,
     };
@@ -45,13 +45,14 @@ export class ScreeningClient {
     multiMessageParams: MessageOptions
   ): Promise<void> {
     const autoInfo = await getAutoData({
-      userId: userId,
+      userId,
       errorOnInvalid: multiMessageParams,
     });
-    const deviceInfo = await getDeviceData({ userId: userId });
+    const deviceInfo = await getDeviceData({ userId });
     if (autoInfo === null) {
       return;
     }
+
     const processParams: ProcessParams = {
       generateScreenshotParams: {
         firstName: autoInfo.firstName,
@@ -73,7 +74,7 @@ export class ScreeningClient {
     userId: string,
     params: ProcessParams
   ): Promise<void> {
-    const deviceInfo = await getDeviceData({ userId: userId });
+    const deviceInfo = await getDeviceData({ userId });
     const processParams: ProcessParams = {
       generateScreenshotParams: {
         ...params.generateScreenshotParams,
@@ -98,10 +99,9 @@ export class ScreeningClient {
     let content =
       "Here is the screenshot that has been auto-generated for you:";
     if (auto.manual) {
-      content =
-        "**The auto health screening has been *manually triggered* by the bot owner, most likely for testing.**\n----\n" +
-        content;
+      content = `**The auto health screening has been *manually triggered* by the bot owner, most likely for testing.**\n----\n${content}`;
     }
+
     const processParams: ProcessParams = {
       generateScreenshotParams: {
         firstName: autoInfo.firstName,
@@ -114,7 +114,7 @@ export class ScreeningClient {
       multiMessageParams: {
         itemType: ItemType.user,
         item: user,
-        content: content,
+        content,
       },
       auto,
       emailOnly: autoInfo.emailOnly,

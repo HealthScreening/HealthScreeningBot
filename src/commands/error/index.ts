@@ -15,6 +15,7 @@ export default class ErrorCommand extends Command {
       log: new ErrorLogCommand(),
     })
   );
+
   public subcommands: Collection<string, Subcommand> = new Collection(
     Object.entries({
       post: new ErrorPostCommand(),
@@ -22,6 +23,7 @@ export default class ErrorCommand extends Command {
       delete: new ErrorDeleteCommand(),
     })
   );
+
   public readonly data = new SlashCommandBuilder()
     .setName("error")
     .setDescription("Interact with the bot's error log.")
@@ -47,7 +49,7 @@ export default class ErrorCommand extends Command {
     ) as SlashCommandBuilder;
 
   async beforeExecute(interaction): Promise<boolean> {
-    return await checkOwner({
+    return checkOwner({
       itemType: ItemType.interaction,
       item: interaction,
     });

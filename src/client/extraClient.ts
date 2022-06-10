@@ -34,7 +34,7 @@ import {
   HSBCommandInteraction,
   HSBMessageComponentInteraction,
 } from "../discordjs-overrides";
-import { ScreeningClient } from "../screeningClient";
+import ScreeningClient from "../screeningClient";
 import logError from "../utils/logError";
 import runFunctionAndLogError from "../utils/logError/runAndLog";
 import { ItemType } from "../utils/multiMessage";
@@ -74,16 +74,19 @@ export default class HealthScreeningBotClient extends Client {
       trigger_auto: new TriggerAutoNow(),
     })
   );
+
   public readonly screeningClient: ScreeningClient = new ScreeningClient();
+
   public readonly githubQueue: ConcurrentPriorityWorkerQueue<
     [string, string, keyof typeof issueSets],
     number | null
   > = new ConcurrentPriorityWorkerQueue({
-    worker: async (args) => {
-      return await postToGithub(...args);
+    async worker(args) {
+      return postToGithub(...args);
     },
     limit: 1,
   });
+
   public readonly globalButtons: Collection<
     string,
     (interaction: HSBMessageComponentInteraction) => Promise<void>
@@ -93,12 +96,14 @@ export default class HealthScreeningBotClient extends Client {
       go_to_dm: goToDMButton,
     })
   );
+
   /**
    * Guides can either be an array of message embeds *or* an array of paths to check for the pages.
    * If providing paths, they must be relative to the root of the guides folder at the
    * root of the project, not the root of the source.
    */
   public guideData: Collection<string, MessageEmbed[]>;
+
   constructor(options: ClientOptions) {
     super(options);
     this.loadEventListeners();
@@ -112,6 +117,7 @@ export default class HealthScreeningBotClient extends Client {
         this.on(memberName.substring(2), this[memberName].bind(this));
       }
     }
+
     this.once("ready", this.doOnReady.bind(this));
   }
 
@@ -155,19 +161,24 @@ export default class HealthScreeningBotClient extends Client {
     }
   }
 
-  private async oninteractionCreate(interaction: Interaction) {
+  private async oninteractionCreate(interaction: Interaction): Promise<void> {
     try {
       switch (interaction.type) {
         case "APPLICATION_COMMAND":
-          return await commandInteraction(interaction as HSBCommandInteraction);
+          await commandInteraction(interaction as HSBCommandInteraction);
+          break;
         case "APPLICATION_COMMAND_AUTOCOMPLETE":
-          return await commandInteractionAutocomplete(
+          await commandInteractionAutocomplete(
             interaction as HSBAutocompleteInteraction
           );
+          break;
         case "MESSAGE_COMPONENT":
-          return await messageComponentInteraction(
+          await messageComponentInteraction(
             interaction as HSBMessageComponentInteraction
           );
+          break;
+        default:
+          throw new Error(`Unknown interaction type: ${interaction.type}`);
       }
     } catch (e) {
       await logError(e, "interaction");

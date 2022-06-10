@@ -28,6 +28,7 @@ export default async function logError(
   if (ignoreError(error, type)) {
     return null;
   }
+
   const errorName: string = error.name;
   const errorMessage: string | null =
     error.message.length > 0 ? error.message : null;
@@ -41,7 +42,8 @@ export default async function logError(
   if (version.search(/[^\d.]/) !== -1) {
     console.error(error);
   }
-  return await ErrorLog.create({
+
+  return ErrorLog.create({
     errorName,
     errorDescription: errorMessage,
     errorStack,

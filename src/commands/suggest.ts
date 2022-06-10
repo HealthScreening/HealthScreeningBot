@@ -28,7 +28,8 @@ export default class Suggest extends Command {
         .setDescription("Whether the contents are hidden to everyone else.")
         .setRequired(false)
     ) as SlashCommandBuilder;
-  async execute(interaction: HSBCommandInteraction) {
+
+  async execute(interaction: HSBCommandInteraction): Promise<void> {
     const message = interaction.options.getString("message", true);
     const isServer = interaction.options.getBoolean("server", false) ?? false;
     const ephemeral =
@@ -36,7 +37,7 @@ export default class Suggest extends Command {
     await interaction.deferReply({ ephemeral });
     const item: number | null = await interaction.client.githubQueue.enqueue(
       [
-        (isServer ? "Server" : "Bot") + " Suggestion",
+        `${isServer ? "Server" : "Bot"} Suggestion`,
         formatUserIssue(message, interaction.user),
         isServer ? "serverFeature" : "botFeature",
       ],
@@ -50,7 +51,6 @@ export default class Suggest extends Command {
           "There was an error while trying to file the suggestion. Please try again later.",
         ephemeral,
       });
-      return;
     } else {
       await sendMessage({
         itemType: ItemType.interaction,

@@ -21,16 +21,16 @@ export default async function getAutoDayData(
       onFriday: true,
       onSaturday: false,
     };
-  } else {
-    return {
-      userId: autoDaysItem.userId,
-      onSunday: autoDaysItem.onSunday,
-      onMonday: autoDaysItem.onMonday,
-      onTuesday: autoDaysItem.onTuesday,
-      onWednesday: autoDaysItem.onWednesday,
-      onThursday: autoDaysItem.onThursday,
-      onFriday: autoDaysItem.onFriday,
-      onSaturday: autoDaysItem.onSaturday,
-    };
   }
+
+  return {
+    userId: autoDaysItem.userId,
+    onSunday: autoDaysItem.onSunday,
+    onMonday: autoDaysItem.onMonday,
+    onTuesday: autoDaysItem.onTuesday,
+    onWednesday: autoDaysItem.onWednesday,
+    onThursday: autoDaysItem.onThursday,
+    onFriday: autoDaysItem.onFriday,
+    onSaturday: autoDaysItem.onSaturday,
+  };
 }

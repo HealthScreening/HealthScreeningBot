@@ -1,5 +1,4 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { User } from "discord.js";
 
 import { Command } from "../client/command";
 import { HSBCommandInteraction } from "../discordjs-overrides";
@@ -21,7 +20,8 @@ export default class Reset extends Command {
         .setDescription("Whether the contents are hidden to everyone else.")
         .setRequired(false)
     ) as SlashCommandBuilder;
-  async execute(interaction: HSBCommandInteraction) {
+
+  async execute(interaction: HSBCommandInteraction): Promise<void> {
     const autoUser = await AutoUser.findOne({
       where: { userId: interaction.user.id },
     });
@@ -33,6 +33,7 @@ export default class Reset extends Command {
       });
       return;
     }
+
     const autoDays = (await AutoDays.findOne({
       where: { userId: interaction.user.id },
     }))!;
@@ -44,13 +45,13 @@ export default class Reset extends Command {
       },
       { userId: interaction.user.id }
     );
-    autoDays.onSunday = autoDays.onSaturday = false;
-    autoDays.onMonday =
-      autoDays.onTuesday =
-      autoDays.onWednesday =
-      autoDays.onThursday =
-      autoDays.onFriday =
-        true;
+    autoDays.onSunday = false;
+    autoDays.onSaturday = false;
+    autoDays.onMonday = true;
+    autoDays.onTuesday = true;
+    autoDays.onWednesday = true;
+    autoDays.onThursday = true;
+    autoDays.onFriday = true;
     await autoDays.save();
     autoUser.hour = 5;
     autoUser.minute = 40;
@@ -70,7 +71,7 @@ export default class Reset extends Command {
       ephemeral,
     });
     try {
-      const user: User = interaction.user;
+      const { user } = interaction;
       await (await user.createDM()).sendTyping();
       await interaction.client.screeningClient.queueAutoCommand(
         interaction.user.id,

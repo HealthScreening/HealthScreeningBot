@@ -25,7 +25,8 @@ export default class CommandDeleteCommand extends Subcommand {
           .setRequired(false)
       );
   }
-  async execute(interaction: CommandInteraction) {
+
+  async execute(interaction: CommandInteraction): Promise<void> {
     const id: number = interaction.options.getInteger("id", true);
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
@@ -37,14 +38,16 @@ export default class CommandDeleteCommand extends Subcommand {
       },
     });
     if (!item) {
-      return await interaction.reply({
+      await interaction.reply({
         content: "No command log entry with that ID found.",
         ephemeral,
       });
+      return;
     }
+
     await item.destroy();
-    return await interaction.reply({
-      content: "Deleted command log entry with ID " + id + ".",
+    await interaction.reply({
+      content: `Deleted command log entry with ID ${id}.`,
       ephemeral,
     });
   }

@@ -16,7 +16,8 @@ export default class GenerateAuto extends Command {
         .setDescription("Whether the contents are hidden to everyone else.")
         .setRequired(false)
     ) as SlashCommandBuilder;
-  async execute(interaction: HSBCommandInteraction) {
+
+  async execute(interaction: HSBCommandInteraction): Promise<void> {
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
     await interaction.client.screeningClient.queueAutoCommand(

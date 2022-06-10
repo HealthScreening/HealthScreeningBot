@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file -- Overrides are allowed to bypass this */
 import {
   AutocompleteInteraction,
   CommandInteraction,

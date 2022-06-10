@@ -30,6 +30,7 @@ export default class Guide extends Command {
       name: nameAutocomplete,
     })
   );
+
   public readonly data = new SlashCommandBuilder()
     .setName("guide")
     .setDescription("Sends a possible guide.")
@@ -46,7 +47,8 @@ export default class Guide extends Command {
         .setDescription("Whether the contents are hidden to everyone else.")
         .setRequired(false)
     ) as SlashCommandBuilder;
-  async execute(interaction: HSBCommandInteraction) {
+
+  async execute(interaction: HSBCommandInteraction): Promise<void> {
     const name = interaction.options.getString("name", true);
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? false;
@@ -57,10 +59,12 @@ export default class Guide extends Command {
       });
       return;
     }
+
     if (customGuides.has(name)) {
       await customGuides.get(name)!(interaction);
       return;
     }
+
     const guide = interaction.client.guideData.get(name)!;
     await new Paginator(guide).send({
       itemType: ItemType.interaction,

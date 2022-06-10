@@ -22,13 +22,11 @@ export default function dayIsHoliday(date: Date): Holiday | null {
   });
   const targetTimeMillis = targetDateTime.toMillis();
   const holiday = holidays
-    .map((value) => {
-      return {
-        start: value.start,
-        end: value.end || value.start,
-        name: value.name,
-      };
-    })
+    .map((value) => ({
+      start: value.start,
+      end: value.end || value.start,
+      name: value.name,
+    }))
     .find((holidayItem) => {
       const start = DateTime.local(
         holidayItem.start.year,

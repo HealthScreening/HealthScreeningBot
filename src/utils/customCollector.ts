@@ -16,6 +16,7 @@ import { ItemType, MessageOptions, sendMessage } from "./multiMessage";
 
 export interface CollectedComponent<T extends MessageActionRowComponent> {
   component: T;
+  // eslint-disable-next-line no-use-before-define -- These depend on each other so there's nothing I can do
   collector: CustomCollector;
   interaction: MessageComponentInteraction;
 }
@@ -31,10 +32,15 @@ export interface CustomCollectorComponent<T extends MessageActionRowComponent> {
 export class CustomCollector {
   readonly components: CustomCollectorComponent<MessageActionRowComponent>[] =
     [];
+
   private _currentRow: MessageActionRowComponent[] = [];
+
   readonly rows: MessageActionRow[] = [];
+
   readonly randomCustomIdPrefix: string;
+
   private _message: Message;
+
   readonly name: string;
 
   constructor(name = "customCollector") {
@@ -55,7 +61,8 @@ export class CustomCollector {
     if (component.customId === null) {
       component.setCustomId(v4().replace(/-/g, "").toLowerCase());
     }
-    component.setCustomId(this.randomCustomIdPrefix + "_" + component.customId);
+
+    component.setCustomId(`${this.randomCustomIdPrefix}_${component.customId}`);
   }
 
   addComponent(
@@ -72,6 +79,7 @@ export class CustomCollector {
     ) {
       this.compactIntoMessageActionRow();
     }
+
     this.manipulateComponent(component);
     this.components.push({
       component,
@@ -94,6 +102,7 @@ export class CustomCollector {
     ) {
       this.compactIntoMessageActionRow();
     }
+
     const customCollectorComponents = row.components.map((value, index) => {
       this.manipulateComponent(value);
       return {
@@ -115,6 +124,7 @@ export class CustomCollector {
     if (this._currentRow.length > 0) {
       this.compactIntoMessageActionRow();
     }
+
     const message = (await sendMessage({
       components: this.rows,
       ...options,
@@ -139,7 +149,8 @@ export class CustomCollector {
             });
           }
         }
-        const customId = interaction.customId;
+
+        const { customId } = interaction;
         const component = this.components.find(
           (value) => value.component.customId === customId
         )!;
@@ -176,7 +187,7 @@ export class CustomCollector {
         } catch (e) {
           logError(e, "CustomCollector::end::globalOnEnd", {
             name: this.name,
-            reason: reason,
+            reason,
           });
         }
       }
@@ -188,6 +199,7 @@ export class CustomCollector {
     interaction: MessageComponentInteraction,
     customCollector: this
   ) => Promise<void>;
+
   onEnd?: (
     collected: Collection<Snowflake, MessageActionRowComponent>,
     reason: string,

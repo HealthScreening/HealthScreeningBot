@@ -47,6 +47,7 @@ Screenings Paused: **${autoData.paused}**`;
   } else {
     embed.addField("Auto", "**No data**");
   }
+
   if (autoDayData) {
     const autoDayDataString = `Screening Sent on Sunday: **${autoDayData.onSunday}**
 Screening Sent on Monday: **${autoDayData.onMonday}**
@@ -59,6 +60,7 @@ Screening Sent on Saturday: **${autoDayData.onSaturday}**`;
   } else {
     embed.addField("Auto Day", "**No data**");
   }
+
   embed.addField("Device Used for Screenings", deviceData.device);
   return embed;
 }
@@ -73,7 +75,8 @@ export default class Profile extends Command {
         .setDescription("Whether the contents are hidden to everyone else.")
         .setRequired(false)
     ) as SlashCommandBuilder;
-  async execute(interaction: CommandInteraction) {
+
+  async execute(interaction: CommandInteraction): Promise<void> {
     const embed = await generateProfileEmbed(interaction.user);
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;

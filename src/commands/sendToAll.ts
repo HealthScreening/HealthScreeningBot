@@ -24,6 +24,7 @@ export default class SendToAll extends Command {
       guide_name: nameAutocomplete,
     })
   );
+
   public readonly data = new SlashCommandBuilder()
     .setName("send_to_all")
     .setDescription("Send a message to every person registered in the bot.")
@@ -48,7 +49,8 @@ export default class SendToAll extends Command {
         .setRequired(false)
         .setAutocomplete(true)
     ) as SlashCommandBuilder;
-  async execute(interaction: HSBCommandInteraction) {
+
+  async execute(interaction: HSBCommandInteraction): Promise<void> {
     if (
       await checkOwner({ item: interaction, itemType: ItemType.interaction })
     ) {
@@ -56,11 +58,10 @@ export default class SendToAll extends Command {
       await interaction.reply("Sending to all...");
       const items = await AutoUser.findAll();
       const guideName = interaction.options.getString("guide_name");
-      const message: string =
-        "The bot owner has sent a message to everyone registered under the auto health screening bot:\n----\n" +
-        interaction.options.getString("message") +
-        "\n----\nIf you have any questions, contact <@199605025914224641> (PokestarFan#8524).";
-      let embeds: MessageEmbed[] | undefined = undefined;
+      const message = `The bot owner has sent a message to everyone registered under the auto health screening bot:\n----\n${interaction.options.getString(
+        "message"
+      )}\n----\nIf you have any questions, contact <@199605025914224641> (PokestarFan#8524).`;
+      let embeds: MessageEmbed[] | undefined;
       if (guideName) {
         if (!interaction.client.guideData.has(guideName)) {
           await interaction.reply({
@@ -69,15 +70,17 @@ export default class SendToAll extends Command {
             ephemeral: true,
           });
           return;
-        } else {
-          embeds = interaction.client.guideData.get(guideName)!;
         }
+
+        embeds = interaction.client.guideData.get(guideName)!;
       }
+
       let user: User;
       if (timeToSleep === 0) {
         let batchData: Promise<void>[] = [];
         for (const item of items) {
           batchData.push(
+            // eslint-disable-next-line @typescript-eslint/no-loop-func, no-loop-func -- No better way to do it sadly (at least within 5 minutes of effort)
             (async () => {
               try {
                 user = await interaction.client.users.fetch(item.userId);
@@ -95,6 +98,7 @@ export default class SendToAll extends Command {
             batchData = [];
           }
         }
+
         if (batchData.length > 0) {
           await Promise.all(batchData);
         }

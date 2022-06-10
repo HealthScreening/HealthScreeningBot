@@ -58,9 +58,11 @@ export function serializeProcessParams(params: ProcessParams) {
   if (params.auto) {
     obj.auto = serializeAutoBatchOptions(params.auto);
   }
+
   if (params.cooldown) {
     obj.cooldown = serializeCooldown(params.cooldown);
   }
+
   return obj;
 }
 

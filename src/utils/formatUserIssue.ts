@@ -11,7 +11,7 @@ export default function formatUserIssue(
 
 ${message
   .split("\n")
-  .map((line) => "> " + line)
+  .map((line) => `> ${line}`)
   .join("\n")}
 
 ## ${type} Metadata

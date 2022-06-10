@@ -21,24 +21,31 @@ export default async function typeStartsWithAutocomplete(
     if (!whereQuery.id) {
       whereQuery.id = {};
     }
+
     whereQuery.id[Op.lt] = before;
   }
+
   if (after) {
     if (!whereQuery.id) {
       whereQuery.id = {};
     }
+
     whereQuery.id[Op.gt] = after;
   }
+
   if (beforeTime) {
     if (!whereQuery.createdAt) {
       whereQuery.createdAt = {};
     }
+
     whereQuery.createdAt[Op.lt] = new Date(beforeTime * 1000);
   }
+
   if (afterTime) {
     if (!whereQuery.createdAt) {
       whereQuery.createdAt = {};
     }
+
     whereQuery.createdAt[Op.gt] = new Date(afterTime * 1000);
   }
 
@@ -51,11 +58,9 @@ export default async function typeStartsWithAutocomplete(
         group: ["type"],
         order: [["type", "ASC"]],
       })
-    ).map((item) => {
-      return {
-        name: item.type,
-        value: item.type,
-      };
-    })
+    ).map((item) => ({
+      name: item.type,
+      value: item.type,
+    }))
   );
 }

@@ -18,5 +18,6 @@ export default async function getUserInfo(
   if (autoData !== null) {
     returnData.auto.info = autoData;
   }
+
   return returnData;
 }

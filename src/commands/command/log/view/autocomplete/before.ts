@@ -27,32 +27,42 @@ export default async function beforeAutocomplete(
     if (!whereQuery.id) {
       whereQuery.id = {};
     }
+
     whereQuery.id[Op.gt] = after;
   }
+
   if (beforeTime) {
     if (!whereQuery.createdAt) {
       whereQuery.createdAt = {};
     }
+
     whereQuery.createdAt[Op.lt] = new Date(beforeTime * 1000);
   }
+
   if (afterTime) {
     if (!whereQuery.createdAt) {
       whereQuery.createdAt = {};
     }
+
     whereQuery.createdAt[Op.gt] = new Date(afterTime * 1000);
   }
+
   if (commandNameStartsWith) {
     if (!whereQuery.commandName) {
       whereQuery.commandName = {};
     }
+
     whereQuery.commandName[Op.startsWith] = commandNameStartsWith;
   }
+
   if (userId) {
     if (!whereQuery.userId) {
       whereQuery.userId = {};
     }
+
     whereQuery.userId[Op.eq] = userId.id;
   }
+
   await interaction.respond(
     (
       await CommandLog.findAll({
@@ -61,11 +71,9 @@ export default async function beforeAutocomplete(
         limit: 25,
         order: [["id", "ASC"]],
       })
-    ).map((item) => {
-      return {
-        name: item.id.toString(),
-        value: item.id,
-      };
-    })
+    ).map((item) => ({
+      name: item.id.toString(),
+      value: item.id,
+    }))
   );
 }

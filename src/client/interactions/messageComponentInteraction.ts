@@ -7,7 +7,7 @@ export default async function messageComponentInteraction(
   interaction: HSBMessageComponentInteraction
 ) {
   try {
-    const customId = interaction.customId;
+    const { customId } = interaction;
     if (
       customId.length > 33 &&
       customId.at(32) === "_" &&
@@ -17,6 +17,7 @@ export default async function messageComponentInteraction(
       // Since this is not a global button, we can safely ignore it.
       return;
     }
+
     if (!interaction.client.globalButtons.has(customId)) {
       await logError(
         new Error(`Global Button ${customId} not found`),
@@ -32,6 +33,7 @@ export default async function messageComponentInteraction(
       });
       return;
     }
+
     const buttonAction = interaction.client.globalButtons.get(customId)!;
     try {
       await buttonAction(interaction);

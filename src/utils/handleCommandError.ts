@@ -5,16 +5,16 @@ export default async function handleCommandError(
   name?: string
 ) {
   if (name) {
-    return await sendMessage({
+    return sendMessage({
       ...params,
       content: `Unfortunately, the \`${name}\` command has encountered an error. This error has been logged and will be fixed ASAP.`,
       ephemeral: true,
     });
-  } else {
-    return await sendMessage({
-      ...params,
-      content: `Unfortunately, the command has encountered an error. This error has been logged and will be fixed ASAP.`,
-      ephemeral: true,
-    });
   }
+
+  return sendMessage({
+    ...params,
+    content: `Unfortunately, the command has encountered an error. This error has been logged and will be fixed ASAP.`,
+    ephemeral: true,
+  });
 }

@@ -15,11 +15,15 @@ import { MessageOptions } from "./multiMessage";
 
 export default class Paginator {
   readonly pages: MessageEmbed[];
+
   readonly timeout: number;
+
   private _currentPage: number;
+
   private readonly collector: CustomCollector = new CustomCollector();
 
   private _lastInteraction: MessageComponentInteraction | null = null;
+
   private _disableButtons = true;
 
   private readonly toBeginningButton = new MessageButton()
@@ -57,6 +61,7 @@ export default class Paginator {
     if (pages.length === 0) {
       throw new Error("No pages provided");
     }
+
     this.pages = pages.map((page, index) =>
       page.setFooter({ text: `Page ${index + 1}/${pages.length}` })
     );
@@ -84,6 +89,7 @@ export default class Paginator {
       this.toBeginningButton.setDisabled(false);
       this.lastButton.setDisabled(false);
     }
+
     if (this._currentPage === this.pages.length - 1) {
       this.toEndButton.setDisabled(true);
       this.nextButton.setDisabled(true);
@@ -101,7 +107,7 @@ export default class Paginator {
 
   private async disablePaginator(options: CollectedComponent<MessageButton>) {
     this.disableActionRow();
-    return await options.interaction.update({
+    return options.interaction.update({
       components: [this.actionRow],
     });
   }
@@ -121,10 +127,11 @@ export default class Paginator {
       });
       return;
     }
+
     this._currentPage = page;
     this.setButtonState();
     this._lastInteraction = options.interaction;
-    return await options.interaction.update({
+    options.interaction.update({
       embeds: [this.pages[page]],
       components: [this.actionRow],
     });
@@ -157,6 +164,7 @@ export default class Paginator {
       if (this.singlePage()) {
         return;
       }
+
       this.disableActionRow();
       if (this._lastInteraction !== null) {
         await this._lastInteraction.editReply({
@@ -174,7 +182,8 @@ export default class Paginator {
     if (options.ephemeral) {
       this._disableButtons = false;
     }
-    return await this.collector.send(
+
+    return this.collector.send(
       {
         embeds: [this.pages[this._currentPage]],
         components: this.singlePage() ? [] : [this.actionRow],

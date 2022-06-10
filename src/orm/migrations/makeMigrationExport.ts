@@ -1,14 +1,14 @@
 module.exports = function (info, migrationCommands) {
   return {
     pos: 0,
-    up: function (queryInterface) {
+    up(queryInterface) {
       let index = this.pos;
-      return new Promise(function (resolve, reject) {
+      return new Promise((resolve, reject) => {
         function next() {
           if (index < migrationCommands.length) {
             const command = migrationCommands[index];
-            console.log("[#" + index + "] execute: " + command.fn);
-            index++;
+            console.log(`[#${index}] execute: ${command.fn}`);
+            index += 1;
             queryInterface[command.fn]
               .bind(queryInterface)(...command.params)
               .then(next, reject);
@@ -20,6 +20,6 @@ module.exports = function (info, migrationCommands) {
         next();
       });
     },
-    info: info,
+    info,
   };
 };

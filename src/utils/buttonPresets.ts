@@ -20,17 +20,22 @@ export default function getPresetButton(customId: string): MessageButton {
   if (preset.disabled) {
     button.setDisabled(true);
   }
+
   if (preset.label) {
     button.setLabel(preset.label);
   }
+
   if (preset.emoji) {
     button.setEmoji(preset.emoji);
   }
+
   if (preset.url) {
     button.setURL(preset.url);
   }
+
   if (preset.style) {
     button.setStyle(preset.style as MessageButtonStyleResolvable);
   }
+
   return button;
 }

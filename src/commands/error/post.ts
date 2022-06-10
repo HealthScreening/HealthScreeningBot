@@ -34,7 +34,8 @@ export default class ErrorPostCommand extends Subcommand {
           .setRequired(false)
       );
   }
-  async execute(interaction: HSBCommandInteraction) {
+
+  async execute(interaction: HSBCommandInteraction): Promise<void> {
     const id: number = interaction.options.getInteger("id", true);
     const redact: boolean =
       interaction.options.getBoolean("redact", false) ?? false;
@@ -46,8 +47,10 @@ export default class ErrorPostCommand extends Subcommand {
       },
     });
     if (!item) {
-      return await interaction.reply("No error with that ID found.");
+      await interaction.reply("No error with that ID found.");
+      return;
     }
+
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
     await interaction.deferReply({ ephemeral });
@@ -70,7 +73,6 @@ export default class ErrorPostCommand extends Subcommand {
           "There was an error while trying to post the error. Please try again later.",
         ephemeral,
       });
-      return;
     } else {
       await sendMessage({
         itemType: ItemType.interaction,

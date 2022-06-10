@@ -14,7 +14,7 @@ export type GuideItem = {
 };
 
 export function getGuidePath(guideName: string): string {
-  return resolve(guideRoot, guideName + ".md");
+  return resolve(guideRoot, `${guideName}.md`);
 }
 
 export async function loadGuide(path: string): Promise<MessageEmbed> {
@@ -37,6 +37,7 @@ export async function loadAllGuides(client: HealthScreeningBotClient) {
               } else {
                 guide.setTitle(value.title[index]);
               }
+
               return guide;
             })
           )
@@ -44,5 +45,6 @@ export async function loadAllGuides(client: HealthScreeningBotClient) {
       }
     )
   );
+  // eslint-disable-next-line no-param-reassign -- This is intentional.
   client.guideData = collection;
 }

@@ -27,6 +27,7 @@ export default async function goToDMButton(
       return;
     }
   }
+
   await interaction.reply({
     content:
       "Click the button below to go to your direct message channel with the bot.",
@@ -34,7 +35,7 @@ export default async function goToDMButton(
     components: [
       new MessageActionRow().addComponents(
         new MessageButton()
-          .setURL("https://discord.com/channels/@me/" + dmChannel.id)
+          .setURL(`https://discord.com/channels/@me/${dmChannel.id}`)
           .setLabel("Click to Open DM")
           .setStyle("LINK")
       ),

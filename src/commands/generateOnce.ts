@@ -43,9 +43,10 @@ export default class GenerateOnce extends Command {
         .setDescription("The type of screening to generate.")
         .setRequired(false)
         .addChoices(
-          ...Object.entries(screeningTypes).map(([key, value]) => {
-            return { value, name: key };
-          })
+          ...Object.entries(screeningTypes).map(([key, value]) => ({
+            value,
+            name: key,
+          }))
         )
     )
     .addBooleanOption((option) =>
@@ -54,18 +55,21 @@ export default class GenerateOnce extends Command {
         .setDescription("Whether the contents are hidden to everyone else.")
         .setRequired(false)
     ) as SlashCommandBuilder;
-  async execute(interaction: HSBCommandInteraction) {
+
+  async execute(interaction: HSBCommandInteraction): Promise<void> {
     const firstName = interaction.options.getString("first_name")!;
     const lastName = interaction.options.getString("last_name")!;
     const email = interaction.options.getString("email")!;
     if (
       !email.match(/^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/)
     ) {
-      return await interaction.reply({
+      await interaction.reply({
         content: "Invalid email! Please enter a valid email.",
         ephemeral: true,
       });
+      return;
     }
+
     const isVaxxed = interaction.options.getBoolean("vaccinated")!;
     const type = (interaction.options.getString("type") ||
       "G") as screeningTypeType;
@@ -76,11 +80,11 @@ export default class GenerateOnce extends Command {
       interaction.user.id,
       {
         generateScreenshotParams: {
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          isVaxxed: isVaxxed,
-          type: type,
+          firstName,
+          lastName,
+          email,
+          isVaxxed,
+          type,
           device: deviceData.device,
         },
         multiMessageParams: {

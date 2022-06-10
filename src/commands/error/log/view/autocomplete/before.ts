@@ -24,26 +24,34 @@ export default async function beforeAutocomplete(
     if (!whereQuery.id) {
       whereQuery.id = {};
     }
+
     whereQuery.id[Op.gt] = after;
   }
+
   if (beforeTime) {
     if (!whereQuery.createdAt) {
       whereQuery.createdAt = {};
     }
+
     whereQuery.createdAt[Op.lt] = new Date(beforeTime * 1000);
   }
+
   if (afterTime) {
     if (!whereQuery.createdAt) {
       whereQuery.createdAt = {};
     }
+
     whereQuery.createdAt[Op.gt] = new Date(afterTime * 1000);
   }
+
   if (typeStartsWith) {
     if (!whereQuery.type) {
       whereQuery.type = {};
     }
+
     whereQuery.type[Op.startsWith] = typeStartsWith;
   }
+
   await interaction.respond(
     (
       await ErrorLog.findAll({
@@ -52,11 +60,9 @@ export default async function beforeAutocomplete(
         limit: 25,
         order: [["id", "ASC"]],
       })
-    ).map((item) => {
-      return {
-        name: item.id.toString(),
-        value: item.id,
-      };
-    })
+    ).map((item) => ({
+      name: item.id.toString(),
+      value: item.id,
+    }))
   );
 }

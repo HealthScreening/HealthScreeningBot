@@ -21,11 +21,17 @@ export class ErrorLog
   implements ErrorLogAttributes
 {
   id!: number;
+
   errorName!: string;
+
   errorDescription!: string | null;
+
   errorStack!: string | null;
+
   metadata!: object | null;
+
   type!: string;
+
   createdAt!: Date;
 }
 
