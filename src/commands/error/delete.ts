@@ -38,14 +38,15 @@ export default class ErrorDeleteCommand extends Subcommand {
       },
     });
     if (!item) {
-      return interaction.reply({
+      await interaction.reply({
         content: "No error with that ID found.",
         ephemeral,
       });
+      return;
     }
 
     await item.destroy();
-    return interaction.reply({
+    await interaction.reply({
       content: `Deleted error with ID ${id}.`,
       ephemeral,
     });

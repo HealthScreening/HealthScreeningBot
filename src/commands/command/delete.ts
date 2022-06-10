@@ -38,14 +38,15 @@ export default class CommandDeleteCommand extends Subcommand {
       },
     });
     if (!item) {
-      return interaction.reply({
+      await interaction.reply({
         content: "No command log entry with that ID found.",
         ephemeral,
       });
+      return;
     }
 
     await item.destroy();
-    return interaction.reply({
+    await interaction.reply({
       content: `Deleted command log entry with ID ${id}.`,
       ephemeral,
     });

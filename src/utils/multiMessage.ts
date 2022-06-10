@@ -89,6 +89,7 @@ export type MessageOptions =
 
 export function serializeMessageOptions(options: MessageOptions): object {
   let itemOptions: [string, string | null];
+  // eslint-disable-next-line default-case -- Enum values are guaranteed to be exhaustive
   switch (options.itemType) {
     case ItemType.interaction:
       itemOptions = ["interaction", null];
@@ -128,7 +129,9 @@ const defaultOptions = {
   files: [],
 };
 
+// eslint-disable-next-line consistent-return -- Enum values are guaranteed to be exhaustive
 export function getUserID(options: MessageOptions): string {
+  // eslint-disable-next-line default-case -- Enum values are guaranteed to be exhaustive
   switch (options.itemType) {
     case ItemType.interaction:
       return options.item.user.id;
@@ -139,10 +142,12 @@ export function getUserID(options: MessageOptions): string {
   }
 }
 
+// eslint-disable-next-line consistent-return -- Enum values are guaranteed to be exhaustive
 export function sendMessage(
   options: MessageOptions
 ): Promise<Message | APIMessage> {
   const trueOptions: MessageOptions = { ...defaultOptions, ...options };
+  // eslint-disable-next-line default-case -- Enum values are guaranteed to be exhaustive
   switch (trueOptions.itemType) {
     case ItemType.user:
       return trueOptions.item.send({

@@ -34,7 +34,7 @@ import {
   HSBCommandInteraction,
   HSBMessageComponentInteraction,
 } from "../discordjs-overrides";
-import { ScreeningClient } from "../screeningClient";
+import ScreeningClient from "../screeningClient";
 import logError from "../utils/logError";
 import runFunctionAndLogError from "../utils/logError/runAndLog";
 import { ItemType } from "../utils/multiMessage";
@@ -165,15 +165,18 @@ export default class HealthScreeningBotClient extends Client {
     try {
       switch (interaction.type) {
         case "APPLICATION_COMMAND":
-          return await commandInteraction(interaction as HSBCommandInteraction);
+          await commandInteraction(interaction as HSBCommandInteraction);
+          break;
         case "APPLICATION_COMMAND_AUTOCOMPLETE":
-          return await commandInteractionAutocomplete(
+          await commandInteractionAutocomplete(
             interaction as HSBAutocompleteInteraction
           );
+          break;
         case "MESSAGE_COMPONENT":
-          return await messageComponentInteraction(
+          await messageComponentInteraction(
             interaction as HSBMessageComponentInteraction
           );
+          break;
         default:
           throw new Error(`Unknown interaction type: ${interaction.type}`);
       }

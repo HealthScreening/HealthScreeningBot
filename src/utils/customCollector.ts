@@ -16,6 +16,7 @@ import { ItemType, MessageOptions, sendMessage } from "./multiMessage";
 
 export interface CollectedComponent<T extends MessageActionRowComponent> {
   component: T;
+  // eslint-disable-next-line no-use-before-define -- These depend on each other so there's nothing I can do
   collector: CustomCollector;
   interaction: MessageComponentInteraction;
 }

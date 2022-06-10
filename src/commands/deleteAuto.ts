@@ -15,11 +15,12 @@ export default class DeleteAuto extends Command {
       where: { userId: interaction.user.id },
     });
     if (item === null) {
-      return interaction.reply({
+      await interaction.reply({
         content:
           "You do not have any auto information stored! Use `/set_auto` to set some information.",
         ephemeral: true,
       });
+      return;
     }
 
     await item.destroy({ force: true });

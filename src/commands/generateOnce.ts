@@ -63,10 +63,11 @@ export default class GenerateOnce extends Command {
     if (
       !email.match(/^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/)
     ) {
-      return interaction.reply({
+      await interaction.reply({
         content: "Invalid email! Please enter a valid email.",
         ephemeral: true,
       });
+      return;
     }
 
     const isVaxxed = interaction.options.getBoolean("vaccinated")!;

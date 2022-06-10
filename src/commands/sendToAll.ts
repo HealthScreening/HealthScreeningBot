@@ -80,7 +80,7 @@ export default class SendToAll extends Command {
         let batchData: Promise<void>[] = [];
         for (const item of items) {
           batchData.push(
-            // eslint-disable-next-line @typescript-eslint/no-loop-func no-loop-func -- No better way to do it sadly (at least within 5 minutes of effort)
+            // eslint-disable-next-line @typescript-eslint/no-loop-func, no-loop-func -- No better way to do it sadly (at least within 5 minutes of effort)
             (async () => {
               try {
                 user = await interaction.client.users.fetch(item.userId);

@@ -12,7 +12,7 @@ import processScreening from "./processScreening";
  *
  * This class houses the queue and cooldowns so that it is not necessary to pass them as arguments.
  */
-export class ScreeningClient {
+export default class ScreeningClient {
   private readonly queue: ConcurrentPriorityWorkerQueue<ProcessParams, void> =
     new ConcurrentPriorityWorkerQueue({
       worker: processScreening,

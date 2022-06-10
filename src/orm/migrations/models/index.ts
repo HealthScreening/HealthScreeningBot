@@ -20,10 +20,11 @@ readdirSync(__dirname)
       file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
   )
   .forEach((file) => {
-    /* eslint-disable @typescript-eslint/no-var-requires -- Disabled because
-      we dynamically require, which is impossible with typescript's import system. */
+    /* eslint-disable @typescript-eslint/no-var-requires, import/no-dynamic-require, global-require
+     -- Disabled because we dynamically require, which is impossible with
+     typescript's import system. */
     const model = require(path.join(__dirname, file))(sequelize, DataTypes);
-    /* eslint-enable @typescript-eslint/no-var-requires */
+    /* eslint-enable @typescript-eslint/no-var-requires, import/no-dynamic-require, global-require */
     db[model.name] = model;
   });
 

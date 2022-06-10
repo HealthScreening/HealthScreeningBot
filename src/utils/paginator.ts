@@ -131,7 +131,7 @@ export default class Paginator {
     this._currentPage = page;
     this.setButtonState();
     this._lastInteraction = options.interaction;
-    return options.interaction.update({
+    options.interaction.update({
       embeds: [this.pages[page]],
       components: [this.actionRow],
     });

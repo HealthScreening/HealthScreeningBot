@@ -4,6 +4,7 @@ export default async function checkOwner(
   params: MessageOptions
 ): Promise<boolean> {
   let isOwner = false;
+  // eslint-disable-next-line default-case -- Enum values are guaranteed to be exhaustive
   switch (params.itemType) {
     case ItemType.interaction:
       isOwner = params.item.user.id === "199605025914224641";

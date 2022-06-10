@@ -32,6 +32,8 @@ export default function serializeMessageComponentInteraction(
         placeholder: component.placeholder,
       };
       break;
+    default:
+      throw new Error(`Unknown component type: ${interaction.componentType}`);
   }
 
   return {

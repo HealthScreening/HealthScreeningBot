@@ -222,14 +222,13 @@ export default class SetMenu {
   }
 
   private async onDaySelect(interaction: HSBSelectMenuInteraction) {
-    this.autoDaysModel!.onSunday =
-      this.autoDaysModel!.onMonday =
-      this.autoDaysModel!.onTuesday =
-      this.autoDaysModel!.onWednesday =
-      this.autoDaysModel!.onThursday =
-      this.autoDaysModel!.onFriday =
-      this.autoDaysModel!.onSaturday =
-        false;
+    this.autoDaysModel!.onSunday = false;
+    this.autoDaysModel!.onMonday = false;
+    this.autoDaysModel!.onTuesday = false;
+    this.autoDaysModel!.onWednesday = false;
+    this.autoDaysModel!.onThursday = false;
+    this.autoDaysModel!.onFriday = false;
+    this.autoDaysModel!.onSaturday = false;
     interaction.values.forEach((day) => {
       this.autoDaysModel![`on${day}`] = true;
     });
@@ -388,7 +387,7 @@ export default class SetMenu {
         this.onDisableEmailOnly.bind(this)(
           interaction.interaction as HSBMessageComponentInteraction
         ),
-      async () => void 0,
+      async () => undefined,
       (interaction) =>
         this.onEnablePaused.bind(this)(
           interaction.interaction as HSBMessageComponentInteraction
@@ -407,7 +406,7 @@ export default class SetMenu {
         this.onDecrement1Hour.bind(this)(
           interaction.interaction as HSBMessageComponentInteraction
         ),
-      async () => void 0,
+      async () => undefined,
       (interaction) =>
         this.onIncrement5Minutes.bind(this)(
           interaction.interaction as HSBMessageComponentInteraction

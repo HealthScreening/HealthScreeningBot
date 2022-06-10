@@ -6,6 +6,8 @@
     "no-restricted-syntax": "off",
     "class-methods-use-this": "off",
     "no-await-in-loop": "off",
-    "complexity": "off"
+    "complexity": "off",
+    "no-underscore-dangle": "off",
+    "import/no-import-module-exports": "off"
   }
 }

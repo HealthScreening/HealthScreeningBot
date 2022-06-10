@@ -57,10 +57,11 @@ export default class SetAuto extends Command {
     if (
       !email.match(/^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/)
     ) {
-      return interaction.reply({
+      await interaction.reply({
         content: "Invalid email! Please enter a valid email.",
         ephemeral: true,
       });
+      return;
     }
 
     const isVaxxed = interaction.options.getBoolean("vaccinated")!;
@@ -91,11 +92,12 @@ export default class SetAuto extends Command {
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
     if (autoUserObj.emailOnly) {
-      return interaction.reply({
+      await interaction.reply({
         content:
           "Updated! As a reminder, you have email-only screenings on, and to disable that run `/toggle_email_only`.",
         ephemeral,
       });
+      return;
     }
 
     await interaction.reply({

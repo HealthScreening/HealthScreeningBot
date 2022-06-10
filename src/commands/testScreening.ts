@@ -104,6 +104,8 @@ export default class TestScreening extends Command {
       case 7:
         willRunForWeekday = autoDayData.onSunday;
         break;
+      default:
+        throw new Error(`Invalid weekday: ${weekday}`);
     }
 
     const willRun = !paused && !holiday && willRunForWeekday;

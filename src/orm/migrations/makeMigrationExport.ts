@@ -8,7 +8,7 @@ module.exports = function (info, migrationCommands) {
           if (index < migrationCommands.length) {
             const command = migrationCommands[index];
             console.log(`[#${index}] execute: ${command.fn}`);
-            index++;
+            index += 1;
             queryInterface[command.fn]
               .bind(queryInterface)(...command.params)
               .then(next, reject);

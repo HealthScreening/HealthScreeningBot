@@ -158,11 +158,12 @@ export default class SetCommand extends Command {
         (device) => device.toLowerCase() === deviceName.toLowerCase()
       );
       if (!foundDeviceName) {
-        return interaction.reply({
+        await interaction.reply({
           content:
             "Invalid device name! Please enter a valid device name. Use the autocomplete options to find a valid device name.",
           ephemeral: true,
         });
+        return;
       }
     }
 
@@ -220,15 +221,16 @@ export default class SetCommand extends Command {
           friday ||
           saturday))
     ) {
-      return interaction.reply({
+      await interaction.reply({
         content:
           "You must first auto information using the `/set_auto` command.",
         ephemeral: true,
       });
+      return;
     }
 
     if (hour && (hour < 0 || hour > 23)) {
-      return interaction.reply({
+      await interaction.reply({
         content:
           "Invalid hour! Please enter a valid hour in the range [0, 23].",
         ephemeral: true,
@@ -236,11 +238,12 @@ export default class SetCommand extends Command {
     }
 
     if (minute && (minute < 0 || minute > 59)) {
-      return interaction.reply({
+      await interaction.reply({
         content:
           "Invalid minute! Please enter a valid minute in the range [0, 59].",
         ephemeral: true,
       });
+      return;
     }
 
     if (foundDeviceName) {

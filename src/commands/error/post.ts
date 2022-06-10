@@ -47,7 +47,8 @@ export default class ErrorPostCommand extends Subcommand {
       },
     });
     if (!item) {
-      return interaction.reply("No error with that ID found.");
+      await interaction.reply("No error with that ID found.");
+      return;
     }
 
     const ephemeral =

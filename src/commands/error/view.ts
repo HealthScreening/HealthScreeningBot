@@ -55,10 +55,11 @@ export default class ErrorViewCommand extends Subcommand {
       },
     });
     if (!item) {
-      return interaction.reply({
+      await interaction.reply({
         content: "No error with that ID found.",
         ephemeral,
       });
+      return;
     }
 
     const embed = new MessageEmbed();

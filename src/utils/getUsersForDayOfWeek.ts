@@ -26,6 +26,8 @@ export default async function getUsersForDayOfWeek(
     case 7:
       whereData.onSunday = true;
       break;
+    default:
+      throw new Error("Invalid day of week");
   }
 
   return (

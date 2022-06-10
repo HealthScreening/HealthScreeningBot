@@ -45,5 +45,6 @@ export async function loadAllGuides(client: HealthScreeningBotClient) {
       }
     )
   );
+  // eslint-disable-next-line no-param-reassign -- This is intentional.
   client.guideData = collection;
 }
