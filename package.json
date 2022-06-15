@@ -63,7 +63,7 @@
     "@trivago/prettier-plugin-sort-imports": "3.2.0",
     "@types/lodash": "4.14.182",
     "@types/luxon": "2.3.2",
-    "@types/node": "17.0.42",
+    "@types/node": "17.0.43",
     "@types/uuid": "8.3.4",
     "@types/walk-asyncgen": "0.0.0",
     "eslint": "8.17.0",
