@@ -2,9 +2,9 @@ name: Auto Update
 
 # Controls when the workflow will run
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Allows workflow to be manually triggered from Actions page
   schedule:
-    - cron: "0 0 * * 0" # Runs every day at midnight
+    - cron: "0 0 * * 0" # Runs every Sunday at midnight
 
 jobs:
   npm-upgrade:
