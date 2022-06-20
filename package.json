@@ -59,7 +59,7 @@
     "uuid": "8.3.2"
   },
   "devDependencies": {
-    "@healthscreening/sequelize-lazy-migrations": "1.0.12",
+    "@healthscreening/sequelize-lazy-migrations": "2.0.0",
     "@trivago/prettier-plugin-sort-imports": "3.2.0",
     "@types/lodash": "4.14.182",
     "@types/luxon": "2.3.2",
