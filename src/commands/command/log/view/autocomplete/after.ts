@@ -7,7 +7,7 @@ import { CommandLog } from "../../../../../orm/commandLog";
 export default async function afterAutocomplete(
   interaction: HSBAutocompleteInteraction
 ) {
-  const response = interaction.options.getFocused(false) as number;
+  const response = interaction.options.getFocused(false) as unknown as number;
   const before: number | null = interaction.options.getInteger("before");
   const beforeTime: number | null =
     interaction.options.getInteger("before_time");
