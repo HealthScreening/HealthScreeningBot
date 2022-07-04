@@ -65,7 +65,7 @@
     "@types/luxon": "2.3.2",
     "@types/node": "18.0.0",
     "@types/uuid": "8.3.4",
-    "eslint": "8.18.0",
+    "eslint": "8.19.0",
     "eslint-config-pythoncoderas-combo": "1.1.2",
     "prettier": "2.7.1",
     "sequelize-cli": "6.4.1",
