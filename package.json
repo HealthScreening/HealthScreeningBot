@@ -69,7 +69,8 @@
     "eslint-config-pythoncoderas-combo": "1.1.2",
     "prettier": "2.7.1",
     "sequelize-cli": "6.4.1",
-    "typescript": "4.7.4"
+    "typescript": "4.7.4",
+    "@sapphire/shapeshift": "3.4.0"
   },
   "scripts": {
     "start": "node src/client.js",
