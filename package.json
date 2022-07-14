@@ -63,7 +63,7 @@
     "@trivago/prettier-plugin-sort-imports": "3.2.0",
     "@types/lodash": "4.14.182",
     "@types/luxon": "2.3.2",
-    "@types/node": "18.0.3",
+    "@types/node": "18.0.4",
     "@types/uuid": "8.3.4",
     "eslint": "8.19.0",
     "eslint-config-pythoncoderas-combo": "1.1.2",
