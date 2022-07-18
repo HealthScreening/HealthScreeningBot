@@ -7,6 +7,7 @@ import {
   MessageComponentInteraction,
   EmbedBuilder,
   User,
+  MessageActionRowComponentBuilder,
 } from "discord.js";
 
 /**
@@ -49,7 +50,7 @@ interface BaseMessageOptions {
    * the user who created the interaction, but also vanishes if the client is restarted.
    */
   ephemeral?: boolean;
-  components?: ActionRowBuilder[];
+  components?: ActionRowBuilder<MessageActionRowComponentBuilder>[];
 }
 
 /**
