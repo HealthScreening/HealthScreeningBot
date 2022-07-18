@@ -1,7 +1,7 @@
 import { APIMessage } from "discord-api-types/v9";
 import {
   CommandInteraction,
-  HTTPAttachmentData,
+  AttachmentBuilder,
   Message,
   ActionRowBuilder,
   MessageComponentInteraction,
@@ -36,7 +36,7 @@ interface BaseMessageOptions {
    * The embeds to send.
    */
   embeds?: EmbedBuilder[];
-  files?: HTTPAttachmentData[];
+  files?: AttachmentBuilder[];
   replyMessage?: Message;
   /**
    * Whether to send the message if the message being replied to is deleted.

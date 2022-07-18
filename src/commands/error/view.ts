@@ -2,7 +2,7 @@ import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import { Buffer } from "buffer";
 import {
   CommandInteraction,
-  HTTPAttachmentData,
+  AttachmentBuilder,
   EmbedBuilder,
 } from "discord.js";
 import { DateTime } from "luxon";
@@ -64,7 +64,7 @@ export default class ErrorViewCommand extends Subcommand {
 
     const embed = new EmbedBuilder();
     const embeds: EmbedBuilder[] = [embed];
-    const attachments: HTTPAttachmentData[] = [];
+    const attachments: AttachmentBuilder[] = [];
     embed.setTitle(`Error #${item.id}`);
     embed.addFields([
       {
@@ -91,7 +91,7 @@ export default class ErrorViewCommand extends Subcommand {
     if (item.errorStack) {
       if (attach || item.errorStack.length > 4096) {
         const stackBuffer = Buffer.from(item.errorStack, "utf8");
-        const stackAttachment: HTTPAttachmentData = {
+        const stackAttachment: AttachmentBuilder = {
           attachment: stackBuffer,
           name: "stack.txt",
           file: stackBuffer,
@@ -119,7 +119,7 @@ export default class ErrorViewCommand extends Subcommand {
       const metadataStr = `\`\`\`json\n${metadataStrUnformatted}\n\`\`\``;
       if (attach || metadataStr.length > 4096) {
         const metadataBuffer = Buffer.from(metadataStrUnformatted, "utf8");
-        const metadataAttachment: HTTPAttachmentData = {
+        const metadataAttachment: AttachmentBuilder = {
           attachment: metadataBuffer,
           name: "metadata.json",
           file: metadataBuffer,
