@@ -18,10 +18,10 @@ export default async function messageComponentInteraction(
       return;
     }
 
-    if (!interaction.client.globalButtons.has(customId)) {
+    if (!interaction.client.globalButtonBuilders.has(customId)) {
       await logError(
-        new Error(`Global Button ${customId} not found`),
-        "interaction::globalButton::buttonNotFound",
+        new Error(`Global ButtonBuilder ${customId} not found`),
+        "interaction::globalButtonBuilder::buttonNotFound",
         serializeMessageComponentInteraction(interaction)
       );
       await sendMessage({
@@ -34,7 +34,7 @@ export default async function messageComponentInteraction(
       return;
     }
 
-    const buttonAction = interaction.client.globalButtons.get(customId)!;
+    const buttonAction = interaction.client.globalButtonBuilders.get(customId)!;
     try {
       await buttonAction(interaction);
     } catch (error) {
@@ -42,7 +42,7 @@ export default async function messageComponentInteraction(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const metadata: { [k: string]: any } =
         serializeMessageComponentInteraction(interaction);
-      await logError(error, "interaction::globalButton", metadata);
+      await logError(error, "interaction::globalButtonBuilder", metadata);
       try {
         await sendMessage({
           itemType: ItemType.interaction,
@@ -55,13 +55,13 @@ export default async function messageComponentInteraction(
       } catch (e2) {
         metadata.deferred = interaction.deferred;
         metadata.replied = interaction.replied;
-        await logError(e2, "interaction::globalButton::errorReply", metadata);
+        await logError(e2, "interaction::globalButtonBuilder::errorReply", metadata);
       }
     }
   } catch (e) {
     await logError(
       e,
-      "interaction::globalButton::processing",
+      "interaction::globalButtonBuilder::processing",
       serializeMessageComponentInteraction(interaction)
     );
   }

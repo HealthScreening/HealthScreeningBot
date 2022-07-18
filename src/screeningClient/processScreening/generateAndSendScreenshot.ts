@@ -1,7 +1,7 @@
-import { ActionRow } from "discord.js";
+import { ActionRowBuilder } from "discord.js";
 
 import { AutoUser } from "../../orm/autoUser";
-import getPresetButton from "../../utils/buttonPresets";
+import getPresetButtonBuilder from "../../utils/buttonPresets";
 import logError from "../../utils/logError";
 import {
   ItemType,
@@ -41,7 +41,7 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
     };
     if (messageParams.itemType === ItemType.user) {
       messageParams.components = [
-        new ActionRow().addComponents(getPresetButton("delete")),
+        new ActionRowBuilder().addComponents(getPresetButtonBuilder("delete")),
       ];
     }
 

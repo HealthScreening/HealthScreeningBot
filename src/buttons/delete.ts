@@ -10,7 +10,7 @@ async function deleteMessage(interaction: HSBMessageComponentInteraction) {
   return message.delete();
 }
 
-export default async function deleteButton(
+export default async function deleteButtonBuilder(
   interaction: HSBMessageComponentInteraction
 ) {
   const { message } = interaction;

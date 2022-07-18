@@ -9,8 +9,8 @@ import {
   TextChannel,
 } from "discord.js";
 
-import deleteButton from "../buttons/delete";
-import goToDMButton from "../buttons/goToDM";
+import deleteButtonBuilder from "../buttons/delete";
+import goToDMButtonBuilder from "../buttons/goToDM";
 import CommandCommand from "../commands/command";
 import DeleteAuto from "../commands/deleteAuto";
 import ErrorCommand from "../commands/error";
@@ -87,13 +87,13 @@ export default class HealthScreeningBotClient extends Client {
     limit: 1,
   });
 
-  public readonly globalButtons: Collection<
+  public readonly globalButtonBuilders: Collection<
     string,
     (interaction: HSBMessageComponentInteraction) => Promise<void>
   > = new Collection(
     Object.entries({
-      delete: deleteButton,
-      go_to_dm: goToDMButton,
+      delete: deleteButtonBuilder,
+      go_to_dm: goToDMButtonBuilder,
     })
   );
 

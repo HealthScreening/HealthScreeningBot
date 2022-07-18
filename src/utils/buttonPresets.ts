@@ -1,9 +1,9 @@
 // This module serves as presets for some common button types
-import { Button, ButtonStyleResolvable } from "discord.js";
+import { ButtonBuilder, ButtonBuilderStyleResolvable } from "discord.js";
 
 import _buttonData from "../data/buttonPresets.json";
 
-export interface PresetButton {
+export interface PresetButtonBuilder {
   customId: string;
   disabled?: boolean;
   label?: string;
@@ -12,10 +12,10 @@ export interface PresetButton {
   style: string;
 }
 
-const buttonData: { [k: string]: PresetButton } = _buttonData;
+const buttonData: { [k: string]: PresetButtonBuilder } = _buttonData;
 
-export default function getPresetButton(customId: string): Button {
-  const button = new Button().setCustomId(customId);
+export default function getPresetButtonBuilder(customId: string): ButtonBuilder {
+  const button = new ButtonBuilder().setCustomId(customId);
   const preset = buttonData[customId];
   if (preset.disabled) {
     button.setDisabled(true);
@@ -34,7 +34,7 @@ export default function getPresetButton(customId: string): Button {
   }
 
   if (preset.style) {
-    button.setStyle(preset.style as ButtonStyleResolvable);
+    button.setStyle(preset.style as ButtonBuilderStyleResolvable);
   }
 
   return button;

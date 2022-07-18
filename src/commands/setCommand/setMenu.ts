@@ -1,8 +1,8 @@
 import {
   Collection,
-  ActionRow,
-  ActionRowComponent,
-  Button,
+  ActionRowBuilder,
+  ActionRowBuilderComponent,
+  ButtonBuilder,
   MessageComponentInteraction,
   MessageSelectMenu,
   Snowflake,
@@ -50,7 +50,7 @@ export default class SetMenu {
   }
 
   /* Used in multiple rows */
-  private readonly dudButton = new Button()
+  private readonly dudButtonBuilder = new ButtonBuilder()
     .setDisabled(true)
     .setLabel("\u200b")
     .setStyle("PRIMARY");
@@ -114,66 +114,66 @@ export default class SetMenu {
     ]);
 
   /* Row #4 */
-  private readonly enableEmailOnly = new Button()
+  private readonly enableEmailOnly = new ButtonBuilder()
     .setCustomId("enableEmailOnly")
     .setLabel("Enable Email Only")
     .setStyle("SUCCESS");
 
-  private readonly disableEmailOnly = new Button()
+  private readonly disableEmailOnly = new ButtonBuilder()
     .setCustomId("disableEmailOnly")
     .setLabel("Disable Email Only")
     .setStyle("DANGER");
 
-  private readonly enablePaused = new Button()
+  private readonly enablePaused = new ButtonBuilder()
     .setCustomId("enablePaused")
     .setLabel("Pause Health Screenings")
     .setStyle("DANGER");
 
-  private readonly disablePaused = new Button()
+  private readonly disablePaused = new ButtonBuilder()
     .setCustomId("disablePaused")
     .setLabel("Resume Health Screenings")
     .setStyle("SUCCESS");
 
-  private readonly booleanActionRow = new ActionRow().addComponents(
+  private readonly booleanActionRowBuilder = new ActionRowBuilder().addComponents(
     this.enableEmailOnly,
     this.disableEmailOnly,
-    new Button(this.dudButton.setCustomId("dud1")),
+    new ButtonBuilder(this.dudButtonBuilder.setCustomId("dud1")),
     this.enablePaused,
     this.disablePaused
   );
 
   /* Row #5 */
-  private readonly increment1Hour = new Button()
+  private readonly increment1Hour = new ButtonBuilder()
     .setCustomId("increment1Hour")
     .setLabel("+1 Hour")
     .setStyle("PRIMARY");
 
-  private readonly decrement1Hour = new Button()
+  private readonly decrement1Hour = new ButtonBuilder()
     .setCustomId("decrement1Hour")
     .setLabel("-1 Hour")
     .setStyle("PRIMARY");
 
-  private readonly increment5Minutes = new Button()
+  private readonly increment5Minutes = new ButtonBuilder()
     .setCustomId("increment5Minutes")
     .setLabel("+5 Minutes")
     .setStyle("PRIMARY");
 
-  private readonly decrement5Minutes = new Button()
+  private readonly decrement5Minutes = new ButtonBuilder()
     .setCustomId("decrement5Minutes")
     .setLabel("-5 Minutes")
     .setStyle("PRIMARY");
 
-  private readonly timeActionRow = new ActionRow().addComponents(
+  private readonly timeActionRowBuilder = new ActionRowBuilder().addComponents(
     this.increment1Hour,
     this.decrement1Hour,
-    new Button(this.dudButton.setCustomId("dud2")),
+    new ButtonBuilder(this.dudButtonBuilder.setCustomId("dud2")),
     this.increment5Minutes,
     this.decrement5Minutes
   );
 
   private _lastInteraction: MessageComponentInteraction | null = null;
 
-  private _disableButtons = true;
+  private _disableButtonBuilders = true;
 
   private async generateEmbed() {
     return generateProfileEmbed(
@@ -349,7 +349,7 @@ export default class SetMenu {
       )
     );
     this.collector.onEnd = async function (
-      collected: Collection<Snowflake, ActionRowComponent>,
+      collected: Collection<Snowflake, ActionRowBuilderComponent>,
       reason: string,
       customCollector: CustomCollector
     ) {
@@ -358,7 +358,7 @@ export default class SetMenu {
         await this._lastInteraction.editReply({
           components: customCollector.rows,
         });
-      } else if (this._disableButtons) {
+      } else if (this._disableButtonBuilders) {
         await customCollector.message.edit({
           components: customCollector.rows,
         });
@@ -378,7 +378,7 @@ export default class SetMenu {
         interaction.interaction as HSBSelectMenuInteraction
       )
     );
-    this.collector.addActionRow(this.booleanActionRow, [
+    this.collector.addActionRowBuilder(this.booleanActionRowBuilder, [
       (interaction) =>
         this.onEnableEmailOnly.bind(this)(
           interaction.interaction as HSBMessageComponentInteraction
@@ -397,7 +397,7 @@ export default class SetMenu {
           interaction.interaction as HSBMessageComponentInteraction
         ),
     ]);
-    this.collector.addActionRow(this.timeActionRow, [
+    this.collector.addActionRowBuilder(this.timeActionRowBuilder, [
       (interaction) =>
         this.onIncrement1Hour.bind(this)(
           interaction.interaction as HSBMessageComponentInteraction
@@ -420,7 +420,7 @@ export default class SetMenu {
 
   async send(options: MessageOptions) {
     if (options.ephemeral) {
-      this._disableButtons = false;
+      this._disableButtonBuilders = false;
     }
 
     return this.collector.send(
