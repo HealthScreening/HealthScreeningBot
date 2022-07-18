@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed } from "discord.js";
+import { CommandInteraction, EmbedBuilder } from "discord.js";
 import { DateTime } from "luxon";
 
 import { Command } from "../client/command";
@@ -29,7 +29,7 @@ export default class Stats extends Command {
       .map((value) => value.count)
       .reduce((a, b) => a + b, 0);
     const curTimeMillis = DateTime.local().toUTC().toMillis();
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setColor("GREEN")
       .setTitle("Bot Stats")
       .setAuthor({
@@ -45,7 +45,7 @@ export default class Stats extends Command {
       )
       .addField("Unique Screening Times", String(timeCounts.length), true)
       .setTimestamp(curTimeMillis);
-    const detailedEmbed = new MessageEmbed()
+    const detailedEmbed = new EmbedBuilder()
       .setColor("GREEN")
       .setTitle("Stats: Auto Screening Times")
       .setAuthor({
@@ -81,7 +81,7 @@ export default class Stats extends Command {
     const onThursday = autoDays.filter((value) => value.onThursday).length;
     const onFriday = autoDays.filter((value) => value.onFriday).length;
     const onSaturday = autoDays.filter((value) => value.onSaturday).length;
-    const daysEmbed = new MessageEmbed()
+    const daysEmbed = new EmbedBuilder()
       .setColor("GREEN")
       .setTitle("Stats: Auto Screening Days")
       .setAuthor({

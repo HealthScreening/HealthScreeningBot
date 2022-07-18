@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed, User } from "discord.js";
+import { CommandInteraction, EmbedBuilder, User } from "discord.js";
 import { DateTime } from "luxon";
 
 import screeningTypes from "@healthscreening/screening-types";
@@ -21,7 +21,7 @@ export async function generateProfileEmbed(
   const autoData = await getAutoData({ userId: user.id }, autoUser);
   const autoDayData = await getAutoDayData({ userId: user.id }, autoDays);
   const deviceData = await getDeviceData({ userId: user.id }, devices);
-  const embed = new MessageEmbed()
+  const embed = new EmbedBuilder()
     .setColor("GREEN")
     .setTitle("Profile")
     .setAuthor({

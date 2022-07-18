@@ -4,7 +4,7 @@ import {
   ActionRowBuilderComponent,
   ButtonBuilder,
   MessageComponentInteraction,
-  MessageEmbed,
+  EmbedBuilder,
   Snowflake,
 } from "discord.js";
 
@@ -14,7 +14,7 @@ import serializeMessageComponentInteraction from "./logError/serializeMessageCom
 import { MessageOptions } from "./multiMessage";
 
 export default class Paginator {
-  readonly pages: MessageEmbed[];
+  readonly pages: EmbedBuilder[];
 
   readonly timeout: number;
 
@@ -57,7 +57,7 @@ export default class Paginator {
     return this.pages.length === 1;
   }
 
-  constructor(pages: MessageEmbed[], timeout = 120000) {
+  constructor(pages: EmbedBuilder[], timeout = 120000) {
     if (pages.length === 0) {
       throw new Error("No pages provided");
     }

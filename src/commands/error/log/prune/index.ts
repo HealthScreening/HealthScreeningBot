@@ -3,7 +3,7 @@ import {
   AutocompleteInteraction,
   Collection,
   CommandInteraction,
-  MessageEmbed,
+  EmbedBuilder,
 } from "discord.js";
 import { DateTime } from "luxon";
 import { Op, col, fn, where } from "sequelize";
@@ -140,7 +140,7 @@ export default class ErrorLogPruneCommand extends Subcommand {
       where: whereQuery,
       limit: limit || undefined,
     });
-    const embed = new MessageEmbed();
+    const embed = new EmbedBuilder();
     embed.setTitle("Pruned Error Log");
     embed.setDescription(`Items Deleted: **${deleted}**`);
     embed.setColor(deleted > 0 ? "GREEN" : "RED");

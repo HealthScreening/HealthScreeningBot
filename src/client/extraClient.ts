@@ -5,7 +5,7 @@ import {
   Collection,
   Interaction,
   Message,
-  MessageEmbed,
+  EmbedBuilder,
   TextChannel,
 } from "discord.js";
 
@@ -102,7 +102,7 @@ export default class HealthScreeningBotClient extends Client {
    * If providing paths, they must be relative to the root of the guides folder at the
    * root of the project, not the root of the source.
    */
-  public guideData: Collection<string, MessageEmbed[]>;
+  public guideData: Collection<string, EmbedBuilder[]>;
 
   constructor(options: ClientOptions) {
     super(options);

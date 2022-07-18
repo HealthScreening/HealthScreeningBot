@@ -3,7 +3,7 @@ import {
   AutocompleteInteraction,
   Collection,
   CommandInteraction,
-  MessageEmbed,
+  EmbedBuilder,
   User,
 } from "discord.js";
 import { DateTime } from "luxon";
@@ -165,7 +165,7 @@ export default class CommandLogPruneCommand extends Subcommand {
       where: whereQuery,
       limit: limit || undefined,
     });
-    const embed = new MessageEmbed();
+    const embed = new EmbedBuilder();
     embed.setTitle("Pruned Command Log");
     embed.setDescription(`Items Deleted: **${deleted}**`);
     embed.setColor(deleted > 0 ? "GREEN" : "RED");

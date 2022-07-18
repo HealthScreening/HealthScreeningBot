@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed } from "discord.js";
+import { CommandInteraction, EmbedBuilder } from "discord.js";
 import { DateTime } from "luxon";
 
 import { Command } from "../client/command";
@@ -56,7 +56,7 @@ export default class TestScreening extends Command {
     const day = interaction.options.getInteger("day") || currentTime.day;
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle(`Screening Logic for ${month}/${day}/${year}`)
       .setAuthor({
         name: interaction.user.username,
@@ -136,7 +136,7 @@ export default class TestScreening extends Command {
     }
 
     embed.setDescription(action);
-    const embed2 = new MessageEmbed()
+    const embed2 = new EmbedBuilder()
       .setTitle("Screenshot Logic")
       .setAuthor({
         name: interaction.user.username,

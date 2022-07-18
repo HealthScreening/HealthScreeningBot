@@ -3,7 +3,7 @@ import { Buffer } from "buffer";
 import {
   CommandInteraction,
   HTTPAttachmentData,
-  MessageEmbed,
+  EmbedBuilder,
 } from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
@@ -62,8 +62,8 @@ export default class ErrorViewCommand extends Subcommand {
       return;
     }
 
-    const embed = new MessageEmbed();
-    const embeds: MessageEmbed[] = [embed];
+    const embed = new EmbedBuilder();
+    const embeds: EmbedBuilder[] = [embed];
     const attachments: HTTPAttachmentData[] = [];
     embed.setTitle(`Error #${item.id}`);
     embed.addFields([
@@ -98,7 +98,7 @@ export default class ErrorViewCommand extends Subcommand {
         };
         attachments.push(stackAttachment);
       } else {
-        const stackEmbed = new MessageEmbed();
+        const stackEmbed = new EmbedBuilder();
         stackEmbed.setTitle(`Stack Trace for Error #${item.id}`);
         stackEmbed.setDescription(`\`\`\`\n${item.errorStack}\n\`\`\``);
         embeds.push(stackEmbed);
@@ -126,7 +126,7 @@ export default class ErrorViewCommand extends Subcommand {
         };
         attachments.push(metadataAttachment);
       } else {
-        const metadataEmbed = new MessageEmbed();
+        const metadataEmbed = new EmbedBuilder();
         metadataEmbed.setTitle(`Metadata for Error #${item.id}`);
         metadataEmbed.setDescription(metadataStr);
         embeds.push(metadataEmbed);

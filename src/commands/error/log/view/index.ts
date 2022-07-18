@@ -3,7 +3,7 @@ import {
   AutocompleteInteraction,
   Collection,
   CommandInteraction,
-  MessageEmbed,
+  EmbedBuilder,
 } from "discord.js";
 import { DateTime } from "luxon";
 import { Op, col, fn, literal, where } from "sequelize";
@@ -178,7 +178,7 @@ export default class ErrorLogViewCommand extends Subcommand {
       });
     }
 
-    const embed = new MessageEmbed();
+    const embed = new EmbedBuilder();
     embed.setTitle("Error Log");
     let fieldData = `Direction: **${isDesc ? "Descending" : "Ascending"}**`;
     if (before) {
@@ -222,11 +222,11 @@ export default class ErrorLogViewCommand extends Subcommand {
     }
 
     embed.addField("Search Properties", fieldData);
-    const embeds: MessageEmbed[] = [];
+    const embeds: EmbedBuilder[] = [];
     if (items.length > 0) {
       embed.setColor("GREEN");
       let baseString = "";
-      let currentEmbed = new MessageEmbed(embed);
+      let currentEmbed = new EmbedBuilder(embed);
       items
         .map(
           (item: ErrorLog) =>
@@ -236,7 +236,7 @@ export default class ErrorLogViewCommand extends Subcommand {
           if (baseString.length + item.length > 4096) {
             currentEmbed.setDescription(baseString.trimEnd());
             embeds.push(currentEmbed);
-            currentEmbed = new MessageEmbed(embed);
+            currentEmbed = new EmbedBuilder(embed);
             baseString = "";
           }
 

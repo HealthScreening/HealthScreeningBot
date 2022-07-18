@@ -5,7 +5,7 @@ import {
   Message,
   ActionRowBuilder,
   MessageComponentInteraction,
-  MessageEmbed,
+  EmbedBuilder,
   User,
 } from "discord.js";
 
@@ -35,7 +35,7 @@ interface BaseMessageOptions {
   /**
    * The embeds to send.
    */
-  embeds?: MessageEmbed[];
+  embeds?: EmbedBuilder[];
   files?: HTTPAttachmentData[];
   replyMessage?: Message;
   /**

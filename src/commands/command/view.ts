@@ -1,5 +1,5 @@
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed } from "discord.js";
+import { CommandInteraction, EmbedBuilder } from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
 
@@ -46,7 +46,7 @@ export default class CommandViewCommand extends Subcommand {
       return;
     }
 
-    const embed = new MessageEmbed();
+    const embed = new EmbedBuilder();
     embed.setTitle(`Command Log Entry #${item.id}`);
     embed.addFields([
       {

@@ -3,7 +3,7 @@ import {
   AutocompleteInteraction,
   Collection,
   CommandInteraction,
-  MessageEmbed,
+  EmbedBuilder,
   User,
 } from "discord.js";
 import { DateTime } from "luxon";
@@ -195,7 +195,7 @@ export default class CommandLogViewCommand extends Subcommand {
       });
     }
 
-    const embed = new MessageEmbed();
+    const embed = new EmbedBuilder();
     embed.setTitle("Command Log");
     let fieldData = `Direction: **${isDesc ? "Descending" : "Ascending"}**`;
     if (before) {
@@ -245,11 +245,11 @@ export default class CommandLogViewCommand extends Subcommand {
     }
 
     embed.addField("Search Properties", fieldData);
-    const embeds: MessageEmbed[] = [];
+    const embeds: EmbedBuilder[] = [];
     if (items.length > 0) {
       embed.setColor("GREEN");
       let baseString = "";
-      let currentEmbed = new MessageEmbed(embed);
+      let currentEmbed = new EmbedBuilder(embed);
       items
         .map(
           (item: CommandLog) =>
@@ -259,7 +259,7 @@ export default class CommandLogViewCommand extends Subcommand {
           if (baseString.length + item.length > 4096) {
             currentEmbed.setDescription(baseString.trimEnd());
             embeds.push(currentEmbed);
-            currentEmbed = new MessageEmbed(embed);
+            currentEmbed = new EmbedBuilder(embed);
             baseString = "";
           }
 
