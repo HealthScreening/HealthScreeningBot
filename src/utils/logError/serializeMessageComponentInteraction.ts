@@ -1,5 +1,5 @@
 import {
-  MessageButton,
+  Button,
   MessageComponentInteraction,
   MessageSelectMenu,
 } from "discord.js";
@@ -8,10 +8,10 @@ export default function serializeMessageComponentInteraction(
   interaction: MessageComponentInteraction
 ) {
   let componentData: object = {};
-  let component: MessageButton | MessageSelectMenu;
+  let component: Button | MessageSelectMenu;
   switch (interaction.componentType) {
     case "BUTTON":
-      component = interaction.component as MessageButton;
+      component = interaction.component as Button;
       componentData = {
         customId: component.customId,
         disabled: component.disabled,

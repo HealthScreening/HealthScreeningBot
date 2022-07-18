@@ -3,7 +3,7 @@ import {
   CommandInteraction,
   HTTPAttachmentData,
   Message,
-  MessageActionRow,
+  ActionRow,
   MessageComponentInteraction,
   MessageEmbed,
   User,
@@ -49,7 +49,7 @@ interface BaseMessageOptions {
    * the user who created the interaction, but also vanishes if the client is restarted.
    */
   ephemeral?: boolean;
-  components?: MessageActionRow[];
+  components?: ActionRow[];
 }
 
 /**

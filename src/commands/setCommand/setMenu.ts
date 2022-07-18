@@ -1,8 +1,8 @@
 import {
   Collection,
-  MessageActionRow,
-  MessageActionRowComponent,
-  MessageButton,
+  ActionRow,
+  ActionRowComponent,
+  Button,
   MessageComponentInteraction,
   MessageSelectMenu,
   Snowflake,
@@ -50,7 +50,7 @@ export default class SetMenu {
   }
 
   /* Used in multiple rows */
-  private readonly dudButton = new MessageButton()
+  private readonly dudButton = new Button()
     .setDisabled(true)
     .setLabel("\u200b")
     .setStyle("PRIMARY");
@@ -114,59 +114,59 @@ export default class SetMenu {
     ]);
 
   /* Row #4 */
-  private readonly enableEmailOnly = new MessageButton()
+  private readonly enableEmailOnly = new Button()
     .setCustomId("enableEmailOnly")
     .setLabel("Enable Email Only")
     .setStyle("SUCCESS");
 
-  private readonly disableEmailOnly = new MessageButton()
+  private readonly disableEmailOnly = new Button()
     .setCustomId("disableEmailOnly")
     .setLabel("Disable Email Only")
     .setStyle("DANGER");
 
-  private readonly enablePaused = new MessageButton()
+  private readonly enablePaused = new Button()
     .setCustomId("enablePaused")
     .setLabel("Pause Health Screenings")
     .setStyle("DANGER");
 
-  private readonly disablePaused = new MessageButton()
+  private readonly disablePaused = new Button()
     .setCustomId("disablePaused")
     .setLabel("Resume Health Screenings")
     .setStyle("SUCCESS");
 
-  private readonly booleanActionRow = new MessageActionRow().addComponents(
+  private readonly booleanActionRow = new ActionRow().addComponents(
     this.enableEmailOnly,
     this.disableEmailOnly,
-    new MessageButton(this.dudButton.setCustomId("dud1")),
+    new Button(this.dudButton.setCustomId("dud1")),
     this.enablePaused,
     this.disablePaused
   );
 
   /* Row #5 */
-  private readonly increment1Hour = new MessageButton()
+  private readonly increment1Hour = new Button()
     .setCustomId("increment1Hour")
     .setLabel("+1 Hour")
     .setStyle("PRIMARY");
 
-  private readonly decrement1Hour = new MessageButton()
+  private readonly decrement1Hour = new Button()
     .setCustomId("decrement1Hour")
     .setLabel("-1 Hour")
     .setStyle("PRIMARY");
 
-  private readonly increment5Minutes = new MessageButton()
+  private readonly increment5Minutes = new Button()
     .setCustomId("increment5Minutes")
     .setLabel("+5 Minutes")
     .setStyle("PRIMARY");
 
-  private readonly decrement5Minutes = new MessageButton()
+  private readonly decrement5Minutes = new Button()
     .setCustomId("decrement5Minutes")
     .setLabel("-5 Minutes")
     .setStyle("PRIMARY");
 
-  private readonly timeActionRow = new MessageActionRow().addComponents(
+  private readonly timeActionRow = new ActionRow().addComponents(
     this.increment1Hour,
     this.decrement1Hour,
-    new MessageButton(this.dudButton.setCustomId("dud2")),
+    new Button(this.dudButton.setCustomId("dud2")),
     this.increment5Minutes,
     this.decrement5Minutes
   );
@@ -349,7 +349,7 @@ export default class SetMenu {
       )
     );
     this.collector.onEnd = async function (
-      collected: Collection<Snowflake, MessageActionRowComponent>,
+      collected: Collection<Snowflake, ActionRowComponent>,
       reason: string,
       customCollector: CustomCollector
     ) {

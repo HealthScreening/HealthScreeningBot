@@ -1,4 +1,4 @@
-import { MessageActionRow } from "discord.js";
+import { ActionRow } from "discord.js";
 
 import { AutoUser } from "../../orm/autoUser";
 import getPresetButton from "../../utils/buttonPresets";
@@ -41,7 +41,7 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
     };
     if (messageParams.itemType === ItemType.user) {
       messageParams.components = [
-        new MessageActionRow().addComponents(getPresetButton("delete")),
+        new ActionRow().addComponents(getPresetButton("delete")),
       ];
     }
 

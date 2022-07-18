@@ -1,5 +1,5 @@
 // This module serves as presets for some common button types
-import { MessageButton, MessageButtonStyleResolvable } from "discord.js";
+import { Button, ButtonStyleResolvable } from "discord.js";
 
 import _buttonData from "../data/buttonPresets.json";
 
@@ -14,8 +14,8 @@ export interface PresetButton {
 
 const buttonData: { [k: string]: PresetButton } = _buttonData;
 
-export default function getPresetButton(customId: string): MessageButton {
-  const button = new MessageButton().setCustomId(customId);
+export default function getPresetButton(customId: string): Button {
+  const button = new Button().setCustomId(customId);
   const preset = buttonData[customId];
   if (preset.disabled) {
     button.setDisabled(true);
@@ -34,7 +34,7 @@ export default function getPresetButton(customId: string): MessageButton {
   }
 
   if (preset.style) {
-    button.setStyle(preset.style as MessageButtonStyleResolvable);
+    button.setStyle(preset.style as ButtonStyleResolvable);
   }
 
   return button;

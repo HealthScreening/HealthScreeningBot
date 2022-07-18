@@ -2,8 +2,8 @@ import {
   Collection,
   InteractionCollector,
   Message,
-  MessageActionRow,
-  MessageActionRowComponent,
+  ActionRow,
+  ActionRowComponent,
   MessageComponentInteraction,
   MessageSelectMenu,
   Snowflake,
@@ -14,14 +14,14 @@ import logError from "./logError";
 import serializeMessageComponentInteraction from "./logError/serializeMessageComponentInteraction";
 import { ItemType, MessageOptions, sendMessage } from "./multiMessage";
 
-export interface CollectedComponent<T extends MessageActionRowComponent> {
+export interface CollectedComponent<T extends ActionRowComponent> {
   component: T;
   // eslint-disable-next-line no-use-before-define -- These depend on each other so there's nothing I can do
   collector: CustomCollector;
   interaction: MessageComponentInteraction;
 }
 
-export interface CustomCollectorComponent<T extends MessageActionRowComponent> {
+export interface CustomCollectorComponent<T extends ActionRowComponent> {
   component: T;
   collector: (item: CollectedComponent<T>) => Promise<void>;
 }
@@ -30,12 +30,12 @@ export interface CustomCollectorComponent<T extends MessageActionRowComponent> {
  * Custom collector that automatically filters by ID.
  */
 export class CustomCollector {
-  readonly components: CustomCollectorComponent<MessageActionRowComponent>[] =
+  readonly components: CustomCollectorComponent<ActionRowComponent>[] =
     [];
 
-  private _currentRow: MessageActionRowComponent[] = [];
+  private _currentRow: ActionRowComponent[] = [];
 
-  readonly rows: MessageActionRow[] = [];
+  readonly rows: ActionRow[] = [];
 
   readonly randomCustomIdPrefix: string;
 
@@ -52,12 +52,12 @@ export class CustomCollector {
     return this._message;
   }
 
-  private compactIntoMessageActionRow() {
-    this.rows.push(new MessageActionRow().addComponents(...this._currentRow));
+  private compactIntoActionRow() {
+    this.rows.push(new ActionRow().addComponents(...this._currentRow));
     this._currentRow = [];
   }
 
-  private manipulateComponent(component: MessageActionRowComponent) {
+  private manipulateComponent(component: ActionRowComponent) {
     if (component.customId === null) {
       component.setCustomId(v4().replace(/-/g, "").toLowerCase());
     }
@@ -66,9 +66,9 @@ export class CustomCollector {
   }
 
   addComponent(
-    component: MessageActionRowComponent,
+    component: ActionRowComponent,
     onCollect: (
-      data: CollectedComponent<MessageActionRowComponent>
+      data: CollectedComponent<ActionRowComponent>
     ) => Promise<void>
   ): this {
     if (
@@ -77,7 +77,7 @@ export class CustomCollector {
       (this._currentRow.length > 0 &&
         this._currentRow[0] instanceof MessageSelectMenu)
     ) {
-      this.compactIntoMessageActionRow();
+      this.compactIntoActionRow();
     }
 
     this.manipulateComponent(component);
@@ -90,9 +90,9 @@ export class CustomCollector {
   }
 
   addActionRow(
-    row: MessageActionRow,
+    row: ActionRow,
     onCollect: ((
-      data: CollectedComponent<MessageActionRowComponent>
+      data: CollectedComponent<ActionRowComponent>
     ) => Promise<void>)[]
   ): this {
     if (
@@ -100,7 +100,7 @@ export class CustomCollector {
       (this._currentRow.length > 0 &&
         this._currentRow[0] instanceof MessageSelectMenu)
     ) {
-      this.compactIntoMessageActionRow();
+      this.compactIntoActionRow();
     }
 
     const customCollectorComponents = row.components.map((value, index) => {
@@ -122,7 +122,7 @@ export class CustomCollector {
     [Message<boolean>, InteractionCollector<MessageComponentInteraction>]
   > {
     if (this._currentRow.length > 0) {
-      this.compactIntoMessageActionRow();
+      this.compactIntoActionRow();
     }
 
     const message = (await sendMessage({
@@ -177,7 +177,7 @@ export class CustomCollector {
     collector.on(
       "end",
       async (
-        collected: Collection<Snowflake, MessageActionRowComponent>,
+        collected: Collection<Snowflake, ActionRowComponent>,
         reason: string
       ) => {
         try {
@@ -201,7 +201,7 @@ export class CustomCollector {
   ) => Promise<void>;
 
   onEnd?: (
-    collected: Collection<Snowflake, MessageActionRowComponent>,
+    collected: Collection<Snowflake, ActionRowComponent>,
     reason: string,
     customCollector: this
   ) => Promise<void>;

@@ -1,8 +1,8 @@
 import {
   Collection,
-  MessageActionRow,
-  MessageActionRowComponent,
-  MessageButton,
+  ActionRow,
+  ActionRowComponent,
+  Button,
   MessageComponentInteraction,
   MessageEmbed,
   Snowflake,
@@ -26,32 +26,32 @@ export default class Paginator {
 
   private _disableButtons = true;
 
-  private readonly toBeginningButton = new MessageButton()
+  private readonly toBeginningButton = new Button()
     .setCustomId("tobeginning")
     .setStyle("PRIMARY")
     .setEmoji("922315496613879828");
 
-  private readonly lastButton = new MessageButton()
+  private readonly lastButton = new Button()
     .setCustomId("last")
     .setStyle("PRIMARY")
     .setEmoji("922315496660021248");
 
-  private readonly nextButton = new MessageButton()
+  private readonly nextButton = new Button()
     .setCustomId("next")
     .setStyle("PRIMARY")
     .setEmoji("922315496563560538");
 
-  private readonly toEndButton = new MessageButton()
+  private readonly toEndButton = new Button()
     .setCustomId("toend")
     .setStyle("PRIMARY")
     .setEmoji("922315496228003841");
 
-  private readonly discardButton = new MessageButton()
+  private readonly discardButton = new Button()
     .setCustomId("discard")
     .setStyle("DANGER")
     .setEmoji("922315496559349800");
 
-  private readonly actionRow: MessageActionRow;
+  private readonly actionRow: ActionRow;
 
   singlePage(): boolean {
     return this.pages.length === 1;
@@ -67,7 +67,7 @@ export default class Paginator {
     );
     this.timeout = timeout;
     this._currentPage = 0;
-    this.actionRow = new MessageActionRow().addComponents(
+    this.actionRow = new ActionRow().addComponents(
       this.toBeginningButton,
       this.lastButton,
       this.nextButton,
@@ -105,7 +105,7 @@ export default class Paginator {
     }
   }
 
-  private async disablePaginator(options: CollectedComponent<MessageButton>) {
+  private async disablePaginator(options: CollectedComponent<Button>) {
     this.disableActionRow();
     return options.interaction.update({
       components: [this.actionRow],
@@ -114,7 +114,7 @@ export default class Paginator {
 
   private async setPage(
     page: number,
-    options: CollectedComponent<MessageButton>
+    options: CollectedComponent<Button>
   ) {
     if (page < 0 || page >= this.pages.length) {
       await options.interaction.reply(
@@ -139,25 +139,25 @@ export default class Paginator {
 
   private loadButtons() {
     this.collector.addActionRow(this.actionRow, [
-      async (options: CollectedComponent<MessageButton>) => {
+      async (options: CollectedComponent<Button>) => {
         await this.setPage(0, options);
       },
-      async (options: CollectedComponent<MessageButton>) => {
+      async (options: CollectedComponent<Button>) => {
         await this.setPage(this._currentPage - 1, options);
       },
-      async (options: CollectedComponent<MessageButton>) => {
+      async (options: CollectedComponent<Button>) => {
         await this.setPage(this._currentPage + 1, options);
       },
-      async (options: CollectedComponent<MessageButton>) => {
+      async (options: CollectedComponent<Button>) => {
         await this.setPage(this.pages.length - 1, options);
       },
-      async (options: CollectedComponent<MessageButton>) => {
+      async (options: CollectedComponent<Button>) => {
         await this.disablePaginator(options);
       },
     ]);
     this.setButtonState();
     this.collector.onEnd = async function (
-      collected: Collection<Snowflake, MessageActionRowComponent>,
+      collected: Collection<Snowflake, ActionRowComponent>,
       reason: string,
       customCollector: CustomCollector
     ) {
