@@ -2,7 +2,7 @@ import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import {
   AutocompleteInteraction,
   Collection,
-  CommandInteraction,
+  ChatInputCommandInteraction,
   EmbedBuilder,
   User,
 } from "discord.js";
@@ -102,7 +102,7 @@ export default class CommandLogPruneCommand extends Subcommand {
       );
   }
 
-  async execute(interaction: CommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const whereQuery: { [k: string]: object } = {};
     const before: number | null = interaction.options.getInteger("before");
     const after: number | null = interaction.options.getInteger("after");

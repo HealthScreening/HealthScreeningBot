@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, EmbedBuilder, User } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, User } from "discord.js";
 import { DateTime } from "luxon";
 
 import screeningTypes from "@healthscreening/screening-types";
@@ -76,7 +76,7 @@ export default class Profile extends Command {
         .setRequired(false)
     ) as SlashCommandBuilder;
 
-  async execute(interaction: CommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const embed = await generateProfileEmbed(interaction.user);
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;

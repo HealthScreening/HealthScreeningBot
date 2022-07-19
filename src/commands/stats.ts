@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, EmbedBuilder } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import { DateTime } from "luxon";
 
 import { Command } from "../client/command";
@@ -13,7 +13,7 @@ export default class Stats extends Command {
     .setName("stats")
     .setDescription("Get bot stats.");
 
-  async execute(interaction: CommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const guildSize = interaction.client.guilds.cache.size;
     let members = 0;
     interaction.client.guilds.cache.forEach((value) => {

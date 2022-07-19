@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import { ChatInputCommandInteraction } from "discord.js";
 
 import { Command } from "../client/command";
 import { AutoDays } from "../orm/autoDays";
@@ -10,7 +10,7 @@ export default class DeleteAuto extends Command {
     .setName("delete_auto")
     .setDescription("Delete any stored auto information.");
 
-  async execute(interaction: CommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const item = await AutoUser.findOne({
       where: { userId: interaction.user.id },
     });

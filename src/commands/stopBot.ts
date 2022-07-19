@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import { ChatInputCommandInteraction } from "discord.js";
 import { exit } from "process";
 
 import { closeBrowser } from "@healthscreening/generate-screenshot";
@@ -13,7 +13,7 @@ export default class StopBot extends Command {
     .setName("stop")
     .setDescription("Stop the bot safely.");
 
-  async execute(interaction: CommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     if (
       !(await checkOwner({ itemType: ItemType.interaction, item: interaction }))
     ) {

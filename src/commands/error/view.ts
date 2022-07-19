@@ -1,7 +1,7 @@
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import { Buffer } from "buffer";
 import {
-  CommandInteraction,
+  ChatInputCommandInteraction,
   AttachmentBuilder,
   EmbedBuilder,
 } from "discord.js";
@@ -42,7 +42,7 @@ export default class ErrorViewCommand extends Subcommand {
       );
   }
 
-  async execute(interaction: CommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const id: number = interaction.options.getInteger("id", true);
     const attach = interaction.options.getBoolean("attach", false) ?? false;
     const ephemeral =
