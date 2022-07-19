@@ -45,9 +45,11 @@
     "@healthscreening/screening-types": "1.0.0",
     "array-string-map": "3.0.0",
     "axios": "0.27.2",
+    "bufferutil": "4.0.6",
     "concurrent-priority-worker-queue": "2.0.0",
     "discord-api-types": "0.33.5",
     "discord.js": "14.0.2",
+    "erlpack": "github:discord/erlpack",
     "lodash": "4.17.21",
     "luxon": "3.0.1",
     "pg": "8.7.3",
@@ -55,7 +57,9 @@
     "puppeteer": "15.4.0",
     "sequelize": "6.21.3",
     "sleep-promise": "9.1.0",
-    "uuid": "8.3.2"
+    "utf-8-validate": "5.0.9",
+    "uuid": "8.3.2",
+    "zlib-sync": "0.1.7"
   },
   "devDependencies": {
     "@healthscreening/sequelize-lazy-migrations": "2.0.0",
