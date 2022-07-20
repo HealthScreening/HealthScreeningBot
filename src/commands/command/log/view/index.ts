@@ -121,7 +121,7 @@ export default class CommandLogViewCommand extends Subcommand {
       "command_name_starts_with"
     );
     const limit: number | null = interaction.options.getInteger("limit");
-    const userId: User | null = interaction.options.getUser("user_id");
+    const userId: string | null = interaction.options.get("user_id")?.value?.toString() ?? null;
     const unique: boolean =
       interaction.options.getBoolean("unique", false) ?? false;
     if (before) {
@@ -167,7 +167,7 @@ export default class CommandLogViewCommand extends Subcommand {
         whereQuery.userId = {};
       }
 
-      whereQuery.userId[Op.eq] = userId.id;
+      whereQuery.userId[Op.eq] = userId;
     }
 
     let items: CommandLog[];

@@ -114,7 +114,7 @@ export default class CommandLogPruneCommand extends Subcommand {
       "command_name_starts_with"
     );
     const limit: number | null = interaction.options.getInteger("limit");
-    const userId: User | null = interaction.options.getUser("user_id");
+    const userId: string | null = interaction.options.get("user_id")?.value?.toString() ?? null;
     if (before) {
       if (!whereQuery.id) {
         whereQuery.id = {};
@@ -158,7 +158,7 @@ export default class CommandLogPruneCommand extends Subcommand {
         whereQuery.userId = {};
       }
 
-      whereQuery.userId[Op.eq] = userId.id;
+      whereQuery.userId[Op.eq] = userId;
     }
 
     const deleted = await CommandLog.destroy({
