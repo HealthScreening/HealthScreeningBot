@@ -60,7 +60,7 @@ export default class TestScreening extends Command {
       .setTitle(`Screening Logic for ${month}/${day}/${year}`)
       .setAuthor({
         name: interaction.user.username,
-        iconURL: interaction.user.displayAvatarURL({ format: "jpg" }),
+        iconURL: interaction.user.displayAvatarURL({ extension: "jpg" }),
       })
       .setTimestamp(DateTime.local().toUTC().toMillis());
     // Step 1, check the holidays
@@ -118,13 +118,11 @@ export default class TestScreening extends Command {
       embed.setColor("Red");
     }
 
-    embed.addField("Holiday", holiday ? "Yes" : "No", true);
-    embed.addField("Paused", paused ? "Yes" : "No", true);
-    embed.addField(
-      `Will Run on ${weekdayName}`,
-      willRunForWeekday ? "Yes" : "No",
-      true
-    );
+    embed.addFields([{ name:"Holiday", value:holiday ? "Yes" : "No", inline:true },
+      { name:"Paused", value:paused ? "Yes" : "No", inline:true },
+      { name:`Will Run on ${weekdayName}`,
+      value:willRunForWeekday ? "Yes" : "No",
+      inline:true}]);
     if (paused) {
       action += " because you have **paused** it.";
     } else if (holiday) {
@@ -140,7 +138,7 @@ export default class TestScreening extends Command {
       .setTitle("Screenshot Logic")
       .setAuthor({
         name: interaction.user.username,
-        iconURL: interaction.user.displayAvatarURL({ format: "jpg" }),
+        iconURL: interaction.user.displayAvatarURL({ extension: "jpg" }),
       })
       .setTimestamp(DateTime.local().toUTC().toMillis());
     // Step 1, check if email only mode is on.
@@ -153,7 +151,7 @@ export default class TestScreening extends Command {
       embed2.setColor("Red");
     }
 
-    embed2.addField("Email Only", emailOnly ? "Yes" : "No", true);
+    embed2.addFields({ name:"Email Only", value:emailOnly ? "Yes" : "No", inline:true });
     if (emailOnly) {
       action2 += " because you have **email only** mode on.";
     } else {
