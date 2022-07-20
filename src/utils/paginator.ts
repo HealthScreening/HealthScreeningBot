@@ -1,11 +1,12 @@
 import {
   Collection,
   ActionRowBuilder,
-  ActionRowBuilderComponent,
+  MessageActionRowComponentBuilder,
   ButtonBuilder,
   MessageComponentInteraction,
   EmbedBuilder,
   Snowflake,
+  ButtonStyle,
 } from "discord.js";
 
 import { CollectedComponent, CustomCollector } from "./customCollector";
@@ -28,30 +29,30 @@ export default class Paginator {
 
   private readonly toBeginningButtonBuilder = new ButtonBuilder()
     .setCustomId("tobeginning")
-    .setStyle("PRIMARY")
+    .setStyle(ButtonStyle.Primary)
     .setEmoji("922315496613879828");
 
   private readonly lastButtonBuilder = new ButtonBuilder()
     .setCustomId("last")
-    .setStyle("PRIMARY")
+    .setStyle(ButtonStyle.Primary)
     .setEmoji("922315496660021248");
 
   private readonly nextButtonBuilder = new ButtonBuilder()
     .setCustomId("next")
-    .setStyle("PRIMARY")
+    .setStyle(ButtonStyle.Primary)
     .setEmoji("922315496563560538");
 
   private readonly toEndButtonBuilder = new ButtonBuilder()
     .setCustomId("toend")
-    .setStyle("PRIMARY")
+    .setStyle(ButtonStyle.Primary)
     .setEmoji("922315496228003841");
 
   private readonly discardButtonBuilder = new ButtonBuilder()
     .setCustomId("discard")
-    .setStyle("DANGER")
+    .setStyle(ButtonStyle.Danger)
     .setEmoji("922315496559349800");
 
-  private readonly actionRow: ActionRowBuilder;
+  private readonly actionRow: ActionRowBuilder<MessageActionRowComponentBuilder>;
 
   singlePage(): boolean {
     return this.pages.length === 1;
@@ -67,7 +68,7 @@ export default class Paginator {
     );
     this.timeout = timeout;
     this._currentPage = 0;
-    this.actionRow = new ActionRowBuilder().addComponents(
+    this.actionRow = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
       this.toBeginningButtonBuilder,
       this.lastButtonBuilder,
       this.nextButtonBuilder,
@@ -157,7 +158,7 @@ export default class Paginator {
     ]);
     this.setButtonBuilderState();
     this.collector.onEnd = async function (
-      collected: Collection<Snowflake, ActionRowBuilderComponent>,
+      collected: Collection<Snowflake, MessageActionRowComponentBuilder>,
       reason: string,
       customCollector: CustomCollector
     ) {

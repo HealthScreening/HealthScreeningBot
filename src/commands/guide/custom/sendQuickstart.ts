@@ -1,4 +1,4 @@
-import { ActionRowBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder } from "discord.js";
 
 import HealthScreeningBotClient from "../../../client/extraClient";
 import getPresetButtonBuilder from "../../../utils/buttonPresets";
@@ -11,7 +11,7 @@ export default async function sendQuickstart(
   await sendMessage({
     embeds: client.guideData.get("quickstart")!,
     components: [
-      new ActionRowBuilder().addComponents(getPresetButtonBuilder("go_to_dm")),
+      new ActionRowBuilder<ButtonBuilder>().addComponents(getPresetButtonBuilder("go_to_dm")),
     ],
     ...options,
   });

@@ -53,7 +53,7 @@ export default class SetMenu {
   private readonly dudButtonBuilder = new ButtonBuilder()
     .setDisabled(true)
     .setLabel("\u200b")
-    .setStyle("PRIMARY");
+    .setStyle(ButtonStyle.Primary);
 
   /* Row #1 */
   private readonly deviceSelect = new SelectMenuBuilder()
@@ -122,12 +122,12 @@ export default class SetMenu {
   private readonly disableEmailOnly = new ButtonBuilder()
     .setCustomId("disableEmailOnly")
     .setLabel("Disable Email Only")
-    .setStyle("DANGER");
+    .setStyle(ButtonStyle.Danger);
 
   private readonly enablePaused = new ButtonBuilder()
     .setCustomId("enablePaused")
     .setLabel("Pause Health Screenings")
-    .setStyle("DANGER");
+    .setStyle(ButtonStyle.Danger);
 
   private readonly disablePaused = new ButtonBuilder()
     .setCustomId("disablePaused")
@@ -146,22 +146,22 @@ export default class SetMenu {
   private readonly increment1Hour = new ButtonBuilder()
     .setCustomId("increment1Hour")
     .setLabel("+1 Hour")
-    .setStyle("PRIMARY");
+    .setStyle(ButtonStyle.Primary);
 
   private readonly decrement1Hour = new ButtonBuilder()
     .setCustomId("decrement1Hour")
     .setLabel("-1 Hour")
-    .setStyle("PRIMARY");
+    .setStyle(ButtonStyle.Primary);
 
   private readonly increment5Minutes = new ButtonBuilder()
     .setCustomId("increment5Minutes")
     .setLabel("+5 Minutes")
-    .setStyle("PRIMARY");
+    .setStyle(ButtonStyle.Primary);
 
   private readonly decrement5Minutes = new ButtonBuilder()
     .setCustomId("decrement5Minutes")
     .setLabel("-5 Minutes")
-    .setStyle("PRIMARY");
+    .setStyle(ButtonStyle.Primary);
 
   private readonly timeActionRowBuilder = new ActionRowBuilder().addComponents(
     this.increment1Hour,

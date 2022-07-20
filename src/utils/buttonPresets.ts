@@ -1,5 +1,6 @@
 // This module serves as presets for some common button types
-import { ButtonBuilder, ButtonBuilderStyleResolvable } from "discord.js";
+import { titleCase } from "title-case";
+import { ButtonBuilder, ButtonStyle } from "discord.js";
 
 import _buttonData from "../data/buttonPresets.json";
 
@@ -34,7 +35,7 @@ export default function getPresetButtonBuilder(customId: string): ButtonBuilder 
   }
 
   if (preset.style) {
-    button.setStyle(preset.style as ButtonBuilderStyleResolvable);
+    button.setStyle(ButtonStyle[titleCase(preset.style)]);
   }
 
   return button;
