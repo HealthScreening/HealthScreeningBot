@@ -62,15 +62,18 @@ export class CustomCollector {
   }
 
   private manipulateComponent(component: MessageActionRowComponentBuilder) {
-    if (component instanceof SelectMenuBuilder && component.data.custom_id === null) {
+    if (component instanceof SelectMenuBuilder) {
+      if (component.data.custom_id === null) {
+        component.setCustomId(v4().replace(/-/g, "").toLowerCase());
+      }
+      component.setCustomId(`${this.randomCustomIdPrefix}_${component.toJSON().custom_id}`); // We already made sure `custom_id` exists prior.
+    }
+    else if (component instanceof ButtonBuilder && !Utils.isLinkButton(component.toJSON())) {
+      if ((component.toJSON() as APIButtonComponentWithCustomId).custom_id === null) {
       component.setCustomId(v4().replace(/-/g, "").toLowerCase());
     }
-    else if (component instanceof ButtonBuilder && !Utils.isLinkButton(component.toJSON()) && (component.toJSON() as APIButtonComponentWithCustomId).custom_id === null) {
-      component.setCustomId(v4().replace(/-/g, "").toLowerCase());
-    } else {
-      return;
+      component.setCustomId(`${this.randomCustomIdPrefix}_${(component.toJSON() as APIButtonComponentWithCustomId).custom_id}`); // We already made sure `custom_id` exists prior.
     }
-    component.setCustomId(`${this.randomCustomIdPrefix}_${component.toJSON()["custom_id"]}`); // We already made sure `custom_id` exists prior.
   }
 
   addComponent(
@@ -160,7 +163,15 @@ export class CustomCollector {
 
         const { customId } = interaction;
         const component = this.components.find(
-          (value) => value.component["custom_id"] ?? null === customId
+          (value) => {
+            let comparingCustomId: string | null = null;
+            if (value.component instanceof SelectMenuBuilder){
+              comparingCustomId = value.component.toJSON().custom_id;
+            } else if (value.component instanceof ButtonBuilder && !Utils.isLinkButton(value.component.toJSON())) {
+              comparingCustomId = (value.component.toJSON() as APIButtonComponentWithCustomId).custom_id;
+            }
+            return comparingCustomId === customId;
+          }
         )!;
         try {
           await component.collector({
