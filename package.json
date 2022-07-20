@@ -48,7 +48,7 @@
     "axios": "0.27.2",
     "concurrent-priority-worker-queue": "2.0.0",
     "discord-api-types": "0.33.5",
-    "discord.js": "13.8.1",
+    "discord.js": "14.0.3",
     "lodash": "4.17.21",
     "luxon": "3.0.1",
     "pg": "8.7.3",
