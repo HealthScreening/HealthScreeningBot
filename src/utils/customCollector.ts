@@ -5,7 +5,7 @@ import {
   ActionRowBuilder,
   ActionRowBuilderComponent,
   MessageComponentInteraction,
-  MessageSelectMenu,
+  SelectMenuBuilder,
   Snowflake,
 } from "discord.js";
 import { v4 } from "uuid";
@@ -73,9 +73,9 @@ export class CustomCollector {
   ): this {
     if (
       this._currentRow.length === 5 ||
-      (component instanceof MessageSelectMenu && this._currentRow.length > 0) ||
+      (component instanceof SelectMenuBuilder && this._currentRow.length > 0) ||
       (this._currentRow.length > 0 &&
-        this._currentRow[0] instanceof MessageSelectMenu)
+        this._currentRow[0] instanceof SelectMenuBuilder)
     ) {
       this.compactIntoActionRowBuilder();
     }
@@ -98,7 +98,7 @@ export class CustomCollector {
     if (
       this._currentRow.length === 5 ||
       (this._currentRow.length > 0 &&
-        this._currentRow[0] instanceof MessageSelectMenu)
+        this._currentRow[0] instanceof SelectMenuBuilder)
     ) {
       this.compactIntoActionRowBuilder();
     }

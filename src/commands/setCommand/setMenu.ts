@@ -4,7 +4,7 @@ import {
   ActionRowBuilderComponent,
   ButtonBuilder,
   MessageComponentInteraction,
-  MessageSelectMenu,
+  SelectMenuBuilder,
   Snowflake,
   User,
 } from "discord.js";
@@ -56,7 +56,7 @@ export default class SetMenu {
     .setStyle("PRIMARY");
 
   /* Row #1 */
-  private readonly deviceSelect = new MessageSelectMenu()
+  private readonly deviceSelect = new SelectMenuBuilder()
     .setCustomId("deviceSelect")
     .setPlaceholder("Device to Use")
     .setMinValues(1)
@@ -64,7 +64,7 @@ export default class SetMenu {
     .addOptions(devicesInSelect);
 
   /* Row #2 */
-  private readonly typeSelect = new MessageSelectMenu()
+  private readonly typeSelect = new SelectMenuBuilder()
     .setCustomId("typeSelect")
     .setPlaceholder("Type of Screening to Generate")
     .setMinValues(1)
@@ -77,7 +77,7 @@ export default class SetMenu {
     );
 
   /* Row #3 */
-  private readonly daySelect = new MessageSelectMenu()
+  private readonly daySelect = new SelectMenuBuilder()
     .setCustomId("daySelect")
     .setPlaceholder("Days to Generate Screening")
     .setMinValues(1)

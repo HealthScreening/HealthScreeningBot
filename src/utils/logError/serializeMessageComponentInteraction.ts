@@ -1,35 +1,38 @@
 import {
+  APIButtonComponent,
+  APIButtonComponentWithCustomId,
+  APISelectMenuComponent,
   ButtonBuilder,
+  ComponentType,
   MessageComponentInteraction,
-  MessageSelectMenu,
+  SelectMenuBuilder,
+  Utils,
 } from "discord.js";
 
 export default function serializeMessageComponentInteraction(
   interaction: MessageComponentInteraction
 ) {
   let componentData: object = {};
-  let component: ButtonBuilder | MessageSelectMenu;
   switch (interaction.componentType) {
-    case "BUTTON":
-      component = interaction.component as ButtonBuilder;
+    case ComponentType.Button:
+      const buttonComponent = interaction.component as APIButtonComponentWithCustomId;
       componentData = {
-        customId: component.customId,
-        disabled: component.disabled,
-        emoji: component.emoji,
-        label: component.label,
-        style: component.style,
-        url: component.url,
+        customId: buttonComponent.custom_id,
+        disabled: buttonComponent.disabled,
+        emoji: buttonComponent.emoji,
+        label: buttonComponent.label,
+        style: buttonComponent.style,
       };
       break;
-    case "SELECT_MENU":
-      component = interaction.component as MessageSelectMenu;
+    case ComponentType.SelectMenu:
+      const selectMenuComponent = interaction.component as APISelectMenuComponent;
       componentData = {
-        customId: component.customId,
-        disabled: component.disabled,
-        minValues: component.minValues,
-        maxValues: component.maxValues,
-        options: component.options,
-        placeholder: component.placeholder,
+        customId: selectMenuComponent.custom_id,
+        disabled: selectMenuComponent.disabled,
+        minValues: selectMenuComponent.min_values,
+        maxValues: selectMenuComponent.max_values,
+        options: selectMenuComponent.options,
+        placeholder: selectMenuComponent.placeholder,
       };
       break;
     default:
