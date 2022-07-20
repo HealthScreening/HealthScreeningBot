@@ -7,6 +7,7 @@ import {
   Message,
   EmbedBuilder,
   TextChannel,
+  InteractionType,
 } from "discord.js";
 
 import deleteButtonBuilder from "../buttons/delete";
@@ -164,15 +165,15 @@ export default class HealthScreeningBotClient extends Client {
   private async oninteractionCreate(interaction: Interaction): Promise<void> {
     try {
       switch (interaction.type) {
-        case "APPLICATION_COMMAND":
+        case InteractionType.ApplicationCommand:
           await commandInteraction(interaction as HSBCommandInteraction);
           break;
-        case "APPLICATION_COMMAND_AUTOCOMPLETE":
+        case InteractionType.ApplicationCommandAutocomplete:
           await commandInteractionAutocomplete(
             interaction as HSBAutocompleteInteraction
           );
           break;
-        case "MESSAGE_COMPONENT":
+        case InteractionType.MessageComponent:
           await messageComponentInteraction(
             interaction as HSBMessageComponentInteraction
           );
