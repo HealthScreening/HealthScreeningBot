@@ -59,14 +59,14 @@ export default class CommandViewCommand extends Subcommand {
         value: `<@${item.userId}> (${item.userName})`,
         inline: false,
       },
+      {
+        name:"Date",
+        value:DateTime.fromMillis(item.createdAt.getTime()).toLocaleString(
+          DateTime.DATETIME_HUGE_WITH_SECONDS
+        ),
+        inline:false
+      }
     ]);
-    embed.addField(
-      "Date",
-      DateTime.fromMillis(item.createdAt.getTime()).toLocaleString(
-        DateTime.DATETIME_HUGE_WITH_SECONDS
-      ),
-      false
-    );
     await interaction.reply({
       embeds: [embed],
       ephemeral,
