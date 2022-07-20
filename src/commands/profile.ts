@@ -26,7 +26,7 @@ export async function generateProfileEmbed(
     .setTitle("Profile")
     .setAuthor({
       name: user.username,
-      iconURL: user.displayAvatarURL({ format: "jpg" }),
+      iconURL: user.displayAvatarURL({ extension: "jpg" }),
     })
     .setTimestamp(DateTime.local().toUTC().toMillis());
   if (autoData) {
@@ -43,9 +43,9 @@ Screening Time: **${
 Screening Type: **${screeningTypes[autoData.type]}**
 Email Only: **${autoData.emailOnly}**
 Screenings Paused: **${autoData.paused}**`;
-    embed.addField("Auto Data", autoDataString);
+    embed.addFields({ name:"Auto Data", value:autoDataString });
   } else {
-    embed.addField("Auto", "**No data**");
+    embed.addFields({ name:"Auto", value:"**No data**" });
   }
 
   if (autoDayData) {
@@ -56,12 +56,12 @@ Screening Sent on Wednesday: **${autoDayData.onWednesday}**
 Screening Sent on Thursday: **${autoDayData.onThursday}**
 Screening Sent on Friday: **${autoDayData.onFriday}**
 Screening Sent on Saturday: **${autoDayData.onSaturday}**`;
-    embed.addField("Auto Day Data", autoDayDataString);
+    embed.addFields({ name:"Auto Day Data", value:autoDayDataString });
   } else {
-    embed.addField("Auto Day", "**No data**");
+    embed.addFields({ name:"Auto Day", value:"**No data**" });
   }
 
-  embed.addField("Device Used for Screenings", deviceData.device);
+  embed.addFields({ name:"Device Used for Screenings", value:deviceData.device });
   return embed;
 }
 
