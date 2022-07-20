@@ -37,7 +37,7 @@ export default function getPresetButtonBuilder(
   }
 
   if (preset.style) {
-    button.setStyle(ButtonStyle[titleCase(preset.style)]);
+    button.setStyle(ButtonStyle[titleCase(preset.style.toLowerCase())]);
   }
 
   return button;
