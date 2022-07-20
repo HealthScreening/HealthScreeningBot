@@ -224,7 +224,7 @@ export default class ErrorLogViewCommand extends Subcommand {
     embed.addField("Search Properties", fieldData);
     const embeds: EmbedBuilder[] = [];
     if (items.length > 0) {
-      embed.setColor("GREEN");
+      embed.setColor("Green");
       let baseString = "";
       let currentEmbed = new EmbedBuilder(embed);
       items
@@ -248,7 +248,7 @@ export default class ErrorLogViewCommand extends Subcommand {
       }
     } else {
       embed.setDescription("No errors found.");
-      embed.setColor("RED");
+      embed.setColor("Red");
       embeds.push(embed);
     }
 

@@ -22,7 +22,7 @@ export async function generateProfileEmbed(
   const autoDayData = await getAutoDayData({ userId: user.id }, autoDays);
   const deviceData = await getDeviceData({ userId: user.id }, devices);
   const embed = new EmbedBuilder()
-    .setColor("GREEN")
+    .setColor("Green")
     .setTitle("Profile")
     .setAuthor({
       name: user.username,

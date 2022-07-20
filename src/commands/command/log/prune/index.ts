@@ -168,7 +168,7 @@ export default class CommandLogPruneCommand extends Subcommand {
     const embed = new EmbedBuilder();
     embed.setTitle("Pruned Command Log");
     embed.setDescription(`Items Deleted: **${deleted}**`);
-    embed.setColor(deleted > 0 ? "GREEN" : "RED");
+    embed.setColor(deleted > 0 ? "Green" : "Red");
     let fieldData = "";
     if (before) {
       fieldData += `\nBefore: **#${before}**`;
@@ -205,7 +205,7 @@ export default class CommandLogPruneCommand extends Subcommand {
     }
 
     if (userId) {
-      fieldData += `\nUser ID: **${userId.id}**`;
+      fieldData += `\nUser ID: **${userId}**`;
     } else {
       fieldData += "\nUser ID: **None**";
     }

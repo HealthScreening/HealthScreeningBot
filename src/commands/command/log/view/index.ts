@@ -233,7 +233,7 @@ export default class CommandLogViewCommand extends Subcommand {
     }
 
     if (userId) {
-      fieldData += `\nUser ID: **${userId.id}**`;
+      fieldData += `\nUser ID: **${userId}**`;
     } else {
       fieldData += "\nUser ID: **None**";
     }
@@ -247,7 +247,7 @@ export default class CommandLogViewCommand extends Subcommand {
     embed.addField("Search Properties", fieldData);
     const embeds: EmbedBuilder[] = [];
     if (items.length > 0) {
-      embed.setColor("GREEN");
+      embed.setColor("Green");
       let baseString = "";
       let currentEmbed = new EmbedBuilder(embed);
       items
@@ -271,7 +271,7 @@ export default class CommandLogViewCommand extends Subcommand {
       }
     } else {
       embed.setDescription("No commands found.");
-      embed.setColor("RED");
+      embed.setColor("Red");
       embeds.push(embed);
     }
 

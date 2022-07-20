@@ -113,9 +113,9 @@ export default class TestScreening extends Command {
       willRun ? "Will" : "Will not"
     } run auto screening for ${month}/${day}/${year}`;
     if (willRun) {
-      embed.setColor("GREEN");
+      embed.setColor("Green");
     } else {
-      embed.setColor("RED");
+      embed.setColor("Red");
     }
 
     embed.addField("Holiday", holiday ? "Yes" : "No", true);
@@ -148,9 +148,9 @@ export default class TestScreening extends Command {
     const willEmail = !emailOnly;
     let action2 = `${willEmail ? "Will" : "Will not"} DM a screenshot`;
     if (willEmail) {
-      embed2.setColor("GREEN");
+      embed2.setColor("Green");
     } else {
-      embed2.setColor("RED");
+      embed2.setColor("Red");
     }
 
     embed2.addField("Email Only", emailOnly ? "Yes" : "No", true);

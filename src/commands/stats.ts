@@ -30,7 +30,7 @@ export default class Stats extends Command {
       .reduce((a, b) => a + b, 0);
     const curTimeMillis = DateTime.local().toUTC().toMillis();
     const embed = new EmbedBuilder()
-      .setColor("GREEN")
+      .setColor("Green")
       .setTitle("Bot Stats")
       .setAuthor({
         name: "Auto Health Screening",
@@ -46,7 +46,7 @@ export default class Stats extends Command {
       .addField("Unique Screening Times", String(timeCounts.length), true)
       .setTimestamp(curTimeMillis);
     const detailedEmbed = new EmbedBuilder()
-      .setColor("GREEN")
+      .setColor("Green")
       .setTitle("Stats: Auto Screening Times")
       .setAuthor({
         name: "Auto Health Screening",
@@ -82,7 +82,7 @@ export default class Stats extends Command {
     const onFriday = autoDays.filter((value) => value.onFriday).length;
     const onSaturday = autoDays.filter((value) => value.onSaturday).length;
     const daysEmbed = new EmbedBuilder()
-      .setColor("GREEN")
+      .setColor("Green")
       .setTitle("Stats: Auto Screening Days")
       .setAuthor({
         name: "Auto Health Screening",
