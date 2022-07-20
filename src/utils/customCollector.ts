@@ -226,7 +226,7 @@ export class CustomCollector {
 
       component.setCustomId(
         `${this.randomCustomIdPrefix}_${component.toJSON().custom_id}`
-      ); // We already made sure `custom_id` exists prior.
+      );
     } else if (
       component instanceof ButtonBuilder &&
       !Utils.isLinkButton(component.toJSON())
@@ -242,7 +242,7 @@ export class CustomCollector {
         `${this.randomCustomIdPrefix}_${
           (component.toJSON() as APIButtonComponentWithCustomId).custom_id
         }`
-      ); // We already made sure `custom_id` exists prior.
+      );
     }
   }
 }

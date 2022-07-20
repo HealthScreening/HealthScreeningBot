@@ -1,9 +1,9 @@
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import {
   AutocompleteInteraction,
   ChatInputCommandInteraction,
   Collection,
   EmbedBuilder,
+  SlashCommandSubcommandBuilder,
 } from "discord.js";
 import { DateTime } from "luxon";
 import { Op, col, fn, literal, where } from "sequelize";

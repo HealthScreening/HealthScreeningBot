@@ -1,9 +1,9 @@
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import { Buffer } from "buffer";
 import {
   AttachmentBuilder,
   ChatInputCommandInteraction,
   EmbedBuilder,
+  SlashCommandSubcommandBuilder,
 } from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";

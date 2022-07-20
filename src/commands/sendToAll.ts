@@ -1,8 +1,8 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
 import {
   AutocompleteInteraction,
   Collection,
   EmbedBuilder,
+  SlashCommandBuilder,
   User,
 } from "discord.js";
 import sleep from "sleep-promise";

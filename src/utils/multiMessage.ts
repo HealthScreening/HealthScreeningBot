@@ -1,5 +1,5 @@
-import { APIMessage } from "discord-api-types/v9";
 import {
+  APIMessage,
   ActionRowBuilder,
   AttachmentBuilder,
   CommandInteraction,

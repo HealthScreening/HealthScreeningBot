@@ -1,5 +1,4 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { Collection } from "discord.js";
+import { Collection, SlashCommandBuilder } from "discord.js";
 
 import { Command, Subcommand, SubcommandGroup } from "../../client/command";
 import checkOwner from "../../utils/checkOwner";

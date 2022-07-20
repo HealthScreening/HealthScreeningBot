@@ -1,5 +1,8 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { AutocompleteInteraction, Collection } from "discord.js";
+import {
+  AutocompleteInteraction,
+  Collection,
+  SlashCommandBuilder,
+} from "discord.js";
 
 import { Command } from "../../client/command";
 import { HSBCommandInteraction } from "../../discordjs-overrides";

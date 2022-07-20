@@ -1,5 +1,7 @@
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
-import { ChatInputCommandInteraction } from "discord.js";
+import {
+  ChatInputCommandInteraction,
+  SlashCommandSubcommandBuilder,
+} from "discord.js";
 import { Op } from "sequelize";
 
 import { Subcommand } from "../../client/command";

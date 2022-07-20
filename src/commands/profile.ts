@@ -1,5 +1,9 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { ChatInputCommandInteraction, EmbedBuilder, User } from "discord.js";
+import {
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+  SlashCommandBuilder,
+  User,
+} from "discord.js";
 import { DateTime } from "luxon";
 
 import screeningTypes from "@healthscreening/screening-types";

@@ -1,8 +1,5 @@
 import { REST } from "@discordjs/rest";
-import {
-  RESTPostAPIApplicationCommandsJSONBody,
-  Routes,
-} from "discord-api-types/v9";
+import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord.js";
 
 import { discord } from "../config";
 import HealthScreeningBotClient from "./client/extraClient";

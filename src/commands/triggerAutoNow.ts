@@ -1,6 +1,5 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
 import ArrayStringMap from "array-string-map";
-import { TextChannel } from "discord.js";
+import { SlashCommandBuilder, TextChannel } from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
 

@@ -1,5 +1,8 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { AutocompleteInteraction, Collection } from "discord.js";
+import {
+  AutocompleteInteraction,
+  Collection,
+  SlashCommandBuilder,
+} from "discord.js";
 import { devices } from "puppeteer";
 
 import screeningTypes, {

@@ -1,8 +1,8 @@
-import { SlashCommandSubcommandGroupBuilder } from "@discordjs/builders";
 import {
   AutocompleteInteraction,
   Collection,
   CommandInteraction,
+  SlashCommandSubcommandGroupBuilder,
 } from "discord.js";
 
 import { Subcommand } from ".";
