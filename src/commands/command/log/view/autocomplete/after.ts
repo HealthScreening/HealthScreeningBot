@@ -1,7 +1,6 @@
-import { User } from "discord.js";
 import { Op, cast, col, where } from "sequelize";
 
-import { HSBAutocompleteInteraction, HSBCommandInteraction } from "../../../../../discordjs-overrides";
+import { HSBAutocompleteInteraction } from "../../../../../discordjs-overrides";
 import { CommandLog } from "../../../../../orm/commandLog";
 
 export default async function afterAutocomplete(
@@ -15,7 +14,7 @@ export default async function afterAutocomplete(
   const commandNameStartsWith: string | null = interaction.options.getString(
     "command_name_starts_with"
   );
-  const userId: User | null = (interaction as unknown as HSBCommandInteraction).options.getUser("user_id");
+  const userId: string | null = interaction.options.get("user_id")?.value?.toString() ?? null;
   const whereQuery: { [k: string]: object } = {
     [Op.and]: [
       where(cast(col("id"), "text"), {
@@ -60,7 +59,7 @@ export default async function afterAutocomplete(
       whereQuery.userId = {};
     }
 
-    whereQuery.userId[Op.eq] = userId.id;
+    whereQuery.userId[Op.eq] = userId;
   }
 
   await interaction.respond(
