@@ -1,12 +1,13 @@
 import {
   Collection,
   ActionRowBuilder,
-  ActionRowBuilderComponent,
+  MessageActionRowComponentBuilder,
   ButtonBuilder,
   MessageComponentInteraction,
   SelectMenuBuilder,
   Snowflake,
   User,
+  ButtonStyle,
 } from "discord.js";
 
 import screeningTypes, {
@@ -117,7 +118,7 @@ export default class SetMenu {
   private readonly enableEmailOnly = new ButtonBuilder()
     .setCustomId("enableEmailOnly")
     .setLabel("Enable Email Only")
-    .setStyle("SUCCESS");
+    .setStyle(ButtonStyle.Success);
 
   private readonly disableEmailOnly = new ButtonBuilder()
     .setCustomId("disableEmailOnly")
@@ -132,12 +133,12 @@ export default class SetMenu {
   private readonly disablePaused = new ButtonBuilder()
     .setCustomId("disablePaused")
     .setLabel("Resume Health Screenings")
-    .setStyle("SUCCESS");
+    .setStyle(ButtonStyle.Success);
 
-  private readonly booleanActionRowBuilder = new ActionRowBuilder().addComponents(
+  private readonly booleanActionRowBuilder = new ActionRowBuilder<ButtonBuilder>().addComponents(
     this.enableEmailOnly,
     this.disableEmailOnly,
-    new ButtonBuilder(this.dudButtonBuilder.setCustomId("dud1")),
+    ButtonBuilder.from(this.dudButtonBuilder.setCustomId("dud1")),
     this.enablePaused,
     this.disablePaused
   );
@@ -163,10 +164,10 @@ export default class SetMenu {
     .setLabel("-5 Minutes")
     .setStyle(ButtonStyle.Primary);
 
-  private readonly timeActionRowBuilder = new ActionRowBuilder().addComponents(
+  private readonly timeActionRowBuilder = new ActionRowBuilder<ButtonBuilder>().addComponents(
     this.increment1Hour,
     this.decrement1Hour,
-    new ButtonBuilder(this.dudButtonBuilder.setCustomId("dud2")),
+    ButtonBuilder.from(this.dudButtonBuilder.setCustomId("dud2")),
     this.increment5Minutes,
     this.decrement5Minutes
   );
@@ -337,7 +338,7 @@ export default class SetMenu {
   private disableAll() {
     for (const actionRow of this.collector.rows) {
       for (const component of actionRow.components) {
-        component.disabled = true;
+        component.setDisabled(true)
       }
     }
   }
@@ -349,7 +350,7 @@ export default class SetMenu {
       )
     );
     this.collector.onEnd = async function (
-      collected: Collection<Snowflake, ActionRowBuilderComponent>,
+      collected: Collection<Snowflake, MessageActionRowComponentBuilder>,
       reason: string,
       customCollector: CustomCollector
     ) {
