@@ -108,7 +108,12 @@ export default class TestScreening extends Command {
         willRunForWeekday = autoDayData.onSunday;
         break;
       default:
-        throw new Error(`Invalid weekday: ${weekday}`);
+        await interaction.reply({
+          content: `Invalid date entered: ${month}/${day}/${year}`,
+          ephemeral: true,
+        }
+        );
+        return;
     }
 
     const willRun = !paused && !holiday && willRunForWeekday;
