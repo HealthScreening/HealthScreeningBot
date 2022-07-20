@@ -1,16 +1,16 @@
 import {
+  APIButtonComponentWithCustomId,
+  ActionRowBuilder,
+  ButtonBuilder,
+  CollectedInteraction,
   Collection,
   InteractionCollector,
   Message,
-  ActionRowBuilder,
   MessageActionRowComponentBuilder,
-  APIButtonComponentWithCustomId,
   MessageComponentInteraction,
   SelectMenuBuilder,
   Snowflake,
   Utils,
-  ButtonBuilder,
-  CollectedInteraction,
 } from "discord.js";
 import { v4 } from "uuid";
 
@@ -18,14 +18,18 @@ import logError from "./logError";
 import serializeMessageComponentInteraction from "./logError/serializeMessageComponentInteraction";
 import { ItemType, MessageOptions, sendMessage } from "./multiMessage";
 
-export interface CollectedComponent<T extends MessageActionRowComponentBuilder = MessageActionRowComponentBuilder> {
+export interface CollectedComponent<
+  T extends MessageActionRowComponentBuilder = MessageActionRowComponentBuilder
+> {
   component: T;
   // eslint-disable-next-line no-use-before-define -- These depend on each other so there's nothing I can do
   collector: CustomCollector;
   interaction: MessageComponentInteraction;
 }
 
-export interface CustomCollectorComponent<T extends MessageActionRowComponentBuilder> {
+export interface CustomCollectorComponent<
+  T extends MessageActionRowComponentBuilder
+> {
   component: T;
   collector: (item: CollectedComponent<T>) => Promise<void>;
 }
@@ -37,50 +41,39 @@ export class CustomCollector {
   readonly components: CustomCollectorComponent<MessageActionRowComponentBuilder>[] =
     [];
 
-  private _currentRow: MessageActionRowComponentBuilder[] = [];
-
   readonly rows: ActionRowBuilder<MessageActionRowComponentBuilder>[] = [];
 
   readonly randomCustomIdPrefix: string;
 
-  private _message: Message;
-
   readonly name: string;
+
+  onCollect?: (
+    interaction: MessageComponentInteraction,
+    customCollector: this
+  ) => Promise<void>;
+
+  onEnd?: (
+    collected: Collection<Snowflake, MessageActionRowComponentBuilder>,
+    reason: string,
+    customCollector: this
+  ) => Promise<void>;
+
+  private _currentRow: MessageActionRowComponentBuilder[] = [];
 
   constructor(name = "customCollector") {
     this.randomCustomIdPrefix = v4().replace(/-/g, "").toLowerCase();
     this.name = name;
   }
 
+  private _message: Message;
+
   get message(): Message {
     return this._message;
   }
 
-  private compactIntoActionRowBuilder() {
-    this.rows.push(new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(...this._currentRow));
-    this._currentRow = [];
-  }
-
-  private manipulateComponent(component: MessageActionRowComponentBuilder) {
-    if (component instanceof SelectMenuBuilder) {
-      if (component.data.custom_id === null) {
-        component.setCustomId(v4().replace(/-/g, "").toLowerCase());
-      }
-      component.setCustomId(`${this.randomCustomIdPrefix}_${component.toJSON().custom_id}`); // We already made sure `custom_id` exists prior.
-    }
-    else if (component instanceof ButtonBuilder && !Utils.isLinkButton(component.toJSON())) {
-      if ((component.toJSON() as APIButtonComponentWithCustomId).custom_id === null) {
-      component.setCustomId(v4().replace(/-/g, "").toLowerCase());
-    }
-      component.setCustomId(`${this.randomCustomIdPrefix}_${(component.toJSON() as APIButtonComponentWithCustomId).custom_id}`); // We already made sure `custom_id` exists prior.
-    }
-  }
-
   addComponent(
     component: MessageActionRowComponentBuilder,
-    onCollect: (
-      data: CollectedComponent
-    ) => Promise<void>
+    onCollect: (data: CollectedComponent) => Promise<void>
   ): this {
     if (
       this._currentRow.length === 5 ||
@@ -102,9 +95,7 @@ export class CustomCollector {
 
   addActionRowBuilder(
     row: ActionRowBuilder<MessageActionRowComponentBuilder>,
-    onCollect: ((
-      data: CollectedComponent
-    ) => Promise<void>)[]
+    onCollect: ((data: CollectedComponent) => Promise<void>)[]
   ): this {
     if (
       this._currentRow.length === 5 ||
@@ -114,13 +105,15 @@ export class CustomCollector {
       this.compactIntoActionRowBuilder();
     }
 
-    const customCollectorComponents = row.components.map((value: MessageActionRowComponentBuilder, index) => {
-      this.manipulateComponent(value);
-      return {
-        component: value,
-        collector: onCollect[index],
-      };
-    });
+    const customCollectorComponents = row.components.map(
+      (value: MessageActionRowComponentBuilder, index) => {
+        this.manipulateComponent(value);
+        return {
+          component: value,
+          collector: onCollect[index],
+        };
+      }
+    );
     this.rows.push(row);
     this.components.push(...customCollectorComponents);
     return this;
@@ -129,9 +122,7 @@ export class CustomCollector {
   async send(
     options: MessageOptions,
     collectMs: number
-  ): Promise<
-    [Message<boolean>, InteractionCollector<CollectedInteraction>]
-  > {
+  ): Promise<[Message<boolean>, InteractionCollector<CollectedInteraction>]> {
     if (this._currentRow.length > 0) {
       this.compactIntoActionRowBuilder();
     }
@@ -162,17 +153,21 @@ export class CustomCollector {
         }
 
         const { customId } = interaction;
-        const component = this.components.find(
-          (value) => {
-            let comparingCustomId: string | null = null;
-            if (value.component instanceof SelectMenuBuilder){
-              comparingCustomId = value.component.toJSON().custom_id;
-            } else if (value.component instanceof ButtonBuilder && !Utils.isLinkButton(value.component.toJSON())) {
-              comparingCustomId = (value.component.toJSON() as APIButtonComponentWithCustomId).custom_id;
-            }
-            return comparingCustomId === customId;
+        const component = this.components.find((value) => {
+          let comparingCustomId: string | null = null;
+          if (value.component instanceof SelectMenuBuilder) {
+            comparingCustomId = value.component.toJSON().custom_id;
+          } else if (
+            value.component instanceof ButtonBuilder &&
+            !Utils.isLinkButton(value.component.toJSON())
+          ) {
+            comparingCustomId = (
+              value.component.toJSON() as APIButtonComponentWithCustomId
+            ).custom_id;
           }
-        )!;
+
+          return comparingCustomId === customId;
+        })!;
         try {
           await component.collector({
             component: component.component,
@@ -214,14 +209,40 @@ export class CustomCollector {
     return [message, collector];
   }
 
-  onCollect?: (
-    interaction: MessageComponentInteraction,
-    customCollector: this
-  ) => Promise<void>;
+  private compactIntoActionRowBuilder() {
+    this.rows.push(
+      new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
+        ...this._currentRow
+      )
+    );
+    this._currentRow = [];
+  }
 
-  onEnd?: (
-    collected: Collection<Snowflake, MessageActionRowComponentBuilder>,
-    reason: string,
-    customCollector: this
-  ) => Promise<void>;
+  private manipulateComponent(component: MessageActionRowComponentBuilder) {
+    if (component instanceof SelectMenuBuilder) {
+      if (component.data.custom_id === null) {
+        component.setCustomId(v4().replace(/-/g, "").toLowerCase());
+      }
+
+      component.setCustomId(
+        `${this.randomCustomIdPrefix}_${component.toJSON().custom_id}`
+      ); // We already made sure `custom_id` exists prior.
+    } else if (
+      component instanceof ButtonBuilder &&
+      !Utils.isLinkButton(component.toJSON())
+    ) {
+      if (
+        (component.toJSON() as APIButtonComponentWithCustomId).custom_id ===
+        null
+      ) {
+        component.setCustomId(v4().replace(/-/g, "").toLowerCase());
+      }
+
+      component.setCustomId(
+        `${this.randomCustomIdPrefix}_${
+          (component.toJSON() as APIButtonComponentWithCustomId).custom_id
+        }`
+      ); // We already made sure `custom_id` exists prior.
+    }
+  }
 }

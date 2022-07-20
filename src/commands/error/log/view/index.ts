@@ -1,8 +1,8 @@
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import {
   AutocompleteInteraction,
-  Collection,
   ChatInputCommandInteraction,
+  Collection,
   EmbedBuilder,
 } from "discord.js";
 import { DateTime } from "luxon";
@@ -221,7 +221,7 @@ export default class ErrorLogViewCommand extends Subcommand {
       fieldData += "\nLimit: **None**";
     }
 
-    embed.addFields({ name:"Search Properties", value:fieldData });
+    embed.addFields({ name: "Search Properties", value: fieldData });
     const embeds: EmbedBuilder[] = [];
     if (items.length > 0) {
       embed.setColor("Green");

@@ -39,18 +39,24 @@ export default class Stats extends Command {
       })
       .addFields([
         {
-          name:"Servers", value:String(guildSize), inline:true
+          name: "Servers",
+          value: String(guildSize),
+          inline: true,
         },
         {
-          name:"Total Members in All Servers", value:String(members), inline: true
+          name: "Total Members in All Servers",
+          value: String(members),
+          inline: true,
         },
         {
-          name:"People Registered for Auto Screenings",
-          value:String(registeredPeople)
+          name: "People Registered for Auto Screenings",
+          value: String(registeredPeople),
         },
         {
-          name:"Unique Screening Times", value:String(timeCounts.length), inline:true
-        }
+          name: "Unique Screening Times",
+          value: String(timeCounts.length),
+          inline: true,
+        },
       ])
       .setTimestamp(curTimeMillis);
     const detailedEmbed = new EmbedBuilder()
@@ -97,13 +103,15 @@ export default class Stats extends Command {
         iconURL:
           "https://cdn.discordapp.com/icons/889983763994521610/43fc775c6dbce5cf84b76f54e8bf5729.webp",
       })
-      .addFields([{ name:"Sunday", value:String(onSunday), inline:true },
-      { name:"Monday", value:String(onMonday), inline:true },
-      { name:"Tuesday", value:String(onTuesday), inline:true },
-      { name:"Wednesday", value:String(onWednesday), inline:true },
-      { name:"Thursday", value:String(onThursday), inline:true },
-      { name:"Friday", value:String(onFriday), inline:true },
-      { name:"Saturday", value:String(onSaturday), inline:true }])
+      .addFields([
+        { name: "Sunday", value: String(onSunday), inline: true },
+        { name: "Monday", value: String(onMonday), inline: true },
+        { name: "Tuesday", value: String(onTuesday), inline: true },
+        { name: "Wednesday", value: String(onWednesday), inline: true },
+        { name: "Thursday", value: String(onThursday), inline: true },
+        { name: "Friday", value: String(onFriday), inline: true },
+        { name: "Saturday", value: String(onSaturday), inline: true },
+      ])
       .setTimestamp(curTimeMillis);
     const embeds = [embed, detailedEmbed, daysEmbed];
     await new Paginator(embeds).send({

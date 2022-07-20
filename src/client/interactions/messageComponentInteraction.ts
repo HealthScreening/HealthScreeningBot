@@ -55,7 +55,11 @@ export default async function messageComponentInteraction(
       } catch (e2) {
         metadata.deferred = interaction.deferred;
         metadata.replied = interaction.replied;
-        await logError(e2, "interaction::globalButtonBuilder::errorReply", metadata);
+        await logError(
+          e2,
+          "interaction::globalButtonBuilder::errorReply",
+          metadata
+        );
       }
     }
   } catch (e) {

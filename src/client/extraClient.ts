@@ -3,11 +3,11 @@ import {
   Client,
   ClientOptions,
   Collection,
-  Interaction,
-  Message,
   EmbedBuilder,
-  TextChannel,
+  Interaction,
   InteractionType,
+  Message,
+  TextChannel,
 } from "discord.js";
 
 import deleteButtonBuilder from "../buttons/delete";

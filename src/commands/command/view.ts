@@ -60,12 +60,12 @@ export default class CommandViewCommand extends Subcommand {
         inline: false,
       },
       {
-        name:"Date",
-        value:DateTime.fromMillis(item.createdAt.getTime()).toLocaleString(
+        name: "Date",
+        value: DateTime.fromMillis(item.createdAt.getTime()).toLocaleString(
           DateTime.DATETIME_HUGE_WITH_SECONDS
         ),
-        inline:false
-      }
+        inline: false,
+      },
     ]);
     await interaction.reply({
       embeds: [embed],

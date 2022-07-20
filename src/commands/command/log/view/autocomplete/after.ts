@@ -14,7 +14,8 @@ export default async function afterAutocomplete(
   const commandNameStartsWith: string | null = interaction.options.getString(
     "command_name_starts_with"
   );
-  const userId: string | null = interaction.options.get("user_id")?.value?.toString() ?? null;
+  const userId: string | null =
+    interaction.options.get("user_id")?.value?.toString() ?? null;
   const whereQuery: { [k: string]: object } = {
     [Op.and]: [
       where(cast(col("id"), "text"), {

@@ -1,12 +1,12 @@
 import {
-  Collection,
   ActionRowBuilder,
-  MessageActionRowComponentBuilder,
   ButtonBuilder,
-  MessageComponentInteraction,
-  EmbedBuilder,
-  Snowflake,
   ButtonStyle,
+  Collection,
+  EmbedBuilder,
+  MessageActionRowComponentBuilder,
+  MessageComponentInteraction,
+  Snowflake,
 } from "discord.js";
 
 import { CollectedComponent, CustomCollector } from "./customCollector";
@@ -18,8 +18,6 @@ export default class Paginator {
   readonly pages: EmbedBuilder[];
 
   readonly timeout: number;
-
-  private _currentPage: number;
 
   private readonly collector: CustomCollector = new CustomCollector();
 
@@ -54,10 +52,6 @@ export default class Paginator {
 
   private readonly actionRow: ActionRowBuilder<MessageActionRowComponentBuilder>;
 
-  singlePage(): boolean {
-    return this.pages.length === 1;
-  }
-
   constructor(pages: EmbedBuilder[], timeout = 120000) {
     if (pages.length === 0) {
       throw new Error("No pages provided");
@@ -68,18 +62,40 @@ export default class Paginator {
     );
     this.timeout = timeout;
     this._currentPage = 0;
-    this.actionRow = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
-      this.toBeginningButtonBuilder,
-      this.lastButtonBuilder,
-      this.nextButtonBuilder,
-      this.toEndButtonBuilder,
-      this.discardButtonBuilder
-    );
+    this.actionRow =
+      new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
+        this.toBeginningButtonBuilder,
+        this.lastButtonBuilder,
+        this.nextButtonBuilder,
+        this.toEndButtonBuilder,
+        this.discardButtonBuilder
+      );
     this.loadButtonBuilders();
   }
 
+  private _currentPage: number;
+
   get currentPage(): number {
     return this._currentPage;
+  }
+
+  singlePage(): boolean {
+    return this.pages.length === 1;
+  }
+
+  async send(options: MessageOptions) {
+    if (options.ephemeral) {
+      this._disableButtonBuilders = false;
+    }
+
+    return this.collector.send(
+      {
+        embeds: [this.pages[this._currentPage]],
+        components: this.singlePage() ? [] : [this.actionRow],
+        ...options,
+      },
+      this.timeout
+    );
   }
 
   private setButtonBuilderState() {
@@ -177,20 +193,5 @@ export default class Paginator {
         });
       }
     }.bind(this);
-  }
-
-  async send(options: MessageOptions) {
-    if (options.ephemeral) {
-      this._disableButtonBuilders = false;
-    }
-
-    return this.collector.send(
-      {
-        embeds: [this.pages[this._currentPage]],
-        components: this.singlePage() ? [] : [this.actionRow],
-        ...options,
-      },
-      this.timeout
-    );
   }
 }

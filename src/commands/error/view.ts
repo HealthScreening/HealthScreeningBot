@@ -1,8 +1,8 @@
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import { Buffer } from "buffer";
 import {
-  ChatInputCommandInteraction,
   AttachmentBuilder,
+  ChatInputCommandInteraction,
   EmbedBuilder,
 } from "discord.js";
 import { DateTime } from "luxon";
@@ -79,21 +79,21 @@ export default class ErrorViewCommand extends Subcommand {
       },
     ]);
     if (item.errorDescription) {
-      embed.addFields(
-        {
-          name:"Description",
-          value:item.errorDescription.substring(0, 1024),
-          inline:false
-        }
-      );
+      embed.addFields({
+        name: "Description",
+        value: item.errorDescription.substring(0, 1024),
+        inline: false,
+      });
     } else {
-      embed.addFields({ name:"Description", value:"None", inline:false });
+      embed.addFields({ name: "Description", value: "None", inline: false });
     }
 
     if (item.errorStack) {
       if (attach || item.errorStack.length > 4096) {
         const stackBuffer = Buffer.from(item.errorStack, "utf8");
-        const stackAttachment: AttachmentBuilder = new AttachmentBuilder(stackBuffer).setName("stack.txt")
+        const stackAttachment: AttachmentBuilder = new AttachmentBuilder(
+          stackBuffer
+        ).setName("stack.txt");
         attachments.push(stackAttachment);
       } else {
         const stackEmbed = new EmbedBuilder();
@@ -102,24 +102,24 @@ export default class ErrorViewCommand extends Subcommand {
         embeds.push(stackEmbed);
       }
     } else {
-      embed.addFields({ name:"Stack Trace", value:"None", inline:false });
+      embed.addFields({ name: "Stack Trace", value: "None", inline: false });
     }
 
-    embed.addFields(
-      {
-       name: "Date",
-        value: DateTime.fromMillis(item.createdAt.getTime()).toLocaleString(
-          DateTime.DATETIME_HUGE_WITH_SECONDS
-        ),
-        inline: false
-      }
-    );
+    embed.addFields({
+      name: "Date",
+      value: DateTime.fromMillis(item.createdAt.getTime()).toLocaleString(
+        DateTime.DATETIME_HUGE_WITH_SECONDS
+      ),
+      inline: false,
+    });
     if (item.metadata) {
       const metadataStrUnformatted = JSON.stringify(item.metadata, null, 4);
       const metadataStr = `\`\`\`json\n${metadataStrUnformatted}\n\`\`\``;
       if (attach || metadataStr.length > 4096) {
         const metadataBuffer = Buffer.from(metadataStrUnformatted, "utf8");
-        const metadataAttachment: AttachmentBuilder = new AttachmentBuilder(metadataBuffer).setName("metadata.json")
+        const metadataAttachment: AttachmentBuilder = new AttachmentBuilder(
+          metadataBuffer
+        ).setName("metadata.json");
         attachments.push(metadataAttachment);
       } else {
         const metadataEmbed = new EmbedBuilder();
@@ -128,7 +128,7 @@ export default class ErrorViewCommand extends Subcommand {
         embeds.push(metadataEmbed);
       }
     } else {
-      embed.addFields({ name:"Metadata", value:"None", inline:false });
+      embed.addFields({ name: "Metadata", value: "None", inline: false });
     }
 
     await new Paginator(embeds).send({

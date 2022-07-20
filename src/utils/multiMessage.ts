@@ -1,13 +1,13 @@
 import { APIMessage } from "discord-api-types/v9";
 import {
-  CommandInteraction,
-  AttachmentBuilder,
-  Message,
   ActionRowBuilder,
-  MessageComponentInteraction,
+  AttachmentBuilder,
+  CommandInteraction,
   EmbedBuilder,
-  User,
+  Message,
   MessageActionRowComponentBuilder,
+  MessageComponentInteraction,
+  User,
 } from "discord.js";
 
 /**

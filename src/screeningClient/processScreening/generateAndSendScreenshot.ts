@@ -30,12 +30,14 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
 
     const messageParams: MessageOptions = {
       content: "Here is the screenshot that you requested:",
-      files: [ new AttachmentBuilder(screenshot).setName("screening.jpg") ],
+      files: [new AttachmentBuilder(screenshot).setName("screening.jpg")],
       ...params.multiMessageParams,
     };
     if (messageParams.itemType === ItemType.user) {
       messageParams.components = [
-        new ActionRowBuilder<ButtonBuilder>().addComponents(getPresetButtonBuilder("delete")),
+        new ActionRowBuilder<ButtonBuilder>().addComponents(
+          getPresetButtonBuilder("delete")
+        ),
       ];
     }
 

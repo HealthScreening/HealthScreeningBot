@@ -2,7 +2,6 @@ import {
   ApplicationCommandOptionType,
   AutocompleteInteraction,
   ChatInputCommandInteraction,
-  CommandInteraction,
   CommandInteractionOption,
 } from "discord.js";
 

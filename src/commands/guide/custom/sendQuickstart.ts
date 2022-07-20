@@ -11,7 +11,9 @@ export default async function sendQuickstart(
   await sendMessage({
     embeds: client.guideData.get("quickstart")!,
     components: [
-      new ActionRowBuilder<ButtonBuilder>().addComponents(getPresetButtonBuilder("go_to_dm")),
+      new ActionRowBuilder<ButtonBuilder>().addComponents(
+        getPresetButtonBuilder("go_to_dm")
+      ),
     ],
     ...options,
   });

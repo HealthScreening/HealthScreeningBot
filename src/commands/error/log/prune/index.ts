@@ -1,8 +1,8 @@
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import {
   AutocompleteInteraction,
-  Collection,
   ChatInputCommandInteraction,
+  Collection,
   EmbedBuilder,
 } from "discord.js";
 import { DateTime } from "luxon";
@@ -185,7 +185,7 @@ export default class ErrorLogPruneCommand extends Subcommand {
       fieldData += "\nLimit: **None**";
     }
 
-    embed.addFields({ name:"Search Properties", value:fieldData.trim() });
+    embed.addFields({ name: "Search Properties", value: fieldData.trim() });
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
     await interaction.reply({

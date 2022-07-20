@@ -1,10 +1,9 @@
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import {
   AutocompleteInteraction,
-  Collection,
   ChatInputCommandInteraction,
+  Collection,
   EmbedBuilder,
-  User,
 } from "discord.js";
 import { DateTime } from "luxon";
 import { Op, col, fn, literal, where } from "sequelize";
@@ -121,7 +120,8 @@ export default class CommandLogViewCommand extends Subcommand {
       "command_name_starts_with"
     );
     const limit: number | null = interaction.options.getInteger("limit");
-    const userId: string | null = interaction.options.get("user_id")?.value?.toString() ?? null;
+    const userId: string | null =
+      interaction.options.get("user_id")?.value?.toString() ?? null;
     const unique: boolean =
       interaction.options.getBoolean("unique", false) ?? false;
     if (before) {
@@ -244,7 +244,7 @@ export default class CommandLogViewCommand extends Subcommand {
       fieldData += "\nLimit: **None**";
     }
 
-    embed.addFields({ name:"Search Properties", value:fieldData });
+    embed.addFields({ name: "Search Properties", value: fieldData });
     const embeds: EmbedBuilder[] = [];
     if (items.length > 0) {
       embed.setColor("Green");

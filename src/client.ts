@@ -13,7 +13,12 @@ import { loadAllGuides } from "./utils/guides";
 import logError from "./utils/logError";
 
 const client: HealthScreeningBotClient = new HealthScreeningBotClient({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.DirectMessages],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.DirectMessages,
+  ],
   partials: [Partials.Channel],
 });
 

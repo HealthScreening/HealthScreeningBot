@@ -1,6 +1,6 @@
 // This module serves as presets for some common button types
-import { titleCase } from "title-case";
 import { ButtonBuilder, ButtonStyle } from "discord.js";
+import { titleCase } from "title-case";
 
 import _buttonData from "../data/buttonPresets.json";
 
@@ -15,7 +15,9 @@ export interface PresetButtonBuilder {
 
 const buttonData: { [k: string]: PresetButtonBuilder } = _buttonData;
 
-export default function getPresetButtonBuilder(customId: string): ButtonBuilder {
+export default function getPresetButtonBuilder(
+  customId: string
+): ButtonBuilder {
   const button = new ButtonBuilder().setCustomId(customId);
   const preset = buttonData[customId];
   if (preset.disabled) {

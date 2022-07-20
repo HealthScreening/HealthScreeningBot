@@ -1,4 +1,3 @@
-import { User } from "discord.js";
 import { Op, col, fn, where } from "sequelize";
 
 import { HSBAutocompleteInteraction } from "../../../../../discordjs-overrides";
@@ -13,7 +12,8 @@ export default async function commandNameStartsWithAutocomplete(
   const beforeTime: number | null =
     interaction.options.getInteger("before_time");
   const afterTime: number | null = interaction.options.getInteger("after_time");
-  const userId: string | null = interaction.options.get("user_id")?.value?.toString() ?? null;
+  const userId: string | null =
+    interaction.options.get("user_id")?.value?.toString() ?? null;
   const whereQuery: { [k: string]: object } = {
     commandName: where(fn("lower", col("commandName")), {
       [Op.startsWith]: (response as string).toLowerCase(),

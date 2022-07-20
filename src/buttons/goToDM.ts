@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 
 import { HSBMessageComponentInteraction } from "../discordjs-overrides";
 
@@ -37,8 +37,8 @@ export default async function goToDMButtonBuilder(
         new ButtonBuilder()
           .setURL(`https://discord.com/channels/@me/${dmChannel.id}`)
           .setLabel("Click to Open DM")
-          .setStyle(ButtonStyle.Link)
-      ]) as ActionRowBuilder<ButtonBuilder>
+          .setStyle(ButtonStyle.Link),
+      ]) as ActionRowBuilder<ButtonBuilder>,
     ],
   });
 }

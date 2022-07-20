@@ -1,4 +1,3 @@
-import { User } from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
 
@@ -16,7 +15,8 @@ export default async function afterTimeAutocomplete(
   const commandNameStartsWith: string | null = interaction.options.getString(
     "command_name_starts_with"
   );
-  const userId: string | null = interaction.options.get("user_id")?.value?.toString() ?? null;
+  const userId: string | null =
+    interaction.options.get("user_id")?.value?.toString() ?? null;
   const whereQuery: { [k: string]: object } = {
     createdAt: {
       [Op.gt]: response,

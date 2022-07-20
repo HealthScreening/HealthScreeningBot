@@ -1,12 +1,8 @@
 import {
-  APIButtonComponent,
   APIButtonComponentWithCustomId,
   APISelectMenuComponent,
-  ButtonBuilder,
   ComponentType,
   MessageComponentInteraction,
-  SelectMenuBuilder,
-  Utils,
 } from "discord.js";
 
 export default function serializeMessageComponentInteraction(
@@ -15,7 +11,8 @@ export default function serializeMessageComponentInteraction(
   let componentData: object = {};
   switch (interaction.componentType) {
     case ComponentType.Button:
-      const buttonComponent = interaction.component as APIButtonComponentWithCustomId;
+      const buttonComponent =
+        interaction.component as APIButtonComponentWithCustomId;
       componentData = {
         customId: buttonComponent.custom_id,
         disabled: buttonComponent.disabled,
@@ -25,7 +22,8 @@ export default function serializeMessageComponentInteraction(
       };
       break;
     case ComponentType.SelectMenu:
-      const selectMenuComponent = interaction.component as APISelectMenuComponent;
+      const selectMenuComponent =
+        interaction.component as APISelectMenuComponent;
       componentData = {
         customId: selectMenuComponent.custom_id,
         disabled: selectMenuComponent.disabled,
