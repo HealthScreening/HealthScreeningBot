@@ -1,8 +1,8 @@
-import { SlashCommandSubcommandGroupBuilder } from "@discordjs/builders";
 import {
   AutocompleteInteraction,
   Collection,
   CommandInteraction,
+  SlashCommandSubcommandGroupBuilder,
 } from "discord.js";
 
 import { Subcommand } from ".";
@@ -13,11 +13,13 @@ import { SubcommandContainer } from "./subcommandContainer";
 export abstract class SubcommandGroup
   implements PreCommandChecks, SubcommandContainer
 {
+  public subcommands: Collection<string, Subcommand> = new Collection();
+
   abstract registerSubcommandGroup(
     subcommandGroup: SlashCommandSubcommandGroupBuilder
   ): SlashCommandSubcommandGroupBuilder;
 
-  public subcommands: Collection<string, Subcommand> = new Collection();
   beforeExecute?(interaction: CommandInteraction): Promise<boolean>;
+
   beforeAutocomplete?(interaction: AutocompleteInteraction): Promise<boolean>;
 }

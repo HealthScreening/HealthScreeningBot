@@ -1,5 +1,8 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed } from "discord.js";
+import {
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+  SlashCommandBuilder,
+} from "discord.js";
 import { DateTime } from "luxon";
 
 import { Command } from "../client/command";
@@ -38,7 +41,7 @@ export default class TestScreening extends Command {
         .setRequired(false)
     ) as SlashCommandBuilder;
 
-  async execute(interaction: CommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const autoData = await getAutoData({ userId: interaction.user.id });
     if (!autoData) {
       await interaction.reply({
@@ -56,11 +59,11 @@ export default class TestScreening extends Command {
     const day = interaction.options.getInteger("day") || currentTime.day;
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle(`Screening Logic for ${month}/${day}/${year}`)
       .setAuthor({
         name: interaction.user.username,
-        iconURL: interaction.user.displayAvatarURL({ format: "jpg" }),
+        iconURL: interaction.user.displayAvatarURL({ extension: "jpg" }),
       })
       .setTimestamp(DateTime.local().toUTC().toMillis());
     // Step 1, check the holidays
@@ -113,18 +116,20 @@ export default class TestScreening extends Command {
       willRun ? "Will" : "Will not"
     } run auto screening for ${month}/${day}/${year}`;
     if (willRun) {
-      embed.setColor("GREEN");
+      embed.setColor("Green");
     } else {
-      embed.setColor("RED");
+      embed.setColor("Red");
     }
 
-    embed.addField("Holiday", holiday ? "Yes" : "No", true);
-    embed.addField("Paused", paused ? "Yes" : "No", true);
-    embed.addField(
-      `Will Run on ${weekdayName}`,
-      willRunForWeekday ? "Yes" : "No",
-      true
-    );
+    embed.addFields([
+      { name: "Holiday", value: holiday ? "Yes" : "No", inline: true },
+      { name: "Paused", value: paused ? "Yes" : "No", inline: true },
+      {
+        name: `Will Run on ${weekdayName}`,
+        value: willRunForWeekday ? "Yes" : "No",
+        inline: true,
+      },
+    ]);
     if (paused) {
       action += " because you have **paused** it.";
     } else if (holiday) {
@@ -136,11 +141,11 @@ export default class TestScreening extends Command {
     }
 
     embed.setDescription(action);
-    const embed2 = new MessageEmbed()
+    const embed2 = new EmbedBuilder()
       .setTitle("Screenshot Logic")
       .setAuthor({
         name: interaction.user.username,
-        iconURL: interaction.user.displayAvatarURL({ format: "jpg" }),
+        iconURL: interaction.user.displayAvatarURL({ extension: "jpg" }),
       })
       .setTimestamp(DateTime.local().toUTC().toMillis());
     // Step 1, check if email only mode is on.
@@ -148,12 +153,16 @@ export default class TestScreening extends Command {
     const willEmail = !emailOnly;
     let action2 = `${willEmail ? "Will" : "Will not"} DM a screenshot`;
     if (willEmail) {
-      embed2.setColor("GREEN");
+      embed2.setColor("Green");
     } else {
-      embed2.setColor("RED");
+      embed2.setColor("Red");
     }
 
-    embed2.addField("Email Only", emailOnly ? "Yes" : "No", true);
+    embed2.addFields({
+      name: "Email Only",
+      value: emailOnly ? "Yes" : "No",
+      inline: true,
+    });
     if (emailOnly) {
       action2 += " because you have **email only** mode on.";
     } else {

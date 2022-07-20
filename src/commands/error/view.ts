@@ -1,9 +1,9 @@
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import { Buffer } from "buffer";
 import {
-  CommandInteraction,
-  HTTPAttachmentData,
-  MessageEmbed,
+  AttachmentBuilder,
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+  SlashCommandSubcommandBuilder,
 } from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
@@ -42,7 +42,7 @@ export default class ErrorViewCommand extends Subcommand {
       );
   }
 
-  async execute(interaction: CommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const id: number = interaction.options.getInteger("id", true);
     const attach = interaction.options.getBoolean("attach", false) ?? false;
     const ephemeral =
@@ -62,9 +62,9 @@ export default class ErrorViewCommand extends Subcommand {
       return;
     }
 
-    const embed = new MessageEmbed();
-    const embeds: MessageEmbed[] = [embed];
-    const attachments: HTTPAttachmentData[] = [];
+    const embed = new EmbedBuilder();
+    const embeds: EmbedBuilder[] = [embed];
+    const attachments: AttachmentBuilder[] = [];
     embed.setTitle(`Error #${item.id}`);
     embed.addFields([
       {
@@ -79,60 +79,56 @@ export default class ErrorViewCommand extends Subcommand {
       },
     ]);
     if (item.errorDescription) {
-      embed.addField(
-        "Description",
-        item.errorDescription.substring(0, 1024),
-        false
-      );
+      embed.addFields({
+        name: "Description",
+        value: item.errorDescription.substring(0, 1024),
+        inline: false,
+      });
     } else {
-      embed.addField("Description", "None", false);
+      embed.addFields({ name: "Description", value: "None", inline: false });
     }
 
     if (item.errorStack) {
       if (attach || item.errorStack.length > 4096) {
         const stackBuffer = Buffer.from(item.errorStack, "utf8");
-        const stackAttachment: HTTPAttachmentData = {
-          attachment: stackBuffer,
-          name: "stack.txt",
-          file: stackBuffer,
-        };
+        const stackAttachment: AttachmentBuilder = new AttachmentBuilder(
+          stackBuffer
+        ).setName("stack.txt");
         attachments.push(stackAttachment);
       } else {
-        const stackEmbed = new MessageEmbed();
+        const stackEmbed = new EmbedBuilder();
         stackEmbed.setTitle(`Stack Trace for Error #${item.id}`);
         stackEmbed.setDescription(`\`\`\`\n${item.errorStack}\n\`\`\``);
         embeds.push(stackEmbed);
       }
     } else {
-      embed.addField("Stack Trace", "None", false);
+      embed.addFields({ name: "Stack Trace", value: "None", inline: false });
     }
 
-    embed.addField(
-      "Date",
-      DateTime.fromMillis(item.createdAt.getTime()).toLocaleString(
+    embed.addFields({
+      name: "Date",
+      value: DateTime.fromMillis(item.createdAt.getTime()).toLocaleString(
         DateTime.DATETIME_HUGE_WITH_SECONDS
       ),
-      false
-    );
+      inline: false,
+    });
     if (item.metadata) {
       const metadataStrUnformatted = JSON.stringify(item.metadata, null, 4);
       const metadataStr = `\`\`\`json\n${metadataStrUnformatted}\n\`\`\``;
       if (attach || metadataStr.length > 4096) {
         const metadataBuffer = Buffer.from(metadataStrUnformatted, "utf8");
-        const metadataAttachment: HTTPAttachmentData = {
-          attachment: metadataBuffer,
-          name: "metadata.json",
-          file: metadataBuffer,
-        };
+        const metadataAttachment: AttachmentBuilder = new AttachmentBuilder(
+          metadataBuffer
+        ).setName("metadata.json");
         attachments.push(metadataAttachment);
       } else {
-        const metadataEmbed = new MessageEmbed();
+        const metadataEmbed = new EmbedBuilder();
         metadataEmbed.setTitle(`Metadata for Error #${item.id}`);
         metadataEmbed.setDescription(metadataStr);
         embeds.push(metadataEmbed);
       }
     } else {
-      embed.addField("Metadata", "None", false);
+      embed.addFields({ name: "Metadata", value: "None", inline: false });
     }
 
     await new Paginator(embeds).send({

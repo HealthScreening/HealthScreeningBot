@@ -1,5 +1,4 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { Collection } from "discord.js";
+import { Collection, SlashCommandBuilder } from "discord.js";
 
 import { BaseCommand } from "./baseCommand";
 import { Subcommand } from "./subcommand";

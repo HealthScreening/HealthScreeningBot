@@ -1,10 +1,11 @@
 import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
   Collection,
-  MessageActionRow,
-  MessageActionRowComponent,
-  MessageButton,
+  MessageActionRowComponentBuilder,
   MessageComponentInteraction,
-  MessageSelectMenu,
+  SelectMenuBuilder,
   Snowflake,
   User,
 } from "discord.js";
@@ -37,26 +38,14 @@ export default class SetMenu {
 
   private devicesModel: Devices | null;
 
-  public constructor(
-    user: User,
-    autoUserModel: AutoUser | null,
-    autoDaysModel: AutoDays | null,
-    devicesModel: Devices | null
-  ) {
-    this.user = user;
-    this.autoUserModel = autoUserModel;
-    this.autoDaysModel = autoDaysModel;
-    this.devicesModel = devicesModel;
-  }
-
   /* Used in multiple rows */
-  private readonly dudButton = new MessageButton()
+  private readonly dudButtonBuilder = new ButtonBuilder()
     .setDisabled(true)
     .setLabel("\u200b")
-    .setStyle("PRIMARY");
+    .setStyle(ButtonStyle.Primary);
 
   /* Row #1 */
-  private readonly deviceSelect = new MessageSelectMenu()
+  private readonly deviceSelect = new SelectMenuBuilder()
     .setCustomId("deviceSelect")
     .setPlaceholder("Device to Use")
     .setMinValues(1)
@@ -64,7 +53,7 @@ export default class SetMenu {
     .addOptions(devicesInSelect);
 
   /* Row #2 */
-  private readonly typeSelect = new MessageSelectMenu()
+  private readonly typeSelect = new SelectMenuBuilder()
     .setCustomId("typeSelect")
     .setPlaceholder("Type of Screening to Generate")
     .setMinValues(1)
@@ -77,7 +66,7 @@ export default class SetMenu {
     );
 
   /* Row #3 */
-  private readonly daySelect = new MessageSelectMenu()
+  private readonly daySelect = new SelectMenuBuilder()
     .setCustomId("daySelect")
     .setPlaceholder("Days to Generate Screening")
     .setMinValues(1)
@@ -114,66 +103,170 @@ export default class SetMenu {
     ]);
 
   /* Row #4 */
-  private readonly enableEmailOnly = new MessageButton()
+  private readonly enableEmailOnly = new ButtonBuilder()
     .setCustomId("enableEmailOnly")
     .setLabel("Enable Email Only")
-    .setStyle("SUCCESS");
+    .setStyle(ButtonStyle.Success);
 
-  private readonly disableEmailOnly = new MessageButton()
+  private readonly disableEmailOnly = new ButtonBuilder()
     .setCustomId("disableEmailOnly")
     .setLabel("Disable Email Only")
-    .setStyle("DANGER");
+    .setStyle(ButtonStyle.Danger);
 
-  private readonly enablePaused = new MessageButton()
+  private readonly enablePaused = new ButtonBuilder()
     .setCustomId("enablePaused")
     .setLabel("Pause Health Screenings")
-    .setStyle("DANGER");
+    .setStyle(ButtonStyle.Danger);
 
-  private readonly disablePaused = new MessageButton()
+  private readonly disablePaused = new ButtonBuilder()
     .setCustomId("disablePaused")
     .setLabel("Resume Health Screenings")
-    .setStyle("SUCCESS");
+    .setStyle(ButtonStyle.Success);
 
-  private readonly booleanActionRow = new MessageActionRow().addComponents(
-    this.enableEmailOnly,
-    this.disableEmailOnly,
-    new MessageButton(this.dudButton.setCustomId("dud1")),
-    this.enablePaused,
-    this.disablePaused
-  );
+  private readonly booleanActionRowBuilder =
+    new ActionRowBuilder<ButtonBuilder>().addComponents(
+      this.enableEmailOnly,
+      this.disableEmailOnly,
+      ButtonBuilder.from(this.dudButtonBuilder.setCustomId("dud1")),
+      this.enablePaused,
+      this.disablePaused
+    );
 
   /* Row #5 */
-  private readonly increment1Hour = new MessageButton()
+  private readonly increment1Hour = new ButtonBuilder()
     .setCustomId("increment1Hour")
     .setLabel("+1 Hour")
-    .setStyle("PRIMARY");
+    .setStyle(ButtonStyle.Primary);
 
-  private readonly decrement1Hour = new MessageButton()
+  private readonly decrement1Hour = new ButtonBuilder()
     .setCustomId("decrement1Hour")
     .setLabel("-1 Hour")
-    .setStyle("PRIMARY");
+    .setStyle(ButtonStyle.Primary);
 
-  private readonly increment5Minutes = new MessageButton()
+  private readonly increment5Minutes = new ButtonBuilder()
     .setCustomId("increment5Minutes")
     .setLabel("+5 Minutes")
-    .setStyle("PRIMARY");
+    .setStyle(ButtonStyle.Primary);
 
-  private readonly decrement5Minutes = new MessageButton()
+  private readonly decrement5Minutes = new ButtonBuilder()
     .setCustomId("decrement5Minutes")
     .setLabel("-5 Minutes")
-    .setStyle("PRIMARY");
+    .setStyle(ButtonStyle.Primary);
 
-  private readonly timeActionRow = new MessageActionRow().addComponents(
-    this.increment1Hour,
-    this.decrement1Hour,
-    new MessageButton(this.dudButton.setCustomId("dud2")),
-    this.increment5Minutes,
-    this.decrement5Minutes
-  );
+  private readonly timeActionRowBuilder =
+    new ActionRowBuilder<ButtonBuilder>().addComponents(
+      this.increment1Hour,
+      this.decrement1Hour,
+      ButtonBuilder.from(this.dudButtonBuilder.setCustomId("dud2")),
+      this.increment5Minutes,
+      this.decrement5Minutes
+    );
 
   private _lastInteraction: MessageComponentInteraction | null = null;
 
-  private _disableButtons = true;
+  private _disableButtonBuilders = true;
+
+  public constructor(
+    user: User,
+    autoUserModel: AutoUser | null,
+    autoDaysModel: AutoDays | null,
+    devicesModel: Devices | null
+  ) {
+    this.user = user;
+    this.autoUserModel = autoUserModel;
+    this.autoDaysModel = autoDaysModel;
+    this.devicesModel = devicesModel;
+  }
+
+  public enableDeviceRowOnly() {
+    this.collector.addComponent(this.deviceSelect, (interaction) =>
+      this.onDeviceSelect.bind(this)(
+        interaction.interaction as HSBSelectMenuInteraction
+      )
+    );
+    this.collector.onEnd = async function (
+      collected: Collection<Snowflake, MessageActionRowComponentBuilder>,
+      reason: string,
+      customCollector: CustomCollector
+    ) {
+      this.disableAll();
+      if (this._lastInteraction !== null) {
+        await this._lastInteraction.editReply({
+          components: customCollector.rows,
+        });
+      } else if (this._disableButtonBuilders) {
+        await customCollector.message.edit({
+          components: customCollector.rows,
+        });
+      }
+    }.bind(this);
+  }
+
+  public loadAll() {
+    this.enableDeviceRowOnly();
+    this.collector.addComponent(this.typeSelect, (interaction) =>
+      this.onTypeSelect.bind(this)(
+        interaction.interaction as HSBSelectMenuInteraction
+      )
+    );
+    this.collector.addComponent(this.daySelect, (interaction) =>
+      this.onDaySelect.bind(this)(
+        interaction.interaction as HSBSelectMenuInteraction
+      )
+    );
+    this.collector.addActionRowBuilder(this.booleanActionRowBuilder, [
+      (interaction) =>
+        this.onEnableEmailOnly.bind(this)(
+          interaction.interaction as HSBMessageComponentInteraction
+        ),
+      (interaction) =>
+        this.onDisableEmailOnly.bind(this)(
+          interaction.interaction as HSBMessageComponentInteraction
+        ),
+      async () => undefined,
+      (interaction) =>
+        this.onEnablePaused.bind(this)(
+          interaction.interaction as HSBMessageComponentInteraction
+        ),
+      (interaction) =>
+        this.onDisablePaused.bind(this)(
+          interaction.interaction as HSBMessageComponentInteraction
+        ),
+    ]);
+    this.collector.addActionRowBuilder(this.timeActionRowBuilder, [
+      (interaction) =>
+        this.onIncrement1Hour.bind(this)(
+          interaction.interaction as HSBMessageComponentInteraction
+        ),
+      (interaction) =>
+        this.onDecrement1Hour.bind(this)(
+          interaction.interaction as HSBMessageComponentInteraction
+        ),
+      async () => undefined,
+      (interaction) =>
+        this.onIncrement5Minutes.bind(this)(
+          interaction.interaction as HSBMessageComponentInteraction
+        ),
+      (interaction) =>
+        this.onDecrement5Minutes.bind(this)(
+          interaction.interaction as HSBMessageComponentInteraction
+        ),
+    ]);
+  }
+
+  async send(options: MessageOptions) {
+    if (options.ephemeral) {
+      this._disableButtonBuilders = false;
+    }
+
+    return this.collector.send(
+      {
+        embeds: [await this.generateEmbed()],
+        ...options,
+      },
+      60000
+    );
+  }
 
   private async generateEmbed() {
     return generateProfileEmbed(
@@ -337,98 +430,8 @@ export default class SetMenu {
   private disableAll() {
     for (const actionRow of this.collector.rows) {
       for (const component of actionRow.components) {
-        component.disabled = true;
+        component.setDisabled(true);
       }
     }
-  }
-
-  public enableDeviceRowOnly() {
-    this.collector.addComponent(this.deviceSelect, (interaction) =>
-      this.onDeviceSelect.bind(this)(
-        interaction.interaction as HSBSelectMenuInteraction
-      )
-    );
-    this.collector.onEnd = async function (
-      collected: Collection<Snowflake, MessageActionRowComponent>,
-      reason: string,
-      customCollector: CustomCollector
-    ) {
-      this.disableAll();
-      if (this._lastInteraction !== null) {
-        await this._lastInteraction.editReply({
-          components: customCollector.rows,
-        });
-      } else if (this._disableButtons) {
-        await customCollector.message.edit({
-          components: customCollector.rows,
-        });
-      }
-    }.bind(this);
-  }
-
-  public loadAll() {
-    this.enableDeviceRowOnly();
-    this.collector.addComponent(this.typeSelect, (interaction) =>
-      this.onTypeSelect.bind(this)(
-        interaction.interaction as HSBSelectMenuInteraction
-      )
-    );
-    this.collector.addComponent(this.daySelect, (interaction) =>
-      this.onDaySelect.bind(this)(
-        interaction.interaction as HSBSelectMenuInteraction
-      )
-    );
-    this.collector.addActionRow(this.booleanActionRow, [
-      (interaction) =>
-        this.onEnableEmailOnly.bind(this)(
-          interaction.interaction as HSBMessageComponentInteraction
-        ),
-      (interaction) =>
-        this.onDisableEmailOnly.bind(this)(
-          interaction.interaction as HSBMessageComponentInteraction
-        ),
-      async () => undefined,
-      (interaction) =>
-        this.onEnablePaused.bind(this)(
-          interaction.interaction as HSBMessageComponentInteraction
-        ),
-      (interaction) =>
-        this.onDisablePaused.bind(this)(
-          interaction.interaction as HSBMessageComponentInteraction
-        ),
-    ]);
-    this.collector.addActionRow(this.timeActionRow, [
-      (interaction) =>
-        this.onIncrement1Hour.bind(this)(
-          interaction.interaction as HSBMessageComponentInteraction
-        ),
-      (interaction) =>
-        this.onDecrement1Hour.bind(this)(
-          interaction.interaction as HSBMessageComponentInteraction
-        ),
-      async () => undefined,
-      (interaction) =>
-        this.onIncrement5Minutes.bind(this)(
-          interaction.interaction as HSBMessageComponentInteraction
-        ),
-      (interaction) =>
-        this.onDecrement5Minutes.bind(this)(
-          interaction.interaction as HSBMessageComponentInteraction
-        ),
-    ]);
-  }
-
-  async send(options: MessageOptions) {
-    if (options.ephemeral) {
-      this._disableButtons = false;
-    }
-
-    return this.collector.send(
-      {
-        embeds: [await this.generateEmbed()],
-        ...options,
-      },
-      60000
-    );
   }
 }

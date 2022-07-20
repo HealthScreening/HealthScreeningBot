@@ -1,7 +1,7 @@
-import { MessageActionRow } from "discord.js";
+import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder } from "discord.js";
 
 import { AutoUser } from "../../orm/autoUser";
-import getPresetButton from "../../utils/buttonPresets";
+import getPresetButtonBuilder from "../../utils/buttonPresets";
 import logError from "../../utils/logError";
 import {
   ItemType,
@@ -30,18 +30,14 @@ export default async function generateAndSendScreenshot(params: ProcessParams) {
 
     const messageParams: MessageOptions = {
       content: "Here is the screenshot that you requested:",
-      files: [
-        {
-          attachment: screenshot,
-          name: "screening.jpg",
-          file: screenshot,
-        },
-      ],
+      files: [new AttachmentBuilder(screenshot).setName("screening.jpg")],
       ...params.multiMessageParams,
     };
     if (messageParams.itemType === ItemType.user) {
       messageParams.components = [
-        new MessageActionRow().addComponents(getPresetButton("delete")),
+        new ActionRowBuilder<ButtonBuilder>().addComponents(
+          getPresetButtonBuilder("delete")
+        ),
       ];
     }
 

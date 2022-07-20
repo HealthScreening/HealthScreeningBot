@@ -1,10 +1,11 @@
 import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
   Collection,
-  MessageActionRow,
-  MessageActionRowComponent,
-  MessageButton,
+  EmbedBuilder,
+  MessageActionRowComponentBuilder,
   MessageComponentInteraction,
-  MessageEmbed,
   Snowflake,
 } from "discord.js";
 
@@ -14,50 +15,44 @@ import serializeMessageComponentInteraction from "./logError/serializeMessageCom
 import { MessageOptions } from "./multiMessage";
 
 export default class Paginator {
-  readonly pages: MessageEmbed[];
+  readonly pages: EmbedBuilder[];
 
   readonly timeout: number;
-
-  private _currentPage: number;
 
   private readonly collector: CustomCollector = new CustomCollector();
 
   private _lastInteraction: MessageComponentInteraction | null = null;
 
-  private _disableButtons = true;
+  private _disableButtonBuilders = true;
 
-  private readonly toBeginningButton = new MessageButton()
+  private readonly toBeginningButtonBuilder = new ButtonBuilder()
     .setCustomId("tobeginning")
-    .setStyle("PRIMARY")
+    .setStyle(ButtonStyle.Primary)
     .setEmoji("922315496613879828");
 
-  private readonly lastButton = new MessageButton()
+  private readonly lastButtonBuilder = new ButtonBuilder()
     .setCustomId("last")
-    .setStyle("PRIMARY")
+    .setStyle(ButtonStyle.Primary)
     .setEmoji("922315496660021248");
 
-  private readonly nextButton = new MessageButton()
+  private readonly nextButtonBuilder = new ButtonBuilder()
     .setCustomId("next")
-    .setStyle("PRIMARY")
+    .setStyle(ButtonStyle.Primary)
     .setEmoji("922315496563560538");
 
-  private readonly toEndButton = new MessageButton()
+  private readonly toEndButtonBuilder = new ButtonBuilder()
     .setCustomId("toend")
-    .setStyle("PRIMARY")
+    .setStyle(ButtonStyle.Primary)
     .setEmoji("922315496228003841");
 
-  private readonly discardButton = new MessageButton()
+  private readonly discardButtonBuilder = new ButtonBuilder()
     .setCustomId("discard")
-    .setStyle("DANGER")
+    .setStyle(ButtonStyle.Danger)
     .setEmoji("922315496559349800");
 
-  private readonly actionRow: MessageActionRow;
+  private readonly actionRow: ActionRowBuilder<MessageActionRowComponentBuilder>;
 
-  singlePage(): boolean {
-    return this.pages.length === 1;
-  }
-
-  constructor(pages: MessageEmbed[], timeout = 120000) {
+  constructor(pages: EmbedBuilder[], timeout = 120000) {
     if (pages.length === 0) {
       throw new Error("No pages provided");
     }
@@ -67,46 +62,68 @@ export default class Paginator {
     );
     this.timeout = timeout;
     this._currentPage = 0;
-    this.actionRow = new MessageActionRow().addComponents(
-      this.toBeginningButton,
-      this.lastButton,
-      this.nextButton,
-      this.toEndButton,
-      this.discardButton
-    );
-    this.loadButtons();
+    this.actionRow =
+      new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
+        this.toBeginningButtonBuilder,
+        this.lastButtonBuilder,
+        this.nextButtonBuilder,
+        this.toEndButtonBuilder,
+        this.discardButtonBuilder
+      );
+    this.loadButtonBuilders();
   }
+
+  private _currentPage: number;
 
   get currentPage(): number {
     return this._currentPage;
   }
 
-  private setButtonState() {
+  singlePage(): boolean {
+    return this.pages.length === 1;
+  }
+
+  async send(options: MessageOptions) {
+    if (options.ephemeral) {
+      this._disableButtonBuilders = false;
+    }
+
+    return this.collector.send(
+      {
+        embeds: [this.pages[this._currentPage]],
+        components: this.singlePage() ? [] : [this.actionRow],
+        ...options,
+      },
+      this.timeout
+    );
+  }
+
+  private setButtonBuilderState() {
     if (this._currentPage === 0) {
-      this.toBeginningButton.setDisabled(true);
-      this.lastButton.setDisabled(true);
+      this.toBeginningButtonBuilder.setDisabled(true);
+      this.lastButtonBuilder.setDisabled(true);
     } else {
-      this.toBeginningButton.setDisabled(false);
-      this.lastButton.setDisabled(false);
+      this.toBeginningButtonBuilder.setDisabled(false);
+      this.lastButtonBuilder.setDisabled(false);
     }
 
     if (this._currentPage === this.pages.length - 1) {
-      this.toEndButton.setDisabled(true);
-      this.nextButton.setDisabled(true);
+      this.toEndButtonBuilder.setDisabled(true);
+      this.nextButtonBuilder.setDisabled(true);
     } else {
-      this.toEndButton.setDisabled(false);
-      this.nextButton.setDisabled(false);
+      this.toEndButtonBuilder.setDisabled(false);
+      this.nextButtonBuilder.setDisabled(false);
     }
   }
 
-  private disableActionRow() {
+  private disableActionRowBuilder() {
     for (const component of this.actionRow.components) {
       component.setDisabled(true);
     }
   }
 
-  private async disablePaginator(options: CollectedComponent<MessageButton>) {
-    this.disableActionRow();
+  private async disablePaginator(options: CollectedComponent<ButtonBuilder>) {
+    this.disableActionRowBuilder();
     return options.interaction.update({
       components: [this.actionRow],
     });
@@ -114,7 +131,7 @@ export default class Paginator {
 
   private async setPage(
     page: number,
-    options: CollectedComponent<MessageButton>
+    options: CollectedComponent<ButtonBuilder>
   ) {
     if (page < 0 || page >= this.pages.length) {
       await options.interaction.reply(
@@ -129,7 +146,7 @@ export default class Paginator {
     }
 
     this._currentPage = page;
-    this.setButtonState();
+    this.setButtonBuilderState();
     this._lastInteraction = options.interaction;
     options.interaction.update({
       embeds: [this.pages[page]],
@@ -137,27 +154,27 @@ export default class Paginator {
     });
   }
 
-  private loadButtons() {
-    this.collector.addActionRow(this.actionRow, [
-      async (options: CollectedComponent<MessageButton>) => {
+  private loadButtonBuilders() {
+    this.collector.addActionRowBuilder(this.actionRow, [
+      async (options: CollectedComponent<ButtonBuilder>) => {
         await this.setPage(0, options);
       },
-      async (options: CollectedComponent<MessageButton>) => {
+      async (options: CollectedComponent<ButtonBuilder>) => {
         await this.setPage(this._currentPage - 1, options);
       },
-      async (options: CollectedComponent<MessageButton>) => {
+      async (options: CollectedComponent<ButtonBuilder>) => {
         await this.setPage(this._currentPage + 1, options);
       },
-      async (options: CollectedComponent<MessageButton>) => {
+      async (options: CollectedComponent<ButtonBuilder>) => {
         await this.setPage(this.pages.length - 1, options);
       },
-      async (options: CollectedComponent<MessageButton>) => {
+      async (options: CollectedComponent<ButtonBuilder>) => {
         await this.disablePaginator(options);
       },
     ]);
-    this.setButtonState();
+    this.setButtonBuilderState();
     this.collector.onEnd = async function (
-      collected: Collection<Snowflake, MessageActionRowComponent>,
+      collected: Collection<Snowflake, MessageActionRowComponentBuilder>,
       reason: string,
       customCollector: CustomCollector
     ) {
@@ -165,31 +182,16 @@ export default class Paginator {
         return;
       }
 
-      this.disableActionRow();
+      this.disableActionRowBuilder();
       if (this._lastInteraction !== null) {
         await this._lastInteraction.editReply({
           components: [this.actionRow],
         });
-      } else if (this._disableButtons) {
+      } else if (this._disableButtonBuilders) {
         await customCollector.message.edit({
           components: [this.actionRow],
         });
       }
     }.bind(this);
-  }
-
-  async send(options: MessageOptions) {
-    if (options.ephemeral) {
-      this._disableButtons = false;
-    }
-
-    return this.collector.send(
-      {
-        embeds: [this.pages[this._currentPage]],
-        components: this.singlePage() ? [] : [this.actionRow],
-        ...options,
-      },
-      this.timeout
-    );
   }
 }

@@ -1,36 +1,43 @@
 import {
-  MessageButton,
+  APIButtonComponentWithCustomId,
+  APISelectMenuComponent,
+  ComponentType,
   MessageComponentInteraction,
-  MessageSelectMenu,
 } from "discord.js";
 
 export default function serializeMessageComponentInteraction(
   interaction: MessageComponentInteraction
 ) {
   let componentData: object = {};
-  let component: MessageButton | MessageSelectMenu;
   switch (interaction.componentType) {
-    case "BUTTON":
-      component = interaction.component as MessageButton;
-      componentData = {
-        customId: component.customId,
-        disabled: component.disabled,
-        emoji: component.emoji,
-        label: component.label,
-        style: component.style,
-        url: component.url,
-      };
+    case ComponentType.Button:
+      {
+        const buttonComponent =
+          interaction.component as APIButtonComponentWithCustomId;
+        componentData = {
+          customId: buttonComponent.custom_id,
+          disabled: buttonComponent.disabled,
+          emoji: buttonComponent.emoji,
+          label: buttonComponent.label,
+          style: buttonComponent.style,
+        };
+      }
+
       break;
-    case "SELECT_MENU":
-      component = interaction.component as MessageSelectMenu;
-      componentData = {
-        customId: component.customId,
-        disabled: component.disabled,
-        minValues: component.minValues,
-        maxValues: component.maxValues,
-        options: component.options,
-        placeholder: component.placeholder,
-      };
+    case ComponentType.SelectMenu:
+      {
+        const selectMenuComponent =
+          interaction.component as APISelectMenuComponent;
+        componentData = {
+          customId: selectMenuComponent.custom_id,
+          disabled: selectMenuComponent.disabled,
+          minValues: selectMenuComponent.min_values,
+          maxValues: selectMenuComponent.max_values,
+          options: selectMenuComponent.options,
+          placeholder: selectMenuComponent.placeholder,
+        };
+      }
+
       break;
     default:
       throw new Error(`Unknown component type: ${interaction.componentType}`);

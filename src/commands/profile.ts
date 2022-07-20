@@ -1,5 +1,9 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed, User } from "discord.js";
+import {
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+  SlashCommandBuilder,
+  User,
+} from "discord.js";
 import { DateTime } from "luxon";
 
 import screeningTypes from "@healthscreening/screening-types";
@@ -21,12 +25,12 @@ export async function generateProfileEmbed(
   const autoData = await getAutoData({ userId: user.id }, autoUser);
   const autoDayData = await getAutoDayData({ userId: user.id }, autoDays);
   const deviceData = await getDeviceData({ userId: user.id }, devices);
-  const embed = new MessageEmbed()
-    .setColor("GREEN")
+  const embed = new EmbedBuilder()
+    .setColor("Green")
     .setTitle("Profile")
     .setAuthor({
       name: user.username,
-      iconURL: user.displayAvatarURL({ format: "jpg" }),
+      iconURL: user.displayAvatarURL({ extension: "jpg" }),
     })
     .setTimestamp(DateTime.local().toUTC().toMillis());
   if (autoData) {
@@ -43,9 +47,9 @@ Screening Time: **${
 Screening Type: **${screeningTypes[autoData.type]}**
 Email Only: **${autoData.emailOnly}**
 Screenings Paused: **${autoData.paused}**`;
-    embed.addField("Auto Data", autoDataString);
+    embed.addFields({ name: "Auto Data", value: autoDataString });
   } else {
-    embed.addField("Auto", "**No data**");
+    embed.addFields({ name: "Auto", value: "**No data**" });
   }
 
   if (autoDayData) {
@@ -56,12 +60,15 @@ Screening Sent on Wednesday: **${autoDayData.onWednesday}**
 Screening Sent on Thursday: **${autoDayData.onThursday}**
 Screening Sent on Friday: **${autoDayData.onFriday}**
 Screening Sent on Saturday: **${autoDayData.onSaturday}**`;
-    embed.addField("Auto Day Data", autoDayDataString);
+    embed.addFields({ name: "Auto Day Data", value: autoDayDataString });
   } else {
-    embed.addField("Auto Day", "**No data**");
+    embed.addFields({ name: "Auto Day", value: "**No data**" });
   }
 
-  embed.addField("Device Used for Screenings", deviceData.device);
+  embed.addFields({
+    name: "Device Used for Screenings",
+    value: deviceData.device,
+  });
   return embed;
 }
 
@@ -76,7 +83,7 @@ export default class Profile extends Command {
         .setRequired(false)
     ) as SlashCommandBuilder;
 
-  async execute(interaction: CommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const embed = await generateProfileEmbed(interaction.user);
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;

@@ -1,9 +1,9 @@
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import {
   AutocompleteInteraction,
+  ChatInputCommandInteraction,
   Collection,
-  CommandInteraction,
-  MessageEmbed,
+  EmbedBuilder,
+  SlashCommandSubcommandBuilder,
 } from "discord.js";
 import { DateTime } from "luxon";
 import { Op, col, fn, where } from "sequelize";
@@ -87,7 +87,7 @@ export default class ErrorLogPruneCommand extends Subcommand {
       );
   }
 
-  async execute(interaction: CommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const whereQuery: { [k: string]: object } = {};
     const before: number | null = interaction.options.getInteger("before");
     const after: number | null = interaction.options.getInteger("after");
@@ -140,10 +140,10 @@ export default class ErrorLogPruneCommand extends Subcommand {
       where: whereQuery,
       limit: limit || undefined,
     });
-    const embed = new MessageEmbed();
+    const embed = new EmbedBuilder();
     embed.setTitle("Pruned Error Log");
     embed.setDescription(`Items Deleted: **${deleted}**`);
-    embed.setColor(deleted > 0 ? "GREEN" : "RED");
+    embed.setColor(deleted > 0 ? "Green" : "Red");
     let fieldData = "";
     if (before) {
       fieldData += `\nBefore: **#${before}**`;
@@ -185,7 +185,7 @@ export default class ErrorLogPruneCommand extends Subcommand {
       fieldData += "\nLimit: **None**";
     }
 
-    embed.addField("Search Properties", fieldData.trim());
+    embed.addFields({ name: "Search Properties", value: fieldData.trim() });
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
     await interaction.reply({

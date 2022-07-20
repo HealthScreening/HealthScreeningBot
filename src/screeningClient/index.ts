@@ -19,27 +19,6 @@ export default class ScreeningClient {
       limit: 8,
     });
 
-  private async dealWithQueue(params: ProcessParams) {
-    if (this.queue.willQueue()) {
-      const messageOptions: MessageOptions = {
-        content: `Your request has been queued! You will be notified when the screening is ready. You are currently at position ${this.queue.determineNextPosition(
-          1
-        )} in the queue.`,
-        ...params.multiMessageParams,
-      };
-      sendMessage(messageOptions);
-    } else if (params.multiMessageParams.itemType === ItemType.interaction) {
-      await params.multiMessageParams.item.deferReply({
-        ephemeral: params.multiMessageParams.ephemeral,
-      });
-    }
-
-    const trueParams: ProcessParams = {
-      ...params,
-    };
-    await this.queue.enqueue(trueParams, 1);
-  }
-
   public async queueAutoCommand(
     userId: string,
     multiMessageParams: MessageOptions
@@ -120,5 +99,26 @@ export default class ScreeningClient {
       emailOnly: autoInfo.emailOnly,
     };
     this.queue.enqueue(processParams, 0);
+  }
+
+  private async dealWithQueue(params: ProcessParams) {
+    if (this.queue.willQueue()) {
+      const messageOptions: MessageOptions = {
+        content: `Your request has been queued! You will be notified when the screening is ready. You are currently at position ${this.queue.determineNextPosition(
+          1
+        )} in the queue.`,
+        ...params.multiMessageParams,
+      };
+      sendMessage(messageOptions);
+    } else if (params.multiMessageParams.itemType === ItemType.interaction) {
+      await params.multiMessageParams.item.deferReply({
+        ephemeral: params.multiMessageParams.ephemeral,
+      });
+    }
+
+    const trueParams: ProcessParams = {
+      ...params,
+    };
+    await this.queue.enqueue(trueParams, 1);
   }
 }

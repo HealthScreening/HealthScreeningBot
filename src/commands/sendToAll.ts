@@ -1,8 +1,8 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
 import {
   AutocompleteInteraction,
   Collection,
-  MessageEmbed,
+  EmbedBuilder,
+  SlashCommandBuilder,
   User,
 } from "discord.js";
 import sleep from "sleep-promise";
@@ -61,7 +61,7 @@ export default class SendToAll extends Command {
       const message = `The bot owner has sent a message to everyone registered under the auto health screening bot:\n----\n${interaction.options.getString(
         "message"
       )}\n----\nIf you have any questions, contact <@199605025914224641> (PokestarFan#8524).`;
-      let embeds: MessageEmbed[] | undefined;
+      let embeds: EmbedBuilder[] | undefined;
       if (guideName) {
         if (!interaction.client.guideData.has(guideName)) {
           await interaction.reply({

@@ -1,11 +1,11 @@
-import { MessageActionRow, MessageButton } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 
 import { HSBMessageComponentInteraction } from "../discordjs-overrides";
 
 /**
  * Provides a shortcut to go to DMs with the bot.
  */
-export default async function goToDMButton(
+export default async function goToDMButtonBuilder(
   interaction: HSBMessageComponentInteraction
 ) {
   const user = await interaction.client.users.fetch(interaction.user.id);
@@ -33,12 +33,12 @@ export default async function goToDMButton(
       "Click the button below to go to your direct message channel with the bot.",
     ephemeral: true,
     components: [
-      new MessageActionRow().addComponents(
-        new MessageButton()
+      new ActionRowBuilder().setComponents([
+        new ButtonBuilder()
           .setURL(`https://discord.com/channels/@me/${dmChannel.id}`)
           .setLabel("Click to Open DM")
-          .setStyle("LINK")
-      ),
+          .setStyle(ButtonStyle.Link),
+      ]) as ActionRowBuilder<ButtonBuilder>,
     ],
   });
 }

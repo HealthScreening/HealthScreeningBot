@@ -1,11 +1,12 @@
 import {
+  ApplicationCommandOptionType,
   AutocompleteInteraction,
-  CommandInteraction,
+  ChatInputCommandInteraction,
   CommandInteractionOption,
 } from "discord.js";
 
 export default function serializeInteraction(
-  interaction: CommandInteraction | AutocompleteInteraction
+  interaction: ChatInputCommandInteraction | AutocompleteInteraction
 ): object {
   return {
     command: {
@@ -17,16 +18,16 @@ export default function serializeInteraction(
       (item: CommandInteractionOption) => {
         let value;
         switch (item.type) {
-          case "USER":
+          case ApplicationCommandOptionType.User:
             value = item.user!.id;
             break;
-          case "CHANNEL":
+          case ApplicationCommandOptionType.Channel:
             value = item.channel!.id;
             break;
-          case "ROLE":
+          case ApplicationCommandOptionType.Role:
             value = item.role!.id;
             break;
-          case "MENTIONABLE":
+          case ApplicationCommandOptionType.Mentionable:
             value = (item.user || item.role || item.channel)!.id;
             break;
           default:

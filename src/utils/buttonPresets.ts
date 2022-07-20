@@ -1,9 +1,10 @@
 // This module serves as presets for some common button types
-import { MessageButton, MessageButtonStyleResolvable } from "discord.js";
+import { ButtonBuilder, ButtonStyle } from "discord.js";
+import { titleCase } from "title-case";
 
 import _buttonData from "../data/buttonPresets.json";
 
-export interface PresetButton {
+export interface PresetButtonBuilder {
   customId: string;
   disabled?: boolean;
   label?: string;
@@ -12,10 +13,12 @@ export interface PresetButton {
   style: string;
 }
 
-const buttonData: { [k: string]: PresetButton } = _buttonData;
+const buttonData: { [k: string]: PresetButtonBuilder } = _buttonData;
 
-export default function getPresetButton(customId: string): MessageButton {
-  const button = new MessageButton().setCustomId(customId);
+export default function getPresetButtonBuilder(
+  customId: string
+): ButtonBuilder {
+  const button = new ButtonBuilder().setCustomId(customId);
   const preset = buttonData[customId];
   if (preset.disabled) {
     button.setDisabled(true);
@@ -34,7 +37,7 @@ export default function getPresetButton(customId: string): MessageButton {
   }
 
   if (preset.style) {
-    button.setStyle(preset.style as MessageButtonStyleResolvable);
+    button.setStyle(ButtonStyle[titleCase(preset.style)]);
   }
 
   return button;

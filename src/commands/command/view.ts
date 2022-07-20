@@ -1,5 +1,8 @@
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed } from "discord.js";
+import {
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+  SlashCommandSubcommandBuilder,
+} from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
 
@@ -27,7 +30,7 @@ export default class CommandViewCommand extends Subcommand {
       );
   }
 
-  async execute(interaction: CommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const id: number = interaction.options.getInteger("id", true);
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
@@ -46,7 +49,7 @@ export default class CommandViewCommand extends Subcommand {
       return;
     }
 
-    const embed = new MessageEmbed();
+    const embed = new EmbedBuilder();
     embed.setTitle(`Command Log Entry #${item.id}`);
     embed.addFields([
       {
@@ -59,14 +62,14 @@ export default class CommandViewCommand extends Subcommand {
         value: `<@${item.userId}> (${item.userName})`,
         inline: false,
       },
+      {
+        name: "Date",
+        value: DateTime.fromMillis(item.createdAt.getTime()).toLocaleString(
+          DateTime.DATETIME_HUGE_WITH_SECONDS
+        ),
+        inline: false,
+      },
     ]);
-    embed.addField(
-      "Date",
-      DateTime.fromMillis(item.createdAt.getTime()).toLocaleString(
-        DateTime.DATETIME_HUGE_WITH_SECONDS
-      ),
-      false
-    );
     await interaction.reply({
       embeds: [embed],
       ephemeral,

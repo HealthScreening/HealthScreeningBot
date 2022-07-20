@@ -1,11 +1,12 @@
-import { APIMessage } from "discord-api-types/v9";
 import {
+  APIMessage,
+  ActionRowBuilder,
+  AttachmentBuilder,
   CommandInteraction,
-  HTTPAttachmentData,
+  EmbedBuilder,
   Message,
-  MessageActionRow,
+  MessageActionRowComponentBuilder,
   MessageComponentInteraction,
-  MessageEmbed,
   User,
 } from "discord.js";
 
@@ -35,8 +36,8 @@ interface BaseMessageOptions {
   /**
    * The embeds to send.
    */
-  embeds?: MessageEmbed[];
-  files?: HTTPAttachmentData[];
+  embeds?: EmbedBuilder[];
+  files?: AttachmentBuilder[];
   replyMessage?: Message;
   /**
    * Whether to send the message if the message being replied to is deleted.
@@ -49,7 +50,7 @@ interface BaseMessageOptions {
    * the user who created the interaction, but also vanishes if the client is restarted.
    */
   ephemeral?: boolean;
-  components?: MessageActionRow[];
+  components?: ActionRowBuilder<MessageActionRowComponentBuilder>[];
 }
 
 /**

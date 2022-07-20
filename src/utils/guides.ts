@@ -1,4 +1,4 @@
-import { Collection, MessageEmbed } from "discord.js";
+import { Collection, EmbedBuilder } from "discord.js";
 import { readFile } from "fs/promises";
 import { resolve } from "path";
 
@@ -17,13 +17,13 @@ export function getGuidePath(guideName: string): string {
   return resolve(guideRoot, `${guideName}.md`);
 }
 
-export async function loadGuide(path: string): Promise<MessageEmbed> {
+export async function loadGuide(path: string): Promise<EmbedBuilder> {
   const data = await readFile(path, "utf8");
-  return new MessageEmbed().setDescription(data);
+  return new EmbedBuilder().setDescription(data);
 }
 
 export async function loadAllGuides(client: HealthScreeningBotClient) {
-  const collection = new Collection<string, MessageEmbed[]>();
+  const collection = new Collection<string, EmbedBuilder[]>();
   await Promise.all(
     Object.entries(guideData as { [key: string]: GuideItem }).map(
       async ([key, value]) => {

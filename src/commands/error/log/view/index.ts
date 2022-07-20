@@ -1,9 +1,9 @@
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import {
   AutocompleteInteraction,
+  ChatInputCommandInteraction,
   Collection,
-  CommandInteraction,
-  MessageEmbed,
+  EmbedBuilder,
+  SlashCommandSubcommandBuilder,
 } from "discord.js";
 import { DateTime } from "luxon";
 import { Op, col, fn, literal, where } from "sequelize";
@@ -101,7 +101,7 @@ export default class ErrorLogViewCommand extends Subcommand {
       );
   }
 
-  async execute(interaction: CommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const isDesc = interaction.options.getBoolean("desc", false) ?? true;
     const whereQuery: { [k: string]: object } = {};
     const before: number | null = interaction.options.getInteger("before");
@@ -178,7 +178,7 @@ export default class ErrorLogViewCommand extends Subcommand {
       });
     }
 
-    const embed = new MessageEmbed();
+    const embed = new EmbedBuilder();
     embed.setTitle("Error Log");
     let fieldData = `Direction: **${isDesc ? "Descending" : "Ascending"}**`;
     if (before) {
@@ -221,12 +221,12 @@ export default class ErrorLogViewCommand extends Subcommand {
       fieldData += "\nLimit: **None**";
     }
 
-    embed.addField("Search Properties", fieldData);
-    const embeds: MessageEmbed[] = [];
+    embed.addFields({ name: "Search Properties", value: fieldData });
+    const embeds: EmbedBuilder[] = [];
     if (items.length > 0) {
-      embed.setColor("GREEN");
+      embed.setColor("Green");
       let baseString = "";
-      let currentEmbed = new MessageEmbed(embed);
+      let currentEmbed = new EmbedBuilder(embed.toJSON());
       items
         .map(
           (item: ErrorLog) =>
@@ -236,7 +236,7 @@ export default class ErrorLogViewCommand extends Subcommand {
           if (baseString.length + item.length > 4096) {
             currentEmbed.setDescription(baseString.trimEnd());
             embeds.push(currentEmbed);
-            currentEmbed = new MessageEmbed(embed);
+            currentEmbed = new EmbedBuilder(embed.toJSON());
             baseString = "";
           }
 
@@ -248,7 +248,7 @@ export default class ErrorLogViewCommand extends Subcommand {
       }
     } else {
       embed.setDescription("No errors found.");
-      embed.setColor("RED");
+      embed.setColor("Red");
       embeds.push(embed);
     }
 

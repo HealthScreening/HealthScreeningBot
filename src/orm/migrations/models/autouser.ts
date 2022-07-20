@@ -13,6 +13,7 @@ module.exports = (sequelize: Sequelize, DataTypes: typeof DT) => {
       // Define association here
     }
   }
+
   AutoUser.init(
     {
       userId: {

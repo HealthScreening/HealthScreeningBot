@@ -1,5 +1,4 @@
-import { SlashCommandSubcommandGroupBuilder } from "@discordjs/builders";
-import { Collection } from "discord.js";
+import { Collection, SlashCommandSubcommandGroupBuilder } from "discord.js";
 
 import { Subcommand, SubcommandGroup } from "../../../client/command";
 import ErrorLogPruneCommand from "./prune";

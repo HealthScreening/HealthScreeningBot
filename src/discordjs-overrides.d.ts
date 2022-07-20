@@ -1,14 +1,14 @@
 /* eslint-disable max-classes-per-file -- Overrides are allowed to bypass this */
 import {
   AutocompleteInteraction,
-  CommandInteraction,
+  ChatInputCommandInteraction,
   MessageComponentInteraction,
   SelectMenuInteraction,
 } from "discord.js";
 
 import HealthScreeningBotClient from "./client/extraClient";
 
-export declare class HSBCommandInteraction extends CommandInteraction {
+export declare class HSBCommandInteraction extends ChatInputCommandInteraction {
   public readonly client: HealthScreeningBotClient;
 }
 

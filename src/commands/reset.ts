@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder } from "discord.js";
 
 import { Command } from "../client/command";
 import { HSBCommandInteraction } from "../discordjs-overrides";
