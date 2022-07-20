@@ -185,7 +185,7 @@ export default class ErrorLogPruneCommand extends Subcommand {
       fieldData += "\nLimit: **None**";
     }
 
-    embed.addField("Search Properties", fieldData.trim());
+    embed.addFields({ name:"Search Properties", value:fieldData.trim() });
     const ephemeral =
       interaction.options.getBoolean("ephemeral", false) ?? true;
     await interaction.reply({
