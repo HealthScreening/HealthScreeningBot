@@ -244,12 +244,12 @@ export default class CommandLogViewCommand extends Subcommand {
       fieldData += "\nLimit: **None**";
     }
 
-    embed.addField("Search Properties", fieldData);
+    embed.addFields({ name:"Search Properties", value:fieldData });
     const embeds: EmbedBuilder[] = [];
     if (items.length > 0) {
       embed.setColor("Green");
       let baseString = "";
-      let currentEmbed = new EmbedBuilder(embed);
+      let currentEmbed = new EmbedBuilder(embed.data);
       items
         .map(
           (item: CommandLog) =>
@@ -259,7 +259,7 @@ export default class CommandLogViewCommand extends Subcommand {
           if (baseString.length + item.length > 4096) {
             currentEmbed.setDescription(baseString.trimEnd());
             embeds.push(currentEmbed);
-            currentEmbed = new EmbedBuilder(embed);
+            currentEmbed = new EmbedBuilder(embed.toJSON());
             baseString = "";
           }
 
