@@ -111,8 +111,7 @@ export default class TestScreening extends Command {
         await interaction.reply({
           content: `Invalid date entered: ${month}/${day}/${year}`,
           ephemeral: true,
-        }
-        );
+        });
         return;
     }
 
