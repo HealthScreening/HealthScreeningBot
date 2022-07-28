@@ -39,7 +39,7 @@
     "nyc"
   ],
   "dependencies": {
-    "@discordjs/rest": "1.0.0",
+    "@discordjs/rest": "1.0.1",
     "@healthscreening/complete-screening": "1.0.6",
     "@healthscreening/generate-screenshot": "1.1.4",
     "@healthscreening/screening-types": "1.0.0",
