@@ -16,9 +16,9 @@ Please view [the quickstart guide](https://github.com/HealthScreening/HealthScre
 
 ### Prerequisites
 
-* [Git](https://git-scm.com/downloads)
-* [Node.js](https://nodejs.org/en/download/)
-* [PostgreSQL](https://www.postgresql.org/download/)
+- [Git](https://git-scm.com/downloads)
+- [Node.js](https://nodejs.org/en/download/)
+- [PostgreSQL](https://www.postgresql.org/download/)
 
 ### Installation
 
@@ -38,7 +38,7 @@ A file called `config.ts` needs to exist with pre-filled values. You can use the
 
 The file needs to export three named objects (the name _must_ be the same):
 
-1. A `database` variable that contains options for Sequelize. This is passed directly to Sequelize. 
+1. A `database` variable that contains options for Sequelize. This is passed directly to Sequelize.
 2. A `discord` variable that contains options for Discord.
 3. A `github` variable that contains options for GitHub.
 
@@ -48,8 +48,8 @@ This is an object for the database. ~~If you are using sqlite3 (highly recommend
 
 ```typescript
 export const database = {
-  dialect: 'sqlite',
-  storage: './db.sqlite'
+  dialect: "sqlite",
+  storage: "./db.sqlite",
 };
 ```
 
@@ -62,7 +62,7 @@ export const database = {
   password: "user",
   database: "user",
   host: "localhost",
-  port: 5432
+  port: 5432,
 };
 ```
 
@@ -76,15 +76,15 @@ export const discord = {
   clientId: "id",
   guildId: "id",
   logChannelId: "id",
-  ownerId: "id"
+  ownerId: "id",
 };
 ```
 
-* `token`: The bot token. Reference the guide for getting this.
-* `clientId`: The client ID of the bot. Found in the "General Information" tab of the bot app page.
-* `guildId`: The primary server that the bot belongs to (the "HQ" server).
-* `logChannelId`: The channel where the bot puts it's logs. Must belong to the server that is in `guildId`.
-* `ownerId`: The user ID of the owner of the bot.
+- `token`: The bot token. Reference the guide for getting this.
+- `clientId`: The client ID of the bot. Found in the "General Information" tab of the bot app page.
+- `guildId`: The primary server that the bot belongs to (the "HQ" server).
+- `logChannelId`: The channel where the bot puts it's logs. Must belong to the server that is in `guildId`.
+- `ownerId`: The user ID of the owner of the bot.
 
 #### `github`
 
@@ -98,9 +98,9 @@ export const github = {
 };
 ```
 
-* `token`: A GitHub [PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) of the bot account.
-* `owner`: The owner of the repository the bot will post to. If the repo URL is `https://github.com/a/b`, the owner is `a`.
-* `repo`: The repository name. If the repo URL is `https://github.com/a/b`, the repo name is `b`.
+- `token`: A GitHub [PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) of the bot account.
+- `owner`: The owner of the repository the bot will post to. If the repo URL is `https://github.com/a/b`, the owner is `a`.
+- `repo`: The repository name. If the repo URL is `https://github.com/a/b`, the repo name is `b`.
 
 #### Full File
 
