@@ -112,7 +112,9 @@ export const github = {
 When complete, the `config.ts` file should look like this:
 
 ```typescript
-export const database = {
+import { Options } from "sequelize";
+
+export const database: Options = {
   dialect: "postgres",
   username: "user",
   password: "user",
