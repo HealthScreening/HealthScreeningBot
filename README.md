@@ -18,7 +18,7 @@ Please view [the quickstart guide](https://github.com/HealthScreening/HealthScre
 
 - [Git](https://git-scm.com/downloads)
 - [Node.js](https://nodejs.org/en/download/)
-- [PostgreSQL](https://www.postgresql.org/download/)
+- [PostgreSQL](https://www.postgresql.org/download/) for full functionality
 
 ### Installation
 
