@@ -3,6 +3,7 @@ import { SlashCommandBuilder, TextChannel } from "discord.js";
 import { DateTime } from "luxon";
 import { Op } from "sequelize";
 
+import { discord } from "../../config";
 import { Command } from "../client/command";
 import { HSBCommandInteraction } from "../discordjs-overrides";
 import { AutoUser } from "../orm/autoUser";
@@ -48,8 +49,8 @@ export default class TriggerAutoNow extends Command {
       interaction.options.getBoolean("skip_email_only", false) ?? false;
     await interaction.reply("Starting auto session...");
     const logChannel: TextChannel = (await (
-      await interaction.client.guilds.fetch("889983763994521610")
-    ).channels.fetch("902375187150934037")) as TextChannel;
+      await interaction.client.guilds.fetch(discord.guildId)
+    ).channels.fetch(discord.logChannelId)) as TextChannel;
     const currentTime = DateTime.now().setZone("America/New_York");
     try {
       const batchTimes: ArrayStringMap<[number, number], number> =

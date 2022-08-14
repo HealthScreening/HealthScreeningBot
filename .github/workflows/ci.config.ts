@@ -16,6 +16,8 @@ export const discord = {
   token: "token",
   clientId: "id",
   guildId: "id",
+  logChannelId: "id",
+  ownerId: "id",
 };
 
 export const github = {

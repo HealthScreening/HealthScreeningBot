@@ -1,3 +1,4 @@
+import { discord } from "../../config";
 import { ItemType, MessageOptions, sendMessage } from "./multiMessage";
 
 export default async function checkOwner(
@@ -7,13 +8,13 @@ export default async function checkOwner(
   // eslint-disable-next-line default-case -- Enum values are guaranteed to be exhaustive
   switch (params.itemType) {
     case ItemType.interaction:
-      isOwner = params.item.user.id === "199605025914224641";
+      isOwner = params.item.user.id === discord.ownerId;
       break;
     case ItemType.message:
-      isOwner = params.item.author.id === "199605025914224641";
+      isOwner = params.item.author.id === discord.ownerId;
       break;
     case ItemType.user:
-      isOwner = params.item.id === "199605025914224641";
+      isOwner = params.item.id === discord.ownerId;
       break;
   }
 

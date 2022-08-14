@@ -10,6 +10,7 @@ import {
   TextChannel,
 } from "discord.js";
 
+import { discord } from "../../config";
 import deleteButtonBuilder from "../buttons/delete";
 import goToDMButtonBuilder from "../buttons/goToDM";
 import CommandCommand from "../commands/command";
@@ -193,8 +194,8 @@ export default class HealthScreeningBotClient extends Client {
       }`
     );
     const logChannel: TextChannel = (await (
-      await this.guilds.fetch("889983763994521610")
-    ).channels.fetch("902375187150934037")) as TextChannel;
+      await this.guilds.fetch(discord.guildId)
+    ).channels.fetch(discord.logChannelId)) as TextChannel;
     await Promise.all([
       runFunctionAndLogError(
         () => doAutoLoop(this, logChannel),
