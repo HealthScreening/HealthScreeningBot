@@ -18,6 +18,7 @@ Please view [the quickstart guide](https://github.com/HealthScreening/HealthScre
 
 * [Git](https://git-scm.com/downloads)
 * [Node.js](https://nodejs.org/en/download/)
+* [PostgreSQL](https://www.postgresql.org/download/)
 
 ### Installation
 
@@ -25,10 +26,11 @@ Please view [the quickstart guide](https://github.com/HealthScreening/HealthScre
 2. Extract the files.
 3. Open a terminal to the `HealthScreeningBot` directory.
 4. Run `npm install`.
-5. **NOTE: IF YOU ARE USING SQLITE (most likely), you _need_ to run `npm install sqlite3`.**
+5. ~~**NOTE: IF YOU ARE USING SQLITE (most likely), you _need_ to run `npm install sqlite3`.**~~
 6. Create the config, as below. **This is required, the installation will not work without it.**
 7. Run `npm run build`.
 8. Run `npm run deploy`.
+9. Run `npx sequelize-cli db:migrate`.
 
 ### Creating the Config
 
@@ -42,7 +44,7 @@ The file needs to export three named objects (the name _must_ be the same):
 
 #### `database`
 
-This is an object for the database. If you are using sqlite3 (highly recommended because it does not require you to install any additional software), export an object that looks like this:
+This is an object for the database. ~~If you are using sqlite3 (highly recommended because it does not require you to install any additional software), export an object that looks like this:
 
 ```typescript
 export const database = {
@@ -51,7 +53,7 @@ export const database = {
 };
 ```
 
-If you are using postgres, export an object that looks like this:
+If you are using Postgres (**REQUIRED**), export an object that looks like this:
 
 ```typescript
 export const database = {
