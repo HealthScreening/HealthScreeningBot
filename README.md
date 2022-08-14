@@ -26,7 +26,7 @@ Please view [the quickstart guide](https://github.com/HealthScreening/HealthScre
 2. Extract the files.
 3. Open a terminal to the `HealthScreeningBot` directory.
 4. Run `npm install`.
-5. ~~**NOTE: IF YOU ARE USING SQLITE (most likely), you _need_ to run `npm install sqlite3`.**~~
+5. **NOTE: IF YOU ARE USING SQLITE (most likely), you _need_ to run `npm install sqlite3`.**
 6. Create the config, as below. **This is required, the installation will not work without it.**
 7. Run `npm run build`.
 8. Run `npm run deploy`.
@@ -46,7 +46,7 @@ The file needs to export three named objects (the name _must_ be the same):
 
 This is an object for the database.
 
-~~If you are using sqlite3 (highly recommended because it does not require you to install any additional software), import the Options type from sequelize and export an object like so:~~
+If you are using sqlite3 (highly recommended because it does not require you to install any additional software), import the Options type from sequelize and export an object like so:
 
 ```typescript
 import { Options } from "sequelize";
@@ -56,6 +56,8 @@ export const database: Options = {
   storage: "./db.sqlite",
 };
 ```
+
+**NOTE: When using sqlite3, some commands may not work. Core functionality should be working as expected.**
 
 If you are using Postgres (**REQUIRED**), export an object that looks like this:
 
