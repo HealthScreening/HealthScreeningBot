@@ -44,9 +44,10 @@ The file needs to export three named objects (the name _must_ be the same):
 
 #### `database`
 
-This is an object for the database. 
+This is an object for the database.
 
 ~~If you are using sqlite3 (highly recommended because it does not require you to install any additional software), import the Options type from sequelize and export an object like so:~~
+
 ```typescript
 import { Options } from "sequelize";
 
