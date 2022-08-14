@@ -44,10 +44,14 @@ The file needs to export three named objects (the name _must_ be the same):
 
 #### `database`
 
-This is an object for the database. ~~If you are using sqlite3 (highly recommended because it does not require you to install any additional software), export an object that looks like this:
+This is an object for the database.
+
+~~If you are using sqlite3 (highly recommended because it does not require you to install any additional software), import the Options type from sequelize and export an object like so:~~
 
 ```typescript
-export const database = {
+import { Options } from "sequelize";
+
+export const database: Options = {
   dialect: "sqlite",
   storage: "./db.sqlite",
 };
@@ -56,7 +60,9 @@ export const database = {
 If you are using Postgres (**REQUIRED**), export an object that looks like this:
 
 ```typescript
-export const database = {
+import { Options } from "sequelize";
+
+export const database: Options = {
   dialect: "postgres",
   username: "user",
   password: "user",
@@ -107,7 +113,9 @@ export const github = {
 When complete, the `config.ts` file should look like this:
 
 ```typescript
-export const database = {
+import { Options } from "sequelize";
+
+export const database: Options = {
   dialect: "postgres",
   username: "user",
   password: "user",
