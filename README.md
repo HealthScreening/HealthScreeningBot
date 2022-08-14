@@ -14,6 +14,11 @@ Please view [the quickstart guide](https://github.com/HealthScreening/HealthScre
 
 ## Self-Host
 
+### Prerequisites
+
+* [Git](https://git-scm.com/downloads)
+* [Node.js](https://nodejs.org/en/download/)
+
 ### Installation
 
 1. Run `git clone https://github.com/HealthScreening/HealthScreeningBot.git`.
