@@ -95,6 +95,35 @@ export const github = {
 * `owner`: The owner of the repository the bot will post to. If the repo URL is `https://github.com/a/b`, the owner is `a`.
 * `repo`: The repository name. If the repo URL is `https://github.com/a/b`, the repo name is `b`.
 
+#### Full File
+
+When complete, the `config.ts` file should look like this:
+
+```typescript
+export const database = {
+  dialect: "postgres",
+  username: "user",
+  password: "user",
+  database: "user",
+  host: "localhost",
+  port: 5432,
+};
+
+export const discord = {
+  token: "token",
+  clientId: "id",
+  guildId: "id",
+  logChannelId: "id",
+  ownerId: "id",
+};
+
+export const github = {
+  token: "token",
+  owner: "HealthScreening",
+  repo: "HealthScreeningBot",
+};
+```
+
 ### Starting the Bot
 
 In the main directory on a terminal, run `npm run start`.
